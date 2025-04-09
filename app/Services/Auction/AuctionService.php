@@ -2,6 +2,7 @@
 
 namespace App\Services\Auction;
 
+use App\Models\V5\AucSessions;
 use App\Models\V5\FgSub;
 use App\Models\V5\FgSubInd;
 use App\Support\Localization;
@@ -23,7 +24,9 @@ class AuctionService
 			})
 			->joinAucSessions()
 			->where('sub_subind', $codSub)
-			->where('"auc_sessions"."id_auc_sessions"', $idAucSession)
+			->when($idAucSession, function ($query) use ($idAucSession) {
+				$query->where('"auc_sessions"."id_auc_sessions"', $idAucSession);
+			})
 			->orderBy('orden_subind')
 			->get();
 
@@ -35,8 +38,18 @@ class AuctionService
 		return FgSubInd::query()
 			->joinAucSessions()
 			->where('sub_subind', $codSub)
-			->where('"auc_sessions"."id_auc_sessions"', $idAucSession)
+			->when($idAucSession, function ($query) use ($idAucSession) {
+				$query->where('"auc_sessions"."id_auc_sessions"', $idAucSession);
+			})
 			->exists();
+	}
+
+	public function getFirstSessionByAuction($codSub)
+	{
+		return AucSessions::query()
+			->whereAuction($codSub)
+			->orderBy('"reference"')
+			->first();
 	}
 
 	public function getActiveAuctionsToType($type)
@@ -55,7 +68,7 @@ class AuctionService
 				}, function ($query) {
 					$query->addSelect('des_sub');
 				})
-				->addSelect('subc_sub', 'cod_sub')
+				->addSelect('subc_sub', 'cod_sub', 'hfec_sub', 'hhora_sub')
 				->activeSub()
 				->where('tipo_sub', $type)
 				->when(Config::get("app.restrictVisibility"), function ($query) {

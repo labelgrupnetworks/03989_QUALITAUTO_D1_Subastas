@@ -24,3 +24,7 @@
 	```php
 	$data['categories']
 	```
+
+5. Modificar $global['subastas'] del header y el footer.
+Afecta a 
+- Todos

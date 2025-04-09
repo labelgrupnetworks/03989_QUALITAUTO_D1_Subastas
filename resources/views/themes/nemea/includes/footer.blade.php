@@ -11,25 +11,23 @@
 			<div class="col-6 col-lg-2 mb-3">
 				<h5>{{ trans($theme.'-app.foot.auctions') }}</h5>
 				<ul class="nav flex-column">
-					@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+					@if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
 					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('presenciales') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.auctions')}}</a></li>
+							class="nav-link p-0 text-muted">{{ trans('web.foot.auctions')}}</a></li>
 					@endif
 
-					@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+					@if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
 					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-online') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.online_auction')}}</a></li>
+							class="nav-link p-0 text-muted">{{ trans('web.foot.online_auction')}}</a></li>
 					@endif
 
-					@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
+					@if($global['auctionTypes']->where('tipo_sub', 'V')->value('count'))
 					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('venta-directa') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.direct_sale')}}</a></li>
+							class="nav-link p-0 text-muted">{{ trans('web.foot.direct_sale')}}</a></li>
 					@endif
 
-					@if($global['subastas']->has('H'))
 					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-historicas') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.historico')}}</a></li>
-					@endif
+							class="nav-link p-0 text-muted">{{ trans('web.foot.historico')}}</a></li>
 				</ul>
 			</div>
 

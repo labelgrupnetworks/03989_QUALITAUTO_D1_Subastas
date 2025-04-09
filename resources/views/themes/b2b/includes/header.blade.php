@@ -20,7 +20,7 @@
             <div class="navbar-collapse collapse" id="navbarHeader" style="">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold">
 
-                    @if (Session::has('user') && data_get($global, 'subastas.S.O', []))
+                    @if (Session::has('user') && $global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
                         <li class="nav-item">
                             <a href="{{ route('subastas.online') }}" @class([
                                 'nav-link',

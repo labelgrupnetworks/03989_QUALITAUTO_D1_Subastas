@@ -15,29 +15,29 @@
 							{{ trans($theme.'-app.foot.auctions') }}
 						</div>
 						<ul class="ul-format footer-ul">
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+							@if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
 							<li>
 								<a class="footer-link"
 									href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions')}}</a>
 							</li>
 							@endif
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+							@if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
 							<li>
 								<a class="footer-link"
 									href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme.'-app.foot.online_auction')}}</a>
 							</li>
 							@endif
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
+							@if($global['auctionTypes']->where('tipo_sub', 'V')->value('count'))
 							<li><a class="footer-link"
 									href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}</a>
 							</li>
 							@endif
-							@if($global['subastas']->has('H'))
+
 							<li>
 								<a class="footer-link"
 									href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
 							</li>
-							@endif
+
 						</ul>
 					</div>
 					<div class="col-xs-12 col-sm-4 text-center">

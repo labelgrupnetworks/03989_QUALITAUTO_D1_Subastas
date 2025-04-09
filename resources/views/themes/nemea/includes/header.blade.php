@@ -108,7 +108,7 @@
                         </li>
                     @endif
 
-                    @if (data_get($global, 'subastas.S.W', []))
+                    @if ($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
                         <li class="nav-item">
                             <a href="{{ route('subastas.presenciales') }}" @class([
                                 'nav-link',
@@ -118,13 +118,13 @@
                             </a>
                         </li>
                     @endif
-                    @if ($global['subastas']->has('H'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
-                                <span>{{ trans($theme . '-app.foot.historico') }}</span>
-                            </a>
-                        </li>
-                    @endif
+
+					<li class="nav-item">
+						<a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
+							<span>{{ trans($theme . '-app.foot.historico') }}</span>
+						</a>
+					</li>
+
                     <li class="nav-item">
                         <a href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}"
                             title="" @class(['nav-link', 'lb-text-primary' => $pageName === 'valoracion'])><span>

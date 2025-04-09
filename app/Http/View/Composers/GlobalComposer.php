@@ -8,8 +8,9 @@ use Illuminate\View\View;
 
 class GlobalComposer
 {
-
 	static $auctionTypes;
+
+	//variable utilizada antes, la mantenemos mientras queden clientes por migrar y actualizar
 	static $subastas;
 
 	/**
@@ -20,23 +21,6 @@ class GlobalComposer
 	 */
 	public function compose(View $view)
 	{
-		//query original, menos optimizada pero se obtinene toda la info
-		//cuando todos tengan las blades actualizadas se puede eliminar
-		/**
-		 * Clientes actualizados
-		 * [x] - Duran
-		 * [x] - Ansorena
-		 * [x] - Alcala
-		 * [ ] - Bonanova - Pendiente de despliegue
-		 * [ ] - C.Moriones - Pendiente de despliegue
-		 * [x] - Magna
-		 */
-		if(Config::get('app.global_auctions_var', true)) {
-			if(!self::$subastas) {
-				self::$subastas = Subasta::auctionsToViews();
-			}
-		}
-
 		//obtenemos solamente el numero de subastas activas por tipo
 		if (Config::get('app.global_auction_types_var', true)) {
 			if(!self::$auctionTypes) {

@@ -1,9 +1,12 @@
-@if (!empty($global['subastas']['S']['W']))
+{{-- $global['subastas'] ya no se sirve.
+Por el momento dejo el "componente", pero para poder utilizarlo es necesario
+realizar una consulta a la base de datos para obtener las subastas activas. --}}
+@if (false)
 	<div class="container">
 		<div class="row">
 			@php
 
-				$subastas = $global['subastas']['S']['W'];
+				$subastas = [];//$global['subastas']['S']['W'];
 				$diferencia = \Config::get('app.btnPujarHoras', 2);
 
 			@endphp

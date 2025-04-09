@@ -130,27 +130,27 @@ use App\libs\TradLib as TradLib;
 					  </div>
 
 					</li>
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+                @if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
                   <li>
                       <a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('presenciales') }}">
                         <span>{{ trans($theme.'-app.foot.auctions')}}</span>
                     </a>
                     </li>
                 @endif
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+                @if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
                     <li>
                         <a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-online') }}"><span>{{ trans($theme.'-app.foot.online_auction')}}</span></a>
                     </li>
                 @endif
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
+                @if($global['auctionTypes']->where('tipo_sub', 'V')->value('count'))
                     <li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('venta-directa') }}"><span>{{ trans($theme.'-app.foot.direct_sale')}}</span></a></li>
                 @endif
-                @if($global['subastas']->has('H'))
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans($theme.'-app.foot.historico')}}</span>
-                        </a>
-                    </li>
-                @endif
+
+				<li>
+					<a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans($theme.'-app.foot.historico')}}</span>
+					</a>
+				</li>
+
                <?php /*
                 *    <li><a href="{{ \Routing::translateSeo('todas-subastas') }}">{{ trans($theme.'-app.foot.auctions')}}</a></li>
 

@@ -46,21 +46,19 @@ use App\libs\TradLib as TradLib;
 
 					</li>
 
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+                @if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
                     <li>
                         <a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-online') }}"><span>{{ trans($theme.'-app.foot.online_auction')}}</span></a>
                     </li>
                 @endif
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('E'))
+                @if($global['auctionTypes']->where('tipo_sub', 'E')->value('count'))
                     <li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-especiales') }}"><span>{{ trans($theme.'-app.foot.direct_sale')}}</span></a></li>
                 @endif
 
-				@if($global['subastas']->has('H'))
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans($theme.'-app.foot.historico')}}</span>
-                        </a>
-                    </li>
-                @endif
+				<li>
+					<a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans($theme.'-app.foot.historico')}}</span>
+					</a>
+				</li>
 
                 <li>
                     <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.contact')}}" href="<?= \Routing::translateSeo(trans($theme.'-app.links.contact')) ?>"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>

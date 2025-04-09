@@ -1,40 +1,43 @@
 @php
+	use App\Services\Auction\AuctionService;
+
     $lang = Config::get('app.locale');
     $languages = Config::get('app.locales');
     $google_langs = ['de', 'ca', 'fr'];
 
     $isHomePage = Route::currentRouteName() == 'home';
 
-    $hasPresencial = $global['subastas']->has('S') && $global['subastas']['S']->has('W');
+    $hasPresencial = $global['auctionTypes']->where('tipo_sub', 'W')->value('count');
     $urlPresencial = Routing::translateSeo('presenciales');
-    if ($hasPresencial && $global['subastas']['S']['W']->count() == 1) {
-        $subasta = $global['subastas']['S']['W']->flatten()->first();
-        $urlPresencial = Routing::translateSeo('info-subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name);
+    if ($hasPresencial == 1) {
+        $subasta = (new AuctionService())->getActiveAuctionsToType('W')->first();
+        $urlPresencial = Routing::translateSeo('info-subasta') . $subasta->cod_sub . '-' . str_slug($subasta->des_sub);
     }
 
-    $hasOnline = $global['subastas']->has('S') && $global['subastas']['S']->has('O');
-    $hasPermanent = $global['subastas']->has('S') && $global['subastas']['S']->has('P');
-    $hasVentaDirecta = $global['subastas']->has('S') && $global['subastas']['S']->has('V');
+    $hasOnline = $global['auctionTypes']->where('tipo_sub', 'O')->value('count');
+    $hasPermanent = $global['auctionTypes']->where('tipo_sub', 'P')->value('count');
+    $hasVentaDirecta = $global['auctionTypes']->where('tipo_sub', 'V')->value('count');
 
-    $hasJewelryAuction = $hasVentaDirecta && $global['subastas']['S']['V']->has('VDJ');
-    $urlJewelryAuction = '';
-    if ($hasJewelryAuction) {
-        $subasta = $global['subastas']['S']['V']['VDJ']->flatten()->first();
-        $urlJewelryAuction =
-            Tools::url_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions, $subasta->reference) .
-            '?only_salable=on';
 
-        $global['subastas']['S']['V']->forget('VDJ');
-    }
+	$urlJewelryAuction = '';
+	$jewelryAuction = null;
+	$urlVentaDirecta = route('subastas.venta_directa');
 
-    $hasVentaDirecta = $hasVentaDirecta && $global['subastas']['S']['V']->count() > 0;
-    $urlVentaDirecta = route('subastas.venta_directa');
-    if ($hasVentaDirecta && $global['subastas']['S']['V']->count() == 1) {
-        $subasta = $global['subastas']['S']['V']->flatten()->first();
-        $urlVentaDirecta =
-            Tools::url_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions, $subasta->reference) .
-            '?only_salable=on';
-    }
+	if($hasVentaDirecta) {
+		$auctionsV = (new AuctionService())->getActiveAuctionsToType('V');
+
+		$jewelryAuction = $auctionsV->where('cod_sub', 'VDJ')->first();
+		if($jewelryAuction) {
+			$urlJewelryAuction =
+            	Tools::url_auction($jewelryAuction->cod_sub, $jewelryAuction->des_sub, null, '001') . '?only_salable=on';
+		}
+
+		if($hasVentaDirecta == 1) {
+			$subasta = $auctionsV->first();
+			$urlVentaDirecta =
+				Tools::url_auction($subasta->cod_sub, $subasta->des_sub, null, '001') . '?only_salable=on';
+		}
+	}
 @endphp
 
 <header @class(['fixed' => $isHomePage])>
@@ -273,7 +276,7 @@
                         </li>
                     @endif
 
-                    @if ($hasJewelryAuction || $hasVentaDirecta)
+                    @if ($jewelryAuction || $hasVentaDirecta)
                         <li>
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                 aria-haspopup="true" aria-expanded="false"><span class="caret"></span>
@@ -281,7 +284,7 @@
                             </a>
 
                             <ul class="dropdown-menu">
-                                @if ($hasJewelryAuction)
+                                @if ($jewelryAuction)
                                     <li>
                                         <a href="{{ $urlJewelryAuction }}">
                                             {{ trans("$theme-app.subastas.jewelry") }}
@@ -360,35 +363,33 @@
                 title="{{ trans($theme . '-app.foot.how_to_sell') }}">{{ trans($theme . '-app.foot.how_to_sell') }}</a>
         </li>
 
-        @if ($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+        @if ($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
             <li><a href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme . '-app.foot.auctions') }}</a>
             </li>
         @endif
 
-        @if ($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
+        @if ($global['auctionTypes']->where('tipo_sub', 'V')->value('count'))
             <li>
                 <a
                     href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme . '-app.foot.direct_sale') }}</a>
             </li>
         @endif
 
-        @if ($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+        @if ($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
             <li><a
                     href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme . '-app.foot.online_auction') }}</a>
             </li>
         @endif
 
-        @if ($global['subastas']->has('S') && $global['subastas']['S']->has('P'))
+        @if ($global['auctionTypes']->where('tipo_sub', 'P')->value('count'))
             <li><a
                     href="{{ route('allCategories', ['typeSub' => 'P']) }}">{{ trans($theme . '-app.foot.online_auction') }}</a>
             </li>
         @endif
 
-        @if ($global['subastas']->has('H'))
             <li><a
                     href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme . '-app.foot.historico') }}</a>
             </li>
-        @endif
 
         <li><a href="<?= \Routing::translateSeo(trans($theme . '-app.links.contact')) ?>"
                 title="{{ trans($theme . '-app.foot.contact') }}">{{ trans($theme . '-app.foot.contact') }}</a></li>

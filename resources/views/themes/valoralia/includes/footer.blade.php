@@ -13,13 +13,13 @@
 							{{ trans($theme.'-app.foot.auctions') }}
 						</div>
 						<ul class="ul-format footer-ul">
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+							@if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
 							<li>
 								<a class="footer-link"
 									href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme.'-app.foot.online_auction')}}</a>
 							</li>
 							@endif
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
+							@if($global['auctionTypes']->where('tipo_sub', 'V')->value('count'))
 							<li><a class="footer-link"
 									href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}</a>
 							</li>

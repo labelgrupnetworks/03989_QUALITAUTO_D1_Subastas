@@ -583,45 +583,22 @@ if (strpos($fullname, ',')) {
 					</div>
 
 				</li>
-				@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
-					@php
-						$subastaOnline= $global['subastas']['S']['O']->first()->first();
-					@endphp
+				@if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
 
 					<li class="open-menu-especial" style="position: relative">
 
 						{{-- Botón de desktop --}}
 						<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md"
-						href="{{ \Tools::url_auction($subastaOnline->cod_sub, $subastaOnline->name, $subastaOnline->id_auc_sessions, '001')  }}">
+						href="{{ route('subasta.actual-online')  }}">
 						{{ strtoupper(trans($theme.'-app.foot.online_auction'))}}
 						</a>
 
 						{{-- Botón de móvil --}}
 						<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
-							href="{{ \Tools::url_auction($subastaOnline->cod_sub, $subastaOnline->name, $subastaOnline->id_auc_sessions, '001')  }}">
+							href="{{ route('subasta.actual-online')  }}">
 							{{ strtoupper(trans($theme.'-app.foot.online_auction'))}}
 						</a>
 					</li>
-				@elseif(Session::get('user.admin') && $global['subastas']->has('A') && $global['subastas']['A']->has('O'))
-					@php
-						$subastaOnline= $global['subastas']['A']['O']->first()->first();
-					@endphp
-
-					<li class="open-menu-especial" style="position: relative">
-
-						{{-- Botón de desktop --}}
-						<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md"
-						href="{{ \Tools::url_auction($subastaOnline->cod_sub, $subastaOnline->name, $subastaOnline->id_auc_sessions, '001')  }}">
-						{{ strtoupper(trans($theme.'-app.foot.online_auction'))}}
-						</a>
-
-						{{-- Botón de móvil --}}
-						<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
-							href="{{ \Tools::url_auction($subastaOnline->cod_sub, $subastaOnline->name, $subastaOnline->id_auc_sessions, '001')  }}">
-							{{ strtoupper(trans($theme.'-app.foot.online_auction'))}}
-						</a>
-					</li>
-
 				@endif
 
 				{{-- MENÚ APP SEGRE
