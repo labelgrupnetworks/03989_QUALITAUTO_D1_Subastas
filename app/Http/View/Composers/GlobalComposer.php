@@ -31,7 +31,7 @@ class GlobalComposer
 		 * [ ] - C.Moriones - Pendiente de despliegue
 		 * [x] - Magna
 		 */
-		if(Config::get('app.global_auctions_var', false)) {
+		if(Config::get('app.global_auctions_var', true)) {
 			if(!self::$subastas) {
 				self::$subastas = Subasta::auctionsToViews();
 			}
