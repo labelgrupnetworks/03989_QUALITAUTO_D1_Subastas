@@ -15,7 +15,7 @@
         <div class="cookie-type_header" role="button" data-toggle="collapse" data-bs-toggle="collapse" href="#collapse{{ $type }}Cookies"
             aria-expanded="false" aria-controls="collapse{{ $type }}Cookies">
             <span class="cookie-type_header_arrow">
-				@include('components.boostrap_icon', ['icon' => 'chevron-right'])
+				<x-icon.boostrap icon=chevron-right />
 			</span>
             <span class="cookie-type_header_text">{{ trans("web.cookies.type_$type") }}</span>
 
