@@ -16,28 +16,8 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
-use App\Providers\ToolsServiceProvider;
 
 class Enterprise {
-
-    public function getAlmacen($cod_alm){
-
-        $almacen = DB::select("select cod_alm, obs_alm,nvl(horario_alm_lang,horario_alm) horario_alm,maps_alm,cp_alm, dir_alm, pob_alm, tel_alm, email_alm,codpais_alm from fxalm
-                    LEFT JOIN FXALM_LANG ON (EMP_ALM = EMP_ALM_LANG AND COD_ALM_LANG = COD_ALM AND LANG_ALM_LANG = :lang)
-                    where emp_alm = :emp
-                    and cod_alm = :cod_alm",
-                array(
-                        'emp'       => Config::get('app.emp'),
-                        'cod_alm'   => $cod_alm,
-                        'lang' => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
-                        )
-                    );
-        if(count($almacen) > 0){
-            return head($almacen);
-        }else{
-            return NULL;
-        }
-    }
 
     public function getParameters(){
         $parameters = DB::select("select * from fxprmgt

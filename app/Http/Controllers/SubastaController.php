@@ -11,7 +11,6 @@ use App\libs\FormLib;
 use App\libs\ImageGenerate;
 use App\libs\StrLib;
 use App\libs\TradLib;
-use App\Models\Enterprise;
 use App\Models\Favorites;
 use App\Models\Filters;
 use App\Models\Payments;
@@ -31,6 +30,7 @@ use App\Models\V5\WebCalendarEvent;
 use App\Providers\RoutingServiceProvider as Routing;
 use App\Providers\ToolsServiceProvider;
 use App\Services\Auction\LotCategoryService;
+use App\Services\Auction\LotDeliveryService;
 use App\Services\Content\BlockService;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -1135,8 +1135,7 @@ class SubastaController extends Controller
 		}
 
 		if (!empty($lote[0]->alm_hces1)) {
-			$enterprise = new Enterprise();
-			$almacen = $enterprise->getAlmacen($lote[0]->alm_hces1);
+			$almacen = (new LotDeliveryService)->getWarehouseById($lote[0]->alm_hces1);
 		} else {
 			$almacen = null;
 		}

@@ -12,8 +12,8 @@ class FxAlm extends Model
 
 	// Variables propias de Eloquent para poder usar el ORM de forma correcta.
 
-	protected $table = 'FxAlm';
-	protected $primaryKey = 'COD_ALM';
+	protected $table = 'fxalm';
+	protected $primaryKey = 'cod_alm';
 	protected $attributes = false;                  // Ej: ['delayed' => false]; Son valores por defecto para el modelo
 
 	public $timestamps = false; 	// No usaremos campos de BBDD created_at y updated_at
@@ -29,13 +29,12 @@ class FxAlm extends Model
 		parent::__construct($vars);
 	}
 
-
 	protected static function boot()
     {
         parent::boot();
 
         static::addGlobalScope('emp', function(Builder $builder) {
-            $builder->where('emp_alm', \Config::get("app.emp"));
+            $builder->where('emp_alm', Config::get("app.emp"));
         });
     }
 

@@ -7,8 +7,9 @@
  */
 
 namespace App\Models\delivery;
-use DB;
+use Illuminate\Support\Facades\DB;
 use App\Models\Enterprise;
+use App\Services\Auction\LotDeliveryService;
 
 /**
  * Description of delivery
@@ -65,9 +66,8 @@ class Delivery {
 
 
 
-    function newShipment($emp,$cod_sub,$ref){
-       // $lot = $this->getLot($emp, $cod_sub, $ref);
-       // $warehouse = $this->enterprise->getAlmacen($lot->alm);
+    function newShipment($emp,$cod_sub,$ref)
+	{
         $this->getInfo($emp, $cod_sub, $ref);
         $this->getCsubeInfo($emp, $cod_sub, $ref);
 
@@ -164,10 +164,8 @@ class Delivery {
         return $lot;
     }
 
-
-
-    function getInfo($emp,$cod_sub,$ref){
-
+    function getInfo($emp,$cod_sub,$ref)
+	{
          $res = DB::table('FGASIGL0')
                 ->select('ANCHO_HCES1, ALTO_HCES1, PESO_HCES1, GRUESO_HCES1, ALM_HCES1, EMBALAJE_HCES1')
                 ->join('FGHCES1', function ($join) {
@@ -182,11 +180,8 @@ class Delivery {
 
         if(!empty($res)){
             $this->lot =  $this->getSizes($res) ;
-            $this->warehouse = $this->enterprise->getAlmacen($res->alm_hces1);
+            $this->warehouse = (new LotDeliveryService)->getWarehouseById($res->alm_hces1);
         }
-
-
-
     }
 
     function getCsubeInfo($emp,$cod_sub, $ref){

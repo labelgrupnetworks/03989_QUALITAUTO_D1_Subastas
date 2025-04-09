@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\libs\EmailLib;
-use App\Models\Enterprise;
 use App\Models\Facturas;
 use App\Models\MailQueries;
 use App\Models\Payments;
@@ -17,6 +16,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
 use App\Providers\RoutingServiceProvider as Routing;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Auction\LotDeliveryService;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
@@ -1136,7 +1136,6 @@ class MailController extends Controller
 
 		$subasta = new Subasta();
 		$mailquery = new MailQueries;
-		$enterprise = new Enterprise();
 
 		$utm_email = '';
 		if (!empty(Config::get('app.utm_email'))) {
@@ -1169,7 +1168,7 @@ class MailController extends Controller
 			if (!empty($lot)) {
 
 				$lot = head($lot);
-				$almacen = $enterprise->getAlmacen($lot->alm_hces1);
+				$almacen = (new LotDeliveryService)->getWarehouseById($lot->alm_hces1);
 
 				$content = new \stdClass();
 				if ($id_key == 1) {
@@ -1212,12 +1211,16 @@ class MailController extends Controller
 	}
 
 	//Recordatorio de recogida del loto cedente
+	/**
+	 * @todo - No veo donde se utiliza.
+	 * Mirar en L5
+	 * 09/04/2025
+	 */
 	public function lot_redy_collect_cedente($id_key, $day)
 	{
 
 		$subasta = new Subasta();
 		$mailquery = new MailQueries;
-		$enterprise = new Enterprise();
 
 		$utm_email = '';
 		if (!empty(Config::get('app.utm_email'))) {
@@ -1244,7 +1247,7 @@ class MailController extends Controller
 			//Ponemos el idioma del cliente
 			App::setLocale(strtolower($inf->idioma_cli));
 			App::setLocale(strtolower('ES'));
-			$almacen = $enterprise->getAlmacen($inf->alm_hces1);
+			$almacen = (new LotDeliveryService)->getWarehouseById($inf->alm_hces1);
 
 			$content = new \stdClass();
 			$id_key = 1;
