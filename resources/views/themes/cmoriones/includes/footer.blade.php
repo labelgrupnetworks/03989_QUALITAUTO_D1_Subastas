@@ -1,8 +1,6 @@
 @php
 	use App\Services\Auction\AuctionService;
 
-    $empre = new \App\Models\Enterprise();
-    $empresa = $empre->getEmpre();
     $auctionService = new AuctionService();
 	$auctionsO = collect([]);
 	if($global['auctionTypes']->where('tipo_sub', 'O')->value('count')) {
@@ -96,27 +94,27 @@
             </div>
 
             <div class="col-6 col-lg-3 mb-3 order-5 order-lg-last text-lg-end">
-                <h5>{{ $empresa->nom_emp ?? '' }}</h5>
+                <h5>{{ $global['company']->nom_emp ?? '' }}</h5>
                 <a class="nav-link"
                     href="https://www.google.com/maps/dir//C.+de+Ferraz,+2,+Moncloa+-+Aravaca,+28008+Madrid/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0xd42286fe7e7cb7d:0x75aedbce67571564?sa=X&ved=2ahUKEwjQpOWj4tWDAxXFT6QEHaTqDgsQwwV6BAgQEAA"
                     target="_blank">
                     <p>
-                        {{ $empresa->dir_emp ?? '' }}
+                        {{ $global['company']->dir_emp ?? '' }}
                     </p>
                     <p>
                         {{ trans("$theme-app.foot.address_expansion") }}
                     </p>
-                    <p>{{ $empresa->cp_emp ?? '' }} {{ $empresa->pob_emp ?? '' }},
-                        {{ $empresa->pais_emp ?? '' }}</p>
+                    <p>{{ $global['company']->cp_emp ?? '' }} {{ $global['company']->pob_emp ?? '' }},
+                        {{ $global['company']->pais_emp ?? '' }}</p>
                 </a>
                 <p>
-					<a class="nav-link" href="tel:{{ $empresa->tel1_emp ?? '' }}">{{ $empresa->tel1_emp ?? '' }}</a>
+					<a class="nav-link" href="tel:{{ $global['company']->tel1_emp ?? '' }}">{{ $global['company']->tel1_emp ?? '' }}</a>
                 </p>
                 <p>
 					<a class="nav-link" href="tel:+34910289301">+34 910 289 301</a>
                 </p>
                 <p><a class="nav-link"
-                        href="mailto:{{ $empresa->email_emp ?? '' }}">{{ $empresa->email_emp ?? '' }}</a></p>
+                        href="mailto:{{ $global['company']->email_emp ?? '' }}">{{ $global['company']->email_emp ?? '' }}</a></p>
             </div>
         </div>
 

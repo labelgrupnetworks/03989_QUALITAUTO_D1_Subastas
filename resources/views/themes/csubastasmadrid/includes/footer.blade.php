@@ -1,9 +1,3 @@
-<?php
-   $empre= new \App\Models\Enterprise;
-   $empresa = $empre->getEmpre();
-?>
-
-
 <section class="prefooter">
     <div class="container">
         <div class="row">
@@ -14,23 +8,9 @@
 					<img
 					src="/themes/{{\Config::get('app.theme')}}/img/logo_prefooter.jpg"
 					alt="{{ trans(\Config::get('app.theme').'-app.home.name') }}"
-					{{-- class="img-responsive"
-					style="max-width: 80%;" --}}
 					/>
 
                 </div>
-                {{-- <div class="prefooter-title">{{ trans(\Config::get('app.theme').'-app.foot.followus') }}</div>
-                <div class="prefooter-social">
-                    <a target="_blank" href="https://www.instagram.com/soleryllach">
-                    <i class="fa fa-instagram"></i>
-                    </a>
-                    <a  target="_blank" href="https://twitter.com/soleryllach">
-                    <i class="fa fa-twitter-square"></i>
-                    </a>
-                    <a  target="_blank" href="https://www.facebook.com/soleryllach">
-                    <i class="fa fa-facebook"></i>
-                    </a>
-                </div> --}}
             </div>
         </div>
     </div>

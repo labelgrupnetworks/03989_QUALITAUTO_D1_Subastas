@@ -3,7 +3,6 @@
     $registration_disabled = Config::get('app.registration_disabled');
     $locale = Config::get('app.locale');
     $pageName = Route::currentRouteName();
-    $empresa = (new Enterprise())->getEmpre();
     $routeSegments = request()->segments();
 
     $res = request()->path() === Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_buy");
@@ -18,9 +17,9 @@
         <div class="d-flex">
             <p>{{ trans("$theme-app.global.company_schedule") }}</p>
             <p class="ms-auto">
-                <a href="tel:+34{{ $empresa->tel1_emp ?? '' }}">{{ $empresa->tel1_emp ?? '' }}</a>
+                <a href="tel:+34{{ $global['company']->tel1_emp ?? '' }}">{{ $global['company']->tel1_emp ?? '' }}</a>
                 <span>|</span>
-                <a href="mailto:subastas@magna-art.com">{{ $empresa->email_emp ?? '' }}</a>
+                <a href="mailto:subastas@magna-art.com">{{ $global['company']->email_emp ?? '' }}</a>
             </p>
         </div>
     </div>

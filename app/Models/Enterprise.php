@@ -19,14 +19,6 @@ use Illuminate\Support\Facades\Config;
 use App\Providers\ToolsServiceProvider;
 
 class Enterprise {
-    //put your code here
-
-    public function getEmpre(){
-        return DB::table('fsempres')
-                ->where('cod_emp',Config::get('app.emp'))
-                ->where('gemp_emp',Config::get('app.gemp'))
-                ->first();
-    }
 
     public function getAlmacen($cod_alm){
 

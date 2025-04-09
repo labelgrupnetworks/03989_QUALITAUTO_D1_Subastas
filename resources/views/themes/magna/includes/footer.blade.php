@@ -1,8 +1,3 @@
-<?php
-$empre = new \App\Models\Enterprise();
-$empresa = $empre->getEmpre();
-?>
-
 @include('includes.admin_shortcut')
 
 <footer class="py-5">
@@ -13,10 +8,10 @@ $empresa = $empre->getEmpre();
                 <x-icon.logo />
 
                 <div class="footer-address">
-                    <p>{{ $empresa->dir_emp ?? '' }}</p>
-                    <p>{{ $empresa->cp_emp ?? '' }} {{ $empresa->pob_emp ?? '' }}, {{ $empresa->pais_emp ?? '' }}</p>
-                    <p><a href="tel:{{ $empresa->tel1_emp ?? '' }}">{{ $empresa->tel1_emp ?? '' }}</a></p>
-                    <p><a href="mailto:{{ $empresa->email_emp ?? '' }}">{{ $empresa->email_emp ?? '' }}</a></p>
+                    <p>{{ $global['company']->dir_emp ?? '' }}</p>
+                    <p>{{ $global['company']->cp_emp ?? '' }} {{ $global['company']->pob_emp ?? '' }}, {{ $global['company']->pais_emp ?? '' }}</p>
+                    <p><a href="tel:{{ $global['company']->tel1_emp ?? '' }}">{{ $global['company']->tel1_emp ?? '' }}</a></p>
+                    <p><a href="mailto:{{ $global['company']->email_emp ?? '' }}">{{ $global['company']->email_emp ?? '' }}</a></p>
                 </div>
             </div>
 

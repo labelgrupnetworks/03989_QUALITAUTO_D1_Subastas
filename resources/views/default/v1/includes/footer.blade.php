@@ -1,8 +1,3 @@
-<?php
-	$empre= new \App\Models\Enterprise;
-	$empresa = $empre->getEmpre();
- ?>
-
 @include('includes.admin_shortcut')
 
 <footer>
@@ -98,15 +93,15 @@
 					<div class="col-xs-12 col-sm-7 enterprise text-justify">
 						<div class="row">
 							<div class="col-xs-12 col-sm-6 no-padding">
-								<b>{{ $empresa->nom_emp ?? ''}}</b> <br>
-								{{ $empresa->dir_emp ?? ''}}<br>
-								{{ $empresa->cp_emp ?? ''}} {{ $empresa->pob_emp ?? ''}}, {{ $empresa->pais_emp ?? ''}}<br>
+								<b>{{ $global['company']->nom_emp ?? ''}}</b> <br>
+								{{ $global['company']->dir_emp ?? ''}}<br>
+								{{ $global['company']->cp_emp ?? ''}} {{ $global['company']->pob_emp ?? ''}}, {{ $global['company']->pais_emp ?? ''}}<br>
 							</div>
 							<div class="col-xs-12 col-sm-6">
-								<br>{{ $empresa->tel1_emp ?? ''}}<br>
-								<a title="{{ $empresa->email_emp ?? ''}}"
-									href="mailto:{{ $empresa->email_emp ?? ''}}">
-									{{ $empresa->email_emp ?? ''}}
+								<br>{{ $global['company']->tel1_emp ?? ''}}<br>
+								<a title="{{ $global['company']->email_emp ?? ''}}"
+									href="mailto:{{ $global['company']->email_emp ?? ''}}">
+									{{ $global['company']->email_emp ?? ''}}
 								</a>
 							</div>
 						</div>

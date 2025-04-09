@@ -1,6 +1,4 @@
 <?php
-	$empre= new \App\Models\Enterprise;
-	$empresa = $empre->getEmpre();
 	$lang = Config::get('app.locale');
  ?>
 
@@ -11,7 +9,7 @@
 				<a href="/{{$lang}}">
 					<img class="logo-company" src="/themes/{{$theme}}/assets/img/logo_footer.png" alt="{{(\Config::get( 'app.name' ))}}">
 				</a>
-				<p>{{ $empresa->dir_emp ?? ''}} - {{ $empresa->cp_emp ?? ''}} {{ $empresa->pob_emp ?? ''}} -{{ $empresa->tel1_emp ?? ''}}</p>
+				<p>{{ $global['company']->dir_emp ?? ''}} - {{ $global['company']->cp_emp ?? ''}} {{ $global['company']->pob_emp ?? ''}} -{{ $global['company']->tel1_emp ?? ''}}</p>
 			</div>
 		</div>
 

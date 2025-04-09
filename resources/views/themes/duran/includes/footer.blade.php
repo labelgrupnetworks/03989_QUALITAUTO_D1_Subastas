@@ -2,8 +2,6 @@
 	use App\Models\Enterprise;
 	use App\Services\Auction\AuctionService;
 
-	$empresa = (new Enterprise)->getEmpre();
-
 	$auctionsW = [];
 	if($global['auctionTypes']->where('tipo_sub', 'W')->value('count')) {
 		$auctionsW = (new AuctionService)->getActiveAuctionsToType('W');

@@ -1,5 +1,6 @@
 @php
-    $empresa = (new \App\Models\Enterprise())->getEmpre();
+	use App\Services\Content\EnterpriseParamsService;
+    $empresa = (new EnterpriseParamsService())->getCompany();
 	$formulario = App\Http\Controllers\V5\ContactController::formContact();
 @endphp
 <div class="row gy-4">

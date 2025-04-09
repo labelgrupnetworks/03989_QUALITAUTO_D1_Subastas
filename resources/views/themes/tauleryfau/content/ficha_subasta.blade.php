@@ -262,10 +262,6 @@ $user = (Session::get('user'));
 	</div>
 	@endif
 </section>
-<?php
-	$empre= new \App\Models\Enterprise;
-	$empresa = $empre->getEmpre();
-?>
 @if ($data['auction']->tipo_sub == 'W')
 <script type="application/ld+json">
 	{
@@ -278,7 +274,7 @@ $user = (Session::get('user'));
       "endDate": "<?= $data['auction']->end ?>",
       "location":{
            "@type": "Place",
-           "address": "<?= !empty($data['auction']->expolocal_sub)? $data['auction']->expolocal_sub :  $empresa->dir_emp ?>"
+           "address": "<?= !empty($data['auction']->expolocal_sub)? $data['auction']->expolocal_sub : '' ?>"
         }
     }
 </script>

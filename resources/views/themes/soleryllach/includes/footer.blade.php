@@ -1,8 +1,3 @@
-<?php
-   $empre= new \App\Models\Enterprise;
-   $empresa = $empre->getEmpre();
-?>
-
 
 <section class="prefooter">
     <div class="container">

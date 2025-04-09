@@ -1,55 +1,8 @@
-<?php
-	$empre= new \App\Models\Enterprise;
-	$empresa = $empre->getEmpre();
- ?>
-
 <footer class="menu-footer">
 	<div class="container">
 		<div class="row">
 
 			<div class="col-xs-12 col-lg-7">
-				<div class="row">
-
-					<div class="col-xs-12  text-center">
-
-						<ul class="ul-format footer-ul">
-							@php	/*
-								<li>
-									<a class="footer-link"
-										title="{{ trans($theme.'-app.foot.term_condition') }}"
-										href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition')?>">{{ trans($theme.'-app.foot.term_condition') }}</a>
-								</li>
-							*/ @endphp
-						</ul>
-					</div>
-					@php	/*
-					<div class="col-xs-12 col-sm-4 text-center">
-						<ul class="ul-format footer-ul">
-
-							<li>
-								<a class="footer-link"
-									title="{{ trans($theme.'-app.foot.privacy') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.privacy')?>">{{ trans($theme.'-app.foot.privacy') }}</a>
-							</li>
-
-						</ul>
-					</div>
-
-					<div class="col-xs-12 col-sm-4  text-center">
-
-
-						<ul class="ul-format footer-ul">
-
-							<li>
-								<a class="footer-link"
-									title="{{ trans($theme.'-app.foot.cookies') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.cookies')?>">{{ trans($theme.'-app.foot.cookies') }}</a>
-							</li>
-						</ul>
-					</div>
-					*/ @endphp
-
-				</div>
 			</div>
 			<div class="col-xs-12 col-lg-5">
 				<div class="row footer-title">
@@ -64,12 +17,6 @@
 		</div>
 	</div>
 </footer>
-
-
-
-
-
-
 
 <script>
 	@if(request("recoveryPassword"))

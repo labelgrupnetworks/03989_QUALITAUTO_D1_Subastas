@@ -3,16 +3,12 @@
         <div class="row">
                 <div class="col-xs-12 col-sm-2">
                         <div class="module_footer text-left">
-                                 <?php
-                                    $empre= new \App\Models\Enterprise;
-                                    $empresa = $empre->getEmpre();
-                                 ?>
                                 <img class="img-responsive" src="/themes/{{$theme}}/img/logo.png" alt="{{ trans($theme.'-app.home.name') }}">
                                 <address>
-                                         <?= !empty($empresa->nom_emp)? $empresa->nom_emp : ''; ?> <br>
-                                         <?= !empty($empresa->dir_emp)? $empresa->dir_emp : ''; ?><br>
-                                         <?= !empty($empresa->cp_emp)? $empresa->cp_emp : ''; ?> <?= !empty($empresa->pob_emp)? $empresa->pob_emp : ''; ?> , <?= !empty($empresa->pais_emp)? $empresa->pais_emp : ''; ?></br>
-                                         <?= !empty($empresa->tel1_emp)? $empresa->tel1_emp : ''; ?> - <a title="<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>" href="mailto:<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>"><?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?></a>
+									{{ $global['company']->nom_emp }}<br>
+									{{ $global['company']->dir_emp }}<br>
+									{{ $global['company']->cp_emp }} {{ $global['company']->pob_emp }}, {{ $global['company']->pais_emp }}<br>
+									{{ $global['company']->tel1_emp }} - <a title="{{ $global['company']->email_emp }}" href="mailto:{{ $global['company']->email_emp }}">{{ $global['company']->email_emp }}</a>
                                 </address>
                                 <ul class="redes">
                                         <li><a title="Facebook" href="<?= Config::get('app.facebook') ?>"><i class="fa fa-facebook"></i></a></li>

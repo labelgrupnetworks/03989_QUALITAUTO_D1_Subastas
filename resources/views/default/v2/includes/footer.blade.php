@@ -1,7 +1,3 @@
-<?php
-	$empre= new \App\Models\Enterprise;
-	$empresa = $empre->getEmpre();
- ?>
 
 @include('includes.admin_shortcut')
 
@@ -84,11 +80,11 @@
 			</div>
 
 			<div class="col-6 col-lg-3 mb-3 order-5 order-lg-last text-lg-end">
-				<h5>{{ $empresa->nom_emp ?? ''}}</h5>
-				<p class="text-muted">{{ $empresa->dir_emp ?? ''}}</p>
-				<p class="text-muted">{{ $empresa->cp_emp ?? ''}} {{ $empresa->pob_emp ?? ''}}, {{ $empresa->pais_emp ?? ''}}</p>
-				<p class="text-muted"><a class="nav-link" href="tel:{{ $empresa->tel1_emp ?? ''}}">{{ $empresa->tel1_emp ?? ''}}</a></p>
-				<p class="text-muted"><a class="nav-link" href="mailto:{{ $empresa->email_emp ?? ''}}">{{ $empresa->email_emp ?? ''}}</a></p>
+				<h5>{{ $global['company']->nom_emp ?? ''}}</h5>
+				<p class="text-muted">{{ $global['company']->dir_emp ?? ''}}</p>
+				<p class="text-muted">{{ $global['company']->cp_emp ?? ''}} {{ $global['company']->pob_emp ?? ''}}, {{ $global['company']->pais_emp ?? ''}}</p>
+				<p class="text-muted"><a class="nav-link" href="tel:{{ $global['company']->tel1_emp ?? ''}}">{{ $global['company']->tel1_emp ?? ''}}</a></p>
+				<p class="text-muted"><a class="nav-link" href="mailto:{{ $global['company']->email_emp ?? ''}}">{{ $global['company']->email_emp ?? ''}}</a></p>
 			</div>
 		</div>
 

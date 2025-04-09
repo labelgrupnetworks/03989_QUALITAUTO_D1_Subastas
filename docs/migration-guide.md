@@ -25,6 +25,6 @@
 	$data['categories']
 	```
 
-5. Modificar $global['subastas'] del header y el footer.
+5. Modificar $global['subastas'] por $global['auctionTypes'] y $empresa por $global['company'] del header y el footer. 
 Afecta a 
 - Todos
