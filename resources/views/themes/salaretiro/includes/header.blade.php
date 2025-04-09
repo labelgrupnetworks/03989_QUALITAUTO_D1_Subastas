@@ -1,3 +1,20 @@
+@php
+use App\Services\Auction\AuctionService;
+$has_subasta_presenciales = $global['auctionTypes']->where('tipo_sub', 'W')->value('count');
+$has_subasta_online = $global['auctionTypes']->where('tipo_sub', 'O')->value('count');
+$has_subasta_venta = $global['auctionTypes']->where('tipo_sub', 'V')->value('count');
+
+$auctionVdRestos = null;
+$auctionAdjDir21 = null;
+$auctionRastrill = null;
+if($has_subasta_venta) {
+	$auctionsV = (new AuctionService())->getActiveAuctionsToType('V');
+	$auctionVdRestos = $auctionsV->where('cod_sub', 'VDRESTOS')->first();
+	$auctionAdjDir21 = $auctionsV->where('cod_sub', 'ADJDIR21')->first();
+	$auctionRastrill = $auctionsV->where('cod_sub', 'RASTRILL')->first();
+}
+@endphp
+
 <div class="login_desktop" style="display:none;">
 	<div class="login-desktop-container">
 		<div class="login-desktop-wrapper">
@@ -179,9 +196,9 @@
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav hidden-xs hidden-sm hidden-md">
 				@php
-                    $has_subasta_presenciales = $global['subastas']->has('S') && $global['subastas']['S']->has('W');
-                    $has_subasta_online = $global['subastas']->has('S') && $global['subastas']['S']->has('O');
-					$has_subasta_venta = $global['subastas']->has('S') && $global['subastas']['S']->has('V');
+                    $has_subasta_presenciales = $global['auctionTypes']->where('tipo_sub', 'W')->value('count');
+                    $has_subasta_online = $global['auctionTypes']->where('tipo_sub', 'O')->value('count');
+					$has_subasta_venta = $global['auctionTypes']->where('tipo_sub', 'V')->value('count');
                 @endphp
 				<li class="info <?= empty($has_subasta_online) && empty($has_subasta_presenciales) && empty($has_subasta_venta) ?'hidden':''; ?>">
 					<a title="" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -213,26 +230,19 @@
 							@if($has_subasta_venta)
 							<li class="box">
 								<ul>
-
-								@if($global['subastas']['S']['V']->has('VDRESTOS'))
-									@php
-										$auctionVd = $global['subastas']['S']['V']['VDRESTOS'];
-									@endphp
+								@if($auctionVdRestos)
 									<li>
-										<a href="{{ \Tools::url_auction($auctionVd->cod_sub, $auctionVd->name,$auctionVd->id_auc_sessions,$auctionVd->reference).'?only_salable=on&order=ref_desc' }}">
+										<a href="{{ Tools::url_auction($auctionVdRestos->cod_sub, $auctionVdRestos->des_sub, null, '001').'?only_salable=on&order=ref_desc' }}">
 											{{ trans($theme.'-app.foot.direct_sale_jewelry')}}
 										</a>
 									</li>
-								@elseif($global['subastas']['S']['V']->has('ADJDIR21'))
+								@elseif($auctionAdjDir21)
 									<li>
 										<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans($theme.'-app.foot.direct_sale_art')}}</a>
 									</li>
-								@elseif($global['subastas']['S']['V']->has('RASTRILL'))
-									@php
-										$rastrillAuction = $global['subastas']['S']['V']['RASTRILL'];
-									@endphp
+								@elseif($auctionRastrill)
 									<li>
-										<a href="{{ Tools::url_auction($rastrillAuction->cod_sub, $rastrillAuction->name, $rastrillAuction->id_auc_sessions, $rastrillAuction->reference).'?only_salable=on&order=ref_desc' }}">
+										<a href="{{ Tools::url_auction($auctionRastrill->cod_sub, $auctionRastrill->des_sub, null, '001').'?only_salable=on&order=ref_desc' }}">
 											{{ trans("$theme-app.foot.jumble_sale") }}
 										</a>
 									</li>
@@ -251,11 +261,10 @@
 							@endif
 					</ul>
 				</li>
-				@if($global['subastas']->has('H'))
-					<li><a
-						href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
-					</li>
-				@endif
+
+				<li><a
+					href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
+				</li>
 
 				<li><a title="{{ trans($theme.'-app.foot.how_to_buy') }}"
 						href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_buy') ?>">{{ trans($theme.'-app.foot.how_to_buy')}}</a>
@@ -294,23 +303,15 @@
 			<a title="{{ trans($theme.'-app.home.home')}}" href="/">{{ trans($theme.'-app.home.home')}}</a>
 		</li>
 
-		@php
-			$has_subasta_presenciales = $global['subastas']->has('S') && $global['subastas']['S']->has('W');
-			$has_subasta_online = $global['subastas']->has('S') && $global['subastas']['S']->has('O');
-			$has_subasta_venta = $global['subastas']->has('S') && $global['subastas']['S']->has('V');
-		@endphp
-
 		@if($has_subasta_presenciales)
 		<li>
 			<a href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions')}}</a>
 		</li>
 		@endif
 
-		@if($global['subastas']->has('H'))
 		<li><a
 			href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
 		</li>
-		@endif
 
 		@if($has_subasta_online)
 		<li><a
@@ -320,25 +321,19 @@
 
 		@if($has_subasta_venta)
 
-			@if($global['subastas']['S']['V']->has('VDRESTOS'))
-				@php
-					$auctionVd = $global['subastas']['S']['V']['VDRESTOS'];
-				@endphp
+			@if($auctionVdRestos)
 				<li>
-					<a href="{{ \Tools::url_auction($auctionVd->cod_sub, $auctionVd->name,$auctionVd->id_auc_sessions,$auctionVd->reference).'?only_salable=on&order=ref_desc' }}">
+					<a href="{{ Tools::url_auction($auctionVdRestos->cod_sub, $auctionVdRestos->des_sub, null, '001').'?only_salable=on&order=ref_desc' }}">
 						{{ trans($theme.'-app.foot.direct_sale_jewelry')}}
 					</a>
 				</li>
-			@elseif($global['subastas']['S']['V']->has('ADJDIR21'))
+			@elseif($auctionAdjDir21)
 				<li>
 					<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans($theme.'-app.foot.direct_sale_art')}}</a>
 				</li>
-			@elseif($global['subastas']['S']['V']->has('RASTRILL'))
-				@php
-					$rastrillAuction = $global['subastas']['S']['V']['RASTRILL'];
-				@endphp
+			@elseif($auctionRastrill)
 				<li>
-					<a href="{{ Tools::url_auction($rastrillAuction->cod_sub, $rastrillAuction->name, $rastrillAuction->id_auc_sessions, $rastrillAuction->reference).'?only_salable=on&order=ref_desc' }}">
+					<a href="{{ Tools::url_auction($auctionRastrill->cod_sub, $auctionRastrill->des_sub, null, '001').'?only_salable=on&order=ref_desc' }}">
 						{{ trans("$theme-app.foot.jumble_sale") }}
 					</a>
 				</li>
@@ -347,7 +342,6 @@
 					<a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}
 					</a>
 				</li>
-
 			@endif
 
 		@endif
