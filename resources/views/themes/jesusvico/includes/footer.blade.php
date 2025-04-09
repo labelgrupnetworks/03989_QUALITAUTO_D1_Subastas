@@ -18,21 +18,17 @@
 
                 <div class="row">
                     <div class="col-6 col-lg-3 mb-3">
-						@if(($global['subastas']->has('S') && $global['subastas']['S']->has('W')) || $global['subastas']->has('H'))
                         <h5>{{ trans("$theme-app.subastas.auctions") }}</h5>
                         <ul class="nav flex-column">
 
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+							@if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
 								<li class="nav-item"><a class="nav-link" href="{{ \Routing::translateSeo('presenciales') }}">{{ trans("$theme-app.subastas.auctions") }}</a></li>
 							@endif
 
-							@if($global['subastas']->has('H'))
-								<li class="nav-item">
-									<a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans("$theme-app.foot.historico") }}</a>
-								</li>
-							@endif
+							<li class="nav-item">
+								<a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans("$theme-app.foot.historico") }}</a>
+							</li>
                         </ul>
-						@endif
 
 						<h5 class="mt-3">
 							<a class="nav-link" title="{{ trans("$theme-app.foot.direct_sale") }}" href="{{ Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale') }}</a>

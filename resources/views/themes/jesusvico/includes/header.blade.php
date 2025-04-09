@@ -83,23 +83,20 @@ $pageName = Route::currentRouteName();
 						<a class="nav-link" title="{{ trans("$theme-app.home.home")}}" href="/{{$lang}}"><span>{{ trans("$theme-app.home.home")}}</span></a>
 					</li>
 
-					@if(($global['subastas']->has('S') && $global['subastas']['S']->has('W')) || $global['subastas']->has('H'))
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						  {{ trans("$theme-app.subastas.auctions") }}
 						</a>
 						<ul class="dropdown-menu">
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+							@if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
 							<li><a class="dropdown-item" href="{{ \Routing::translateSeo('presenciales') }}">{{ trans("$theme-app.subastas.auctions") }}</a></li>
 							@endif
 
-							@if($global['subastas']->has('H'))
-							<li><a class="dropdown-item" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans("$theme-app.foot.historico") }}</a></li>
-							@endif
+							<li><a class="dropdown-item" href="{{ \Routing::translateSeo('subastas-historicas') }}">
+								{{ trans("$theme-app.foot.historico") }}</a>
+							</li>
 						</ul>
 					</li>
-					@endif
-
 
 					<li class="nav-item">
 						<a class="nav-link" href="{{ \Routing::translateSeo('tienda-online') }}">
