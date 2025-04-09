@@ -24,19 +24,17 @@ $empresa = $empre->getEmpre();
             <div class="coo-12  col-lg-2 mb-3">
                 <h5>{{ trans($theme . '-app.foot.auctions') }}</h5>
                 <ul class="nav flex-column">
-                    @if ($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+                    @if ($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
                         <li class="nav-item"><a class="nav-link"
                                 href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme . '-app.foot.auctions') }}</a>
                         </li>
                     @endif
 
-                    @if ($global['subastas']->has('H'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
-                                <span>{{ trans($theme . '-app.foot.historico') }}</span>
-                            </a>
-                        </li>
-                    @endif
+					<li class="nav-item">
+						<a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
+							<span>{{ trans($theme . '-app.foot.historico') }}</span>
+						</a>
+					</li>
                 </ul>
 
             </div>

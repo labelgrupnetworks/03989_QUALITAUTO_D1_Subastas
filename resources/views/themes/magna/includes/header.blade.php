@@ -91,30 +91,19 @@
         <div class="navbar-collapse collapse" id="navbarHeader" style="">
             <ul class="navbar-nav mb-2 mb-lg-0">
 
-                @if ($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
-					@php
-						$activeAuction = collect(data_get($global['subastas'], 'S.W', []))->flatten()->first();
-						$url_lotes = Tools::url_auction(
-							$activeAuction->cod_sub,
-							$activeAuction->name,
-							$activeAuction->id_auc_sessions,
-							$activeAuction->reference,
-						);
-					@endphp
+                @if ($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
                     <li class="nav-item">
-                        <a href="{{ $url_lotes }}" @class(['nav-link', 'active' => $isSubastasPage])>
+                        <a href="{{ route('subasta.actual') }}" @class(['nav-link', 'active' => $isSubastasPage])>
                             <span>{{ trans($theme . '-app.foot.auctions') }}</span>
                         </a>
                     </li>
                 @endif
 
-				@if(data_get($global, 'subastas.H', []))
 				<li class="nav-item">
 					<a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
 						<span>{{ trans($theme.'-app.foot.historico')}}</span>
 					</a>
 				</li>
-				@endif
 
                 <li class="nav-item">
                     <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_buy") }}"
