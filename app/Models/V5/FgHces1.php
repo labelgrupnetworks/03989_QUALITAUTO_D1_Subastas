@@ -106,7 +106,7 @@ class FgHces1 extends Model
 			->leftJoinAsigl0Fgsub()
 			->where(function ($query) {
 				$query->where('sub_hces1', '=', 'AGRUP17')
-					->orWhereIn('fgsub.subc_sub', [FGSUB::SUBC_SUB_INACTIVO, FGSUB::SUBC_SUB_ADMINISITRADOR]);
+					->orWhereIn('fgsub.subc_sub', [FgSub::SUBC_SUB_INACTIVO, FgSub::SUBC_SUB_ADMINISITRADOR]);
 			});
 	}
 
