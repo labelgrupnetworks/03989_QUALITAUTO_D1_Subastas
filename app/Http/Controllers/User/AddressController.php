@@ -148,7 +148,7 @@ class AddressController extends Controller
 			'countries' => FsPaises::selectBasicPaises()->orderBy("des_paises")->get(),
 			'new' => $coddCli == 'new',
 			'shippingaddress' => $addressService->getUserAddresses($userCod),
-			'address' => $addressService->getUserAddressById($userCod, 'W1'),
+			'address' => $addressService->getUserAddressById($userCod, $codd_clid),
 			'codd_clid' => $codd_clid,
 			'user' => $userClass->getUser()
 		];
