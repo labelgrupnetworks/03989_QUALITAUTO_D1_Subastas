@@ -42,6 +42,7 @@ clidRequired = function () {
 	const requiredInputs = ['clid_cpostal', 'clid_poblacion', 'clid_provincia', 'clid_direccion', 'obs_clid', 'name_clidTemp', 'lastName_clidTemp', 'preftel_clid', 'tele_clid'];
 	requiredInputs.forEach(input => inputRequired(input, true));
 	$('#clid').val(0);
+	addUserAddressName();
 }
 
 cleanDirection = function(){
@@ -51,7 +52,7 @@ cleanDirection = function(){
 	$("input[name='clid_provincia']").val($("input[name='provincia").val());
 	$("select[name='clid_codigoVia']").val($("select[name='codigoVia").val());
 	$("input[name='clid_direccion']").val($("input[name='direccion").val());
-	$("input[name='usuario_clid']").val($("input[name='usuario").val());
+	$("input[name='usuario_clid']").val($("input[name='usuario").val() + " " + $("input[name='last_name']").val());
 	$("input[name='preftel_clid']").val($("input[name='preftel_cli").val());
 	$("input[name='tele_clid']").val($("input[name='telefono").val());
 }
@@ -140,7 +141,12 @@ function reloadPlaceholders() {
 	//$("textarea[name='obscli']").attr('placeholder', $("textarea[name='obscli']").parent('label')[1].innerHTML);
 }
 
+function addUserAddressName() {
+	if($('#clid').val() == 1) return;
 
+	const value = $('[name="name_clidTemp"]').val().trim() + " " + $('[name="lastName_clidTemp"]').val().trim();
+	$('input[name="usuario_clid"]').val(value);
+}
 
 
 $(document).ready(function () {
@@ -173,6 +179,7 @@ $(document).ready(function () {
 	reloadPlaceholders();
 	reloadPrefix('preftel_cli', 'pais');
 	reloadPrefix('preftel_clid', 'clid_pais');
+	$('[name="name_clidTemp"], [name="lastName_clidTemp"]').on('change', () => addUserAddressName());
 
 	$('input[name="shipping_address"]').on('change', function (event) {
 		const $colapse = $('#collapse_d');

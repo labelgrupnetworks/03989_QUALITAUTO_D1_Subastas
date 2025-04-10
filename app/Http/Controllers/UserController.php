@@ -824,10 +824,6 @@ class UserController extends Controller
 
 					$name = trim(FacadeRequest::input('usuario'));
 
-					$nomd_clid = trim(FacadeRequest::input('usuario_clid', FacadeRequest::input('usuario')));
-
-
-
 					if (!empty(FacadeRequest::input('last_name'))) {
 
 						if (Config::get('app.name_without_coma', 0)) {
@@ -869,7 +865,6 @@ class UserController extends Controller
 
 					$name = $strToDefault ? $name : mb_strtoupper($name, 'UTF-8');
 					$rsoc = $strToDefault ? $rsoc : mb_strtoupper($rsoc, 'UTF-8');
-					$nomd_clid = $strToDefault ? $nomd_clid : mb_strtoupper($nomd_clid, 'UTF-8');
 
 					$forma_pago = $user->getDefaultPayhmentMethod($request->input('pais'));
 
@@ -968,7 +963,7 @@ class UserController extends Controller
 								'clid_pais' => FacadeRequest::get('clid_pais'),
 								'clid_codigoVia' => FacadeRequest::get('clid_codigoVia'),
 								'clid_provincia' => FacadeRequest::get('clid_provincia'),
-								'usuario' => $nomd_clid,
+								'usuario' => FacadeRequest::input('usuario_clid', $name),
 								'telefono' => FacadeRequest::input('tele_clid', FacadeRequest::input('telefono')),
 								'rsoc' => $rsoc,
 								'codd_clid' => $shipping_label,
