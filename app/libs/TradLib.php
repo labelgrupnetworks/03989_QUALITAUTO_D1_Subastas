@@ -9,7 +9,8 @@
 namespace App\libs;
 
 use Illuminate\Support\Facades\Config;
-use App\Models\Translate;
+use App\Models\V5\WebTranslateHeaders;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB as DB;
 
 class TradLib {
@@ -64,73 +65,33 @@ class TradLib {
 		return array_replace_recursive($adminDefault, $adminTheme);
 	}
 
-    public static function getTranslations($language = null, $emp = null, $withCache = null) {
+	public static function getTranslations($language = null)
+	{
+		$theme = Config::get('app.theme');
+		$language = $language ?: Config::get('app.locale');
+		$languageLower = strtolower($language);
 
-        $translateModel = new Translate();
-
-		if(empty($language)){
-			$language = Config::get('app.locale');
+		if (!file_exists(lang_path("$languageLower/app.php"))) {
+			$languageLower = 'es';
 		}
 
-        if (empty($emp)) {
-            $emp = Config::get('app.main_emp');
-        }
-		#Evitamos que de error el require si intenta cargar un isdioma que no existe el archivo APP
-		if(!file_exists(lang_path(strtolower($language) . DIRECTORY_SEPARATOR . 'app.php'))){
-			$language='es';
-		}
+		require_once lang_path("$languageLower/app.php");
 
-		require lang_path(strtolower($language) . DIRECTORY_SEPARATOR . 'app.php');
+		$databaseTranslates = Cache::remember("translate.$theme.$language", 60, function () use ($language) {
+			try {
+				return WebTranslateHeaders::getTranslations($language)->get()
+					->groupBy('key_header')->map(function ($item) {
+						return $item->pluck('web_translation', 'key_translate');
+					})->toArray();
+			} catch (\Exception $e) {
+				return [];
+			}
+		});
 
-        $sql = "SELECT WEB_TRANSLATE_HEADERS.KEY_HEADER,WEB_TRANSLATE_KEY.KEY_TRANSLATE,WEB_TRANSLATE.WEB_TRANSLATION "
-                . "FROM WEB_TRANSLATE_HEADERS "
-                . "JOIN WEB_TRANSLATE_KEY ON (WEB_TRANSLATE_HEADERS.ID_HEADERS = WEB_TRANSLATE_KEY.ID_HEADERS_TRANSLATE AND WEB_TRANSLATE_KEY.ID_EMP = :emp) "
-                . "JOIN WEB_TRANSLATE ON (WEB_TRANSLATE_KEY.ID_KEY = WEB_TRANSLATE.ID_KEY_TRANSLATE AND WEB_TRANSLATE.ID_EMP = :emp) "
-                . "WHERE WEB_TRANSLATE.LANG = :language order by key_header, key_translate";
+		return array_replace_recursive($lang, $databaseTranslates);
+	}
 
-        $params = array(
-            'emp' => $emp,
-            'language' => strtoupper($language)
-		);
-
-        $data = CacheLib::useCache('translate'.$language, $sql, $params, $withCache);
-
-        $translate = array();
-
-        foreach ($data as $key => $value) {
-            if (empty($translate[$value->key_header])) {
-                $translate[$value->key_header] = array();
-            }
-            $translate[$value->key_header][$value->key_translate] = $value->web_translation;
-        }
-
-        //primer merge para obtener todas las key_headers
-        $headers = array_merge($lang, $translate);
-        $result = array();
-
-        //segundo merge en cada key_header para obtener todas las translate_keys
-        foreach ($lang as $keyLang => $valueLang) {
-            $result[$keyLang] = array_merge($lang[$keyLang], $headers[$keyLang]);
-        }
-
-        //añadimos los headers y su contenido que no existan en el archivo
-        foreach ($headers as $keyHeader => $value) {
-            if (empty($result[$keyHeader])) {
-                $result[$keyHeader] = $value;
-            }
-        }
-
-        foreach ($translateModel->headersTrans() as $headers) {
-            if (empty($result[$headers->key_header])) {
-                $result[$headers->key_header]['null'] = null;
-            }
-        }
-
-
-        return $result;
-    }
-
-    public static function getArchiveTranslations($language) {
+	public static function getArchiveTranslations($language) {
 
 		require lang_path(strtolower($language) . DIRECTORY_SEPARATOR . 'app.php');
         return $lang;
