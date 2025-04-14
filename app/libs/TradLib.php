@@ -75,7 +75,7 @@ class TradLib {
 			$languageLower = 'es';
 		}
 
-		require_once lang_path("$languageLower/app.php");
+		require lang_path("$languageLower/app.php");
 
 		$databaseTranslates = Cache::remember("translate.$theme.$language", 60, function () use ($language) {
 			try {
