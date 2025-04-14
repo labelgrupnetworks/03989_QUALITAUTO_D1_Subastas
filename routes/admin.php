@@ -215,6 +215,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/addImg/', 'subasta\SubastaController@addImage')->name('addLotImage'); //excel??
 			Route::get('/list', 'subasta\SubastaController@getSelectLotes');
 			Route::get('/listFondoGaleria', 'subasta\SubastaController@getSelectLotesFondoGaleria')->name('lotListFondoGaleria');
+			Route::post('/deletefile', 'subasta\SubastaController@deleteLoteFile');
 			Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export'); //se utiliza para descargar excel
 			Route::post('/send_end_lot_ws', 'subasta\SubastaController@send_end_lot_ws');
 		});

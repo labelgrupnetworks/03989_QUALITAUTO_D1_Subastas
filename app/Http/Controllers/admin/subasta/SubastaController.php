@@ -682,4 +682,29 @@ class SubastaController extends Controller
 			$lotController->createCloseLot($request->sub, $request->ref);
 		}
 	}
+
+
+	/**
+	 * Eliminar archivo lote
+	 * En Valoralia se utiliza. Mirar como cambiar a controlador de archivos.
+	 * */
+	public function deleteLoteFile()
+	{
+
+		$num_hces1 = request('num_hces1');
+		$lin_hces1 = request('lin_hces1');
+		$file = request('file');
+
+		if (empty($num_hces1) || empty($lin_hces1) || empty($file)) {
+			return redirect()->back()
+				->with(['errors' => [0 => 'Ha sucedido un error']]);
+		}
+
+		//Eliminar o no fichero...
+		$pathFiles = getcwd() . '/files/' . Config::get("app.emp") . "/$num_hces1/$lin_hces1/files/$file";
+		unlink(str_replace("\\", "/", $pathFiles));
+
+		return redirect()->back()
+			->with(['success' => [0 => 'Fichero eliminado']]);
+	}
 }
