@@ -1,7 +1,8 @@
 <?php
+
 use Illuminate\Support\Facades\Config;
 
-$lang = [
+return [
 	'blog' =>
 	array(
 		'test' => '{1} test|[2, *] testos',
@@ -360,9 +361,7 @@ $lang = [
 		'google_write_review' => 'Escribir Reseña',
 		'google_view' => 'Ver en'
 	),
-	'pages' => array(
-
-	),
+	'pages' => array(),
 	'links' =>
 	array(
 		'about_us' => 'quienes-somos',
@@ -609,7 +608,7 @@ $lang = [
 		'no_filters' => 'Sin filtros',
 		'open_indice' => 'Abrir índice',
 		'order' => 'Ordenar por',
-		'prices'=> 'Precios',
+		'prices' => 'Precios',
 		'price_asc' => 'Precio (de menor a mayor)',
 		'price_desc' => 'Precio (de mayor a menor)',
 		'reference' => 'Lote',
@@ -644,8 +643,8 @@ $lang = [
 		'see_historic_lots' => 'en histórico de venta',
 		'return_active_lots' => 'Volver a lotes disponibles',
 		'historic_sold_lots' => 'Histórico de lotes vendidos',
-		'date_asc'=>'Termina en menor plazo de tiempo',
-		'date_desc'=>'Últimas publicaciones',
+		'date_asc' => 'Termina en menor plazo de tiempo',
+		'date_desc' => 'Últimas publicaciones',
 		'greater_than' => 'mayor que',
 		'smaller_than' => 'menor que',
 		'olderLots' => 'Más antiguos',
@@ -950,7 +949,7 @@ $lang = [
 		'author' => 'Autor',
 		'assign_ministry' => 'Asignar al ministerio',
 		'cost_price' => 'Precio coste',
-		'auctionConditions'	=> 'Al pujar confirma que acepta las condiciones de la sala.' ,
+		'auctionConditions'	=> 'Al pujar confirma que acepta las condiciones de la sala.',
 		'open_lot_to_jump' => 'Abrir el lote en el caso de estar cerrado',
 		'mp_title' => 'Paletas modificadas',
 		'mp_name' => 'Nombre',

@@ -67,7 +67,6 @@ class TradLib {
 
 	public static function getTranslations($language = null)
 	{
-		$theme = Config::get('app.theme');
 		$language = $language ?: Config::get('app.locale');
 		$languageLower = strtolower($language);
 
@@ -75,9 +74,9 @@ class TradLib {
 			$languageLower = 'es';
 		}
 
-		require lang_path("$languageLower/app.php");
+		$lang = include lang_path("$languageLower/app.php");
 
-		$databaseTranslates = Cache::remember("translate.$theme.$language", 60, function () use ($language) {
+		$databaseTranslates = Cache::remember("translates", 60, function () use ($language) {
 			try {
 				return WebTranslateHeaders::getTranslations($language)->get()
 					->groupBy('key_header')->map(function ($item) {
@@ -91,35 +90,15 @@ class TradLib {
 		return array_replace_recursive($lang, $databaseTranslates);
 	}
 
-	public static function getArchiveTranslations($language) {
+	public static function getArchiveTranslations($language)
+	{
+		$language = strtolower($language);
+		if(!file_exists(lang_path("$language/app.php"))){
+			$language = 'es';
+		}
 
-		require lang_path(strtolower($language) . DIRECTORY_SEPARATOR . 'app.php');
-        return $lang;
-    }
-
-    public static function getSqlTranslation($language) {
-
-        $sql = "SELECT WEB_TRANSLATE_HEADERS.KEY_HEADER,WEB_TRANSLATE_KEY.KEY_TRANSLATE,WEB_TRANSLATE.WEB_TRANSLATION "
-                . "FROM WEB_TRANSLATE_HEADERS "
-                . "JOIN WEB_TRANSLATE_KEY ON (WEB_TRANSLATE_HEADERS.ID_HEADERS = WEB_TRANSLATE_KEY.ID_HEADERS_TRANSLATE AND WEB_TRANSLATE_KEY.ID_EMP = :emp) "
-                . "JOIN WEB_TRANSLATE ON (WEB_TRANSLATE_KEY.ID_KEY = WEB_TRANSLATE.ID_KEY_TRANSLATE AND WEB_TRANSLATE.ID_EMP = :emp) "
-                . "WHERE WEB_TRANSLATE.LANG = :language order by key_header, key_translate";
-
-        $params = array(
-            'emp' => Config::get('app.main_emp'),
-            'language' => strtoupper($language)
-        );
-        $data = CacheLib::useCache('translate', $sql, $params);
-        $translate = array();
-
-        foreach ($data as $key => $value) {
-            if (empty($translate[$value->key_header])) {
-                $translate[$value->key_header] = array();
-            }
-            $translate[$value->key_header][$value->key_translate] = $value->web_translation;
-        }
-
-        return $translate;
+		$lang = include lang_path("$language/app.php");
+		return $lang;
     }
 
     /**
@@ -238,18 +217,6 @@ class TradLib {
         if (empty($palabraTraducida)) {
             return false;
         }
-/*
-
-        if (empty($palabraTraducida)) {
-                $palabraTraducida = DB::table('WEB_SEO_ROUTES')->select('KEYLANG_SEO_ROUTES')
-                        ->where([
-                            ['KEY_SEO_ROUTES', '=', $keySeo->key_seo_routes],
-                            ['LANG_SEO_ROUTES', '=', $idiomaActual],
-                            ['ID_EMP', '=', Config::get('app.emp')],
-                        ])->first();
-        }
-
-*/
 
         return $palabraTraducida->keylang_seo_routes;
     }

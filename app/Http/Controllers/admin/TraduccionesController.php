@@ -8,7 +8,6 @@ use App\Models\Translate;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
@@ -28,88 +27,8 @@ class TraduccionesController extends Controller
 		view()->share(['menu' => 'translates']);
 	}
 
-	/**
-	 * carga archivo y realiza merge con los datos de la base de datos
-	 * @param string $idioma
-	 *
-	 * @pendiente:
-	 *
-	 *  - dejar metodo aqui o mever al modelo??
-	 *
-	 */
-
-	/*
-     *Incluido en libreria, se deberia poder borrar
-     * COMPROBAR QUE RETORNAN LOS MISMOS DATOS!
-     */
-	public function cargarArchivo($idioma)
-	{
-
-		require lang_path(strtolower($idioma) . DIRECTORY_SEPARATOR . 'app.php');
-		$this->archiveLang = $lang;
-
-		$sql = "SELECT WEB_TRANSLATE_HEADERS.KEY_HEADER,WEB_TRANSLATE_KEY.KEY_TRANSLATE,WEB_TRANSLATE.WEB_TRANSLATION "
-			. "FROM WEB_TRANSLATE_HEADERS "
-			. "JOIN WEB_TRANSLATE_KEY ON (WEB_TRANSLATE_HEADERS.ID_HEADERS = WEB_TRANSLATE_KEY.ID_HEADERS_TRANSLATE AND WEB_TRANSLATE_KEY.ID_EMP = :emp) "
-			. "JOIN WEB_TRANSLATE ON (WEB_TRANSLATE_KEY.ID_KEY = WEB_TRANSLATE.ID_KEY_TRANSLATE AND WEB_TRANSLATE.ID_EMP = :emp) "
-			. "WHERE WEB_TRANSLATE.LANG = :idioma order by key_header, key_translate";
-
-		$params = array(
-			'emp' => Config::get('app.main_emp'),
-			'idioma' => $idioma
-		);
-		$data = DB::select($sql, $params);
-
-		$translate = array();
-
-		foreach ($data as $key => $value) {
-			if (empty($translate[$value->key_header])) {
-				$translate[$value->key_header] = array();
-			}
-			$translate[$value->key_header][$value->key_translate] = $value->web_translation;
-		}
-
-		//primer merge para obtener todas las key_headers
-		$headers = array_merge($lang, $translate);
-
-		$result = array();
-
-		//segundo merge en cada key_header para obtener todas las translate_keys
-		foreach ($lang as $keyLang => $valueLang) {
-			$result[$keyLang] = array_merge($lang[$keyLang], $headers[$keyLang]);
-		}
-
-		//añadir contenido de los headers existentes solo en base de datos
-		foreach ($data as $indice => $value) {
-
-			if (empty($result[$value->key_header])) {
-				$result[$value->key_header][$value->key_translate] = $value->web_translation;
-			}
-		}
-
-
-		foreach ($this->content->headersTrans() as $headers) {
-			if (empty($result[$headers->key_header])) {
-				$result[$headers->key_header]['null'] = null;
-			}
-		}
-
-		return $result;
-	}
-
-	/**
-	 *
-	 * @param type $head
-	 * @param type $lang
-	 * @return type
-	 *
-	 */
 	public function index($head, $lang)
 	{
-
-		$data[$lang] = $this->content->getTranslate($this->emp, $head, $lang);
-
-
 		$this->archiveLang = TradLib::getArchiveTranslations($lang);
 		$trad = TradLib::getTranslations($lang);
 
@@ -127,7 +46,7 @@ class TraduccionesController extends Controller
 		}
 
 		// para las web_translate en español en caso de que existan
-		foreach ($this->cargarArchivo('ES')[$head] as $key => $value) {
+		foreach ($trad[$head] as $key => $value) {
 
 			$data['original'][$key] = (object) [
 				'key_header' => $head,
@@ -135,7 +54,6 @@ class TraduccionesController extends Controller
 				'web_translation' => $value
 			];
 		}
-
 
 		$data[$lang] = array_merge($traduccion, $this->content->getTranslate($this->emp, $head, $lang));
 		$data['key'] = $head;
@@ -314,14 +232,13 @@ class TraduccionesController extends Controller
 	 */
 	public function getTraducciones()
 	{
-		$traducciones = $this->cargarArchivo('ES');
-		$trans = array();
+		$traducciones = TradLib::getArchiveTranslations('es');
+		$transKeys = array_keys($traducciones);
+		$keyHeaders = array_map(function ($key) {
+			return ['key_header' => $key];
+		}, $transKeys);
 
-		foreach ($traducciones as $key => $value) {
-			array_push($trans, ['key_header' => $key]);
-		}
-
-		return View::make('admin::pages.traduccion', array('data' => $trans));
+		return View::make('admin::pages.traduccion', array('data' => $keyHeaders));
 	}
 
 

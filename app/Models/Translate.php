@@ -4,14 +4,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use DB;
-
-use \pdo;
-use yajra\Oci8\Connectors\OracleConnector;
-use yajra\Oci8\Oci8Connection;
-use Config;
-use Routing;
-use Illuminate\Translation\Translator as Trans;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 class Translate extends Model
 {
@@ -38,7 +32,6 @@ class Translate extends Model
          foreach($trans as $tra){
              $res[$tra->key_translate] = $tra;
          }
-
 
          return $res;
 
@@ -140,63 +133,5 @@ class Translate extends Model
                 ['ID_HEADERS' => $id_header, 'ID_EMP' => $id_emp, 'KEY_HEADER' => $key_header]
         ]);
     }
-
-    /*
-    public function searchTraduction($lang,$text,$emp) {
-        $text = '%'.$text.'%';
-
-         $sql = "Select trans.*,translate.web_translation traduccion,translate_headers.*,translate_key.* "
-                 . "from WEB_TRANSLATE trans "
-                 . "LEFT JOIN WEB_TRANSLATE translate ON trans.id_key_translate = translate.id_key_translate "
-                 . "INNER JOIN WEB_TRANSLATE_KEY translate_key ON TRANS.ID_KEY_TRANSLATE = translate_key.id_key AND trans.ID_EMP = translate_key.id_emp "
-                 . "INNER JOIN WEB_TRANSLATE_HEADERS translate_headers ON translate_key.ID_HEADERS_TRANSLATE = translate_headers.id_headers AND trans.ID_EMP = translate_headers.id_emp "
-                 . "WHERE trans.WEB_TRANSLATION LIKE :text "
-                 . "AND trans.ID_EMP = :emp "
-                 . "AND trans.lang = :lang "
-                 . "AND translate.lang = 'ES'";
-
-            $bindings = array(
-                    'emp'   => $emp,
-                    'text'  => $text,
-                    'lang'  => $lang
-                    );
-        $values =  DB::select($sql, $bindings);
-
-
-        return $values;
-    }
-     * */
-
-
-    public function searchTraduccion($lang,$text,$emp){
-
-        $traducciones = array();
-        $text = '%'.$text.'%';
-
-         $sql = "Select trans.*,translate.web_translation traduccion,translate_headers.*,translate_key.* "
-                 . "from WEB_TRANSLATE trans "
-                 . "LEFT JOIN WEB_TRANSLATE translate ON trans.id_key_translate = translate.id_key_translate "
-                 . "INNER JOIN WEB_TRANSLATE_KEY translate_key ON TRANS.ID_KEY_TRANSLATE = translate_key.id_key AND trans.ID_EMP = translate_key.id_emp "
-                 . "INNER JOIN WEB_TRANSLATE_HEADERS translate_headers ON translate_key.ID_HEADERS_TRANSLATE = translate_headers.id_headers AND trans.ID_EMP = translate_headers.id_emp "
-                 . "WHERE trans.WEB_TRANSLATION LIKE :text "
-                 . "AND trans.ID_EMP = :emp "
-                 . "AND trans.lang = :lang "
-                 . "AND translate.lang = 'ES'";
-
-            $bindings = array(
-                    'emp'   => $emp,
-                    'text'  => $text,
-                    'lang'  => $lang
-                    );
-        $values =  DB::select($sql, $bindings);
-
-        foreach ($values as  $value) {
-            $traducciones[$value->key_translate] = $value;
-        }
-
-        return $traducciones;
-    }
-
-
 
 }
