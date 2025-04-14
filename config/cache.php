@@ -104,5 +104,5 @@ return [
     | that reason, you may prefix every cache key to avoid collisions.
     |
     */
-	'prefix' => env('APP_LOCALE', 'es').'_'.env('APP_THEME', 'laravel').'_'.env('APP_MAIN_EMP', '001') .'_cache_',
+	'prefix' => env('APP_THEME', 'laravel').'_'.env('APP_MAIN_EMP', '001') .'_cache_',
 ];

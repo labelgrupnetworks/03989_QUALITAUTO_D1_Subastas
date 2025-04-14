@@ -76,7 +76,7 @@ class TradLib {
 
 		$lang = include lang_path("$languageLower/app.php");
 
-		$databaseTranslates = Cache::remember("translates", 60, function () use ($language) {
+		$databaseTranslates = Cache::remember("translates.$lang", 60, function () use ($language) {
 			try {
 				return WebTranslateHeaders::getTranslations($language)->get()
 					->groupBy('key_header')->map(function ($item) {
