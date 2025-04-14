@@ -163,6 +163,12 @@ input[type=time].form-control {
 
 .observaciones>textarea.form-control {
 	height: 100px;
+	max-width: 100%;
+	min-width: 100%;
+}
+
+.observaciones-text {
+	color: #C00;
 }
 
 #registerForm .moneda {
@@ -173,7 +179,7 @@ input[name^='preftel'] {
 	text-align: left;
 }
 
-input.form-control.has-error {
+input.form-control.has-error, textarea.form-control.has-error {
 	border-color: #C00;
 	color: #C00 !important;
 	outline: #C00 1px solid;

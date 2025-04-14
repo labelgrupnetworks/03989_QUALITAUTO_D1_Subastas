@@ -179,6 +179,9 @@ $(document).ready(function () {
 	reloadPlaceholders();
 	reloadPrefix('preftel_cli', 'pais');
 	reloadPrefix('preftel_clid', 'clid_pais');
+
+	$('[name="obscli"]').prop('id', 'textogrande__1__obscli');
+
 	$('[name="name_clidTemp"], [name="lastName_clidTemp"]').on('change', () => addUserAddressName());
 
 	$('input[name="shipping_address"]').on('change', function (event) {

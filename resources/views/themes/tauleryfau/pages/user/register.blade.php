@@ -406,11 +406,17 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
                             @endforeach
                         </fieldset>
 
-                        <fieldset>
-                            <legend>{{ trans($theme . '-app.login_register.observacion') }} *</legend>
+                        <fieldset class="obs-block">
+                            <legend>{{ trans($theme . '-app.login_register.observacion') }}</legend>
+							<p class="observaciones-text">
+								{{ trans("web.login_register.obs_info_request") }}
+							</p>
 
                             <div class="form-group observaciones">
                                 {!! $formulario->obscli !!}
+								<small>
+									{{ trans("web.login_register.obs_maxlength_rule") }}
+								</small>
                             </div>
                         </fieldset>
 
