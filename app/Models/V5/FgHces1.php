@@ -101,9 +101,7 @@ class FgHces1 extends Model
 
 	public function scopeNotInAuction($query)
 	{
-		//Necesitaos que sean left joins porque la subasta agrup no esta en la tabla de subastas
-		return $query->leftJoinFghces1Asigl0()
-			->leftJoinAsigl0Fgsub()
+		return $query->leftJoinFghces1Fgsub()
 			->where(function ($query) {
 				$query->where('sub_hces1', '=', 'AGRUP17')
 					->orWhereIn('fgsub.subc_sub', [FgSub::SUBC_SUB_INACTIVO, FgSub::SUBC_SUB_ADMINISITRADOR]);
@@ -141,11 +139,11 @@ class FgHces1 extends Model
 		});
 	}
 
-	public function scopeLeftJoinAsigl0Fgsub($query)
+	public function scopeLeftJoinFghces1Fgsub($query)
 	{
 		return $query->leftjoin('fgsub', function ($join) {
-			$join->on('fgsub.emp_sub', '=', 'fgasigl0.emp_asigl0')
-				->on('fgsub.cod_sub', '=', 'fgasigl0.sub_asigl0');
+			$join->on('fgsub.emp_sub', '=', 'fghces1.emp_hces1')
+				->on('fgsub.cod_sub', '=', 'fghces1.sub_hces1');
 		});
 	}
 
