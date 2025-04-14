@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\libs\FormLib;
 use App\Models\V5\FgHces1Files;
 use App\Providers\ToolsServiceProvider;
+use Illuminate\Support\Facades\Config;
 
 class AdminLotFilesController extends Controller
 {
@@ -136,6 +137,29 @@ class AdminLotFilesController extends Controller
 
 		$files = FgHces1Files::getAllFilesByLot($fgHces1File->numhces_hces1_files, $fgHces1File->linhces_hces1_files);
 		return view('admin::pages.subasta.lot_files._table_rows', ['files' => $files])->render();
+	}
+
+	/**
+	 * Migrar al nuevo metodo dentro de lo posible.
+	 */
+	function oldDestroy(Request $request)
+	{
+		//validate request
+		$request->validate([
+			'num_hces1' => 'required',
+			'lin_hces1' => 'required',
+			'file' => 'required'
+		]);
+
+		$num_hces1 = $request->input('num_hces1');
+		$lin_hces1 = $request->input('lin_hces1');
+		$file = $request->input('file');
+		$emp = Config::get('app.emp');
+
+		$pathFiles = public_path("files/$emp/$num_hces1/$lin_hces1/files/$file");
+		unlink(str_replace("\\", "/", $pathFiles));
+
+		return response()->json(['success' => true]);
 	}
 
 	function deleteSelection(Request $request)

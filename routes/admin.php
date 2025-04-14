@@ -215,7 +215,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/addImg/', 'subasta\SubastaController@addImage')->name('addLotImage'); //excel??
 			Route::get('/list', 'subasta\SubastaController@getSelectLotes');
 			Route::get('/listFondoGaleria', 'subasta\SubastaController@getSelectLotesFondoGaleria')->name('lotListFondoGaleria');
-			Route::post('/deletefile', 'subasta\SubastaController@deleteLoteFile');
 			Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export'); //se utiliza para descargar excel
 			Route::post('/send_end_lot_ws', 'subasta\SubastaController@send_end_lot_ws');
 		});
@@ -404,6 +403,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('subastas/lotes/files/delete-selection', 'subasta\AdminLotFilesController@deleteSelection')->name('subastas.lotes.files.delete-selection');
 		Route::post('subastas/lotes/files/{fgHces1File}', 'subasta\AdminLotFilesController@update')->name('subastas.lotes.files.update');
 		Route::post('subastas/lotes/files/{fgHces1File}/status', 'subasta\AdminLotFilesController@status')->name('subastas.lotes.files.status');
+		Route::delete('subastas/lotes/files/oldDestroy', 'subasta\AdminLotFilesController@oldDestroy')->name('subastas.lotes.files.oldDestroy');
 		Route::delete('subastas/lotes/files/{fgHces1File}', 'subasta\AdminLotFilesController@destroy')->name('subastas.lotes.files.destroy');
 
 		Route::get('subasta-conditions', 'subasta\AdminSubastaConditionsController@index')->name('subasta_conditions.index');
