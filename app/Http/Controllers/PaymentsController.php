@@ -11,7 +11,6 @@ use App\libs\PayPalV2API;
 use App\libs\RedsysAPI;
 use App\Models\delivery\Delivery_default;
 use App\Models\delivery\Delivery;
-use App\Models\Enterprise;
 use App\Models\Facturas;
 use App\Models\Payments;
 use App\Models\Subasta;
@@ -21,6 +20,7 @@ use App\Models\V5\FgCsub;
 use App\Models\V5\FgCsub0;
 use App\Models\V5\FsParams;
 use App\Models\V5\FxClid;
+use App\Models\V5\FxParam1;
 use App\Providers\RoutingServiceProvider;
 use App\Providers\ToolsServiceProvider;
 use GuzzleHttp\Client;
@@ -1254,10 +1254,9 @@ class PaymentsController extends Controller
 		$subasta = new Subasta();
 		$fact = new Facturas();
 		$user = new User();
-		$enterprise = new Enterprise();
+
 		// El id del pago tiene una letra delante P(prefactura) o F(factura)
 		try {
-
 
 			//Guardamos historico dependiendo si es prefactura o factura
 			if (substr($merchantID, 0, 1) == 'P') {
@@ -1387,7 +1386,7 @@ class PaymentsController extends Controller
 
 
 				$date = date("Y/m/d");
-				$params = $enterprise->getParam();
+				$params = FxParam1::first();
 				$fact->cod_cli = $inf_fact[0]->cod_pcob1;
 				//Insertamos la cabezerca
 				$fact->insertCOBRO0($anum_cob, $num_cob, $params, $date);

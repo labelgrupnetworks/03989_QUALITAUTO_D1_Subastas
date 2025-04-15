@@ -1,15 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Models\delivery;
-use Illuminate\Support\Facades\DB;
-use App\Models\Enterprise;
+
+use App\Models\V5\FsEmbalajes;
+use App\Models\V5\FsIva;
 use App\Services\Auction\LotDeliveryService;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Description of delivery
@@ -20,7 +17,6 @@ class Delivery {
     //put your code here
     //proveedor que se usará para el envio, cada proveedor tiene su modelo propio
     protected $provider;
-    protected $enterprise;
     protected $lot;
     protected $warehouse;
     protected $custom_dir;
@@ -28,23 +24,17 @@ class Delivery {
     protected $service;
     protected $imp_embalaje;
     protected $shipping_client_ref;
+	protected $tax_embalaje;
 
-    function __construct(DeliveryService $provider){
+    function __construct(DeliveryService $provider)
+	{
         //cargar provider name desde web_config
 		$this->provider = $provider;
 
-        //cogemos el iva por defecto de la empresa
-        $this->enterprise = new Enterprise();
-        $parameters = $this->enterprise->getParameters();
-        $iva = $this->enterprise->getIva($parameters->tiva_prmgt);
-        if(!empty($iva)){
-            $this->setTax(intval($iva->iva_iva));
-        }else{
-            $this->setTax(intval(0));
-        }
+        $iva = FsIva::getIvaByDefaultType();
+		$this->setTax(intval($iva->iva_iva));
+
         $this->imp_embalaje = 0;
-
-
     }
 
     //function getShipmentsRates($warehouse,  $destinationCountryCode, $destinationZipCode,$lot){
@@ -121,18 +111,16 @@ class Delivery {
     }
 
     //devolverá los tamaños del lote dado
-    function getSizes($lote){
-
+    function getSizes($lote)
+	{
         //si falta campo de embalaje en hces1, lo ponemos por defecto
         if(!isset($lote->embalaje_hces1)){
             $lote->embalaje_hces1 = 0;
         }
 
-        $embalaje = $this->enterprise->getEmbalaje($lote->embalaje_hces1);
+        $embalaje = FsEmbalajes::getEmbalajesByCod($lote->embalaje_hces1);
         //el código cero de embalaje indica que se suma el ancho al paquete
         $lot = new \stdClass();
-
-
 
         if(!empty($embalaje)){
             $this->imp_embalaje = $embalaje->imp_embalajes;
@@ -147,7 +135,6 @@ class Delivery {
                 $lot->width = $embalaje->ancho_embalajes;
                 $lot->height = $embalaje->alto_embalajes;
                 $lot->length =  $embalaje->grueso_embalajes;
-
             }
        }
        /* NO USAREMSO PESO
@@ -157,9 +144,7 @@ class Delivery {
         *
         */
            // altoXanchoXlargo/5000 (En cm)
-            $lot->weight = ($lot->width * $lot->height * $lot->length) / 5000;
-
-
+    	$lot->weight = ($lot->width * $lot->height * $lot->length) / 5000;
 
         return $lot;
     }
@@ -221,7 +206,7 @@ class Delivery {
                     VALUES
                     (:emp,:sub,:ref,:carrier,:service,:nom,:dir,:pob,:cp,:cod_pais,:tel,:email,:imp,:imp_iva)"
                     ,array(
-                        'emp' => \Config::get('app.emp'),
+                        'emp' => Config::get('app.emp'),
                         'sub' => $cod_sub,
                         'ref' => $ref,
                         'carrier'       => $carrier_code,
@@ -308,44 +293,5 @@ class Delivery {
 
 
          return $res;
-
-
     }
-    /*
-     public function SetImpCsube($cod_sub, $ref, $emp, $imp){
-        $imp = str_replace(',', '.', $imp);
-        $res = DB::table('FGCSUBE')
-                ->where('EMP_CSUBE',$emp)
-                ->where('SUB_CSUBE',$cod_sub)
-                ->where('REF_CSUBE',$ref)
-                ->update(['IMP_CSUBE' => $imp]);
-
-
-         return $res;
-
-
-    }
-    */
-
-
-
-    /*
-    function prueba__(){
-        echo "prueba";
-        $a = new Delivery_deliverea();
-        return $a->prueba();
-
-    }
-
-    function prueba($clase){
-        $clase="Delivery_deliverea";
-
-        echo "prueba";
-        $a = new Delivery_deliverea();
-        $a = new $clase();
-        return $a->prueba();
-
-    }
-     *
-     */
 }

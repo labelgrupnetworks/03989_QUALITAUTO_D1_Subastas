@@ -11,18 +11,19 @@ use App\Http\Integrations\Tecalis\TecalisCallbackDTO;
 use App\libs\EmailLib;
 use App\libs\FormLib;
 use App\libs\SeoLib;
-use App\Models\Enterprise;
 use App\Models\Newsletter;
 use App\Models\User;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FgRepresentados;
+use App\Models\V5\FsDiv;
 use App\Models\V5\FsIdioma;
 use App\Models\V5\Fx_Newsletter;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
 use App\Models\V5\FxCliObcta;
 use App\Models\V5\FxCliWeb;
+use App\Models\V5\FxPrmgt;
 use App\Models\V5\FxTiendas;
 use App\Models\V5\SubAuchouse;
 use App\Models\V5\Web_Preferences;
@@ -58,13 +59,12 @@ class UserController extends Controller
 		}
 
 		$addressService = new UserAddressService();
-		$enterprise = new Enterprise();
 
 		$countries = $addressService->getCountries();
 		$via = $addressService->getStreetTypes();
 
 		//Busca divisas del cliente
-		$divisa = $enterprise->getDivisa();
+		$divisa = FsDiv::getDivisas();
 		$data = array("countries" => $countries, "via" => $via, "divisa" => $divisa);
 
 		$data['favorites'] = (new User)->favorites();
@@ -868,9 +868,7 @@ class UserController extends Controller
 
 					$forma_pago = $user->getDefaultPayhmentMethod($request->input('pais'));
 
-					$parametros = new Enterprise();
-					$param = $parametros->getParameters();
-					$envcorr = $param->enviodef_prmgt;
+					$envcorr = FxPrmgt::getDefaultEnvioParam();
 
 					$iva_cli = $this->cliente_tax(FacadeRequest::input('pais'), FacadeRequest::input('cpostal'));
 					/* ARGI HA PEDIDO QUE SE CREEN LOS USUARIOS CON LA W AUNQUE ESTE dni YA EXISTIERA 2019_04_24*/
@@ -1425,12 +1423,8 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
-
 		if (Config::get('app.client_files_erp', false)) {
-			$enterpriseParams = (new Enterprise)->getParameters();
-			$emp = $enterpriseParams->documentaciongemp_prmgt == 'S'
-				? Config::get('app.gemp')
-				: Config::get('app.emp');
+			$emp = FxPrmgt::useGempInDocumentacion() ? Config::get('app.gemp') : Config::get('app.emp');
 		}
 
 		$path = match (Config::get('app.dni_in_storage', false)) {
@@ -1726,9 +1720,7 @@ class UserController extends Controller
 		$datos            = $Usuario->getUser();
 
 		$addressService = new UserAddressService();
-
-		$enterprise = new Enterprise();
-		$divisa = $enterprise->getDivisa();
+		$divisa = FsDiv::getDivisas();
 
 		$data = array(
 			'name' => trans(Config::get('app.theme') . '-app.user_panel.personal_info'),

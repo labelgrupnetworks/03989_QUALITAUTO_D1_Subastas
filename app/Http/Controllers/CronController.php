@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\V5\DepositController;
 use App\libs\LoadLotFileLib;
-use App\Models\Enterprise;
 use App\Models\MailQueries;
 use App\Models\Subasta;
 use App\Models\User;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgSub;
+use App\Models\V5\FsDiv;
 use App\Models\V5\FxCli;
 use App\Providers\RoutingServiceProvider;
 use App\Providers\ToolsServiceProvider;
@@ -652,10 +652,9 @@ class CronController extends Controller
 
 	public function update_divisa()
 	{
-
-		$enterprise = new Enterprise();
 		//Cogemos divisas del cliente
-		$divisa = $enterprise->getDivisa();
+		$divisa = FsDiv::getDivisas();
+
 		$money = array();
 		//Divisas prestahop
 		$path = simplexml_load_file('http://api.prestashop.com/xml/currencies.xml');
