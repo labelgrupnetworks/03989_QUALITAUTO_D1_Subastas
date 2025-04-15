@@ -47,7 +47,7 @@
 											if(strpos($refLot,'.')!==false){
 												$refLot =str_replace(array(".1",".2",".3", ".4", ".5"), array("-A", "-B", "-C", "-D", "-E"),  $refLot);
 											#si hay que recortar
-											}elseif( \config::get("app.substrRef")){
+											}elseif(Config::get("app.substrRef")){
 												#cogemos solo los últimos x numeros, ya que se usaran hasta 9, los  primeros para diferenciar un lote cuando se ha vuelto a subir a subasta
 												#le sumamos 0 para convertirlo en numero y así eliminamos los 0 a la izquierda
 												$refLot = substr($refLot,-\config::get("app.substrRef"))+0;
