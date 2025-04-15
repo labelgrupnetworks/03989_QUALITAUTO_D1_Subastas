@@ -124,9 +124,7 @@
    </div>
  @endif
               <br>
-              <div id="select_filters">
-                    @include('includes.select_filters')
-              </div>
+
               <button class="btn btn-filter" type="submit">{{ trans(\Config::get('app.theme').'-app.lot_list.filter') }}</button>
 
         </form>

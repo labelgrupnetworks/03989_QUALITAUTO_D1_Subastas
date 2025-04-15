@@ -131,11 +131,6 @@
 	</div>
  @endif
 			  <br>
-			  @if(!empty( $data['subastas']) && $data['subastas'][0]->tipo_sub != 'V')
-              <div id="select_filters">
-                    @include('includes.select_filters')
-			  </div>
-			  @endif
               <button class="btn btn-filter" type="submit">{{ trans($theme.'-app.lot_list.filter') }}</button>
 
         </form>

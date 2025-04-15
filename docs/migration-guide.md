@@ -28,3 +28,7 @@
 5. Modificar $global['subastas'] por $global['auctionTypes'] y $empresa por $global['company'] del header y el footer. 
 Afecta a 
 - Todos
+
+6. Con grid de lotes antiguo. Eliminar select_filters. La blade y el include
+   -   Gutinvest
+   -   Papaya

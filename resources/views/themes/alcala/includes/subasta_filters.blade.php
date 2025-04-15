@@ -87,12 +87,6 @@
         @endif
         <div class="filters-auction-divider-big"></div>
 
-		{{-- // No se esta utilizando
-		<div id="select_filters">
-            @include('includes.select_filters')
-        </div>
-        <div class="filters-auction-divider-big"></div>
-		 --}}
 
 
         <button class="btn btn-filter color-letter"

@@ -12,7 +12,6 @@ use App\libs\ImageGenerate;
 use App\libs\StrLib;
 use App\libs\TradLib;
 use App\Models\Favorites;
-use App\Models\Filters;
 use App\Models\Payments;
 use App\Models\Sec;
 use App\Models\Subasta;
@@ -749,37 +748,6 @@ class SubastaController extends Controller
 		if (!empty($last_lot) && is_numeric($last_lot)) {
 			$subastaObj->where_filter  .= " AND (ASIGL0.REF_ASIGL0 <= :last_lot)";
 			$subastaObj->params_filter["last_lot"] = $last_lot;
-		}
-	}
-	//los filtros de la subasta, object_types_values
-	private function getWhereAuctionFilter($subastaObj)
-	{
-
-		if (!empty($subastaObj->cod)) {
-			$cod_sub = $subastaObj->cod;
-		} else {
-			$cod_sub = 0;
-		}
-		//si no se está buscando en lso filtros no agragamos los joins
-		$search_in_filters = false;
-		$filters_obj = new Filters();
-		$auction_filters =  $filters_obj->getFiltersAuction($cod_sub);
-		foreach ($auction_filters as $auction_filter) {
-			//cogemos las variables de los selectores, asi mas adelante podemso usar las de checks usando la extension _check
-			$filter_name = $auction_filter->col_subfw . "_select";
-			$filter_value = Request::input($filter_name);
-
-
-			if (!empty($filter_value)) {
-				$search_in_filters = true;
-				$subastaObj->where_filter .= ' AND TRIM(NVL(otv_lang."' . $auction_filter->col_subfw  . '_lang",  otv."' . $auction_filter->col_subfw  . '"))  = :' . $filter_name . ' ';
-				$subastaObj->params_filter[$filter_name] = $filter_value;
-			}
-		}
-
-		if ($search_in_filters) {
-			$subastaObj->join_filter .= 'JOIN "object_types_values" otv on ( otv."company" =  HCES1.emp_HCES1 and  otv."transfer_sheet_number" = HCES1.NUM_HCES1 AND  otv."transfer_sheet_line" = HCES1.lin_HCES1)';
-			$subastaObj->join_filter .= 'LEFT JOIN "object_types_values_lang" otv_lang on ( otv_lang."company_lang" =  HCES1.emp_HCES1 and  otv_lang."transfer_sheet_number_lang" = HCES1.NUM_HCES1 AND  otv_lang."transfer_sheet_line_lang" = HCES1.lin_HCES1 AND otv_lang."lang_object_types_values_lang" = :lang)';
 		}
 	}
 
@@ -1734,7 +1702,6 @@ class SubastaController extends Controller
 		$this->getWhereOpen(Request::input('open'), $subastaObj);
 		$this->getWhereAward(Request::input('award'), $subastaObj);
 		$this->getWhereAwardAndOpens(Request::input('awardOpen'), $subastaObj);
-		$this->getWhereAuctionFilter($subastaObj);
 		$this->getWhereDiscountsOffers(Request::input('offers'), $subastaObj);
 		$this->getWhereMyLotsClient(Request::input('my_lots_client'), $subastaObj);
 		$this->getWhereMyLotsProperty(Request::input('my_lots_property'), $subastaObj);
