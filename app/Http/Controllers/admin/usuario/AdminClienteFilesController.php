@@ -4,8 +4,8 @@ namespace App\Http\Controllers\admin\usuario;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\UserController;
-use App\Models\Enterprise;
 use App\Models\User;
+use App\Models\V5\FxPrmgt;
 use App\Providers\ToolsServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -19,8 +19,7 @@ class AdminClienteFilesController extends Controller
 	{
 		//cambiamos el filesystem de cliente en aquellos casos que usen parametros especiales en erp
 		if(Config::get('app.client_files_erp', false)){
-			$enterpriseParams = (new Enterprise)->getParameters();
-			$enterpriseDirectory = $enterpriseParams->documentaciongemp_prmgt == 'S'
+			$enterpriseDirectory = FxPrmgt::useGempInDocumentacion()
 				? Config::get('app.gemp')
 				: Config::get('app.emp');
 
