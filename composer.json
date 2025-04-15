@@ -28,6 +28,7 @@
         "barryvdh/laravel-debugbar": "v3.7.0",
         "fakerphp/faker": "v1.19.0",
         "larastan/larastan": "v2.9.14",
+        "laravel/pint": "^1.20",
         "laravel/sail": "v1.15.0",
         "mockery/mockery": "1.5.0",
         "nunomaduro/collision": "v6.2.1",
