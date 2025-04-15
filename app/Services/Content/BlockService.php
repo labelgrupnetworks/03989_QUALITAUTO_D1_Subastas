@@ -9,23 +9,23 @@ use Illuminate\Support\Facades\Log;
 
 class BlockService
 {
-	public function getResultBlockByKeyname($keyname, $replace = array())
+	public function getResultBlockByKeyname($keyname, $replace = [])
 	{
 		try {
 			$res = $this->getBlockByKeyname($keyname);
 			$key_cache = $keyname;
 
-			if(empty($res)) {
+			if (empty($res)) {
 				return null;
 			}
 
-			if(empty($res->products)) {
+			if (empty($res->products)) {
 				return null;
 			}
 
 			$sql = $res->products;
 
-			if($this->sqldanger($sql)) {
+			if ($this->sqldanger($sql)) {
 				return null;
 			}
 
@@ -39,10 +39,9 @@ class BlockService
 			return (!empty($cache) && $cache > 0)
 				? CacheLib::useCache($key_cache, $sql)
 				: DB::select($sql);
-
 		} catch (\Exception $e) {
 			Log::emergency('Error blockByKeyname: $keyname' . $e);
-			return NULL;
+			return null;
 		}
 	}
 
@@ -56,7 +55,7 @@ class BlockService
 
 	private function sqldanger($sql)
 	{
-		$dangerous =  array('delete', 'insert', 'created', 'drop', 'alter', 'update');
+		$dangerous =  ['delete', 'insert', 'created', 'drop', 'alter', 'update'];
 		$sql = strtolower($sql);
 
 		foreach ($dangerous as $danger) {
