@@ -359,8 +359,8 @@ class SubastaController extends Controller
 		//crea los where customizado de categories y tematicas
 		//genera lso datos del Seo_metas
 		//hace el filtro de categorias si la subasta nno es de categorias
-		$subcategory = NULL;
-		$category = $this->setFilterCustomize($subastaObj, $type, $key_customize, $route_customize,  $SEO_metas, $subcategory);
+		$subcategory = null;
+		$category = null;
 
 		if ($type == "theme") {
 			$theme = $key_customize;
@@ -1745,129 +1745,6 @@ class SubastaController extends Controller
 				}
 			}
 		}
-	}
-
-
-	private function set_customize_values_filter($customize_values, $subastaObj)
-	{
-
-		if (!empty($customize_values->sections)) {
-
-			if ($customize_values->sections == "'ALL'") {
-				$subastaObj->where_filter .= " AND HCES1.SEC_HCES1 is not null";
-			} else {
-				$subastaObj->where_filter  .= " AND HCES1.SEC_HCES1 in ($customize_values->sections)";
-			}
-		}
-		//filtramos lotes por session, permite mas de una session
-		if (!empty($customize_values->lots)) {
-			$subastaObj->where_filter .= " AND (";
-			$or = "";
-
-			foreach ($customize_values->lots as $id_auc_sessions => $lots) {
-
-				//si no hay lotes cojemso toda la sesion
-				if (empty($lots) || $lots == "'*'") {
-					$subastaObj->where_filter  .= " $or  \"id_auc_sessions\" = $id_auc_sessions ";
-				} else {
-					$subastaObj->where_filter  .= " $or ( \"id_auc_sessions\" = $id_auc_sessions  AND HCES1.REF_HCES1 in ($lots) )";
-				}
-				$or = " OR ";
-			}
-			$subastaObj->where_filter  .= ")";
-		}
-
-		if (!empty($customize_values->tipo_sub)) {
-			$subastaObj->where_filter .= $customize_values->tipo_sub;
-		}
-	}
-
-
-	private function setFilterCustomize($subastaObj, $type, $key_customize, $route_customize,  $SEO_metas, $subcategory)
-	{
-		$category = NULL;
-		//si venimos de categorias o de temáticas
-		if (!empty($type)) {
-			//si son categorias
-			if ($type == "category") {
-				$category = $key_customize;
-
-				$sec_obj =  new Sec();
-				$ortsec = $sec_obj->getOrtsecByKey('0', $category);
-				if (empty($ortsec)) {
-					return abort(404);
-				}
-
-				//Filtarr por subastas categories
-				if (Request::input('s')) {
-					$id_session = Request::input('s');
-
-					$redirect_categ = true;
-
-					if (is_numeric($id_session)) {
-
-						$subastaObj->where_filter  .= " AND (AUC.\"id_auc_sessions\" = '$id_session') ";
-						$session_sub = $subastaObj->getAuctionWithSession($id_session);
-
-						if (!empty($session_sub)) {
-							$redirect_categ = false;
-						}
-					}
-
-					//No existe subasta redirigimos a la categoria seleccionada
-					if ($redirect_categ) {
-						$url_redirect = Routing::translateSeo('subastas') . $key_customize;
-						header("Location:" . $url_redirect);
-						exit;
-					}
-				}
-				//condiciones por la categoria
-				$subastaObj->where_filter  .= " AND (ORTSEC1.LIN_ORTSEC1 = '$ortsec->lin_ortsec0')";
-				$subastaObj->join_filter .= "JOIN FGORTSEC1 ORTSEC1 ON (ORTSEC1.SEC_ORTSEC1 = HCES1.SEC_HCES1 AND ORTSEC1.EMP_ORTSEC1 = HCES1.EMP_HCES1 AND ORTSEC1.SUB_ORTSEC1 = '0') ";
-				$auction_in_categories =  Config::get('app.auction_in_categories');
-				if (!empty($auction_in_categories)) {
-
-					$subastaObj->where_filter .= " AND SUB.TIPO_SUB  IN ($auction_in_categories) ";
-					if ($auction_in_categories != "'W'") {
-						$subastaObj->where_filter .= " AND ASIGL0.CERRADO_ASIGL0 = 'N' ";
-					}
-				}
-
-				$subcategory = Route::current()->parameter('subcategory');
-				//si hay subcatgorias
-				if (!empty($subcategory)) {
-					$sec = $sec_obj->getSecByKey($subcategory);
-					if (empty($sec) && !Config::get('app.filter_period')) {
-						return abort(404);
-					} elseif (!Config::get('app.filter_period')) {
-						$subastaObj->where_filter  .= " AND (HCES1.SEC_HCES1 = '$sec->cod_sec')";
-						$SEO_metas->url = Routing::translateSeo($route_customize) . $category;
-						$SEO_metas->subcategory = $sec->des_sec;
-						$SEO_metas->webname = $ortsec->des_ortsec0;
-						$SEO_metas->meta_title = $sec->meta_titulo_sec;
-						$SEO_metas->meta_description = $sec->meta_description_sec;
-						$SEO_metas->meta_content = $sec->meta_contenido_sec;
-					}
-				} else {
-					$SEO_metas->url = Routing::translateSeo($route_customize) . $category;
-					$SEO_metas->webname = $ortsec->des_ortsec0;
-					$SEO_metas->meta_title = $ortsec->meta_titulo_ortsec0;
-					$SEO_metas->meta_description = $ortsec->meta_description_ortsec0;
-					$SEO_metas->meta_content = $ortsec->meta_contenido_ortsec0;
-				}
-			}
-		}
-		//es subasta normal
-		else {
-			//Miramos si existe codigo de subasta, si no viene quiere decir que es una categoria
-
-			//Es no es una category que no reindexe
-			$SEO_metas->noindex_follow = true;
-			$subcategory = Request::input('cod_sec');
-			$category = Request::input('lin_ortsec');
-		}
-
-		return $category;
 	}
 
 	//Elimnar orden desde el panel del usuario

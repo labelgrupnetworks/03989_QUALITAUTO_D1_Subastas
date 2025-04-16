@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sec;
 use App\Models\V5\Web_Content_Page;
 use App\Models\WebNewbannerItemModel;
 use App\Models\WebNewbannerModel;
@@ -55,7 +54,6 @@ class NoticiasController extends Controller
 	public function news($lang, $key_categ, $key_news)
 	{
 		$blogService = new BlogService();
-		$sec = new Sec();
 
 		$isAdmin = Session::has('user.admin');
 		$categorys = $blogService->getCategory(null, !$isAdmin)
@@ -66,10 +64,6 @@ class NoticiasController extends Controller
 		if (empty($noticias) || empty($categorys[$noticias->primary_category_web_blog])) {
 			exit(View::make('front::errors.404'));
 		}
-
-		$cod_sub = '0';
-		$lot_categories = explode(",", $noticias->lot_categories_web_blog);
-		$categorys_web = $sec->getOrtsecByOrtsec($cod_sub, $lot_categories);
 
 		$noticias->cita_web_blog_lang =  '<div id="cita" class="post_text-special">' . $noticias->cita_web_blog_lang . '</div>';
 		$noticias->texto_web_blog_lang = str_replace('[*CITA*]', $noticias->cita_web_blog_lang, $noticias->texto_web_blog_lang);
@@ -92,7 +86,6 @@ class NoticiasController extends Controller
 			'relationship_new' => $relationship_new,
 			'categorys' => $categorys,
 			'seo' => $SEO_metas,
-			'categorys_web' => $categorys_web,
 			'contents' => $contents
 		);
 
