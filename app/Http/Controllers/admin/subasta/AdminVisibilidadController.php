@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\admin\subasta;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\FgVisibilidadRequest;
 use App\libs\FormLib;
-use App\Models\Filter;
 use App\Models\V5\FgSub;
 use App\Models\V5\FgVisibilidad;
+use App\ValueObjects\Filter;
+use Illuminate\Http\Request;
 
 class AdminVisibilidadController extends Controller
 {

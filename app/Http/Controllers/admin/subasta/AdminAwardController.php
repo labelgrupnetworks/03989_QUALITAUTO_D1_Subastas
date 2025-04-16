@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\admin\subasta;
 
-use App\Http\Controllers\Controller;
+use App\Exports\AwardsExport;
 use App\Http\Controllers\apilabel\AwardController;
+use App\Http\Controllers\Controller;
 use App\libs\FormLib;
+use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgLicit;
 use App\Models\V5\FxCli;
-use Illuminate\Http\Request;
-use App\Exports\AwardsExport;
-use App\Models\Filter;
-use App\Models\V5\FgAsigl0;
 use App\Providers\ToolsServiceProvider;
+use App\ValueObjects\Filter;
+use Illuminate\Http\Request;
 
 class AdminAwardController extends Controller
 {
