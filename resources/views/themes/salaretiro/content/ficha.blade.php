@@ -35,7 +35,7 @@
 
                         @foreach ($lote_actual->imagenes as $key => $imagen)
                             <div
-                                class="item_content_img_single"style="position: relative; height: 290px; overflow: hidden;">
+                                class="item_content_img_single"style="position: relative; overflow: hidden;">
                                 <img class="img-responsive" data-pos="{{ $key }}"
                                     src="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
                                     alt="{{ $lote_actual->titulo_hces1 }}"
