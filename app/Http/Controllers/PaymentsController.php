@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FgCsub0;
+use App\Models\V5\FsContav;
 use App\Models\V5\FsParams;
 use App\Models\V5\FxClid;
 use App\Models\V5\FxParam1;
@@ -1947,14 +1948,15 @@ class PaymentsController extends Controller
 
 			$facturas->serie = $fact_pag->serie_pcob1;
 			$facturas->numero = $fact_pag->numero_pcob1;
-			$tipo_fact = $facturas->bill_text_sub(substr($facturas->serie, 0, 1), substr($facturas->serie, 1));
-			if ($tipo_fact->tv_contav == 'T') {
+			$tipoFact = FsContav::getInvoceTypeBySerie($facturas->serie);
+
+			if ($tipoFact == 'T') {
 				$inf_fact['T'][$facturas->serie][$facturas->numero] = $facturas->getFactTexto();
-			} elseif ($tipo_fact->tv_contav == 'L' || $tipo_fact->tv_contav == 'P') {
+			} elseif ($tipoFact == 'L' || $tipoFact == 'P') {
 				$inf_fact['S'][$facturas->serie][$facturas->numero] = $facturas->getFactSubasta();
 			}
 
-			$tipo_tv[$facturas->serie][$facturas->numero] = $tipo_fact->tv_contav;
+			$tipo_tv[$facturas->serie][$facturas->numero] = $tipoFact;
 		}
 
 		if (!empty(Config::get('app.admin_email_administracion'))) {

@@ -10,6 +10,7 @@ use App\Models\Subasta;
 use App\Models\User;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FgSub;
+use App\Models\V5\FsContav;
 use App\Models\V5\FsPaises;
 use App\Models\V5\FxClid;
 use App\Models\V5\FxDvc0;
@@ -428,17 +429,18 @@ class AllotmentsAndBillsController extends Controller
 				$val_pendiente->date = $fact_temp['date'] ?? null;
 				$val_pendiente->factura = $fact_temp['filname'] ?? null;
 				//buscamos si la factura esta generada
-				$tipo_fact = $facturas->bill_text_sub(substr($facturas->serie, 0, 1), substr($facturas->serie, 1));
+				$tipoFact = FsContav::getInvoceTypeBySerie($facturas->serie);
+
 				//Dependeiendo de si es una factura de texto o de subasta informacion se busca en un sitio o otro
-				if ($tipo_fact->tv_contav == 'T') {
+				if ($tipoFact == 'T') {
 					$inf_fact['T'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturas->getFactTexto();
-				} elseif ($tipo_fact->tv_contav == 'L' || $tipo_fact->tv_contav == 'P') {
+				} elseif ($tipoFact == 'L' || $tipoFact == 'P') {
 					$inf_fact['S'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturas->getFactSubasta();
 				}
 				//Sacamos de factura el precio
 				$js_fact[$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = floatval($val_pendiente->imp_pcob);
 				//Generamos un array con el tipo de factura que es, nos sirve en la blade para los calculos
-				$tipo_tv[$facturas->serie][$facturas->numero] = $tipo_fact->tv_contav;
+				$tipo_tv[$facturas->serie][$facturas->numero] = $tipoFact;
 			}
 		}
 

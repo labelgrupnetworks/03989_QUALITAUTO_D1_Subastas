@@ -163,15 +163,6 @@ class Facturas extends Model
 
     }
 
-    public function bill_text_sub($letra,$num){
-        return DB::table('FSCONTAV')
-                ->select('TV_CONTAV')
-                ->where('PER_CONTAV',$num)
-                ->where('SER_CONTAV',$letra)
-                ->where('EMP_contav',Config::get('app.emp'))
-                ->first();
-    }
-
     public function getFactSubasta()
 	{
         $bindings = array(
@@ -268,7 +259,7 @@ class Facturas extends Model
                     INSERT (EMP_PCOB1,ANUM_PCOB1,NUM_PCOB1,COD_PCOB1,SERIE_PCOB1,NUMERO_PCOB1,EFECTO_PCOB1)
                     VALUES(:emp,:anum,:num,:cod_cli,:serie,:numero,:efec)";
               $bindings = array(
-                        'emp'   => \Config::get('app.emp'),
+                        'emp'   => Config::get('app.emp'),
                         'anum' =>$this->anum,
                         'num'=>$this->num,
                         'numero'=>$this->numero,
@@ -283,13 +274,13 @@ class Facturas extends Model
 
     public function insertFact(){
         DB::table('FXPCOB0')->insert([
-            ['EMP_PCOB0' => \Config::get('app.emp'), 'anum_pcob0' => $this->anum,'num_pcob0'=>$this->num, 'COD_PCOB0' => $this->cod_cli, 'IMP_PCOB0' => $this->imp, 'ESTADO_PCOB0' => 'N','TK_PCOB0' => $this->tk]
+            ['EMP_PCOB0' => Config::get('app.emp'), 'anum_pcob0' => $this->anum,'num_pcob0'=>$this->num, 'COD_PCOB0' => $this->cod_cli, 'IMP_PCOB0' => $this->imp, 'ESTADO_PCOB0' => 'N','TK_PCOB0' => $this->tk]
         ]);
         return true;
     }
 
     public function getFXPCOB0($emp,$num,$anum,$tk){
-        $gemp = \Config::get('app.gemp');
+        $gemp = Config::get('app.gemp');
         return DB::TABLE('FXPCOB0')
         ->Join('FXCLI',function($join) use($gemp){
            $join->on('FXPCOB0.COD_PCOB0','=','FXCLI.COD_CLI')
@@ -315,7 +306,7 @@ class Facturas extends Model
 
     public function getInfFactExt($trans){
        return DB::table('FXPCOB0_EXT')
-        ->WHERE('EMP_PCOB0_EXT',\Config::get('app.emp'))
+        ->WHERE('EMP_PCOB0_EXT',Config::get('app.emp'))
         ->WHERE('IDTRANS_PCOB0_EXT',$trans)
         ->first();
     }
@@ -419,7 +410,7 @@ class Facturas extends Model
 
     public function  maxCOBRO1($anum,$num){
         return DB::TABLE('FXCOBRO1')
-                ->where('emp_cobro1',\Config::get('app.emp'))
+                ->where('emp_cobro1',Config::get('app.emp'))
                 ->where('anum_cobro1',$anum)
                 ->where('emp_cobro1',$num)
                 ->max('lin_cobro1');
@@ -427,9 +418,9 @@ class Facturas extends Model
 
      public function insertCOBRO1($anum,$num,$bill,$params,$date,$max_lin){
 
-       $conc_cobro1 = substr(\Config::get('app.emp').'-'.$bill->anum_pcob.'/'.$bill->num_pcob.' - '.$bill->cod_pcob,0,19);
+       $conc_cobro1 = substr(Config::get('app.emp').'-'.$bill->anum_pcob.'/'.$bill->num_pcob.' - '.$bill->cod_pcob,0,19);
 
-       DB::table('FXCOBRO1')->insert(['EMP_COBRO1'=>\Config::get('app.emp'),'ANUM_COBRO1'=>$anum,'NUM_COBRO1'=>$num,'lin_cobro1'=>$max_lin,'TIPO_COBRO1'=>'3',
+       DB::table('FXCOBRO1')->insert(['EMP_COBRO1'=>Config::get('app.emp'),'ANUM_COBRO1'=>$anum,'NUM_COBRO1'=>$num,'lin_cobro1'=>$max_lin,'TIPO_COBRO1'=>'3',
            'TCOB_COBRO1'=>$bill->tcob_pcob,'cla_cobro1'=>$bill->cla_pcob,'afra_cobro1'=>$bill->anum_pcob,'nfra_cobro1'=>$bill->num_pcob,
            'efec_cobro1'=>$bill->efec_pcob,'cli_cobro1'=>$bill->cod_pcob,'rsoc_cobro1'=>$bill->rsoc_pcob,'fec_cobro1'=>$bill->fec_pcob,'vto_cobro1'=>$bill->vto_pcob,
            'imp_cobro1'=>$bill->imp_pcob,'cta_cobro1'=>$bill->cta_pcob,'banco_cobro1'=>$bill->banco_pcob,'dirb_cobro1'=>$bill->dirb_pcob,'entb_cobro1'=>$bill->entb_pcob,
@@ -445,7 +436,7 @@ class Facturas extends Model
     public function deletePCOB($bill){
 
         $sql = DB::table('FXPCOB')
-        ->where('emp_pcob',\Config::get('app.emp'))
+        ->where('emp_pcob',Config::get('app.emp'))
         ->where('cla_pcob','1')
         ->where('anum_pcob',$bill->anum_pcob)
         ->where('num_pcob',$bill->num_pcob)
@@ -458,11 +449,11 @@ class Facturas extends Model
     public function updateCOBRO0($anum_cob,$num_cob){
 
         DB::table('fxcobro0')
-        ->where('emp_cobro0',\Config::get('app.emp'))
+        ->where('emp_cobro0',Config::get('app.emp'))
         ->where('anum_cobro0',$anum_cob)
         ->where('num_cobro0',$num_cob)
         ->update(['total3_cobro0' => DB::TABLE('FXCOBRO1')
-                                        ->where('emp_cobro1',\Config::get('app.emp'))
+                                        ->where('emp_cobro1',Config::get('app.emp'))
                                         ->where('anum_cobro1',$anum_cob)
                                         ->where('num_cobro1',$num_cob)
                                         ->where('tipo_cobro1','3')
@@ -475,8 +466,8 @@ class Facturas extends Model
 
         $sql = "Select CERRARCOBRO(:emp ,:gemp ,:anum,:num) from dual";
         $binding = array(
-            'emp' => \Config::get('app.emp'),
-            'gemp' => \Config::get('app.gemp'),
+            'emp' => Config::get('app.emp'),
+            'gemp' => Config::get('app.gemp'),
             'anum' => $anum_cob,
             'num' => $num_cob
         );

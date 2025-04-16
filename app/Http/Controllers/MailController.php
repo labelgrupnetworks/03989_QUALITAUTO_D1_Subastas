@@ -12,6 +12,7 @@ use App\Models\V5\FgDeposito;
 use App\Models\V5\FgHces1;
 use App\Models\V5\FgLicit;
 use App\Models\V5\FgSub;
+use App\Models\V5\FsContav;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
 use App\Providers\RoutingServiceProvider as Routing;
@@ -984,7 +985,7 @@ class MailController extends Controller
 		}
 
 		//buscamos si la factura esta generada
-		$tipo_fact = $fact->bill_text_sub(substr($fact->serie, 0, 1), substr($fact->serie, 1));
+		$tipoFact = FsContav::getInvoceTypeBySerie($fact->serie);
 
 		if (empty($tipo_fact)) {
 			return;
@@ -992,9 +993,9 @@ class MailController extends Controller
 
 		App::setLocale(strtolower($inf_user->idioma_cli));
 
-		if ($tipo_fact->tv_contav == 'T') {
+		if ($tipoFact == 'T') {
 			$inf_fact['T'][$tipo_fact->tv_contav] = $fact->getFactTexto();
-		} elseif ($tipo_fact->tv_contav == 'L' || $tipo_fact->tv_contav == 'P') {
+		} elseif ($tipoFact == 'L' || $tipoFact == 'P') {
 			$inf_fact['S'][$tipo_fact->tv_contav] = $fact->getFactSubasta();
 		}
 
