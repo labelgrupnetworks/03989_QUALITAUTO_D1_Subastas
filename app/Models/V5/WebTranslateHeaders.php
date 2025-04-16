@@ -81,6 +81,23 @@ class WebTranslateHeaders extends Model
 	}
 
 	/**
+	 * Scope a query to join with web_translate.
+	 *
+	 * @param \Illuminate\Database\Eloquent\Builder $query
+	 * @param string $language
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public function scopeLeftJoinTranslate(Builder $query, string $language): Builder
+	{
+		$language = mb_strtoupper($language);
+		return $query->leftJoin('web_translate', function ($join) use ($language) {
+			$join->on('web_translate.id_key_translate', '=', 'web_translate_key.id_key')
+				->on('web_translate.id_emp', '=', 'web_translate_headers.id_emp')
+				->where('web_translate.lang', '=', $language);
+		});
+	}
+
+	/**
 	 * Scope a query to get all translations for a specific language and company.
 	 *
 	 * @param \Illuminate\Database\Eloquent\Builder $query

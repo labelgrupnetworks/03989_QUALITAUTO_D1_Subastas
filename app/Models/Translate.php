@@ -3,40 +3,35 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Models\V5\WebTranslateHeaders;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
 class Translate extends Model
 {
-    public function getTranslate($emp,$head,$lang){
-
-        $sql = "SELECT WEB_TRANSLATE_HEADERS.KEY_HEADER,WEB_TRANSLATE_KEY.KEY_TRANSLATE,WEB_TRANSLATE.WEB_TRANSLATION,WEB_TRANSLATE.ID_TRANSLATE,WEB_TRANSLATE.ID_KEY_TRANSLATE "
-            . "FROM WEB_TRANSLATE_HEADERS "
-            . "JOIN WEB_TRANSLATE_KEY ON (WEB_TRANSLATE_HEADERS.ID_HEADERS = WEB_TRANSLATE_KEY.ID_HEADERS_TRANSLATE AND WEB_TRANSLATE_KEY.ID_EMP = :emp) "
-            . "LEFT JOIN WEB_TRANSLATE ON (WEB_TRANSLATE_KEY.ID_KEY = WEB_TRANSLATE.ID_KEY_TRANSLATE AND WEB_TRANSLATE.ID_EMP = :emp AND WEB_TRANSLATE.LANG = :lang) "
-            . "WHERE  "
-            . " WEB_TRANSLATE_HEADERS.ID_EMP = :emp "
-            . "and WEB_TRANSLATE_HEADERS.KEY_HEADER= :head "
-            . "ORDER BY WEB_TRANSLATE_HEADERS.KEY_HEADER desc";
-
-             $params = array(
-				'head' => $head,
-				'lang' => $lang,
-				'emp' => $emp,
-            );
-
-
-         $trans = DB::select($sql, $params);
-         $res = array();
-         foreach($trans as $tra){
-             $res[$tra->key_translate] = $tra;
-         }
+    public function getTranslate($emp,$head,$lang)
+	{
+		$res = WebTranslateHeaders::query()
+		 	->select([
+				'web_translate_headers.key_header',
+				'web_translate_key.key_translate',
+				'web_translate.web_translation',
+				'web_translate.id_translate',
+				'web_translate.id_key_translate'
+			])
+		 	->joinTranslateKey()
+			->leftJoinTranslate($lang)
+			->where('web_translate_headers.key_header', $head)
+			->orderBy('web_translate_headers.key_header')
+			->get()
+			->keyBy('key_translate')
+			->all();
 
          return $res;
-
     }
 
+	//en vista de traducciones
     public function headersTrans(){
        return DB::TABLE('WEB_TRANSLATE_HEADERS')
          ->where('ID_EMP',Config::get('app.main_emp'))

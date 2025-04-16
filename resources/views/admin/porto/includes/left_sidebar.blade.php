@@ -1,10 +1,7 @@
 <?php
 $config_menu_admin = Config::get('app.config_menu_admin');
-$traducciones = new \App\Models\Translate();
-$trans = $traducciones->headersTrans();
-$idiomes = \Config::get('app.locales');
-$isLabelAdmin = strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM';
 
+$isLabelAdmin = strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM';
 $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
 ?>
 <aside class="sidebar-left" id="sidebar-left">
