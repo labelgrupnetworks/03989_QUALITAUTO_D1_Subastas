@@ -5738,3 +5738,68 @@ h1.user-dashboard-title {
 	margin-bottom: 2rem;
 	font-weight: bold;
 }
+
+.banner-modal-lotlist>.container {
+	width: 100%;
+}
+
+.banner-modal-lotlist>button {
+	width: 1em;
+	aspect-ratio: 1 / 1;
+	border: 1px dotted var(--primary-color);
+	opacity: .5;
+	color: var(--primary-color);
+	font-size: 2em;
+	position: absolute;
+	right: 15px;
+	z-index: 5;
+}
+
+.banner-modal-lotlist>button:hover, .banner-modal-lotlist>button:focus {
+	opacity: 1;
+	color: var(--primary-color);
+}
+
+.banner-modal-lotlist>.container>.row {
+	display: flex;
+	flex-direction: column;
+}
+
+.banner-modal-lotlist>.container>.row>.column_banner {
+	flex: 1;
+}
+
+.banner-modal-lotlist>.container>.row>.column_banner:first-child {
+	display: none;
+}
+
+@media(min-width: 768px) {
+	.banner-modal-lotlist>.container>.row>.column_banner:first-child {
+		display: block;
+	}
+}
+
+@media(min-width: 992px) {
+	.banner-modal-lotlist>.container>.row {
+		flex-direction: row;
+	}
+}
+
+.banner-modal-lotlist img {
+	width: 100%;
+	height: auto;
+}
+
+.banner-modal-lotlist .item_texto {
+	font-size: 18px;
+}
+
+.banner-modal-lotlist h2 {
+	font-family: 'Playfair Display', serif;
+	color: #292929;
+	padding: 10px 0;
+	font-size: 30px;
+	font-weight: 600;
+	border-bottom: 1px solid var(--primary-color);
+	margin-top: 0;
+}

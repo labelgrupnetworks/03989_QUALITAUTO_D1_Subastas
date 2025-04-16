@@ -1443,3 +1443,30 @@ function sendContactForm(event) {
 	const form = event.currentTarget;
 	validateCaptchaMiddleware(() => form.submit())
 }
+
+function showLotListModal(codSub, idAucSession) {
+
+	const scrollThreshold = 300;
+	const key = `bannerLotList_${codSub}_${idAucSession}`;
+
+	// Si ya se ha mostrado el modal, no lo volvemos a mostrar
+	if (sessionStorage.getItem(key)) {
+		return;
+	}
+
+	// Guardamos en variable para poder eliminar el evento
+	const scrollHandler = function () {
+		if ($(window).scrollTop() > scrollThreshold) {
+
+			$('#bannerModal').modal('show');
+			$('#bannerModal').on('shown.bs.modal', function () {
+				$('.grid-banner').slick('refresh');
+			});
+
+			sessionStorage.setItem(key, 'true');
+			$(window).off('scroll', scrollHandler);
+		}
+	};
+
+	$(window).on('scroll', scrollHandler);
+}

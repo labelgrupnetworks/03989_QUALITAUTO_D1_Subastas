@@ -12,7 +12,11 @@
         $sub_data = $data['sub_data'];
         $url_subasta = \Routing::translateSeo('info-subasta') . $sub_data->cod_sub . '-' . str_slug($sub_data->des_sub);
 
-        $url_indice = \Routing::translateSeo('indice-subasta') . $sub_data->cod_sub . '-' . str_slug($sub_data->des_sub . '-' . $sub_data->id_auc_sessions);
+        $url_indice =
+            \Routing::translateSeo('indice-subasta') .
+            $sub_data->cod_sub .
+            '-' .
+            str_slug($sub_data->des_sub . '-' . $sub_data->id_auc_sessions);
         $indice = trans(\Config::get('app.theme') . '-app.lot_list.indice_auction');
         $name = trans(\Config::get('app.theme') . '-app.subastas.auctions');
 
@@ -53,16 +57,45 @@
 
         $data['subastas'][$k]->total_postores = sizeof($aux_postores);
 
-		$favorites = [];
-		if (Session::has('user') && !empty($data['favs']['lot'][$item->cod_sub])) {
-			$favorites = array_keys($data['favs']['lot'][$item->cod_sub]);
-		}
+        $favorites = [];
+        if (Session::has('user') && !empty($data['favs']['lot'][$item->cod_sub])) {
+            $favorites = array_keys($data['favs']['lot'][$item->cod_sub]);
+        }
     }
+
+    $codSub = $data['cod_sub'] ?? '';
+    $idAucSession = $data['id_auc_sessions'] ?? '';
 @endphp
 
 @section('content')
     <main class="grid">
-        <input type="hidden" name="lot_see_configuration" value="{{ $styleLotSeeConfiguration }}">
+        <input name="lot_see_configuration" type="hidden" value="{{ $styleLotSeeConfiguration }}">
+
         @include('content.subasta')
+
+        {{-- Modal for showing banner on scroll --}}
+        @if (!Session::has('user'))
+            <div class="modal fade" id="bannerModal" role="dialog" aria-labelledby="bannerModalLabel" tabindex="-1">
+                <div class="modal-dialog modal-lg" role="document"
+                    style="margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <div class="modal-content p-0">
+                        <div class="modal-body banner-modal-lotlist">
+                            <button class="close" data-dismiss="modal" type="button" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+
+                            {!! \BannerLib::bannersPorKey('grid-banner', 'grid-banner') !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function() {
+                    const codSub = '{{ $codSub }}';
+                    const idAucSession = '{{ $idAucSession }}';
+                    showLotListModal(codSub, idAucSession);
+                });
+            </script>
+        @endif
     </main>
 @stop
