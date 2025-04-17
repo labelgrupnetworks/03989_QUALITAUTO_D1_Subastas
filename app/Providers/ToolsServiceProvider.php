@@ -4,9 +4,7 @@ namespace App\Providers;
 
 use App\libs\CacheLib;
 use App\libs\ImageGenerate;
-use App\Models\Facturas;
 use App\Models\Payments;
-use App\Models\Subasta;
 use App\Models\V5\FxCli;
 use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Category_Blog_Lang;
@@ -14,7 +12,6 @@ use App\Providers\RoutingServiceProvider as Routing;
 use App\Services\User\UserAddressService;
 use DOMDocument;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
@@ -22,8 +19,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Request as FacadeRequest;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
@@ -229,95 +224,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return $str;
 	}
 
-	public static function printFilterOrderBy()
-	{
-		$options = Config::get('app.filter_total_shown_options');
-
-		$contents = view('front::includes.filters.order_by', ['options' => $options])->render();
-		echo $contents;
-	}
-
-	# Obtiene y muestra los filtros para la lista de lotes de la subasta
-	public static function printFilters($cod_sub, $id_auc_sessions)
-	{
-		$options = array();
-		$sub = new Subasta();
-		$sub->cod = $cod_sub;
-		$sub->id_auc_sessions = $id_auc_sessions;
-		$cat = Route::current()->parameter('cat');
-
-		# Familias
-		//FER Q LES FAMILIES ES VEGIN AFECTADES SEGONS ELS MATERIALS SELECCIONATS. (FILTRE POSTERIOR)
-		if (!empty($cat)) {
-			# Filtra las familias segun la categoria de la subasta seleccionada.
-			$sub->where_filter .= " AND sec1.LIN_ORTSEC1 = " . $cat;
-		}
-		$options['families'] = $sub->getFamilies();
-
-		# Materiales
-		$selected_mats = FacadeRequest::input('mat');
-		$selected_families = FacadeRequest::input('fam');
-		$available_mats = array(1, 2, 3, 4, 5);
-
-		# Obtiene los filtros por material disponibles.
-		foreach ($available_mats as $val) {
-			$s_key = false;
-			$sub->where_filter = '';
-			$cont = 0;
-
-			# Filtra el resultado de cada material según el resto de materiales seleccionados
-			if (!empty($selected_mats)) {
-				foreach ($selected_mats as $k => $smat) {
-					if (empty($smat)) {
-						continue;
-					}
-
-					if ($k != $val) {
-						$expl = explode('.', $smat);
-						$sec = $expl[0];
-						$num = $expl[1];
-
-						if ($cont > 0) {
-							$op = ' AND ';
-						} else {
-							$op = ' AND ';
-						}
-
-						$sub->where_filter .= $op . "fghces1sr.APAR" . $k . "_HCES1SR = " . $num;
-						$cont++;
-					}
-				}
-			}
-
-			# Segun la categoria seleccionada
-			if (!empty($cat)) {
-				$sub->where_filter .= " AND fgortsec1.LIN_ORTSEC1 = " . $cat;
-			}
-
-			# Segun la familia seleccionada muestra unos filtros u otros.
-			if (!empty($selected_families)) {
-				$cont1 = 0;
-				foreach ($selected_families as $fami => $value) {
-					if ($cont1 > 0) {
-						$op1 = " OR ";
-					} else {
-						$op1 = " AND (";
-					}
-					$sub->where_filter .= $op1 . " fghces1.SEC_HCES1 = '" . $fami . "'";
-					$cont1++;
-				}
-				$sub->where_filter .= ')';
-			}
-
-			$options['materials'][$val] = $sub->getMaterials($val);
-		}
-
-		# Imprime el contenido de la vista.
-		$contents = view('front::includes.filters.main', ['options' => $options])->render();
-		echo $contents;
-	}
-
-
 	# Función a través de la que tienen que pasar todos los envíos de email.
 	public static function sendMail($template, $emailOptions)
 	{
@@ -371,20 +277,9 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 	}
 
-	# Función para mostrar el select menú de los idiomas
-	public static function showLanguageSelector()
-	{
-
-		if (Config::get('app.enable_language_selector')) {
-			# Array de idiomas disponibles
-			$idiomas = Config::get('app.locales');
-
-			# Imprime el contenido de la vista.
-			$contents = view('front::includes.languages', ['idiomas' => $idiomas])->render();
-			echo $contents;
-		}
-	}
-
+	/**
+	 * En admin
+	 */
 	public static function getOtherLanguages()
 	{
 		return array_diff_key(config('app.locales'), [config('app.locale') => 1]);
@@ -466,43 +361,6 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 	}
 
-
-	public static function getFilters($cod_sub)
-	{
-		$sql = "select col_subfw from FGSUBFW where emp_subfw = '" . Config::get('app.emp') . "' and sub_subfw= :cod_sub ";
-		$columns_db = DB::select($sql, array("cod_sub", $cod_sub));
-		$columns = "";
-		$coma = "";
-		//array que generará los selectores
-		$selectors = array();
-		foreach ($columns_db as $column) {
-			$columns .= $coma . '  otv."' . $column->col_subfw  . '" ';
-			$coma = ',';
-			$selectors[$column->col_subfw] = array();
-		}
-
-		$sql = "select $columns from fghces1 hces1
-            join \"object_types_values\" otv on ( otv.\"company\" = hces1.emp_hces1 and otv.\"transfer_sheet_number\" = hces1.num_hces1 and otv.\"transfer_sheet_line\" = hces1.lin_hces1)
-
-             where hces1.emp_hces1= '" . Config::get('app.emp') . "' and  sub_hces1 = :cod_sub
-            ";
-		$object_types_values = DB::select($sql, array("cod_sub", $cod_sub));
-		foreach ($object_types_values as $values) {
-			foreach ($selectors as $key => $selector) {
-				$val = trim($values->{$key});
-				if (!empty($val)) {
-					$selectors[$key][$val] = $val;
-				}
-			}
-		}
-		//ordenamos los filtros
-		foreach ($selectors as $key => $selector) {
-			asort($selectors[$key]);
-		}
-
-		return $selectors;
-	}
-
 	public static function get_month_lang($key_month, $month_list)
 	{
 		$months = array();
@@ -519,38 +377,6 @@ class ToolsServiceProvider extends ServiceProvider
 			}
 		}
 		return '';
-	}
-
-	public static function countAdjPagar()
-	{
-
-		$count_lots_adj = 0;
-		if (Session::has('user')) {
-			$user = new \App\Models\User();
-			$user->cod_cli = Session::get('user.cod');
-			$user->itemsPerPage = 'count';
-			$count_lots_adj_temp = $user->getAdjudicacionesPagar('N');
-			if (!empty($count_lots_adj_temp)) {
-				$count_lots_adj = $count_lots_adj_temp;
-			}
-		}
-		return $count_lots_adj;
-	}
-
-	public static function countFactPagar()
-	{
-
-		$count_fact = 0;
-		if (Session::has('user')) {
-			$facturas = new Facturas();
-			$facturas->cod_cli = Session::get('user.cod');
-			//Sacamos facturas pendiente de pago
-			$pendientes = $facturas->pending_bills();
-			if (!empty($pendientes)) {
-				$count_fact = count($pendientes);
-			}
-		}
-		return $count_fact;
 	}
 
 	public static function PaisesEUR()
@@ -959,41 +785,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return '/' . $url . '?a=' . rand();
 	}
 
-	public static function generateUrlGet($getValue = array())
-	{
-
-		$req = FacadeRequest::all();
-		$to_concat = '';
-		$cont = 0;
-
-		if (isset($req['subperiodo']))
-			unset($req['subperiodo']);
-
-		$req = array_merge($req, $getValue);
-
-		if (!empty($req)) {
-			foreach ($req as $key => $value) {
-
-
-
-				if (!is_array($value)) {
-					if ($cont == 0) {
-						$to_concat .= '?' . $key . '=' . $value;
-					} else {
-						$to_concat .= '&' . $key . '=' . $value;
-					}
-				} else {
-					foreach ($value as $k => $v) {
-						$to_concat .= '&' . $key . '[' . $k . ']=' . $v;
-					}
-				}
-
-				$cont++;
-			}
-		}
-		return $to_concat;
-	}
-
 	public static function replaceDangerqueryCharacter($text)
 	{
 		// ()|='"#&<>~/\!, [] {}
@@ -1012,36 +803,14 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 	}
 
-
-	/* function injectionSQL($consulta){
-        $injection['in'] =  array('delete','insert','created','drop','alter','update','select');
-        $val_injection= false;
-
-
-        foreach ($injection['in'] as $valor){
-            $consulta_temp=stripos($consulta, $valor);
-            if($consulta_temp !== false){
-                $val_injection = true;
-                break;
-            }
-        }
-        return  $val_injection;
-     }*/
-
-
+	/**
+	 * en admin
+	 */
 	static public function Construir_fecha($data)
 	{
 		if ($data) {
 			$res = explode(" ", $data);
 			return $res[0][8] . $res[0][9] . "/" . $res[0][5] . $res[0][6] . "/" . $res[0][0] . $res[0][1] . $res[0][2] . $res[0][3];
-		}
-	}
-
-	static public function Construir_hora($data)
-	{
-		if ($data) {
-			$res = explode(" ", $data);
-			return $res[1][0] . $res[1][1] . $res[1][2] . $res[1][3] . $res[1][4];
 		}
 	}
 
@@ -1056,77 +825,6 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 		return $cadena;
 	}
-
-	static public function mb_ucfirst($str, $encoding = "UTF-8", $lower_str_end = false)
-	{
-		$first_letter = mb_strtoupper(mb_substr($str, 0, 1, $encoding), $encoding);
-		$str_end = "";
-		if ($lower_str_end) {
-			$str_end = mb_strtolower(mb_substr($str, 1, mb_strlen($str, $encoding), $encoding), $encoding);
-		} else {
-			$str_end = mb_substr($str, 1, mb_strlen($str, $encoding), $encoding);
-		}
-		$str = $first_letter . $str_end;
-		return $str;
-	}
-
-	static function getFragment($inicial, $final, $html)
-	{
-
-		$a = strstr($html, $inicial);
-		$b = strstr($a, $final);
-		$c = str_replace($b, "", $a);
-
-		return $c;
-	}
-
-	static function getAll($inicial, $final, $html)
-	{
-
-		$t = 0;
-		while ($html != "" && $t < 10000) {
-			$a = strstr($html, $inicial);
-			$b = strstr($a, $final);
-			$c = str_replace($b, "", $a);
-			$c = str_replace($inicial, "", $c);
-			if ($c != "") {
-				$ret[] = $c;
-			} else {
-				break;
-			}
-			$html = $b;
-			$t++;
-		}
-		return $ret;
-	}
-
-	static public function Seo_url($strValue)
-	{
-		$a = strtolower(self::Limpia(str_replace(' ', '-', str_replace("'", ':', $strValue))));
-		$a = str_replace("------", "-", $a);
-		$a = str_replace("-----", "-", $a);
-		$a = str_replace("----", "-", $a);
-		$a = str_replace("---", "-", $a);
-		$a = str_replace("--", "-", $a);
-		return $a;
-	}
-
-
-
-	static public function Limpia($cadena)
-	{
-
-		$vocales = array("á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú", "à", "è", "ì", "ò", "ù", "À", "È", "Ì", "Ò", "Ù", "ä", "ë", "ï", "ö", "ü", "Ä", "Ë", "Ï", "Ö", "Ü", "â", "ê", "î", "ô", "û", "Â", "Ê", "Î", "Ô", "Û");
-		$acentos = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U");
-		$cadena = str_replace($vocales, $acentos, $cadena);
-
-		$caracteres = array("!", '"', "·", "$", "%", "&", "/", "(", ")", "=", "?", "¿", "'", "¡", "`", "+", "´", "ç", "¨", "^", "*", "º", "ª", "[", "]", "{", "}", " ", ",", ".", ";", "€", "ñ", "Ñ", ":", "®", "<", ">", "", "");
-		$resultados = array("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "-", "", "", "", "", "n", "N", "", "", "", "", "", "");
-
-		$frase = str_replace($caracteres, $resultados, $cadena);
-		return $frase;
-	}
-
 
 	static function personalJsCss($admin = 0)
 	{
@@ -1226,13 +924,6 @@ class ToolsServiceProvider extends ServiceProvider
 			return abort(404);
 		}
 	}
-	#sirve para arrays tambien
-	public static function exit404IfEmptyCollection($collection = null)
-	{
-		if (count($collection) == 0) {
-			return abort(404);
-		}
-	}
 
 	#devuelve el numero de lotes que hay para este elemento
 	public static function showNumLots($numActiveFilters, $filters,  $level, $value)
@@ -1276,26 +967,6 @@ class ToolsServiceProvider extends ServiceProvider
 	}
 
 	/**
-	 * Metodo generico para enviar respuestas Json
-	 * @param bool $succes Resultado
-	 * @param string $mensaje Mensaje enviado
-	 * @param array $datos Body de la respuesta
-	 * @param int $codigo Codigo http
-	 * @param string $member Clave publica
-	 * @return JsonResponse json
-	 */
-	public static function enviar(bool $succes, string $mensaje, array $datos, int $codigo, string $member = ""): JsonResponse
-	{
-
-		return response()->json([
-			'succes' => $succes,
-			'message' => $mensaje,
-			'data' => $datos,
-			'member' => $member
-		], $codigo);
-	}
-
-	/**
 	 * Metodo de encriptación
 	 * @param string $data datos a encriptar
 	 * @param string $key clave de encriptación
@@ -1310,23 +981,6 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 		return openssl_decrypt(base64_decode($data), 'AES-256-ECB', $key, OPENSSL_RAW_DATA);
 	}
-
-	/*
-	public static function breadCrumbSeo($dataSeo){
-
-        $breadCrumb[]= array(
-            "name" => $dataSeo->h1_seo,
-            "url" => $dataSeo->url,
-            "title" => $dataSeo->title_seo);
-
-        if(!empty($dataSeo->parent)){
-           $breadCrumb= array_merge( ToolsServiceProvider::breadCrumbSeo($dataSeo->parent),$breadCrumb);
-        }
-
-        return $breadCrumb;
-
-    }
-*/
 
 	public static function urlAssetsCache($path)
 	{
@@ -1376,6 +1030,9 @@ class ToolsServiceProvider extends ServiceProvider
 		return Carbon::createFromFormat($formatOrigin, $dateValue)->format($formatReturn);
 	}
 
+	/**
+	 * En visa Subarna
+	 */
 	public static function getParseDateFormat($dateValue, $formatReturn)
 	{
 		if(empty($dateValue)){
@@ -1385,6 +1042,7 @@ class ToolsServiceProvider extends ServiceProvider
 	}
 
 	/**
+	 * En vista Subarna
 	 * return date in format day month. Example: 12 de enero / January 12th
 	 * @param string $dateValue
 	 */
@@ -1596,6 +1254,9 @@ class ToolsServiceProvider extends ServiceProvider
 		]);
 	}
 
+	/**
+	 * En Ansorena
+	 */
 	public static function getBlogURLTranslated($lang, $web_blog_id): array
 	{
 		$blogs = Web_Blog::where('IDBLOG_WEB_BLOG_LANG', $web_blog_id)->joinWebBlogLang()->get();
