@@ -4,26 +4,22 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\libs\TradLib;
-use App\Models\Translate;
+use App\Models\V5\WebTranslateHeaders;
 use App\Providers\ToolsServiceProvider;
+use App\Services\admin\Content\TranslateService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class TraduccionesController extends Controller
 {
-	public $emp;
-	public $gemp;
-	public $content;
-	public $archiveLang;
+	private $content;
+	private $archiveLang;
 
 	public function __construct()
 	{
-		$this->emp = Config::get('app.main_emp');
-		$this->content = new Translate();
+		$this->content = new TranslateService();
 		view()->share(['menu' => 'translates']);
 	}
 
@@ -55,10 +51,12 @@ class TraduccionesController extends Controller
 			];
 		}
 
-		$data[$lang] = array_merge($traduccion, $this->content->getTranslate($this->emp, $head, $lang));
+		$data[$lang] = array_merge($traduccion, $this->content->getTranslate($head, $lang));
 		$data['key'] = $head;
 		$data['lang'] = $lang;
 		$data['trans'] = true;
+
+		$data['translateHeaders'] = WebTranslateHeaders::get();
 
 		return View::make('admin::pages.traducciones', array('data' => $data));
 	}
@@ -71,68 +69,59 @@ class TraduccionesController extends Controller
 	 *  - En caso de borrar web_translate desde panel, esta no se borrara de la db.
 	 *      (con esto controlo no guardar campos null a la db, pero por contra no puedo dejar un campo vacio una vez creado)
 	 */
-	public function SavedTrans()
+	public function SavedTrans(Request $request, TranslateService $translateService)
 	{
-		$fechaactual = date("d m y H:i:s");
-		$lang = Request::input('lang');
-		$data = array();
+		$lang = $request->input('lang');
+		$data = [];
 
 		//creamos array con los diferentes key_header, key_translate y web_translation
-		foreach ($_POST as $input_name => $value_old) {
-			if ((string) $input_name != 'lang' && (string) $input_name != 'key_header' && (string) $input_name != '_token') {
+		foreach ($request->except('_token', 'lang', 'key_header') as $input_name => $value_old) {
 
-				//extraemos del name el key_header y el key_tranlate
-				$valores = explode("**", $input_name);
-				$key_header = $valores[0];
-				$key_translate = $valores[1];
+			//extraemos del name el key_header y el key_tranlate
+			$valores = explode("**", $input_name);
+			$key_header = $valores[0];
+			$key_translate = $valores[1];
 
-				if (empty($data[$key_header])) {
-					$data[$key_header] = array();
-				}
-
-				//reemplazamos lascomillassimples para que no den error en el js
-				$web_translation = str_replace("'", "´", $_POST[$input_name]);
-
-				$data[$key_header][$key_translate] = $web_translation;
+			if (empty($data[$key_header])) {
+				$data[$key_header] = [];
 			}
+			//reemplazamos lascomillassimples para que no den error en el js
+			$web_translation = str_replace("'", "´", $value_old);
+
+			$data[$key_header][$key_translate] = $web_translation;
 		}
 
 		//recorreos array constuido para crear o actualizar sus valores en db
 		foreach ($data as $key_header => $key_translate) {
 
-			//Si el header no existe en base de datos, se crea
-
-			$id_header_result = $this->content->idHeaders($key_header, $this->emp);
-
-			if (empty($id_header_result)) {
-				$id_header = $this->content->maxIdHeader($this->emp) + 1;
-				$this->content->insertHeader($id_header, $this->emp, $key_header);
-			} else {
-				$id_header = $id_header_result->id_headers;
+			$idHeader = $translateService->getIdHeaderToTranslateHeaderByKey($key_header);
+			if (empty($idHeader)) {
+				$idHeader = $translateService->insertWebTranslateHeader($key_header);
 			}
 
 			foreach ($key_translate as $key => $web_translation) {
-				$id_key_translate = $this->content->idKeyTranslateHeader($this->emp, $key, $id_header);
+
+				$id_key_translate = $translateService->idKeyTranslateHeader($key, $idHeader);
 
 				//puede existir la key_translate pero no en el idioma actual, exist elimina esa posibilidad
-				$exist = $this->content->idKey($this->emp, $id_key_translate, $lang);
+				$exist = $translateService->idKey($id_key_translate, $lang);
 
 				//si no existe
 				if ((empty($id_key_translate) || empty($exist))) {
 					//si el texto del input no esta vacio
 					if (!empty($web_translation)) {
-						$this->nuevaTranslate($id_key_translate, $fechaactual, $key_header, $web_translation, $key, $lang);
+						$this->nuevaTranslate($id_key_translate, $key_header, $web_translation, $key, $lang);
 					}
 				}
 				//Si existe
 				else {
 					//si el input no esta vacio actualiza
 					if (!empty($web_translation)) {
-						$this->content->updateTrans($id_key_translate, $web_translation, $this->emp, Session::get('user.name'), $fechaactual, $lang);
+						$translateService->updateTrans($id_key_translate, $web_translation, $lang);
 					}
 					//si esta vacio, borra
 					else {
-						$this->content->deleteTrans($id_key_translate, $this->emp, $lang);
+						$translateService->deleteTrans($id_key_translate, $lang);
 					}
 				}
 			}
@@ -152,39 +141,32 @@ class TraduccionesController extends Controller
 	 * Si web_translation no existe lo crea
 	 * en caso de no tener id_key_translate también lo crea
 	 */
-	public function nuevaTranslate($id_key_translate, $fechaactual, $key_headers, $web_translation, $key_translate, $lang)
+	public function nuevaTranslate($id_key_translate, $key_headers, $web_translation, $key_translate, $lang)
 	{
-
-		$id_headers = $this->content->idHeaders($key_headers, $this->emp);
+		$id_headers = $this->content->getIdHeaderToTranslateHeaderByKey($key_headers);
 
 		//en caso de no existir key, la crea. (Es posible que no existra translate en el idiomoa acutal pero si en otro)
-		if ($id_key_translate == null) {
-			$id_key_translate = $this->content->MaxHeaders($this->emp);
-			$id_key_translate++;
-			$this->content->insertKey($id_key_translate, $id_headers->id_headers, $this->emp, $key_translate);
+		if (empty($id_key_translate)) {
+			$id_key_translate = $this->content->insertKey($id_headers, $key_translate);
 		}
 
-		$id_translate = $this->content->maxIdTranslate($this->emp);
-		$id_translate++;
-		$this->content->insertTrans($id_key_translate, $id_translate, $web_translation, $this->emp, Session::get('user.name'), $fechaactual, $lang);
+		$this->content->insertTrans($id_key_translate, $web_translation, $lang);
 	}
 
 
-	public function NewTrans()
+	public function NewTrans(Request $request, TranslateService $translateService)
 	{
-		$fechaactual = date("d m y H:i:s");
-		$key_headers = Request::input('key_headers');
-		$lang = Request::input('lang');
-		$web_translation = Request::input('web_translation');
-		$key_translate = Request::input('key_translate');
-		$id_headers = $this->content->idHeaders($key_headers, $this->emp);
-		$id = $this->content->MaxHeaders($this->emp);
-		$id++;
-		$this->content->insertKey($id, $id_headers->id_headers, $this->emp, $key_translate);
-		$id_key = $id;
-		$id = $this->content->maxIdTranslate($this->emp);
-		$id++;
-		$this->content->insertTrans($id_key, $id, $web_translation, $this->emp, Session::get('user.name'), $fechaactual, $lang);
+		$key_headers = $request->input('key_headers');
+		$lang = $request->input('lang');
+		$web_translation = $request->input('web_translation');
+		$key_translate = $request->input('key_translate');
+
+		$id_headers = $translateService->getIdHeaderToTranslateHeaderByKey($key_headers);
+
+		$id_key = $translateService->insertKey($id_headers, $key_translate);
+
+		$translateService->insertTrans($id_key, $web_translation, $lang);
+
 		try {
 			Artisan::call('generate:jstranslates');
 		} catch (\Exception $e) {
@@ -200,28 +182,28 @@ class TraduccionesController extends Controller
 	 *
 	 * No mostrar texto en input si este solo esta en el otro idioma
 	 */
-	public function search()
+	public function search(Request $request)
 	{
-		$data = array();
-
-		if (!empty($_GET["lang"]) && !empty($_GET["web_translation"])) {
-
-			$data = array(
-				'lang' => $_GET["lang"],
-				'trad' => array(),
-			);
-
-			//busca y carga archivo y db
-			//$data['trad'] = $this->cargarArchivo($_GET["lang"]);
-			$data['trad'] = TradLib::getTranslations($_GET["lang"]);
-			$this->archiveLang = TradLib::getArchiveTranslations($_GET["lang"]);
-			ToolsServiceProvider::linguisticSearch();
-
-			//busca resutados que contengan la cadena
-			$data['trad'] = $this->searchTranslate($_GET["web_translation"], $data['trad'], $_GET["lang"]);
-
-			ToolsServiceProvider::normalSearch();
+		$data = [];
+		if (!$request->has('lang') || !$request->has('web_translation')) {
+			return view('admin::pages.traducciones_search', ['data' => $data]);
 		}
+
+		$webTranslation = $request->input('web_translation');
+		$lang = $request->input('lang');
+
+		$translates = TradLib::getTranslations($lang);
+
+		ToolsServiceProvider::linguisticSearch();
+
+		$data = [
+			'lang' => $lang,
+			'web_translation' => $webTranslation,
+			'trad' => $this->searchTranslate($webTranslation, $translates, $lang)
+		];
+
+		ToolsServiceProvider::normalSearch();
+
 		return View::make('admin::pages.traducciones_search', array('data' => $data));
 	}
 
@@ -272,11 +254,11 @@ class TraduccionesController extends Controller
 					$id_key_translate = "";
 					$id_key_web = "";
 
-					$id_headers = $this->content->idHeaders($key_header, $this->emp);
+					$id_headers = $this->content->getIdHeaderToTranslateHeaderByKey($key_header);
 
 					if (!empty($id_headers)) {
-						$id_key_translate = $this->content->idKeyTranslateHeader($this->emp, $key_translate, $id_headers->id_headers);
-						$id_key_web = $this->content->idKey($this->emp, $id_key_translate, $lang);
+						$id_key_translate = $this->content->idKeyTranslateHeader($key_translate, $id_headers);
+						$id_key_web = $this->content->idKey($id_key_translate, $lang);
 					}
 
 					//Si no encuentro $id_headers guardo la key_header para que no produzca error
@@ -284,9 +266,7 @@ class TraduccionesController extends Controller
 						$id_headers = (object) array("id_headers" => $key_header);
 					}
 
-
 					$datos = (object) array(
-						"id_emp" => $this->emp,
 						"lang" => $lang,
 						"web_translation" => $web_translation,
 						"id_headers" => $id_headers->id_headers,

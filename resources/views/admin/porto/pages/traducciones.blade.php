@@ -67,10 +67,6 @@
                     </div>
                 </form>
             </section>
-            @php
-				$traducciones = new \App\Models\Translate();
-				$trans_headers = $traducciones->headersTrans();
-			@endphp
             @if (!empty($_GET) && $_GET['admin'] == 'superadmin')
 				@php
 					$js_translate_template = view('admin::includes.translations.translation', ['has_translation' => false])->render();
@@ -84,7 +80,7 @@
                             <div class="row mb-10">
                                 <div class="col-md-3  mb-10">
                                     <select class="form-control" name='key_headers'>
-                                        @foreach ($trans_headers as $trans_header)
+                                        @foreach ($data['translateHeaders'] as $trans_header)
                                             <option value="{{ $trans_header->key_header }}" @selected($trans_header->key_header == $data['key'])>
                                                 {{ $trans_header->key_header }}
                                             </option>

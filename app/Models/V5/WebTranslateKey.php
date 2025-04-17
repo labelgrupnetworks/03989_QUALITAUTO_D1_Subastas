@@ -4,6 +4,8 @@ namespace App\Models\V5;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Builder;
 
 class WebTranslateKey extends Model
 {
@@ -28,16 +30,24 @@ class WebTranslateKey extends Model
      */
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'key_translate',
-        'id_headers_translate',
-        'id_emp'
-    ];
+	protected $guarded = [];
+
+	public function __construct(array $vars = [])
+	{
+		$this->attributes = [
+			'id_emp' => Config::get("app.main_emp")
+		];
+		parent::__construct($vars);
+	}
+
+	protected static function boot()
+	{
+		parent::boot();
+
+		static::addGlobalScope('emp', function (Builder $builder) {
+			$builder->where('id_emp', Config::get("app.main_emp"));
+		});
+	}
 
     /**
      * Get the header that owns the translation key.
