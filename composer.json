@@ -16,7 +16,7 @@
         "maatwebsite/excel": "3.1.58",
         "mobiledetect/mobiledetectlib": "4.8.09",
         "neitanod/forceutf8": "v2.0.4",
-        "opcodesio/log-viewer": "2.4",
+        "opcodesio/log-viewer": "v3.15.5",
         "setasign/fpdf": "1.8.4",
         "setasign/fpdi": "v2.3.6",
         "simplesoftwareio/simple-qrcode": "4.2.0",
