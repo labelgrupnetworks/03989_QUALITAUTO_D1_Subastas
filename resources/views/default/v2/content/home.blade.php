@@ -10,7 +10,7 @@
 <!-- Inicio lotes destacados -->
 <section class="section-destacados my-5">
 	<div class="container">
-		<h1>{{ trans('web.lot_list.lotes_destacados') }}</h1>
+		<h2 class="h1">{{ trans('web.lot_list.lotes_destacados') }}</h2>
 
 		<div class="lotes_destacados">
 			<div class="loader"></div>

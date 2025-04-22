@@ -6,6 +6,7 @@
     $categories = [];//(new App\Models\V5\FgOrtsec0())->getAllFgOrtsec0()->whereNotNull('key_ortsec0')->get()->toarray();
     $searchAction = config('app.gridLots', false) == 'new' ? route('allCategories') : \Routing::slug('busqueda');
     $pageName = Route::currentRouteName();
+	$isHome = $pageName === 'home';
 @endphp
 
 <header>
@@ -14,7 +15,15 @@
         <div class="container-fluid gx-lg-5 py-1">
             <div class="d-flex align-items-center gap-3">
 
-                <p class="me-auto">{{ Config::get('app.name') }}</p>
+				@if($isHome)
+                <h1 class="me-auto" style="font-size: 1em; font-family: var(--bs-font-sans-serif); font-weight: inherit;">
+					{{ Config::get('app.name') }}
+				</h1>
+				@else
+				<p class="me-auto">
+					{{ Config::get('app.name') }}
+				</p>
+				@endif
 
                 @yield('header-extend-buttons')
 

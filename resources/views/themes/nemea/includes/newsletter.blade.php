@@ -6,8 +6,8 @@
             </div> --}}
 
             <div class="col-12 col-md-7 px-4 ms-auto mb-5 mb-md-0 d-flex flex-column gap-4">
-                <h1 class="newsletter-tittle lb-text-primary">{{ trans($theme . '-app.foot.newsletter_title') }}</h1>
-                <h2 class="newsletter-subtittle">{{ trans($theme . '-app.foot.newsletter_description') }}</h2>
+                <h2 class="h1 newsletter-tittle lb-text-primary">{{ trans($theme . '-app.foot.newsletter_title') }}</h2>
+                <h3 class="h2 newsletter-subtittle">{{ trans($theme . '-app.foot.newsletter_description') }}</h3>
 
                 <div class="row">
                     <div class="col-md-8">
