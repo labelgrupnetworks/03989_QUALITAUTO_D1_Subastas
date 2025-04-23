@@ -148,8 +148,8 @@ class UserAddressService
 
 	public function getCountries()
 	{
-		$theme = Config::get('app.theme');
-		$keyCache = "useraddress.countries.{$theme}";
+		$locale = Config::get('app.locale');
+		$keyCache = "useraddress.countries.{$locale}";
 		$time = 86400; //one day
 		return Cache::remember($keyCache, $time, function () {
 			return FsPaises::query()
