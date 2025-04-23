@@ -868,7 +868,7 @@ class UserController extends Controller
 
 					$forma_pago = $user->getDefaultPayhmentMethod($request->input('pais'));
 
-					$param = FxPrmgt::fisrt();
+					$param = FxPrmgt::first();
 					$envcorr = $param->enviodef_prmgt;//FxPrmgt::getDefaultEnvioParam();
 
 					$iva_cli = $this->cliente_tax(FacadeRequest::input('pais'), FacadeRequest::input('cpostal'));
