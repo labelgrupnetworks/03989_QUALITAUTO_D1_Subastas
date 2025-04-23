@@ -868,7 +868,8 @@ class UserController extends Controller
 
 					$forma_pago = $user->getDefaultPayhmentMethod($request->input('pais'));
 
-					$envcorr = FxPrmgt::getDefaultEnvioParam();
+					$param = FxPrmgt::fisrt();
+					$envcorr = $param->enviodef_prmgt;//FxPrmgt::getDefaultEnvioParam();
 
 					$iva_cli = $this->cliente_tax(FacadeRequest::input('pais'), FacadeRequest::input('cpostal'));
 					/* ARGI HA PEDIDO QUE SE CREEN LOS USUARIOS CON LA W AUNQUE ESTE dni YA EXISTIERA 2019_04_24*/
