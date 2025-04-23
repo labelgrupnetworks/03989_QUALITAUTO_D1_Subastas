@@ -138,12 +138,21 @@ return [
     */
 
     'include_files' => [
-        '*.log',
-        '**/*.log',
+		'node-*.log' => 'Node',
+		'node*.log' => 'Node',
+		'cli-*.log' => 'CLI',
+		'cli*.log' => 'CLI',
+		'API-*.log' => 'API',
+		'API*.log' => 'API',
+		'analytics-*.log' => 'Analiticas',
+		'analytics*.log' => 'Analiticas',
+        '*.log' => 'Laravel',
+        '**/*.log' => 'Laravel',
+
 
         // You can include paths to other log types as well, such as apache, nginx, and more.
         // This key => value pair can be used to rename and group multiple paths into one folder in the UI.
-        '/var/log/httpd/*' => 'Apache',
+        //'/var/log/httpd/*' => 'Apache',
         // '/var/log/nginx/*' => 'Nginx',
 
         // MacOS Apple Silicon logs
