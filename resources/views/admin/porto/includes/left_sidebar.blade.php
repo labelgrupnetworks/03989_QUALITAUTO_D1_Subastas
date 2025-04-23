@@ -173,7 +173,6 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
                                 </ul>
                             @endif
 
-							@if (in_array('dev', $config_menu_admin))
 							<ul class="nav nav-children">
 								<li>
 									<a href="{{ route('admin.bids.index') }}">
@@ -181,7 +180,6 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
 									</a>
 								</li>
 							</ul>
-							@endif
 
                             @if (!in_array('noAwards', $config_menu_admin))
                                 <ul class="nav nav-children">
