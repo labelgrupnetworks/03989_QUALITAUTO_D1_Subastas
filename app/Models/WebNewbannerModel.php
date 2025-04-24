@@ -7,6 +7,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @property int $id
+ * @property string $empresa
+ * @property string $key
+ * @property int $id_web_newbanner_tipo
+ * @property int $activo
+ * @property int $orden
+ * @property string $ubicacion
+ * @property WebNewbannerTipoModel $type
+ * @property WebNewbannerItemModel[] $items
+ * @property WebNewbannerItemModel[] $activeItems
+ */
 class WebNewbannerModel extends Model
 {
 	protected $table = 'web_newbanner';

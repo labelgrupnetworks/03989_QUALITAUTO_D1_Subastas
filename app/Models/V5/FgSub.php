@@ -12,6 +12,22 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * @property string cod_sub
+ * @property string emp_sub
+ * @property string des_sub
+ * @property string tipo_sub
+ * @property string subc_sub
+ * @property string descdet_sub
+ * @property string subabierta_sub
+ * @property string dfec_sub
+ * @property string hfec_sub
+ * @property string dfecorlic_sub
+ * @property string hfecorlic_sub
+ * @property string webmetat_sub
+ * @property string webmetad_sub
+ * @property string ordentel_sub
+ */
 class FgSub extends Model
 {
 	protected $table = 'FgSub';

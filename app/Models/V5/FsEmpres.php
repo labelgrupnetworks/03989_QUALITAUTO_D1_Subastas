@@ -7,6 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @property string cod_emp
+ * @property string gemp_emp
+ * @property string nom_emp
+ * @property string dir_emp
+ * @property string cp_emp
+ * @property string pob_emp
+ * @property string pais_emp
+ * @property string tel1_emp
+ * @property string email_emp
+ */
 class FsEmpres extends Model
 {
 	protected $table = 'fsempres';
