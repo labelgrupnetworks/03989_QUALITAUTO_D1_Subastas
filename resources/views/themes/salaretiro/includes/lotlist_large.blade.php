@@ -53,7 +53,7 @@
                             <span class="{{$winner}}"> {{ \Tools::moneyFormat($item->open_price) }} {{ trans($theme.'-app.subastas.euros') }}</span></p>
                     @endif
 
-                    @if( \Config::get('app.awarded') || $item->cerrado_asigl0 == 'D')
+                    @if( \Config::get('app.awarded') && $item->cerrado_asigl0 != 'N')
                       <p class="salida availability">
                         @if($item->cerrado_asigl0 == 'D')
                             {{ trans($theme.'-app.subastas.dont_available') }}

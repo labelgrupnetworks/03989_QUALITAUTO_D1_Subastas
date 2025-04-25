@@ -75,7 +75,7 @@
                 <p class="salida"></p>
             @endif
 
-            @if (\Config::get('app.awarded'))
+            @if (\Config::get('app.awarded') && $item->cerrado_asigl0 != 'N')
                 <p class="salida availability">
                     @if ($item->cerrado_asigl0 == 'D')
                         {{ trans($theme . '-app.subastas.dont_available') }}
