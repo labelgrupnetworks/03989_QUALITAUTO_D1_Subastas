@@ -40,8 +40,15 @@ class FgEspecial1 extends Model
 
 	public function description(): Attribute
 	{
+		//has relation and relation is not nukk
+		if($this->relationLoaded('specialistLang') && $this->specialistLang) {
+			return Attribute::make(
+				get: fn() => $this->specialistLang->desc_especial1_lang
+			);
+		}
+
 		return Attribute::make(
-			get: fn() => $this->relationLoaded('specialistLang') ? $this->specialistLang->desc_especial1_lang : $this->desc_especial1
+			get: $this->desc_especial1
 		);
 	}
 

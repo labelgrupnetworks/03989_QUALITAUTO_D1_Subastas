@@ -34,17 +34,9 @@ class SpecialistService
 	 * @deprecated
 	 * Se utiliza por soler. No se debe utilizar en nuevos desarrollos
 	 */
-	private function getSpecialistsWithoutModel($lin_ortsec0)
+	private function getSpecialistsWithoutModel($lin_ortsec0) : array
 	{
 		$specialistsToModel = FgEspecial1::getSpecialistsByOrtsec($lin_ortsec0);
-
-		return $specialistsToModel->map(function ($specialist) {
-			if ($specialist->relationLoaded('specialty')) {
-				$specialistTemp = array_merge($specialist->toArray(), $specialist->specialty->toArray());
-				unset($specialistTemp['specialty']);
-				return (object) $specialistTemp;
-			}
-			return (object) $specialist->toArray();
-		})->toArray();
+		return $specialistsToModel->all();
 	}
 }
