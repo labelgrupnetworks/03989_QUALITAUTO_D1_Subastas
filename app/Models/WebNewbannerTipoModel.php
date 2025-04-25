@@ -5,7 +5,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
+/**
+ * @property int $id
+ * @property string $nombre
+ * @property string $bloques
+ * @property int $completo
+ * @property string $opciones
+ * @property WebNewbannerModel $banner
+ */
 class WebNewbannerTipoModel extends Model
 {
     protected $table = 'web_newbanner_tipo';

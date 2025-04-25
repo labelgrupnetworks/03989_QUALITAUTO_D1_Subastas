@@ -7,6 +7,20 @@ use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @property int $id
+ * @property int $id_web_newbanner
+ * @property int $bloque
+ * @property string $lenguaje
+ * @property string $url
+ * @property int $ventana_nueva
+ * @property string $texto
+ * @property int $orden
+ * @property int $activo
+ * @property array $images
+ * @property string $public_url
+ * @property WebNewbannerModel $banner
+ */
 class WebNewbannerItemModel extends Model
 {
 	protected $table = 'web_newbanner_item';
