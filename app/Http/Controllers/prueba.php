@@ -46,6 +46,11 @@ class prueba extends BaseController
 
 	public function index()
 	{
+
+		$email = new EmailLib('NEW_PASSWORD_TEST');
+		$email->setUserByCod('023835', true);
+		$email->setAtribute('URL', 'https://auctions.tauleryfau.com/es/register');
+		$email->send_email();
 		die();
 	}
 
