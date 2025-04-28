@@ -33,6 +33,7 @@ class AdminCacheController extends Controller
 			$this->newAction('cache_routes', 'Cachear rutas', 'Cachear rutas'),
 			$this->newAction('storage_link', 'Crear enlace de almacenamiento', 'Crea un enlace simbólico desde "public/storage" a "storage/app/public"'),
 			$this->newAction('remove_storage_link', 'Eliminar enlace de almacenamiento', 'Elimina el enlace simbólico de "public/storage"'),
+			$this->newAction('generete_sitemap', 'Generar sitemap', 'Genera el sitemap del sitio web'),
 		];
 
 		return view('admin::pages.configuracion.cache.index', compact('actions'));
@@ -52,6 +53,7 @@ class AdminCacheController extends Controller
 			'cache_routes' => $this->cacheRoutes(),
 			'storage_link' => $this->storageLink(),
 			'remove_storage_link' => $this->removeStorageLink(),
+			'generete_sitemap' => $this->generateSitemap(),
 			'default' => response()->json(['status' => 'error', 'message' => 'No se ha encontrado la acción']),
 		};
 	}
@@ -129,5 +131,11 @@ class AdminCacheController extends Controller
 		}
 
 		return response()->json(['status' => 'success', 'message' => 'Se ha eliminado el direcotrio "storage" correctamente']);
+	}
+
+	private function generateSitemap()
+	{
+		Artisan::call('label:generate-sitemap');
+		return response()->json(['status' => 'success', 'message' => 'Se ha generado el sitemap correctamente']);
 	}
 }
