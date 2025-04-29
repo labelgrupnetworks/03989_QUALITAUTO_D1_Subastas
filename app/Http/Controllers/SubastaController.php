@@ -1858,17 +1858,6 @@ class SubastaController extends Controller
 		}
 	}
 
-	public function rechargeFilters()
-	{
-		$data["type"] = app('request')->input('type');
-		$data['cod_sub'] = app('request')->input('cod_sub');
-		$data['id_auc_sessions'] = app('request')->input('id_auc_sessions');
-		$data['category'] = app('request')->input('category');
-		$data['subcategory'] = app('request')->input('subcategory');
-
-		return View::make('front::includes.select_filters', array('data' => $data));
-	}
-
 	public function reloadLot()
 	{
 		$subastaObj = new Subasta();

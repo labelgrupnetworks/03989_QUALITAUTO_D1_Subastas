@@ -322,7 +322,6 @@ Route::get('/clear-cache', function () {
 	Artisan::call('cache:clear');
 });
 
-Route::get('/{lang}/rechargefilters', [SubastaController::class, 'rechargefilters']);
 Route::get('/{lang}/reload_lot', [SubastaController::class, 'reloadLot']);
 
 Route::get('/email_fact_generated', [MailController::class, 'emailFacturaGenerated']);

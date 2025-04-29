@@ -77,10 +77,13 @@ class Handler extends ExceptionHandler
 
 	/**
      * Define qué excepciones quieres monitorizar.
+	 * Las excepciones inlcuidas aquí no se mostraran.
      */
     private function shouldAlert(Throwable $exception): bool
     {
         return ! ($exception instanceof \Illuminate\Validation\ValidationException)
-            && ! ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException);
+            && ! ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
+			&& ! ($exception instanceof \Illuminate\Session\TokenMismatchException);
+
     }
 }

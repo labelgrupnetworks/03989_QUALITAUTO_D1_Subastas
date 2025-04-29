@@ -17,14 +17,30 @@ use Illuminate\Support\Str;
 //Redeclaro la funcion head del helper  \vendor\laravel\framework\src\Illuminate\Support\helpers.php
 //Ya no se puede sobreescribir y laravel ya la incorpora
 if (!function_exists('head')) {
-function head($array)
-    {
-        if (is_array($array)) {
-            return reset($array);
-        } else {
-            return null;
-        }
-    }
+	function head($array)
+	{
+		if (is_array($array)) {
+			return reset($array);
+		}
+		else if ($array instanceof \Illuminate\Support\Collection) {
+			return $array->first();
+		}
+		else if ($array instanceof \Illuminate\Database\Eloquent\Collection) {
+			return $array->first();
+		}
+		else if ($array instanceof \Illuminate\Support\LazyCollection) {
+			return $array->first();
+		}
+		else if ($array instanceof \Illuminate\Support\LazyCollection) {
+			return $array->first();
+		}
+		else if (is_object($array)) {
+			return head((array)$array);
+		}
+		else {
+			return null;
+		}
+	}
 }
 
 if (!function_exists('isMultilanguage')) {
