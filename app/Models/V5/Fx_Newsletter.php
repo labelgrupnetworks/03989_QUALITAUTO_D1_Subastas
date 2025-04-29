@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @property int id
+ * @property int id_newsletter
+ * @property string gemp_newsletter
+ * @property string name_newsletter
+ * @property string lang_newsletter
+ * @property string description_newsletter
+ */
 class Fx_Newsletter extends Model
 {
 	protected $table = 'fx_newsletter';

@@ -6,7 +6,10 @@ namespace App\Models\V5;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 
-
+/**
+ * @property string $cod_paises código del país
+ * @property string $des_paises descripción del país
+ */
 class FsPaises extends Model
 {
 

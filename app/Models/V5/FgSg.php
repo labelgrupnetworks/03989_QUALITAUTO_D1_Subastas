@@ -6,7 +6,10 @@ namespace App\Models\V5;
 use App\Support\Localization;
 use Illuminate\Database\Eloquent\Model;
 
-
+/**
+ * @property string $cod_sg código del tipo de vía
+ * @property string $des_sg descripción del tipo de vía
+ */
 class FgSg extends Model
 {
 	protected $table = 'fgsg';

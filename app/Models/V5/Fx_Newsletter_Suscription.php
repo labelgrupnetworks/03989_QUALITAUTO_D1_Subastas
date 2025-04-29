@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @property int id_newsletter_suscription
+ * @property string gemp_newsletter_suscription
+ * @property string emp_newsletter_suscription
+ * @property int id_newsletter
+ * @property string email_newsletter_suscription
+ * @property string lang_newsletter_suscription
+ * @property string create_newsletter_suscription
+ * @property string url_unsuscribe
+ */
 class Fx_Newsletter_Suscription extends Model
 {
 	protected $table = 'fx_newsletter_suscription';

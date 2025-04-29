@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @property string emp_ortsec0_lang
+ * @property string sub_ortsec0_lang
+ * @property int lin_ortsec0_lang
+ * @property string lang_ortsec0_lang
+ * @property string des_ortsec0_lang
+ * @property string key_ortsec0_lang
+ * @property int orden_ortsec0_lang
+ * @property string meta_titulo_ortsec0_lang
+ * @property string meta_description_ortsec0_lang
+ * @property string meta_contenido_ortsec0_lang
+ */
 class FgOrtsec0_Lang extends Model
 {
 	protected $table = 'fgortsec0_lang';

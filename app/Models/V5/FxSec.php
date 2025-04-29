@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
+/**
+ * @property string gemp_sec
+ * @property string cod_sec
+ * @property string des_sec
+ * @property string key_sec
+ * @property string meta_titulo_sec
+ * @property string meta_description_sec
+ * @property string meta_contenido_sec
+ */
 class FxSec extends Model
 {
 	protected $table = 'FXSEC';

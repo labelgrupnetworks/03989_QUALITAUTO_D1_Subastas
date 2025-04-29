@@ -11,6 +11,17 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @property string emp_ortsec0
+ * @property string sub_ortsec0
+ * @property int lin_ortsec0
+ * @property string des_ortsec0
+ * @property string key_ortsec0
+ * @property int orden_ortsec0
+ * @property string meta_titulo_ortsec0
+ * @property string meta_description_ortsec0
+ * @property string meta_contenido_ortsec0
+ */
 class FgOrtsec0 extends Model
 {
 	protected $table = 'FGORTSEC0';

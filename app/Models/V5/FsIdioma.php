@@ -6,6 +6,10 @@ namespace App\Models\V5;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string $cod_idioma código del idioma
+ * @property string $des_idioma descripción del idioma
+ */
 class FsIdioma extends Model {
 
     // Variables propias de Eloquent para poder usar el ORM de forma correcta.

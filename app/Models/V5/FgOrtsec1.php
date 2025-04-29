@@ -7,6 +7,12 @@ use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property string emp_ortsec1
+ * @property string sub_ortsec1
+ * @property int lin_ortsec1
+ * @property string sec_ortsec1
+ */
 class FgOrtsec1 extends Model
 {
     protected $table = 'FGORTSEC1';
