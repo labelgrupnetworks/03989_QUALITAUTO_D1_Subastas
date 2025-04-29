@@ -29,5 +29,7 @@
 @section('content')
     <main class="indice">
         @include('content.indice_subasta')
+
+		@include('includes.register_modal', ['whenScroll' => true])
     </main>
 @stop
