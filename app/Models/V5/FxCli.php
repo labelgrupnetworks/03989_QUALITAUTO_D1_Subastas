@@ -260,15 +260,7 @@ class FxCli extends Model
 
 	public function getTipoDocumento ()
 	{
-		$document_type = DB::table('fsaux1')
-			->select('cod1_aux1', 'des_aux1')
-			->where([
-				['emp_aux1', Config::get('app.emp') ],
-				['idioma_aux1', mb_strtoupper(Config::get('app.locale') ) ],
-				['baja_aux1', 'N']
-			])
-			->pluck('des_aux1', 'cod1_aux1');
-
+		$document_type = FsAux1::getDocumentTypes();
 		if($document_type->isNotEmpty()){
 			return $document_type;
 		}
