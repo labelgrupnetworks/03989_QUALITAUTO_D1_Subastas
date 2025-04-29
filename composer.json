@@ -55,11 +55,11 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+			"@php artisan label:generate-sitemap"
         ],
 		"post-install-cmd": [
-			"@php artisan storage:link && echo '¡Enlace de almacenamiento creado correctamente!'",
-			"@php artisan label:generate-sitemap"
+			"@php artisan storage:link && echo '¡Enlace de almacenamiento creado correctamente!'"
 		],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
