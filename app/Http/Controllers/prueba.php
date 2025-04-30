@@ -46,10 +46,21 @@ class prueba extends BaseController
 
 	public function index()
 	{
+		$sendTo = request('sendTo');
 
-		$email = new EmailLib('NEW_PASSWORD_TEST');
-		$email->setUserByCod('023835', true);
+		$user = '023835';
+		$cod_sub = '13052025';
+		$email = new EmailLib('LOT_AWARD_TEST');
+		$email->rellenarCampos();
+		$email->setUserByCod($user, true);
 		$email->setAtribute('URL', 'https://auctions.tauleryfau.com/es/register');
+		$email->setAtribute('LINK_PSSW', 'https://auctions.tauleryfau.com/es/register');
+		$email->setAtribute('LOT_IMG', 'https://subastas.tauleryfau.com/img/thumbs/700/001/3376/001-3376-1.jpg?a=1745544219');
+		$email->setAtribute('URL_PANEL_COMPRA', route('panel.allotment-bills', ['lang' => Config::get('app.locale')]));
+		$email->setAtribute('URL_PASARELA_PAGO', route('panel.allotment.sub', ['lang' => Config::get('app.locale'), 'cod_sub' => $cod_sub]));
+
+
+		$email->setTo($sendTo);
 		$email->send_email();
 		die();
 	}
