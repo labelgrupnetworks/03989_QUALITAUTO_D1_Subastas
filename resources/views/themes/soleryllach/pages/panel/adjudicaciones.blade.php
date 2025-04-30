@@ -56,9 +56,6 @@ $packengersMoneyValue = 0;
 					<h1 class="titlePage user-dashboard-title">
 						{{ trans("$theme-app.user_panel.mi_cuenta") }}
 					</h1>
-					<h4 class="user-dashboard-notice">
-						{{ trans("$theme-app.user_panel.services_update") }}
-					</h4>
                 </div>
             </div>
         </div>
