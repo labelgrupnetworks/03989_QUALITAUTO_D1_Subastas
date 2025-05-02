@@ -4,17 +4,29 @@
 
 
 <!-- Inicio lotes destacados -->
-<section class="section-destacados my-5">
+<section class="section-destacados my-5" id="lotes_destacados_section">
 	<div class="container">
 		<h2 class="h1">{{ trans($theme.'-app.lot_list.lotes_destacados') }}</h2>
 
 		<div class="lotes_destacados">
 			<div class="loader"></div>
-			<div class="carrousel-wrapper" id="lotes_destacados"></div>
+			<div class="carrousel-wrapper" id="lotes_destacados" data-container="lotes_destacados_section"></div>
 		</div>
 
 	</div>
 </section>
+
+@php
+$page = App\Models\V5\Web_Page::getPageByKey('nosotros-home');
+@endphp
+
+@if ($page)
+<section class="static-page home-static-page mb-5 pb-5">
+	<div class="container">
+		{!! $page->content_web_page !!}
+	</div>
+</section>
+@endif
 
 
 @php

@@ -15,15 +15,9 @@
         <div class="container-fluid gx-lg-5 py-1">
             <div class="d-flex align-items-center gap-3">
 
-				@if($isHome)
-                <h1 class="me-auto" style="font-size: 1em; font-family: var(--bs-font-sans-serif); font-weight: inherit;">
-					{{ Config::get('app.name') }}
-				</h1>
-				@else
 				<p class="me-auto">
 					{{ Config::get('app.name') }}
 				</p>
-				@endif
 
                 @yield('header-extend-buttons')
 

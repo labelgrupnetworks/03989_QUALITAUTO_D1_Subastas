@@ -162,6 +162,15 @@ header .navbar-nav {
 	padding: 0;
 }
 
+.home-static-page h1 {
+	text-wrap: balance;
+	margin: revert;
+}
+
+.home-static-page p {
+	margin-bottom: revert;
+}
+
 .static-main-page {
 	padding-top: 3rem;
 }
