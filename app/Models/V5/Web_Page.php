@@ -4,6 +4,7 @@
 namespace App\Models\V5;
 
 use App\Providers\RoutingServiceProvider;
+use App\Support\Localization;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
@@ -54,6 +55,15 @@ class Web_Page extends Model
 	public static function getPageIDfromKey(string $key)
 	{
 		return self::where('key_web_page', $key)->first()->id_web_page;
+	}
+
+	public static function getPageByKey(string $key)
+	{
+		$locale = Localization::getDefaultUpperLocale();
+		return self::where([
+			'key_web_page' => $key,
+			'lang_web_page' => $locale,
+		])->first();
 	}
 
 	public function toArrayWithoutAppends()
