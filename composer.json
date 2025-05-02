@@ -55,8 +55,7 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-			"@php artisan label:generate-sitemap"
+            "@php artisan package:discover --ansi"
         ],
 		"post-install-cmd": [
 			"@php artisan storage:link && echo '¡Enlace de almacenamiento creado correctamente!'"
