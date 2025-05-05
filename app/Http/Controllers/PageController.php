@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Services\Content\SitemapGenerator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
@@ -85,7 +86,7 @@ class PageController extends Controller
 	{
 		$lang = strtoupper(Config::get('app.locale', 'es'));
 
-		['pages' => $pages, 'subastas' => $subastas, 'lotes' => $lotes, 'categorias' => $categorias] = (new ContentController())->contentAvailable($lang);
+		['pages' => $pages, 'subastas' => $subastas, 'lotes' => $lotes, 'categorias' => $categorias] = (new SitemapGenerator())->contentAvailable($lang);
 
 		$subastas = $subastas->map(function ($subasta, $key) use ($lotes) {
 			$subasta->lotes = $lotes->where('sub_asigl0', $subasta->cod_sub);
