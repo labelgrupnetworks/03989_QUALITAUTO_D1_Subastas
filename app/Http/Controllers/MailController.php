@@ -846,6 +846,11 @@ class MailController extends Controller
 					$email->addAwardAttachedDocumentation();
 				}
 
+				if(Config::get('app.payment_links_in_email', false)) {
+					$email->setAtribute('URL_PANEL_COMPRA', route('panel.allotment-bills', ['lang' => Config::get('app.locale')]));
+					$email->setAtribute('URL_PASARELA_PAGO', route('panel.allotment.sub'. ['lang' => Config::get('app.locale'), 'cod_sub' => $cod_sub]));
+				}
+
 				$email->send_email();
 			}
 

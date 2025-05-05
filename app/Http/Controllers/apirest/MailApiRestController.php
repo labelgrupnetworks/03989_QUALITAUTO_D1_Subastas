@@ -83,8 +83,8 @@ class MailApiRestController extends ApiRestController {
 
     }
 
-	private function sendMailTrackingChange(){
-
+	private function sendMailTrackingChange()
+	{
 		$codCli = request('codCli');
 		$codSub = request('codSub');
 		$codSeg = request('codSeg');

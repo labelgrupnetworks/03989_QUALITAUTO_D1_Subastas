@@ -24,7 +24,7 @@ class FgDvc1l extends Model
 
     protected $guarded = []; // Blacklist de variables que no queremos updatear de forma masiva
 
-	public const TIPO_PROPIETARIO = "P";
+	public const TIPO_PRODUCTO = "P";
 	public const TIPO_GASTO = "G";
 	public const FECHA_MIN_FACTURA = "2017-01-01";
 
@@ -73,7 +73,7 @@ class FgDvc1l extends Model
 	{
 		return $query->where('anum_dvc1l', $anum)
 			->where('num_dvc1l', $num)
-			->where('tl_dvc1l', self::TIPO_PROPIETARIO);
+			->where('tl_dvc1l', self::TIPO_PRODUCTO);
 	}
 
 
