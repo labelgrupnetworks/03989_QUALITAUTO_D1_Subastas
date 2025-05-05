@@ -101,7 +101,7 @@ class FgOrtsec0 extends Model
 	{
 		return ($this->select("LIN_ORTSEC0")
 			->where("KEY_ORTSEC0", $key)
-			->first())->lin_ortsec0;
+			->first())?->lin_ortsec0;
 	}
 
 
