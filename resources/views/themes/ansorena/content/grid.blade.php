@@ -97,10 +97,13 @@
                         if (empty($url)) {
                             $url = $urlSession;
                         }
+
                         #calculamos en que página empieza la sesion
                         $cuantosLotes = App\Models\V5\FgAsigl0::select('count(ref_asigl0) cuantos')
                             ->where('SUB_ASIGL0', $auction->cod_sub)
-                            ->where('ref_asigl0', '<', $sesion->init_lot)
+							->when($sesion->init_lot, function ($query) use ($sesion) {
+								return $query->where('ref_asigl0', '<', $sesion->init_lot);
+							})
                             ->first();
                         #por defecto 24 como en lotlistcontroller
                         $lotsPerPage = request('total');
