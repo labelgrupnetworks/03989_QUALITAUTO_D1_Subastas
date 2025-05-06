@@ -31,6 +31,7 @@ class TrackingChangeNotificationService
 			'2' => 'TRACKING_CHANGE_SEG_STATE_2_TEST',
 			'3' => 'TRACKING_CHANGE_SEG_STATE_3_TEST',
 			'4' => 'TRACKING_CHANGE_SEG_STATE_4_TEST',
+			'5' => 'TRACKING_CHANGE_SEG_STATE_5_TEST',
 		];
 
 		$email = new EmailLib($emailsTemplates[$this->codSeg]);
