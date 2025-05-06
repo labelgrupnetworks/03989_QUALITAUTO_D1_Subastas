@@ -5,20 +5,15 @@ namespace App\Http\Controllers;
 use App;
 use App\Http\Controllers\externalws\duran\ClientController;
 use App\Http\Controllers\externalws\duran\OrderController;
-use App\Http\Controllers\MailController;
 use App\Http\Controllers\V5\ArticleController;
-use App\libs\EmailLib;
-use App\libs\PayPalV2API;
 use App\Models\articles\FgArt;
 use App\Models\articles\FgArt0;
-use App\Models\V5\AucSessions;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCaracteristicas_Hces1_Lang;
 use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\V5\FgCaracteristicas_Value_Lang;
 use App\Models\V5\FgCaracteristicas_Value;
 use App\Models\V5\FgCaracteristicas;
-use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces1;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FgPedc0;
@@ -28,7 +23,6 @@ use App\Models\V5\FxSec;
 use App\Models\V5\Web_Faq;
 use App\Models\V5\Web_FaqCat;
 use App\Providers\ToolsServiceProvider;
-use GuzzleHttp;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -38,15 +32,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
-use setasign\Fpdi\Fpdi;
 use stdClass;
 
 class prueba extends BaseController
 {
 
-	public function index()
-	{
-	}
+	public function index() {}
 
 	private function testConnection()
 	{
@@ -66,7 +57,6 @@ class prueba extends BaseController
 			Artisan::call('queue:retry', ['id' => $id]);
 		}
 	}
-
 
 	public function traspaso_fgcaracteristicas()
 	{
@@ -391,46 +381,6 @@ class prueba extends BaseController
 		return $collection->downloadExcel("duplicados por nombre V3.xlsx", \Maatwebsite\Excel\Excel::XLSX, true);
 	}
 
-	private function addressStorePickup($inf_env_lic)
-	{
-		$inf_env_lic->paisenv = '';
-		$inf_env_lic->provenv = '';
-		$inf_env_lic->pobenv = '';
-		$inf_env_lic->direnv = 'RECOGIDA EN TIENDA';
-		$inf_env_lic->cpenv = '';
-		$inf_env_lic->telenv = '';
-		return $inf_env_lic;
-	}
-
-	public function testwebserviceNFTDuran()
-	{
-		$a = new App\Http\Controllers\externalws\durannft\PaidController();
-		$a->informPaid("M61666250095");
-
-		#$a->informPaid("T91655795173");
-		//	$a->informPaid("P55657178730");
-
-	}
-
-	/* carga motorflash */
-	public function cargaMotorflash()
-	{
-
-		$cron = new  App\Http\Controllers\CronController();
-		$cod_cli = "000025";
-		$cron->loadCarsCedente($cod_cli);
-	}
-
-	public function borrarCarpeta($carpeta)
-	{
-		//$carpeta="img/002/9";
-		foreach (glob($carpeta . "/*") as $archivos_carpeta) {
-			echo $archivos_carpeta . "<br>";
-
-			unlink($archivos_carpeta);
-		}
-	}
-
 	public function crear_articulos()
 	{
 		$sub = 3102021;
@@ -523,7 +473,6 @@ class prueba extends BaseController
 		);
 	}
 
-
 	public function guardar_pedido()
 	{
 
@@ -594,47 +543,6 @@ class prueba extends BaseController
 				)
 			);
 		}
-	}
-	public function payments()
-	{
-
-		//Adjudicaciones
-		$paymens = FgCsub::select('FGCSUB.*')
-
-			//info de lote y puja ganadora
-			->joinAsigl0()
-			->joinFghces1()
-			->joinWinnerBid()
-
-			//info sesiones
-			->join('"auc_sessions" auc', function ($join) {
-				$join->on('auc."company"', '=', 'FGCSUB.EMP_CSUB')
-					->on('auc."auction"', '=', 'FGCSUB.SUB_CSUB')
-					->on('auc."init_lot" <= ref_asigl0 and   auc."end_lot" >= ref_asigl0');
-			})
-
-			//Intento de pago y estado de este (N no pagado, C pagado, T transferencia)
-			->leftJoin('FGCSUB0', function ($join) {
-				$join->on('FGCSUB0.EMP_CSUB0', '=', 'FGCSUB.EMP_CSUB')
-					->on('FGCSUB0.APRE_CSUB0', '=', 'FGCSUB.APRE_CSUB')
-					->on('FGCSUB0.NPRE_CSUB0', '=', 'FGCSUB.NPRE_CSUB');
-			})
-
-			//Solamente si el pago se ha realizado por factura
-			/* ->leftJoin('FXCOBRO1',function($join){
-				$join->on('FXCOBRO1.EMP_COBRO1','=','FGCSUB.EMP_CSUB')
-				->on('FXCOBRO1.AFRA_COBRO1','=','FGCSUB.AFRAL_CSUB')
-				->on('FXCOBRO1.NFRA_COBRO1','=','FGCSUB.NFRAL_CSUB');
-			}) */
-
-			//no cobradas
-			->where(function ($query) {
-				$query->orWhere('FGCSUB0.estado_csub0', '!=', 'C')
-					->orWhereNull('FGCSUB0.estado_csub0');
-			})
-			->get();
-
-		dd($paymens->toArray());
 	}
 
 
@@ -711,108 +619,6 @@ class prueba extends BaseController
 		}
 	}
 
-	public function paypalTest()
-	{
-		$payPal = new PayPalV2API();
-		return $payPal->handlePayment(10, '12345');
-	}
-
-	public function addTextToPdf()
-	{
-
-		$pdf = new Fpdi();
-		$pdf->AddPage();
-		#$file = public_path('/files/002/3/1/files/60460848.pdf');
-		$file = public_path('/files/002/2/7/files/lote7.pdf');
-
-		$pdf->setSourceFile($file); //retorn numero de paginas del archivo
-
-		// import page 1
-		$tplIdx = $pdf->importPage(1);
-		// use the imported page and place it at position 10,10 with a width of 100 mm
-		$pdf->useTemplate($tplIdx, 0, 0, null, null, true);
-
-		// now write some text above the imported page
-		$pdf->SetFont('Arial');
-		$pdf->SetTextColor(0, 0, 0); //RGB
-		$pdf->SetXY(5, 5);
-		$pdf->Write(0, 'Este es un texto de prueba');
-
-		//$pdf->addPage();
-		//$pdf->useImportedPage($pageId, 10, 10, 90);
-
-		return response($pdf->Output())
-			->header('Content-Type', 'application/pdf');
-	}
-
-
-	/**
-	 * Test metodo para crear realiciones de multiples columnas y obtener sus modelos
-	 *
-	 * @todo conseguir relacion de segundo nivel (ahora obtego builder y necesio collection)
-	 * @todo realciones con beetwen
-	 *
-	 * Añadir este metodo en el modelo para que funciones
-	 * public function newCollection(array $models = [])
-	 * {
-	 *	return new RelationCollection($models);
-	 * }
-	 */
-	public function testRelation()
-	{
-		DB::listen(function ($query) {
-			echo "<code style='color: red'>" . $query->sql . "</code><br>";
-			foreach ($query->bindings as $key => $value) {
-				echo "<code style='color: red'>" . $key . ": " . $value . "</code>";
-			}
-
-			// $query->time;
-			echo "<br>";
-		});
-
-
-		//$test = FgSub::with('lots')->get();
-		//dd($test);
-		//exit();
-		$relacion = ['sub_asigl0' => 'cod_sub'];
-		$relation_simple = ['sub_asigl0', 'cod_sub'];
-		$relation_array = ['sub_asigl0', '=', 'cod_sub'];
-		$relation_multidimension = [['sub_asigl0', '=', 'cod_sub'], ['emp_asigl0', 'emp_sub']];
-
-		//$query->join('"auc_sessions"','"auc_sessions"."company" = FGSUB.EMP_SUB AND "auc_sessions"."auction" = FGSUB.COD_SUB');
-		//return $query->join('"auc_sessions" auc','auc."company" = FGASIGL0.EMP_ASIGL0 AND auc."auction" = FGASIGL0.SUB_ASIGL0 and auc."init_lot" <= ref_asigl0 and   auc."end_lot" >= ref_asigl0');
-
-		$test = FgSub::select('cod_sub', 'emp_sub', 'subc_sub')->take(5)->get()
-			->relationWith('sesiones', ['"auction"', 'cod_sub'], function () {
-				return AucSessions::query();
-			});
-		//->relationWith('sesiones.lotes', ['"auction"', 'sub_asigl0'], function(){
-		//return FgAsigl0::query();
-		//});
-
-		//dump($test, $test->first()->sesiones->pluck('auction'));
-		dump($test);
-		//dump($test->pluck('sesiones')->get());
-		dump($test->pluck('sesiones')->all());
-		dd($test->pluck('sesiones')->values());
-		//->relationWith('sesiones.lotes', [['sub_asigl0', '"auction"'], ['ref_asigl0', '>=', '"init_lot"'], ['ref_asigl0', '<=', '"end_lot"']], function(){
-		/* ->relationWith('sesiones.lotes', ['sub_asigl0', '"auction"'], function(){
-			return FgAsigl0::query()->select()->where('cerrado_asigl0', '!=', 'N');
-		}); */
-
-		$test2 = FgSub::select('cod_sub', 'emp_sub', 'subc_sub')->get()
-			->testr(function ($param) {
-				return $param;
-			}, 'test');
-
-		dump($test);
-	}
-
-	public function exportCollectionToExcel($collection, $fileName)
-	{
-		return $collection->downloadExcel("$fileName.xlsx", \Maatwebsite\Excel\Excel::XLSX, true);
-	}
-
 	#test crear pedido
 	public function crear_pedido()
 	{
@@ -847,97 +653,6 @@ class prueba extends BaseController
 				'payment'         => $payment,
 			)
 		);
-	}
-
-
-
-
-	#################
-	## TEST Emails###
-	#################
-
-
-
-	public function gastosEnvio($emp, $imp, $tipoIva, $codPais, $cp)
-	{
-
-		$emp = is_null($emp) ? '' : $emp;
-		$imp = is_null($imp) ? '' : $imp;
-		$tipoIva = is_null($tipoIva) ? '' : $tipoIva;
-		$codPais = is_null($codPais) ? '' : $codPais;
-		$cp = is_null($cp) ? '' : $cp;
-
-		$a = DB::select(
-			"select CALCULAR_GASTOS_ENVIO(:empresa,:imp,:tipoIva,:codPais,:cp ) as genvio from dual",
-			array(
-				'empresa'    => '001',
-				'imp'        => '500',
-				'tipoIva'    => '',
-				'codPais'    => 'ES',
-				'cp'         => '08840'
-			)
-		);
-	}
-
-	public function sendEmailLotAward($cod_sub, array $refs, $emp)
-	{
-		foreach ($refs as $ref) {
-			$mailController = new MailController();
-			$mailController->sendEmailCerradoGeneric($emp, $cod_sub, $ref);
-		}
-	}
-
-	public function send_email_test($url = 'https://demoauction.labelgrup.com')
-	{
-
-		$email = new EmailLib('OVER_BID');
-		$email->test_design($url);
-	}
-
-	public function testEmailMoveLot()
-	{
-		$email = new EmailLib('MOVE_LOT');
-		if (!empty($email->email)) {
-			$email->setLot('ONLINE2', 166);
-			$email->setTo('enadal@labelgrup.com');
-			$email->send_email();
-		}
-	}
-
-	public function email_new_user()
-	{
-		$email = new EmailLib('NEW_USER');
-		if (!empty($email->email)) {
-			$email->setUserByCod(10026, true);
-			$email->setTo(Config::get('app.admin_email'));
-			$email->send_email();
-		}
-	}
-
-	public function bid_lower_new($sub, $licit, $ref, $importe)
-	{
-		/* MUESTRA SUBASTA , LICITADOR Y REFERENCIA DE LSO LOTES PUJADOS POR UN USUARIO
-           select sub_asigl1, cod_licit,ref_asigl1 from fxcliweb
-            join  fglicit on cli_licit = cod_cliweb
-            join fgasigl1 on emp_asigl1 = emp_licit and sub_asigl1 = sub_licit and licit_asigl1 = cod_licit
-            where
-            emp_licit = '001' and
-            gemp_cliweb ='01' and
-            usrw_cliweb='subastas@labelgrup.com'
-         group by  sub_asigl1, cod_licit,ref_asigl1;
-         */
-
-		$email = new EmailLib('BID_LOWER');
-		if (!empty($email->email)) {
-
-			$email->setUserByLicit($sub, $licit, true);
-			$email->setLot($sub, $ref);
-			$email->setBid($importe);
-			$email->send_email();
-			echo "send BID_LOWER_NEW";
-		} else {
-			Log::info("email de puja inferior No enviado, no existe o está deshabilitadio");
-		}
 	}
 
 	public function soapDuranClient()
@@ -1128,129 +843,6 @@ class prueba extends BaseController
 		DB::table("WEB_REDIRECT_PAGES")->where("EMP_WEB_REDIRECT_PAGES",  $emp)->where("PAGE_WEB_REDIRECT_PAGES", $redirect["page_web_redirect_pages"])->delete();
 		#insertamos
 		DB::table("WEB_REDIRECT_PAGES")->insert($redirect);
-	}
-
-	public function testBiddr()
-	{
-		$client = new GuzzleHttp\Client();
-
-		try {
-			$response = $client->get(
-				'https://www.biddr.com/api/json/bid_sheets/list',
-				[
-					'auth' => ['7RzaKjNCeRczc6kFGtYu33FU6RO9v1zc', '']
-				]
-			);
-		} catch (\Throwable $th) {
-			dd($th);
-			return false;
-		}
-
-
-		if ($response->getStatusCode() != 200) {
-			dd($response->getBody()->getContents());
-		}
-
-		echo ($response->getBody()->getContents());
-	}
-
-
-
-
-
-
-	//prueba ferran
-	public function pruebaFerran()
-	{
-
-		//$results= FGASIGL0::join ('FGHCES1', 'sub_hces1', '=','sub_asigl0')->select ('FGASIGL0.sub_asigl0, FGASIGL0.ref_asigl0 , fghces1.descweb_hces1')->take(50)->get();
-		$results = FGASIGL0::join('FGHCES1', 'sub_hces1', '=', 'sub_asigl0')->select('FGASIGL0.sub_asigl0, FGASIGL0.ref_asigl0 , fghces1.descweb_hces1')->where('fgasigl0.cerrado_asigl0', '!=', 'N')->take(50)->get();
-
-		$subastas = array();
-
-		$nom_sub = "";
-		foreach ($results as $lot) {
-			$nom_sub = $lot->sub_asigl0;
-			// (empty(request())) request solo se usa para recuperar datos que provienen de una URL y devuelve String
-			if (empty($subastas[$nom_sub])) {
-
-				$subastas[$nom_sub] = array();
-			}
-			$subastas[$nom_sub][] = $lot;
-		}
-
-		return view('pages.prueba', ['subastas' => $subastas]);
-	}
-
-	public function Translate()
-	{
-
-		$lang = request('lang', 'en');
-
-		$array_es = \App\libs\TradLib::getTranslations('es', $emp = null);
-		$array_en = \App\libs\TradLib::getTranslations($lang, $emp = null);
-
-
-		$resultado = array();
-		foreach ($array_es as $keycat => $cat) {
-			$resultado[$keycat] = array();
-			foreach ($cat as $keysubcat => $subcat) {
-				if (!empty($array_en[$keycat])) {
-					if (empty($array_en[$keycat][$keysubcat])) {
-						$resultado[$keycat][] = $keysubcat;
-					}
-				} else {
-					$resultado[$keycat][] = $keysubcat;
-				}
-			}
-		}
-		foreach ($resultado as $keycat => $cat) {
-			if (!empty($cat)) {
-				echo "categoria--> $keycat <br>";
-			}
-			foreach ($cat as $keysubcat => $subcat) {
-				echo "<--subcategoria-->$subcat <br>";
-			}
-		}
-	}
-
-	public function fileTranslate()
-	{
-
-		$lang = request('lang', 'en');
-
-		$array_es = \App\libs\TradLib::getTranslations('es', $emp = null);
-		$array_ex = \App\libs\TradLib::getTranslations($lang, $emp = null);
-		//var $res esta situada en esta posicion para el formateo correspondiente en el fichero de destino
-		$res = "";
-		$res .= '<?php
-$lang =[';
-		$final = "";
-		foreach ($array_es as $keycat => $cat) {
-			$res .= "	$final
-	'$keycat'" . " =>
-		array (";
-			$final = "
-		),";
-
-			foreach ($cat as $keysubcat => $subcat) {
-				$val = $array_es[$keycat][$keysubcat];
-				if (!empty($array_ex[$keycat][$keysubcat])) {
-					$val = $array_ex[$keycat][$keysubcat];
-					$val = str_replace("'", "\'", $val);
-				}
-				$res .= "
-			'$keysubcat' => '" . $val . "',";
-			}
-		}
-		$res .= ")
-];";
-		echo $res;
-
-		$path = resource_path("lang\\$lang\\$lang.new.php");
-		$file = fopen($path, 'w+b');
-		fwrite($file, $res);
-		fclose($file);
 	}
 
 	/* Función de volcado de datos de las FAQs (de .csv a SQL) */
@@ -1501,110 +1093,5 @@ Recuerda visitar nuestra plataforma y sumergirte en la adrenalina de la puja en 
 		/* 'link' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', */
 
 		return $response;
-	}
-
-	/* PRUEBA DE OBTENCIÓN UBICACIÓN CON IP */
-
-	public function ObtenerPaísIP(Request $request)
-	{
-		$ip = $request->ip();
-		$binaryIpAddress = implode('.', array_map(function ($octet) {
-			return str_pad(decbin($octet), 8, '0', STR_PAD_LEFT);
-		}, explode('.', $ip)));
-		$networkPortion = substr($binaryIpAddress, 0, strpos($binaryIpAddress, '0'));
-		$subnetBits = strlen($networkPortion);
-		$subnetMask = $ip . '/' . $subnetBits;
-
-		$subnetMask = '77.246.76.0/23'; // IP para pruebas.
-
-		$id_localizacion = $this->getLocalizationID($subnetMask);
-
-		$dataLocalization = null;
-		if ($id_localizacion != null) {
-			echo "<hr>";
-			$dataLocalization = $this->getDataLocalization($id_localizacion);
-		}
-
-
-		dd($dataLocalization);
-	}
-
-	private function getLocalizationID($ip, $rowsPerPage = 5000)
-	{
-		$rutaArchivo = public_path('files/IPv4_blocks_processed.csv');
-
-		if (($handle = fopen($rutaArchivo, "r")) !== FALSE) {
-			$fila = 0;
-			$filasPorPagina = $rowsPerPage;
-			$pagina = 1;
-			$i = 0;
-
-			while (($data = fgetcsv($handle, 0, ",")) !== FALSE) {
-				$fila++;
-				$i++;
-				if ($fila <= $pagina * $filasPorPagina) {
-					if ($fila > ($pagina - 1) * $filasPorPagina) {
-						if ($data[0] == $ip) {
-							echo "Ha llegado a los " . $i . " registros <br>";
-							echo "Ha llegado a las " . $pagina . " páginas <br>";
-							return $data[1];
-						}
-					}
-				} else {
-					$fila = $pagina * $filasPorPagina;
-					$pagina++;
-				}
-			}
-
-			fclose($handle);
-			return null;
-		}
-	}
-
-
-	private function getDataLocalization($id)
-	{
-		$rutaArchivo = public_path('files/IP_Locations_es_processed.csv');
-
-		if (($handle = fopen($rutaArchivo, "r")) !== FALSE) {
-			$filasPorPagina = 7000;
-			$fila = 0;
-			$pagina = 1;
-			$i = 0;
-
-			while (($data = fgetcsv($handle, 0, ",")) !== FALSE) {
-				$fila++;
-				$i++;
-				if ($fila <= $pagina * $filasPorPagina) {
-					if ($fila > ($pagina - 1) * $filasPorPagina) {
-						if ($data[0] == $id) {
-							echo "Localizaciones:<br>";
-							echo "Ha llegado a los " . $i . " registros <br>";
-							echo "Ha llegado a las " . $pagina . " páginas <br>";
-							return [
-								'continent' => $data[1],
-								'ISO_code' => $data[2],
-								'country' => $data[3],
-								'province_code' => $data[4],
-								'province' => $data[5],
-								'region_code' => $data[6],
-								'region' => $data[7],
-								'city' => $data[8],
-							];
-						}
-					}
-				} else {
-					$fila = $pagina * $filasPorPagina;
-					$pagina++;
-				}
-			}
-
-			echo "Localizaciones:<br>";
-			echo "Ha llegado a los " . $i . " registros <br>";
-			echo "Ha llegado a las " . $pagina . " páginas <br>";
-
-			return null;
-			fclose($handle);
-		}
 	}
 }
