@@ -3400,6 +3400,7 @@ color: black !important;
     text-align: center;
 	/* aspect-ratio: 4 / 3; */
     aspect-ratio: 16 / 9;
+	width: 100%;
 }
 
 #streaming #video_info {
