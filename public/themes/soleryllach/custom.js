@@ -1466,8 +1466,19 @@ function showLotListModal(whenScroll) {
 
 function showBannerModal()
 {
-	$('#bannerModal').modal('show');
-	$('#bannerModal').on('shown.bs.modal', function () {
-		$('.grid-banner').slick('refresh');
-	});
+	const modalKey = 'bannerModalLastShown';
+	const today = new Date().toISOString().split('T')[0]; // formato YYYY-MM-DD
+
+	const lastShownDate = localStorage.getItem(modalKey);
+
+	if (lastShownDate !== today) {
+		console.log("dentro");
+		$('#bannerModal').modal('show');
+		$('#bannerModal').on('shown.bs.modal', function () {
+			$('.grid-banner').slick('refresh');
+		});
+		localStorage.setItem(modalKey, today);
+	}
 }
+
+

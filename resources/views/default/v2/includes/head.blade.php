@@ -59,9 +59,11 @@ header("Expires: 0 "); // Proxies.
 @endif
 
 @if(!empty($data['seo']->canonical))
-<link rel="canonical" href="{{ $data['seo']->canonical }}" />
+	<link rel="canonical" href="{{ $data['seo']->canonical }}" />
 @elseif(!empty($seo->canonical))
-<link rel="canonical" href="{{ $seo->canonical }}" />
+	<link rel="canonical" href="{{ $seo->canonical }}" />
+@else
+	<link rel="canonical" href="{{str_replace("http:","https:",Request::url())}}" />
 @endif
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
