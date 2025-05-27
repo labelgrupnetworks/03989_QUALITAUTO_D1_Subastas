@@ -1472,6 +1472,8 @@ class SubastaController extends Controller
 		$data['auction'] = $auction;
 		$data['noindex-follow'] = true;
 
+		$data['categories'] = (new LotCategoryService)->getAuctionCategories($auction->cod_sub);
+
 		return View::make('front::pages.ficha_subasta', array('data' => $data));
 	}
 

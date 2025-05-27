@@ -22,6 +22,14 @@
         section.fluid-banner .slick-dotted.slick-slider {
             margin-bottom: 0;
         }
+
+		.btn-home-banner {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			bottom: 20%;
+			z-index: 1;
+		}
     </style>
 
     <section class="fluid-banner">
@@ -45,14 +53,21 @@
 					@endphp
 					@include("includes.banners.$bannerItem->tipo", $params)
 				@else
+					@php
+						$textBanner = strip_tags($bannerItem->texto);
+					@endphp
 					<div class="position-relative" data-invert>
 						<picture class="slider-img">
 							<source srcset="{{ $bannerItem->images['desktop'] }}" media="(min-width: 600px)">
-							<img src="{{ $bannerItem->images['mobile'] }}" alt="{{ $bannerItem->texto }}">
+							<img src="{{ $bannerItem->images['mobile'] }}" alt="{{ $textBanner }}">
 						</picture>
 
-						@if (!empty($bannerItem->url))
-							<a class="stretched-link" href="{{ $bannerItem->url }}"></a>
+						@if (!empty($bannerItem->url) && !empty($textBanner))
+						<a class="btn btn-primary btn-home-banner" href="{{ $bannerItem->url }}">
+							{{ $textBanner }}
+						</a>
+						@elseif(!empty($bannerItem->url))
+						<a class="stretched-link" href="{{ $bannerItem->url }}"></a>
 						@endif
 					</div>
 				@endif

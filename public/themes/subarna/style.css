@@ -5166,3 +5166,20 @@ div.item_subasta img {
 	line-height: 1;
 	margin-bottom: .5rem;
 }
+
+.ficha-subasta-categories {
+	padding-top: var(--space-medium-large);
+    padding-bottom: var(--space-medium-large);
+	display: grid;
+	column-gap: 15px;
+	row-gap: 30px;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.ficha-subasta-categories img {
+	width: 100%;
+}
+
+.ficha-subasta-categories a {
+	color: inherit;
+}

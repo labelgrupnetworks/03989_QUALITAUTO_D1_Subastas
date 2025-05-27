@@ -14,6 +14,12 @@
 	</picture>
 
 	@if (!empty($url))
+	<a class="btn btn-primary" href="{{ $url }}" title="{{ $texto ?? '' }}">
+		<p class="ff-highlight bold">{{ $texto ?? 'Action' }}</p>
+	</a>
+	@endif
+
+	@if (!empty($url))
 		<a class="stretched-link" href="{{ $url }}"></a>
 	@endif
 </div>

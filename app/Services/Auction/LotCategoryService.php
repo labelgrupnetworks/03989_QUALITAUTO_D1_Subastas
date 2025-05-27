@@ -2,6 +2,8 @@
 
 namespace App\Services\Auction;
 
+use App\Models\V5\FgHces1;
+use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FxTsec;
 use App\Support\Localization;
 use Illuminate\Support\Facades\DB;
@@ -28,5 +30,33 @@ class LotCategoryService
 					->orWhereNull('fxtsec_lang.lang_tsec_lang');
 			})
 			->get();
+	}
+
+	public function getAuctionSubCategories($aucionId)
+	{
+		return FgHces1::query()
+			->select('sec_hces1')
+			->leftJoinFghces1Asigl0()
+			->where('sub_asigl0', $aucionId)
+			->distinct()
+			->pluck('sec_hces1');
+	}
+
+	public function getAuctionCategories($aucionId)
+	{
+		$subCategories = $this->getAuctionSubCategories($aucionId)->toArray();
+
+		return FgOrtsec0::query()
+			->select('lin_ortsec0', 'key_ortsec0', 'orden_ortsec0')
+			->selectRaw('COALESCE(fgortsec0_lang.des_ortsec0_lang, fgortsec0.des_ortsec0) as des_ortsec0')
+			->joinOrtsec1FgOrtsec0()
+			->joinSecOrtsec0()
+			->joinLangFgOrtsec0()
+			->whereIn('sec_ortsec1', $subCategories)
+			->where('sub_ortsec0', 0)
+			->distinct()
+			->get()
+			->sortBy('orden_ortsec0')
+			->values();
 	}
 }
