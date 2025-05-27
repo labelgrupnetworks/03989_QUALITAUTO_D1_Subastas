@@ -760,12 +760,6 @@ class PaymentsController extends Controller
 
 		$iva_temp = $pago->getIVA($hoy, $cod_iva);
 
-
-		/* 01/09/2020 lo comento por que no le veo ningun sentido
-		if (!empty($iva_temp)) {
-			$iva_temp = $pago->getIVACOD($cod_iva);
-		}
-		*/
 		if (!empty($iva_temp[0])) {
 			$iva = $iva_temp[0]->iva_iva;
 		} else {
