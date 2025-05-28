@@ -438,7 +438,7 @@ Route::get(Routing::translateSeo('articulos'), [ArticleController::class, 'index
 Route::get(Routing::translateSeo('articulos', '_{family}'), [ArticleController::class, 'index'])->name("articles_family");
 Route::get(Routing::translateSeo('articulos', '-{category}'), [ArticleController::class, 'index'])->name("articles-category");
 Route::get(Routing::translateSeo('articulos', '-{category}/{subcategory}'), [ArticleController::class, 'index'])->name("articles-subcategory");
-Route::get(Routing::translateSeo('articulo', '/{idArticle}-{friendly}'), [ArticleController::class, 'article'])->name("article");
+Route::get(Routing::translateSeo('articulo', '/{idArticle}-{friendly}'), [ArticleController::class, 'article'])->where('idArticle', '[0-9]+')->name("article");
 Route::post(Routing::translateSeo('addArticleCart'), [ArticleController::class, 'addArticle'])->name('addArticleCart');
 Route::post(Routing::translateSeo('changeUnitsArticleCart', '/{idArticle}/{units}'), [ArticleController::class, 'changeUnitsArticleCart'])->name('changeUnitsArticleCart');
 

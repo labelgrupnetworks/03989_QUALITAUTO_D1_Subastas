@@ -61,7 +61,7 @@ class AuctionService
 			$keyCache = $keyCache . '.' . 'admin';
 		}
 
-		return Cache::remember($keyCache, 60, function () use ($type) {
+		return Cache::remember(Config::get('cache.prefix') . $keyCache, 60, function () use ($type) {
 			return FgSub::query()
 				->when(Config::get('app.lang_sub_in_global', false) && !Localization::isDefaultLocale(), function ($query) {
 					$query->joinLangSub();
@@ -70,6 +70,31 @@ class AuctionService
 				})
 				->addSelect('subc_sub', 'cod_sub', 'hfec_sub', 'hhora_sub')
 				->activeSub()
+				->where('tipo_sub', $type)
+				->when(Config::get("app.restrictVisibility"), function ($query) {
+					$query->Visibilidadsubastas(Session::get('user.cod'));
+				})
+				->when(Config::get('app.agrsub', null), function ($query) {
+					$query->where('agrsub_sub', Config::get('app.agrsub'));
+				})
+				->get();
+		});
+	}
+
+	public function getActiveSessionsToType($type)
+	{
+		$isAdmin = Session::get('user.admin');
+		$keyCache = "auction.session_actives.{$type}";
+		if($isAdmin) {
+			$keyCache = $keyCache . '.admin';
+		}
+
+		return Cache::remember(Config::get('cache.prefix') . $keyCache, 60, function () use ($type) {
+			return FgSub::query()
+				->addSelect('subc_sub', 'cod_sub', 'hfec_sub', 'hhora_sub')
+				->addSelect('"end" as session_end')
+				->activeSub()
+				->simpleJoinSessionSub()
 				->where('tipo_sub', $type)
 				->when(Config::get("app.restrictVisibility"), function ($query) {
 					$query->Visibilidadsubastas(Session::get('user.cod'));

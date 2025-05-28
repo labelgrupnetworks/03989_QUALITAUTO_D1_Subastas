@@ -63,9 +63,12 @@ class SeoLib
 
 	static function saveVisit($sub = null, $category = null, $section = null, $ref = null)
 	{
+		if (in_array(Config::get("app.env"), ["testing", "local"])) {
+			return;
+		}
+
 		$userAgent = request()->userAgent();
-		$isTesting = Config::get("app.env") == "testing";
-		if ($isTesting || !$userAgent) {
+		if (!$userAgent) {
 			return;
 		}
 
@@ -79,9 +82,6 @@ class SeoLib
 
 					$userController = new UserController();
 					$ip = $userController->getUserIP();
-
-					
-
 
 					if (empty($category) && !empty($section)) {
 

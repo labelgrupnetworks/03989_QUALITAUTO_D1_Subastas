@@ -526,6 +526,7 @@ return [
 		'tax_not_included' => 'Tax not included',
 		'you_are_bidding' => 'You are bidding for',
 		'continue_buying' => 'Continue buying',
+		'href_continue_buying' => '#',
 		'go_to_cart' => 'Go to cart',
 		'phonebid_text' => 'At the time of auction we will contact you by phone:',
 		'placeholder_phonebid_text' => 'give us your comments',

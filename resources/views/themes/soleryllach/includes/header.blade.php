@@ -4,13 +4,13 @@
     use App\libs\TradLib as TradLib;
     $lang = Config::get('app.locale');
 
-	$auctionsW = $auctionService->getActiveAuctionsToType('W');
+	$auctionsW = $auctionService->getActiveSessionsToType('W');
 	$notFinishedExists = $auctionsW->contains(function ($auction) {
-		return (strtotime($auction->hasta_fecha_hora) > strtotime(now()));
+		return (strtotime($auction->session_end) > strtotime(now()));
 	});
 
 	$finishedExists = $auctionsW->contains(function ($auction) {
-		return (strtotime($auction->hasta_fecha_hora) < strtotime(now()));
+		return (strtotime($auction->session_end) < strtotime(now()));
 	});
 
 	$countAuctionsV = $global['auctionTypes']->where('tipo_sub', 'V')->value('count');
