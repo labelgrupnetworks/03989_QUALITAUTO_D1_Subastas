@@ -573,8 +573,6 @@ class PaymentsController extends Controller
 
 	function pagoDirecto()
 	{
-
-
 		if (empty($_GET['anum']) || empty($_GET['num']) || empty($_GET['emp']) || empty($_GET['tipo']) ||  empty($_GET['tk'])) {
 			exit(View::make('front::errors.404'));
 		}
@@ -592,6 +590,9 @@ class PaymentsController extends Controller
 		#antes habia rand(5, 15) pero fallaba porque redssys solo acepta 12 caracteres y se generaban a veces 13, cuando daba numeros del 10 al 15
 		#$ordenTrans = $tipo . rand(1, 9) . time(); //lo comento por que ha fallado en tauler ampliamso el nuemro de valores random para hacer mas improbable que falle
 		$ordenTrans = $tipo . rand(10, 99) . substr(time(), 1, 9);
+
+		$idToNotification = "$anum/$num";
+
 		//Comprovamos el tipo
 		if ($tipo == 'P') {
 			//Comprobamos que el pago que quieren hacer exista y que no este pagada
@@ -640,7 +641,7 @@ class PaymentsController extends Controller
 					return (new PayPalV2API())->handlePayment($prefact->imptotal, $ordenTrans, $currency);
 				} elseif (Config::get('app.paymentRedsys')) {
 
-					$varsRedsys = $this->requestRedsys($prefact->imptotal, $ordenTrans, '/gateway/pagoDirectoReturn');
+					$varsRedsys = $this->requestRedsys($prefact->imptotal, $ordenTrans, '/gateway/pagoDirectoReturn', 0, null, null, null, $idToNotification);
 					#reenviamso al formulario
 					return View::make('front::pages.panel.RedsysForm', $varsRedsys);
 				} elseif (Config::get('app.paymentUP2') == 'UP2') {
@@ -687,7 +688,8 @@ class PaymentsController extends Controller
 				return (new PayPalV2API())->handlePayment($factura->imptotal, $ordenTrans, $currency);
 			} elseif (Config::get('app.paymentRedsys')) {
 
-				$varsRedsys = $this->requestRedsys($factura->imptotal, $ordenTrans, '/gateway/pagoDirectoReturn');
+
+				$varsRedsys = $this->requestRedsys($factura->imptotal, $ordenTrans, '/gateway/pagoDirectoReturn', 0, null, null, null, $idToNotification);
 				#reenviamso al formulario
 				return View::make('front::pages.panel.RedsysForm', $varsRedsys);
 			} elseif (Config::get('app.paymentUP2') == 'UP2') {
@@ -890,10 +892,14 @@ class PaymentsController extends Controller
 
 		return $msg;
 	}
-	#la operacion 0 es la normal , la autorización
-	function requestRedsys($amount, $ordenTrans, $merchantURL, $operacion = 0, $multiRedsys = null, $urlOk = null, $urlKo = null)
-	{
 
+	/**
+	 * la operacion 0 es la normal , la autorización
+	 * @see https://canales.redsys.es/canales/ayuda/documentacion/Manual%20integracion%20para%20conexion%20por%20Redireccion.pdf
+	 */
+	function requestRedsys($amount, $ordenTrans, $merchantURL, $operacion = 0, $multiRedsys = null, $urlOk = null, $urlKo = null, $textNotification = null)
+	{
+		$userName = Session::get('user.name', '');
 
 		$url =  Config::get('app.url');
 		#método de pago, por defecto targeta
@@ -903,7 +909,6 @@ class PaymentsController extends Controller
 		} elseif (!empty(request("paymethod")) && request("paymethod") == "transfer") {
 			$payMethod = 'R';
 		}
-
 
 		#Redsys recomienda que no haya letras en los 4 primeros digitos de la idorden, por lo que substituimos la F y P por 0 y 1 respectivamente
 		$ordenTrans = str_replace(["F", "P", "T", "M", "D", "C"], [0, 1, 2, 3, 4, 5], $ordenTrans);
@@ -920,6 +925,7 @@ class PaymentsController extends Controller
 			$terminal = Config::get('app.TerminalRedsys');
 			$keyRedsys = Config::get('app.KeyRedsys');
 		}
+
 		if (empty($urlOk)) {
 			$urlOk = $url . Config::get('app.PaymentUrlOK');
 		}
@@ -939,12 +945,14 @@ class PaymentsController extends Controller
 		$miObj->setParameter("DS_MERCHANT_URLKO", $urlKo);
 		$miObj->setParameter("DS_MERCHANT_PAYMETHODS", $payMethod);
 
+		if($textNotification) {
+			$miObj->setParameter("DS_MERCHANT_MERCHANTDATA", $textNotification); //datos enviados por la respuesta “on-line” al comercio
+			$miObj->setParameter("DS_MERCHANT_TITULAR", $userName); //mostrará al titular en la pantalla de confirmación de la compra.
+		}
 
-		#nombre del comercio
-		#$miObj->setParameter("DS_MERCHANT_MERCHANTNAME",$payMethod);
+		// $miObj->setParameter("DS_MERCHANT_MERCHANTNAME", 'Test Name Label'); //nombre del comercio que aparecerá en el ticket del cliente
 
 		//Datos de configuración
-
 		// Se generan los parámetros de la petición
 		$varsRedsys["version"] = "HMAC_SHA256_V1";
 		$varsRedsys["params"] = $miObj->createMerchantParameters();
