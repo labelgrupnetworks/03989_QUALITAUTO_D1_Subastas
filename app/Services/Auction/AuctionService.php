@@ -52,31 +52,36 @@ class AuctionService
 			->first();
 	}
 
+	protected function baseActiveSubsQuery(string $type)
+	{
+		return FgSub::query()
+			->activeSub()
+			->where('tipo_sub', $type)
+			->when(Config::get('app.restrictVisibility'), function ($q) {
+				$q->Visibilidadsubastas(Session::get('user.cod'));
+			})
+			->when(Config::get('app.agrsub', null), function ($q) {
+				$q->where('agrsub_sub', Config::get('app.agrsub'));
+			});
+	}
+
 	public function getActiveAuctionsToType($type)
 	{
 		$theme = Config::get('app.theme');
 		$isAdmin = Session::get('user.admin');
 		$keyCache = "auction.actives.{$theme}.{$type}";
-		if($isAdmin) {
+		if ($isAdmin) {
 			$keyCache = $keyCache . '.' . 'admin';
 		}
 
 		return Cache::remember(Config::get('cache.prefix') . $keyCache, 60, function () use ($type) {
-			return FgSub::query()
+			return $this->baseActiveSubsQuery($type)
 				->when(Config::get('app.lang_sub_in_global', false) && !Localization::isDefaultLocale(), function ($query) {
 					$query->joinLangSub();
 				}, function ($query) {
 					$query->addSelect('des_sub');
 				})
 				->addSelect('subc_sub', 'cod_sub', 'hfec_sub', 'hhora_sub')
-				->activeSub()
-				->where('tipo_sub', $type)
-				->when(Config::get("app.restrictVisibility"), function ($query) {
-					$query->Visibilidadsubastas(Session::get('user.cod'));
-				})
-				->when(Config::get('app.agrsub', null), function ($query) {
-					$query->where('agrsub_sub', Config::get('app.agrsub'));
-				})
 				->get();
 		});
 	}
@@ -85,23 +90,15 @@ class AuctionService
 	{
 		$isAdmin = Session::get('user.admin');
 		$keyCache = "auction.session_actives.{$type}";
-		if($isAdmin) {
+		if ($isAdmin) {
 			$keyCache = $keyCache . '.admin';
 		}
 
 		return Cache::remember(Config::get('cache.prefix') . $keyCache, 60, function () use ($type) {
-			return FgSub::query()
+			return $this->baseActiveSubsQuery($type)
 				->addSelect('subc_sub', 'cod_sub', 'hfec_sub', 'hhora_sub')
 				->addSelect('"end" as session_end')
-				->activeSub()
 				->simpleJoinSessionSub()
-				->where('tipo_sub', $type)
-				->when(Config::get("app.restrictVisibility"), function ($query) {
-					$query->Visibilidadsubastas(Session::get('user.cod'));
-				})
-				->when(Config::get('app.agrsub', null), function ($query) {
-					$query->where('agrsub_sub', Config::get('app.agrsub'));
-				})
 				->get();
 		});
 	}
