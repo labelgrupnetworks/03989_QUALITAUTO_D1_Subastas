@@ -132,14 +132,6 @@ Route::get(Routing::slugSeo('lote') . '/{cod}-{texto2}/{ref}-{texto}', [SubastaC
 #NewLotes
 Route::get(Routing::slugSeo('subasta-lote') . '/{texto}/{cod}-{ref}', [SubastaController::class, 'lote'])->where(array('cod' => '[0-9a-zA-Z]+'))->name('subasta.lote.ficha');
 
-#listado de lotes categorias y tematicos
-Route::get(Routing::slugSeo('subastas') . '/{key}/page-{page?}', [SubastaController::class, 'customizeLotListCategory']);
-Route::get(Routing::slugSeo('subastas') . '/{key}/{subcategory?}', [SubastaController::class, 'customizeLotListCategory']);
-Route::get(Routing::slugSeo('subastas') . '/{key}/{subcategory?}/page-{page}', [SubastaController::class, 'customizeLotListCategory']);
-
-Route::get(Routing::slugSeo('tematicas') . '/{key}', [SubastaController::class, 'customizeLotListTheme']);
-Route::get(Routing::slugSeo('tematicas') . '/{key}/page-{page?}', [SubastaController::class, 'customizeLotListTheme']);
-
 Route::get(Routing::translateSeo('subasta-actual'), [SubastaController::class, 'subasta_actual'])->name('subasta.actual');
 Route::get(Routing::translateSeo('subasta-actual-online'), [SubastaController::class, 'subasta_actual_online'])->name('subasta.actual-online');
 Route::get(Routing::translateSeo('presenciales'), [SubastaController::class, 'subastas_presenciales'])->name('subastas.presenciales');
@@ -399,6 +391,14 @@ if (!empty(Config::get("app.gridLots")) && Config::get("app.gridLots") == "new")
 } else {
 	#ver version nueva con URL test
 	Route::get(Routing::slugSeo('subastaTest') . '/{texto}_{cod}-{session}', [LotListController::class, 'getLotsList'])->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
+
+	#listado de lotes categorias y tematicos
+	Route::get(Routing::slugSeo('subastas') . '/{key}/page-{page?}', [SubastaController::class, 'customizeLotListCategory']);
+	Route::get(Routing::slugSeo('subastas') . '/{key}/{subcategory?}', [SubastaController::class, 'customizeLotListCategory']);
+	Route::get(Routing::slugSeo('subastas') . '/{key}/{subcategory?}/page-{page}', [SubastaController::class, 'customizeLotListCategory']);
+
+	Route::get(Routing::slugSeo('tematicas') . '/{key}', [SubastaController::class, 'customizeLotListTheme']);
+	Route::get(Routing::slugSeo('tematicas') . '/{key}/page-{page?}', [SubastaController::class, 'customizeLotListTheme']);
 
 	#antiguo
 	Route::get(Routing::slugSeo('subasta') . '/{cod}-{texto}', [SubastaController::class, 'index'])->where(array('cod' => '[0-9a-zA-Z]+'))->name('urlAuctionOld');
