@@ -29,12 +29,12 @@
                     <p>{{ $auction->expofechas_sub }}</p>
                 @endif
                 @if ($auction->expohorario_sub)
-                    <p>
-                        {{ trans("$theme-app.subastas.inf_subasta_horario") . ': ' . $auction->expohorario_sub }}
-                    </p>
+                    <div>
+                        {{ trans("$theme-app.subastas.inf_subasta_horario") }} : {!! $auction->expohorario_sub !!}
+                    </div>
                 @endif
                 @if ($auction->expolocal_sub)
-                    <p>
+                    <p>a
                         {{ trans("$theme-app.subastas.inf_subasta_location") . ': ' . $auction->expolocal_sub }}
                     </p>
                 @endif
@@ -56,14 +56,6 @@
                 @endif
                 @if (!empty($auction->seslocal_sub))
                     <p>{{ trans("$theme-app.subastas.inf_subasta_location") . ': ' . $auction->seslocal_sub }}</p>
-                @endif
-                @if (!empty($auction->sesmaps_sub))
-                    <p>
-                        <a href="https://maps.google.com/?q={{ $auction->sesmaps_sub }}"
-                            title="{{ trans("$theme-app.subastas.how_to_get") }}" target="_blank">
-                            {{ trans("$theme-app.subastas.how_to_get") }}
-                        </a>
-                    </p>
                 @endif
             </div>
 
