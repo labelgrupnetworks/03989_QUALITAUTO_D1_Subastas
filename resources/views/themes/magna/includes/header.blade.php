@@ -92,7 +92,7 @@
 
                 @if ($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
                     <li class="nav-item">
-                        <a href="{{ route('subasta.actual') }}" @class(['nav-link', 'active' => $isSubastasPage])>
+                        <a href="{{ route('subastas.presenciales') }}" @class(['nav-link', 'active' => $isSubastasPage])>
                             <span>{{ trans($theme . '-app.foot.auctions') }}</span>
                         </a>
                     </li>
