@@ -5173,7 +5173,8 @@ div.item_subasta img {
 	display: grid;
 	column-gap: 15px;
 	row-gap: 30px;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
+    justify-content: center;
 }
 
 .ficha-subasta-categories .category-item a {
