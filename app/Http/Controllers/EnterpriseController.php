@@ -50,13 +50,13 @@ class EnterpriseController extends Controller
 		return view('front::pages.team', ['data' => $data]);
 	}
 
-	public function aboutUsPage()
+	public function aboutUsPage(SpecialistService $specialistService)
 	{
 		if (!View::exists('front::pages.about_us')) {
 			abort(404);
 		}
 
-		$specialists = (new SpecialistService)->getAllSpecialists();
+		$specialists = $specialistService->getAllSpecialists();
 
 		return view('front::pages.about_us', ['specialists' => $specialists]);
 	}
