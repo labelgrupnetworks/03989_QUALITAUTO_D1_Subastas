@@ -34,7 +34,7 @@
                     </div>
                 @endif
                 @if ($auction->expolocal_sub)
-                    <p>a
+                    <p>
                         {{ trans("$theme-app.subastas.inf_subasta_location") . ': ' . $auction->expolocal_sub }}
                     </p>
                 @endif
