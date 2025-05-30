@@ -27,8 +27,18 @@
 			position: absolute;
 			left: 50%;
 			transform: translateX(-50%);
-			bottom: 20%;
+			bottom: 37%;
 			z-index: 1;
+			font-family: var(--ff-highlight);
+			background-color: black;
+			border: black;
+			color: white;
+		}
+
+		.btn-home-banner:hover, .btn-home-banner:focus, .btn-home-banner:active:is(:focus, :hover) {
+			background-color: white;
+			color: black;
+			border: white;
 		}
     </style>
 
