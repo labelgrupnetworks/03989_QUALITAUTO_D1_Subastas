@@ -652,7 +652,11 @@ class SubastaController extends Controller
 						$valid_words = true;
 						if (Config::get('app.desc_hces1')) {
 							$search .= $pipe . " REGEXP_LIKE (NVL(HCES1_LANG.TITULO_HCES1_LANG, HCES1.titulo_hces1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESC_HCES1_LANG, HCES1.DESC_HCES1), '$word')";
-						} else {
+						}
+						else if(Config::get('app.search_all_desc')) {
+							$search .= $pipe . " REGEXP_LIKE (NVL(HCES1_LANG.TITULO_HCES1_LANG, HCES1.titulo_hces1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESCWEB_HCES1_LANG, HCES1.DESCWEB_HCES1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESC_HCES1_LANG, HCES1.DESC_HCES1), '$word')";
+						}
+						else {
 							$search .= $pipe . " REGEXP_LIKE (NVL(HCES1_LANG.TITULO_HCES1_LANG, HCES1.titulo_hces1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESCWEB_HCES1_LANG, HCES1.DESCWEB_HCES1), '$word')";
 						}
 						$pipe = ") AND (";
@@ -663,7 +667,11 @@ class SubastaController extends Controller
 				if (strlen($description) > 1) {
 					if (Config::get('app.desc_hces1')) {
 						$search = " REGEXP_LIKE (NVL(TITULO_HCES1_LANG, titulo_hces1), '$description') OR REGEXP_LIKE (NVL(DESC_HCES1_LANG, DESC_HCES1), '$description')";
-					} else {
+					}
+					else if(Config::get('app.search_all_desc')) {
+						$search = " REGEXP_LIKE (NVL(TITULO_HCES1_LANG, titulo_hces1), '$description') OR REGEXP_LIKE (NVL(DESCWEB_HCES1_LANG, DESCWEB_HCES1), '$description') OR REGEXP_LIKE (NVL(DESC_HCES1_LANG, DESC_HCES1), '$description')";
+					}
+					else {
 						$search = " REGEXP_LIKE (NVL(TITULO_HCES1_LANG, titulo_hces1), '$description') OR REGEXP_LIKE (NVL(DESCWEB_HCES1_LANG, DESCWEB_HCES1), '$description')";
 					}
 					$valid_words = true;
