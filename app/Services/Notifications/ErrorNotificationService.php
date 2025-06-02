@@ -11,106 +11,128 @@ use Throwable;
 
 class ErrorNotificationService
 {
-    /**
-     * Dirección de correo electrónico para recibir las notificaciones.
-     */
-    protected const NOTIFICATION_EMAIL = 'enadal@labelgrup.com';
+	/**
+	 * Dirección de correo electrónico para recibir las notificaciones.
+	 */
+	protected const NOTIFICATION_EMAIL = 'enadal@labelgrup.com';
 
-    /**
-     * Procesa la excepción y determina si enviar una notificación.
-     *
-     * @param Throwable $exception
-     * @return void
-     */
-    public function processException(Throwable $exception): void
-    {
-        if (!Config::get('app.notification_exceptions', false)) {
-            return;
-        }
+	/**
+	 * Procesa la excepción y determina si enviar una notificación.
+	 *
+	 * @param Throwable $exception
+	 * @return void
+	 */
+	public function processException(Throwable $exception): void
+	{
+		// Verifica si se deben enviar notificaciones
+		if (!$this->checkConditionsToSendNotification()) {
+			return;
+		}
 
-        try {
-            $this->checkThresholdAndAlert($exception);
-        } catch (Throwable $e) {
-            Log::error('Error al enviar el email de error: ' . $e->getMessage());
-        }
-    }
+		try {
+			$this->checkThresholdAndAlert($exception);
+		} catch (Throwable $e) {
+			Log::error('Error al enviar el email de error: ' . $e->getMessage());
+		}
+	}
 
-    /**
-     * Verifica los umbrales para enviar alertas sobre excepciones.
-     */
-    protected function checkThresholdAndAlert(Throwable $exception): void
-    {
-        // 1) Crea una clave única para esta excepción
-        $key = $this->generateExceptionKey($exception);
+	protected function checkConditionsToSendNotification(): bool
+	{
+		// Aquí puedes agregar condiciones adicionales para enviar notificaciones
+		// No enviar notificaciones en entornos de desarrollo o pruebas
+		// Solo enviar en producción
+		if (in_array(Config::get('app.env'), ['local', 'testing'])) {
+			return false;
+		}
 
-        $this->notifyFirstTime($exception, $key);
-        $this->notifyWhenMaxAttemptsExceeded($exception, $key);
-    }
+		// $dayOfWeek = date('N'); // 1 (lunes) a 7 (domingo)
+		// if ($dayOfWeek >= 6) { // 6 es sábado, 7 es domingo
+		// 	return false;
+		// }
 
-    /**
-     * Genera una clave única para la excepción.
-     */
-    protected function generateExceptionKey(Throwable $exception): string
-    {
-        return 'error:' . sha1(
-            get_class($exception)
-                . '|' . $exception->getMessage()
-                . '|' . $exception->getFile()
-                . '|' . $exception->getLine()
-        );
-    }
+		if (!Config::get('app.notification_exceptions', false)) {
+			return false;
+		}
 
-    /**
-     * Notificar la primera vez que ocurre un error.
-     */
-    private function notifyFirstTime(Throwable $exception, string $key): void
-    {
-        $firstRateKey = $key . ':first';
-        if (RateLimiter::tooManyAttempts($firstRateKey, 1)) {
-            return;
-        }
+		return true;
+	}
 
-        $oneDayTime = 60 * 60 * 24;
-        $this->sendNotification($exception);
+	/**
+	 * Verifica los umbrales para enviar alertas sobre excepciones.
+	 */
+	protected function checkThresholdAndAlert(Throwable $exception): void
+	{
+		// 1) Crea una clave única para esta excepción
+		$key = $this->generateExceptionKey($exception);
 
-        // Bloquea la notificación "first-time" durante 24 horas
-        RateLimiter::hit($firstRateKey, $oneDayTime);
-    }
+		$this->notifyFirstTime($exception, $key);
+		$this->notifyWhenMaxAttemptsExceeded($exception, $key);
+	}
 
-    /**
-     * Notificar cuando se excede el número máximo de intentos.
-     */
-    private function notifyWhenMaxAttemptsExceeded(Throwable $exception, string $key): void
-    {
-        $maxAttempts = 5; // Número máximo de veces
-        $decayMinutes = 15; // Ventana en minutos
+	/**
+	 * Genera una clave única para la excepción.
+	 */
+	protected function generateExceptionKey(Throwable $exception): string
+	{
+		return 'error:' . sha1(
+			get_class($exception)
+				. '|' . $exception->getMessage()
+				. '|' . $exception->getFile()
+				. '|' . $exception->getLine()
+		);
+	}
 
-        RateLimiter::hit($key, $decayMinutes * 60);
-        if (!RateLimiter::tooManyAttempts($key, $maxAttempts)) {
-            return;
-        }
+	/**
+	 * Notificar la primera vez que ocurre un error.
+	 */
+	private function notifyFirstTime(Throwable $exception, string $key): void
+	{
+		$firstRateKey = $key . ':first';
+		if (RateLimiter::tooManyAttempts($firstRateKey, 1)) {
+			return;
+		}
 
-        // Limpia para no volver a notificar inmediatamente
-        RateLimiter::clear($key);
+		$oneDayTime = 60 * 60 * 24;
+		$this->sendNotification($exception);
 
-        // Envía el email con información del número de intentos
-        $this->sendNotification($exception, $maxAttempts);
-    }
+		// Bloquea la notificación "first-time" durante 24 horas
+		RateLimiter::hit($firstRateKey, $oneDayTime);
+	}
 
-    /**
-     * Envía la notificación de error.
-     *
-     * @param Throwable $exception La excepción ocurrida
-     * @param int|null $attempts Número de intentos (si aplica)
-     * @return void
-     */
-    private function sendNotification(Throwable $exception, ?int $attempts = 0): void
-    {
-        $notify = new ErrorOcurred($exception, $attempts);
-        $notification = Notification::route('mail', self::NOTIFICATION_EMAIL);
+	/**
+	 * Notificar cuando se excede el número máximo de intentos.
+	 */
+	private function notifyWhenMaxAttemptsExceeded(Throwable $exception, string $key): void
+	{
+		$maxAttempts = 5; // Número máximo de veces
+		$decayMinutes = 15; // Ventana en minutos
 
-        Config::get('app.debug', false)
-            ? $notification->notifyNow($notify) // Sin colas
-            : $notification->notify($notify);   // Con colas
-    }
+		RateLimiter::hit($key, $decayMinutes * 60);
+		if (!RateLimiter::tooManyAttempts($key, $maxAttempts)) {
+			return;
+		}
+
+		// Limpia para no volver a notificar inmediatamente
+		RateLimiter::clear($key);
+
+		// Envía el email con información del número de intentos
+		$this->sendNotification($exception, $maxAttempts);
+	}
+
+	/**
+	 * Envía la notificación de error.
+	 *
+	 * @param Throwable $exception La excepción ocurrida
+	 * @param int|null $attempts Número de intentos (si aplica)
+	 * @return void
+	 */
+	private function sendNotification(Throwable $exception, ?int $attempts = 0): void
+	{
+		$notify = new ErrorOcurred($exception, $attempts);
+		$notification = Notification::route('mail', self::NOTIFICATION_EMAIL);
+
+		Config::get('app.debug', false)
+			? $notification->notifyNow($notify) // Sin colas
+			: $notification->notify($notify);   // Con colas
+	}
 }
