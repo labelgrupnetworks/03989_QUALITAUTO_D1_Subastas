@@ -47,7 +47,7 @@
                             </td>
                         </tr>
                         <?php
-                            $indices = $auctionService->getAuctionIndexs($ficha_subasta->cod_sub, $ficha_subasta->id_auc_sessions);
+                            $indices = $auctionService->getAuctionIndexs($data['cod_sub'], $data['id_auc_sessions']);
                         ?>
 						@foreach($indices as $indice)
                         <tr id="order-row-tpl" style="display: table-row;">
