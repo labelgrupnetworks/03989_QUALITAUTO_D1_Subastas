@@ -96,6 +96,10 @@ class MailApiRestController extends ApiRestController {
 			'4' => 'TRACKING_CHANGE_SEG_STATE_4',
 		];
 
+		if (!array_key_exists($codSeg, $emailsTemplates)) {
+			return $this->responder(false, "the type of email is not valid", "", 401);
+		}
+
 		$email = new EmailLib($emailsTemplates[$codSeg]);
 
 		if (empty($email->email)) {
