@@ -652,9 +652,10 @@ class SubastaController extends Controller
 						$valid_words = true;
 						if (Config::get('app.desc_hces1')) {
 							$search .= $pipe . " REGEXP_LIKE (NVL(HCES1_LANG.TITULO_HCES1_LANG, HCES1.titulo_hces1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESC_HCES1_LANG, HCES1.DESC_HCES1), '$word')";
-						}
-						else if(Config::get('app.search_all_desc')) {
-							$search .= $pipe . " REGEXP_LIKE (NVL(HCES1_LANG.TITULO_HCES1_LANG, HCES1.titulo_hces1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESCWEB_HCES1_LANG, HCES1.DESCWEB_HCES1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESC_HCES1_LANG, HCES1.DESC_HCES1), '$word')";
+
+							if(Config::get('app.search_all_desc')) {
+								$search .= " OR REGEXP_LIKE (NVL(HCES1_LANG.DESCWEB_HCES1_LANG, HCES1.DESCWEB_HCES1), '$word')";
+							}
 						}
 						else {
 							$search .= $pipe . " REGEXP_LIKE (NVL(HCES1_LANG.TITULO_HCES1_LANG, HCES1.titulo_hces1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESCWEB_HCES1_LANG, HCES1.DESCWEB_HCES1), '$word')";
