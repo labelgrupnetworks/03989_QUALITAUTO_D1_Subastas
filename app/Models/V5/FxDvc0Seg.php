@@ -123,13 +123,13 @@ class FxDvc0Seg extends Model
 			[ 'application_date' => '2025-02-13', 'delivery_date' => '2025-02-23' ],
 			[ 'application_date' => '2025-03-13', 'delivery_date' => '2025-03-23' ],
 			[ 'application_date' => '2025-04-10', 'delivery_date' => '2025-04-20' ],
-			[ 'application_date' => '2025-05-13', 'delivery_date' => '2025-05-23' ],
-			[ 'application_date' => '2025-06-17', 'delivery_date' => '2025-06-27' ],
-			[ 'application_date' => '2025-07-22', 'delivery_date' => '2025-07-27' ],
-			[ 'application_date' => '2025-09-16', 'delivery_date' => '2025-09-26' ],
-			[ 'application_date' => '2025-10-16', 'delivery_date' => '2025-10-26' ],
-			[ 'application_date' => '2025-11-20', 'delivery_date' => '2025-11-30' ],
-			[ 'application_date' => '2025-12-16', 'delivery_date' => '2025-12-26' ],
+			[ 'application_date' => '2025-05-06', 'delivery_date' => '2025-05-23' ],
+			[ 'application_date' => '2025-06-10', 'delivery_date' => '2025-06-27' ],
+			[ 'application_date' => '2025-07-15', 'delivery_date' => '2025-07-27' ],
+			[ 'application_date' => '2025-09-09', 'delivery_date' => '2025-09-26' ],
+			[ 'application_date' => '2025-10-09', 'delivery_date' => '2025-10-26' ],
+			[ 'application_date' => '2025-11-13', 'delivery_date' => '2025-11-30' ],
+			[ 'application_date' => '2025-12-09', 'delivery_date' => '2025-12-26' ],
 		];
 
 		return collect($dates);
