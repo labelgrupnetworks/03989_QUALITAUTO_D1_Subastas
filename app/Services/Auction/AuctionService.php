@@ -3,6 +3,7 @@
 namespace App\Services\Auction;
 
 use App\Models\V5\AucSessions;
+use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgSub;
 use App\Models\V5\FgSubInd;
 use App\Support\Localization;
@@ -101,5 +102,27 @@ class AuctionService
 				->simpleJoinSessionSub()
 				->get();
 		});
+	}
+
+	/**
+	 * Añade a la URL de la subasta los parámetros de paginación necesarios para la sesión.
+	 *
+	 * @param string $originalUrl URL original de la subasta.
+	 * @param float $sessionInitLot Lote inicial de la sesión.
+	 * @param string $codSub Código de la subasta.
+	 * @param int $lotsPerPage Número de lotes por página (opcional, por defecto 24).
+	 * @return string URL modificada con los parámetros de paginación.
+	 */
+	public function addUrlPageSession($originalUrl, $sessionInitLot, $codSub, $lotsPerPage = 24) : string
+	{
+		$lotsInAuction = FgAsigl0::query()
+			->select('count(ref_asigl0) cuantos')
+			->where('SUB_ASIGL0', $codSub)
+			->where('ref_asigl0', '<', $sessionInitLot)
+			->value('cuantos');
+
+		// +1 porque la página no empieza en 0 si no en 1
+		$page = intdiv($lotsInAuction, $lotsPerPage) +1;
+		return "$originalUrl?page=$page&total=$lotsPerPage#$codSub-$sessionInitLot";
 	}
 }

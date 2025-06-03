@@ -5322,6 +5322,7 @@ class Subasta extends Model
 			})
 			->joinSessionSub()
 			->addSelect('subc_sub')
+			->addSelect('"init_lot"')
 			->where('subc_sub', '!=', 'N');
 
 		if (!Session::get('user.admin')) {

@@ -473,10 +473,6 @@ nav.header-navbar ul {
 	max-height: initial;
 }
 
-.auction-banner-row>div {
-	height: 100%;
-}
-
 .auction-banner-info-column>div {
 	height: 100%;
 	display: flex;
@@ -494,7 +490,7 @@ nav.header-navbar ul {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
-	object-position: top;
+	object-position: center;
 }
 
 @media(min-width: 768px) {
@@ -506,7 +502,12 @@ nav.header-navbar ul {
 	}
 
 	.auction-banner-row {
-		height: 500px;
+		min-height: 500px;
+		height: auto;
+	}
+
+	.auction-banner img {
+		max-height: 500px;
 	}
 
 	.auction-banner-info-column>div {
