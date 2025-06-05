@@ -45,8 +45,8 @@
 
 @stack('scripts')
 
-<script defer src="{{ Tools::urlAssetsCache('/js/default/customized_tr_main.js') }}"></script>
-<script defer src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/customized_tr_main.js') }}"></script>
+<script src="{{ Tools::urlAssetsCache('/js/default/customized_tr_main.js') }}"></script>
+<script src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/customized_tr_main.js') }}"></script>
 <script defer src="{{ URL::asset('js/owl.carousel.min.js') }}"></script>
 <script defer src="{{ URL::asset('js/jquery.jqzoom-core.js') }}"></script>
 <script defer type="text/javascript" src="{{ URL::asset('js/jquery.ui.touch-punch.min.js') }}"></script>

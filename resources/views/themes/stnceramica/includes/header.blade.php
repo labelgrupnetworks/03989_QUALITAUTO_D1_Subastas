@@ -5,14 +5,6 @@ use App\libs\TradLib as TradLib;
 $lang = Config::get('app.locale');
 
 $registration_disabled = Config::get('app.registration_disabled');
-$fullname = Session::get('user.name');
-if (strpos($fullname, ',')) {
-    $str = explode(',', $fullname);
-    $name = $str[1];
-} else {
-    $name = $fullname;
-}
-
 ?>
 @if (count(Config::get('app.locales')) > 1)
 <div class="lang-selection">
@@ -63,33 +55,28 @@ if (strpos($fullname, ',')) {
                     class="close-menu-reponsive hidden-lg">{{ trans($theme . '-app.head.close') }}</span>
 
 
-                {{-- menu inicio
-					<li class="flex-display">
-                        <a class="color-letter flex-display link-header justify-center align-items-center" title="{{ trans($theme.'-app.home.home')}}" href="/{{$lang}}">
-                            <span>{{ trans($theme.'-app.home.home')}}</span>
-                        </a>
-                    </li> --}}
-
 				@if(Session::has('user'))
+					@php
+						$fgortsec0 = new App\Models\V5\FgOrtsec0();
+						$categories = $fgortsec0
+							->getAllFgOrtsec0()
+							->get()
+							->toarray();
+					@endphp
                 <li>
                     <a class="color-letter d-flex link-header justify-content-center align-items-center category-button"
                         href="#"><span>{{ trans(\Config::get('app.theme') . '-app.lot.categories') }}</span></a>
                     <div class="submenuDefault ">
                         <div class="  pt-2 pb-2">
-                            @php
-                                $fgortsec0 = new App\Models\V5\FgOrtsec0();
-                                $categories = $fgortsec0
-                                    ->GetAllFgOrtsec0()
-                                    ->get()
-                                    ->toarray();
-                            @endphp
+
 
 							<div class="categoryOption text-uppercase"><a
 								href="{{ route('allCategories') }}">{{ trans("$theme-app.lot_list.all_categories") }}</a>
 							</div>
                             @foreach ($categories as $k => $category)
-                                <div class="categoryOption"><a
-                                        href="{{ route('category', ['category' => $category['key_ortsec0']]) }}">{{ $category['des_ortsec0'] }}</a>
+                                <div class="categoryOption">
+									<a
+                                        href="{{ route('category', ['keycategory' => $category['key_ortsec0']]) }}">{{ $category['des_ortsec0'] }}</a>
                                 </div>
 
                             @endforeach
@@ -98,14 +85,8 @@ if (strpos($fullname, ',')) {
 
                 </li>
 				@endif
-                {{-- @if ($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
-                  <li>
-                      <a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('presenciales') }}">
-                        <span>{{ trans($theme.'-app.foot.auctions')}}</span>
-                    </a>
-                    </li>
-                @endif --}}
-                @if (Session::has('user') && $global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+
+                @if (Session::has('user') && $global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
                     <li>
                         <a class="color-letter flex-display link-header justify-center align-items-center"
                             href="{{ \Routing::translateSeo('subastas-online') }}"><span>{{ trans($theme . '-app.foot.online_auction') }}</span></a>
@@ -179,48 +160,6 @@ if (strpos($fullname, ',')) {
             </div>
 
         </div>
-		<div>
-
-		</div>
-        {{-- <div class="user-account">
-            @if (!Session::has('user'))
-                <div class="user-account-login">
-                    <a class="flex-display justify-center align-items-center btn_login_desktop btn_login"
-                        title="< ?= trans($theme.'-app.login_register.login') ?>" href="javascript:;">
-                        < ?= trans($theme . '-app.login_register.login') ?>
-                    </a>
-                </div>
-            @else
-                <div class="my-account color-letter-header">
-                    <div class="row">
-                        <div class="col-xs-3 text-center">
-                            {{-- le he quitado la clase logo company por que no veo que tenga que tenerla y fallaba cuando modificaban esa clase,class="logo-company"
-                            <img width="25px;" src="/themes/{{ $theme }}/assets/img/user.png"
-                                alt="{{ \Config::get('app.name') }}">
-                        </div>
-                        <div class="col-xs-9 text-center">
-                            @if (!empty($name))
-                                <div class="hidden-xs" style='font-size: 11px'><b>< ?= $name ?></b></div>
-                            @endif
-                            <span class="hidden-xs">{{ trans($theme . '-app.login_register.my_panel') }}</span>
-                        </div>
-                    </div>
-
-                    <div class="mega-menu background-body rigth-0">
-                        <a class="color-letter" href="{{ \Routing::slug('user/panel/orders') }}">
-                            {{ trans($theme . '-app.login_register.my_panel') }}
-
-                        </a>
-                        @if (Session::get('user.admin'))
-                            <a class="color-letter" href="/admin" target="_blank">
-                                {{ trans($theme . '-app.login_register.admin') }}</a>
-                        @endif
-                        <a class="color-letter"
-                            href="{{ \Routing::slug('logout') }}">{{ trans($theme . '-app.login_register.logout') }}</a>
-                    </div>
-                </div>
-            @endif
-        </div> --}}
     </nav>
 </header>
 
@@ -296,17 +235,6 @@ if (strpos($fullname, ',')) {
 
                     </div>
                 </form>
-                {{-- <div class="login-separator"></div>
-                <p class="text-center">{{ trans($theme . '-app.login_register.not_account') }}</p>
-                <div class="create-account-link">
-                    @if (empty($registration_disabled))
-                        <a class="" title="{{ trans($theme . '-app.login_register.register') }}"
-                            href="{{ \Routing::slug('register') }}">{{ trans($theme . '-app.login_register.register') }}</a>
-                    @else
-                        <p class="text-center" style="color: darkred;">
-                            {{ trans($theme . '-app.login_register.registration_disabled') }}</p>
-                    @endif
-                </div> --}}
             </div>
         </div>
     </div>

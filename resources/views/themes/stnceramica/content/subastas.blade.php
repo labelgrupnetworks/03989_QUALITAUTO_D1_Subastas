@@ -16,7 +16,7 @@
 
 
                             ?>
-                        <div class="col-xs-12 col-md-6">
+                        <div>
                             <div class="col-xs-12 border-lot auction-container no-padding">
                                 @if( $subasta->tipo_sub =='W' &&   strtotime($subasta->session_end) > time() )
                                 <div class="bid-online"></div>
