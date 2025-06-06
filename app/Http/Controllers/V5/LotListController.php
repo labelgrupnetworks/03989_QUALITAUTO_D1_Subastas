@@ -133,6 +133,9 @@ class LotListController extends Controller
 			#cargamos información de la subasta
 			$auction = $fgsub->getInfoSub($codSub, $refSession);
 
+			//Si esta configurado el restrictAccessIfNotAdmin no permitimos acceder a subastas admin a usuarios
+			abort_if(Config::get("app.restrictAccessIfNotAdmin", 0) && !session()->has('user.admin') && $auction->subc_sub == 'A', 404);
+
 			ToolsServiceProvider::exit404IfEmpty($auction);
 
 			#recogemos los filtros pasados por get

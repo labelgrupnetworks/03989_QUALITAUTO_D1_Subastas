@@ -969,6 +969,8 @@ class SubastaController extends Controller
 
 		$lote = $subastaObj->getLote($where, true, true);
 
+		abort_if(Config::get("app.restrictAccessIfNotAdmin", 0) && !session()->has('user.admin') && $lote[0]->subc_sub == 'A', 404);
+
 		if (empty($lote) || $lote[0]->subc_sub == 'N') {
 			if (config('app.redirect_home_nolot', false)) {
 				return redirect(route('home'), 302);
