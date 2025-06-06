@@ -27,11 +27,12 @@ class TrackingChangeNotificationService
 	public function send()
 	{
 		$emailsTemplates = [
-			'1' => 'TRACKING_CHANGE_SEG_STATE_1_TEST',
-			'2' => 'TRACKING_CHANGE_SEG_STATE_2_TEST',
-			'3' => 'TRACKING_CHANGE_SEG_STATE_3_TEST',
-			'4' => 'TRACKING_CHANGE_SEG_STATE_4_TEST',
-			'5' => 'TRACKING_CHANGE_SEG_STATE_5_TEST',
+			'1' => 'TRACKING_CHANGE_SEG_STATE_1',
+			'2' => 'TRACKING_CHANGE_SEG_STATE_2',
+			'3' => 'TRACKING_CHANGE_SEG_STATE_3',
+			'4' => 'TRACKING_CHANGE_SEG_STATE_4',
+			'5' => 'TRACKING_CHANGE_SEG_STATE_5',
+			'9' => 'TRACKING_CHANGE_SEG_STATE_9',
 		];
 
 		$email = new EmailLib($emailsTemplates[$this->codSeg]);
@@ -39,12 +40,30 @@ class TrackingChangeNotificationService
 			return;
 		}
 
-		if(empty($this->number) || empty($this->serie)) {
-			return;
+		if(!empty($this->number) && !empty($this->serie)) {
+			$this->addOrderDetailsToEmail($email, $this->number, $this->serie);
 		}
 
+		$auction = FgSub::select('dfec_sub')
+			->joinLangSub()
+			->where('cod_sub', $this->codSub)
+			->first();
+
+		$deliveryDate = FxDvc0Seg::getEstimatedDeliveryDate($auction->dfec_sub);
+
+		$email->setUserByCod($this->codCli, true);
+		$email->setAtribute('AUCTION_NAME', $auction->des_sub);
+		$email->setDate($auction->dfec_sub, null);
+
+		$email->setAtribute('DELIVERY_DATE', $deliveryDate);
+
+		$email->send_email();
+	}
+
+	private function addOrderDetailsToEmail(EmailLib $email, string $number, string $serie): void
+	{
 		$orderService = new OrderService();
-		$order = $orderService->getOrderDetails($this->number, $this->serie);
+		$order = $orderService->getOrderDetails($number, $serie);
 		$orderTable = view('front::emails.component.order_detail', $order)->render();
 
 		$address = $orderService->getOrderShippingAddress($this->number, $this->serie);
@@ -56,19 +75,7 @@ class TrackingChangeNotificationService
 			'country' => $address->pais_dvc0dir
 		])->render();
 
-		$auction = FgSub::select('dfec_sub')
-			->joinLangSub()
-			->where('cod_sub', $this->codSub)
-			->first();
-
-		$deliveryDate = FxDvc0Seg::getEstimatedDeliveryDate($auction->dfec_sub);
-
-		$email->setUserByCod($this->codCli, true);
-		$email->setAtribute('AUCTION_NAME', $auction->des_sub);
-		$email->setAtribute('DELIVERY_DATE', $deliveryDate);
 		$email->setAtribute('ORDER_DETAILS', $orderTable);
 		$email->setAtribute('ORDER_ADDRESS', $addressView);
-
-		$email->send_email();
 	}
 }

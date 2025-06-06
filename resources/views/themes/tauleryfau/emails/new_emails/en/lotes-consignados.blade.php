@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html lang="en-US" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+<title></title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><!--[if mso]>
+<xml><w:WordDocument xmlns:w="urn:schemas-microsoft-com:office:word"><w:DontUseAdvancedTypographyReadingMail/></w:WordDocument>
+<o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml>
+<![endif]--><!--[if !mso]><!-->
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@100;200;300;400;500;600;700;800;900" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@100;200;300;400;500;600;700;800;900" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900" rel="stylesheet" type="text/css"/><!--<![endif]-->
+<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		a[x-apple-data-detectors] {
+			color: inherit !important;
+			text-decoration: inherit !important;
+		}
+
+		#MessageViewBody a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		p {
+			line-height: inherit
+		}
+
+		.desktop_hide,
+		.desktop_hide table {
+			mso-hide: all;
+			display: none;
+			max-height: 0px;
+			overflow: hidden;
+		}
+
+		.image_block img+div {
+			display: none;
+		}
+
+		sup,
+		sub {
+			font-size: 75%;
+			line-height: 0;
+		}
+
+		@media (max-width:520px) {
+
+			.desktop_hide table.icons-inner,
+			.social_block.desktop_hide .social-table {
+				display: inline-block !important;
+			}
+
+			.icons-inner {
+				text-align: center;
+			}
+
+			.icons-inner td {
+				margin: 0 auto;
+			}
+
+			.mobile_hide {
+				display: none;
+			}
+
+			.row-content {
+				width: 100% !important;
+			}
+
+			.stack .column {
+				width: 100%;
+				display: block;
+			}
+
+			.mobile_hide {
+				min-height: 0;
+				max-height: 0;
+				max-width: 0;
+				overflow: hidden;
+				font-size: 0px;
+			}
+
+			.desktop_hide,
+			.desktop_hide table {
+				display: table !important;
+				max-height: none !important;
+			}
+
+			.row-1 .column-1 .block-2.paragraph_block td.pad>div {
+				text-align: center !important;
+				font-size: 34px !important;
+			}
+
+			.row-1 .column-1 .block-2.paragraph_block td.pad {
+				padding: 0 5px !important;
+			}
+
+			.row-1 .column-1 .block-4.image_block td.pad {
+				padding: 20px 0 0 !important;
+			}
+
+			.row-1 .column-1 .block-3.heading_block h1 {
+				font-size: 27px !important;
+			}
+
+			.row-1 .column-1 .block-5.paragraph_block td.pad>div,
+			.row-2 .column-1 .block-2.paragraph_block td.pad>div,
+			.row-2 .column-1 .block-5.paragraph_block td.pad>div,
+			.row-3 .column-1 .block-1.paragraph_block td.pad>div {
+				text-align: left !important;
+				font-size: 16px !important;
+			}
+
+			.row-1 .column-1 .block-5.paragraph_block td.pad {
+				padding: 15px 20px 5px !important;
+			}
+
+			.row-2 .column-1 .block-1.heading_block td.pad,
+			.row-2 .column-1 .block-4.heading_block td.pad {
+				padding: 40px 10px 10px !important;
+			}
+
+			.row-2 .column-1 .block-1.heading_block h1,
+			.row-2 .column-1 .block-4.heading_block h1 {
+				font-size: 30px !important;
+			}
+
+			.row-1 .column-1 .block-6.button_block td.pad,
+			.row-2 .column-1 .block-3.button_block td.pad {
+				padding: 15px 10px 10px !important;
+			}
+
+			.row-1 .column-1 .block-6.button_block span,
+			.row-2 .column-1 .block-3.button_block span {
+				line-height: 36px !important;
+			}
+
+			.row-2 .column-1 .block-2.paragraph_block td.pad,
+			.row-2 .column-1 .block-5.paragraph_block td.pad {
+				padding: 10px 20px 5px !important;
+			}
+
+			.row-3 .column-1 .block-1.paragraph_block td.pad {
+				padding: 45px 20px 25px !important;
+			}
+
+			.row-1 .column-1 {
+				padding: 5px !important;
+			}
+		}
+	</style><!--[if mso ]><style>sup, sub { font-size: 100% !important; } sup { mso-text-raise:10% } sub { mso-text-raise:-10% }</style> <![endif]-->
+</head>
+<body class="body" style="margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none; background-color: #ffffff;">
+<table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; background-image: none; background-position: top left; background-size: auto; background-repeat: no-repeat;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 500px; margin: 0 auto;" width="500">
+<tbody>
+<tr>
+<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top;" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:20px;padding-left:30px;padding-right:30px;padding-top:30px;width:100%;">
+<div align="center" class="alignment">
+<div style="max-width: 200px;"><a href="https://www.tauleryfau.com/en/" style="outline:none" tabindex="-1" target="_blank"><img alt="" height="auto" src="[*APP_URL*]/themes/[*THEME*]/assets/img/emails/Logo_TaulerFau.png" style="display: block; height: auto; border: 0; width: 100%;" title="" width="200"/></a></div>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="10" cellspacing="0" class="paragraph_block desktop_hide block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; mso-hide: all; display: none; max-height: 0; overflow: hidden; word-break: break-word;" width="100%">
+<tr>
+<td class="pad">
+<div style="color:#101112;direction:ltr;font-family:'Bitter', Georgia, Times, 'Times New Roman', serif;font-size:16px;font-weight:700;letter-spacing:0px;line-height:1.2;text-align:left;mso-line-height-alt:19px;">
+<p style="margin: 0;">Your Consignment</p>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="heading_block block-3 mobile_hide" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tr>
+<td class="pad" style="padding-left:10px;padding-right:10px;padding-top:10px;text-align:center;width:100%;">
+<h1 style="margin: 0; color: #000000; direction: ltr; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 36px; font-weight: 700; letter-spacing: normal; line-height: 1.2; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 43px;"><span class="tinyMce-placeholder" style="word-break: break-word;">Your Consignment</span></h1>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="image_block block-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tr>
+<td class="pad" style="padding-top:15px;width:100%;">
+<div align="center" class="alignment">
+<div style="max-width: 500px;"><img alt="" height="auto" src="[*APP_URL*]/themes/[*THEME*]/assets/img/emails/consignacion-3.jpg" style="display: block; height: auto; border: 0; width: 100%;" title="" width="500"/></div>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:5px;padding-left:10px;padding-right:10px;padding-top:15px;">
+<div style="color:#000000;direction:ltr;font-family:'Poppins', Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:1.5;text-align:left;mso-line-height-alt:24px;">
+<p style="margin: 0; margin-bottom: 19px;">Thank you very much for trusting <strong>Tauler&Fau</strong> to consign your collection.</p>
+<p style="margin: 0;">Attached you’ll find the <strong>list of your consigned lots</strong>. You can also view them at any time through the following link:</p>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="button_block block-6" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:20px;text-align:center;">
+<div align="center" class="alignment"><a href="https://subastas.tauleryfau.com/en/user/panel/sales/pending-assign" style="color:#ffffff;text-decoration:none;" target="_blank"><!--[if mso]>
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"  href="https://subastas.tauleryfau.com/en/user/panel/sales/pending-assign"  style="height:46px;width:263px;v-text-anchor:middle;" arcsize="9%" fillcolor="#90825f">
+<v:stroke dashstyle="Solid" weight="0px" color="#90825f"/>
+<w:anchorlock/>
+<v:textbox inset="0px,0px,0px,0px">
+<center dir="false" style="color:#ffffff;font-family:Georgia, 'Times New Roman', serif;font-size:18px">
+<![endif]--><span class="button" style="background-color: #90825f; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 4px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #ffffff; display: inline-block; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 18px; font-weight: 700; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-left: 30px; padding-right: 30px; text-align: center; width: auto; word-break: keep-all; letter-spacing: normal;"><span style="word-break: break-word; line-height: 36px;">VIEW CONSIGNED LOTS</span></span><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 500px; margin: 0 auto;" width="500">
+<tbody>
+<tr>
+<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top;" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="heading_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:35px;text-align:center;width:100%;">
+<h1 style="margin: 0; color: #000000; direction: ltr; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 28px; font-weight: 700; letter-spacing: normal; line-height: 1.2; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 34px;">When will my lots be auctioned?</h1>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:5px;padding-left:10px;padding-right:10px;padding-top:10px;">
+<div style="color:#000000;direction:ltr;font-family:'Poppins', Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:1.5;text-align:left;mso-line-height-alt:24px;">
+<p style="margin: 0; margin-bottom: 0px;">Once your lots have been included in an upcoming auction, you’ll receive an email notification.</p>
+<p style="margin: 0;"><br/>You can check the dates of our upcoming auctions in our auction calendar:</p>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="button_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:20px;text-align:center;">
+<div align="center" class="alignment"><a href="https://www.tauleryfau.com/es/proximas-subastas/" style="color:#ffffff;text-decoration:none;" target="_blank"><!--[if mso]>
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"  href="https://www.tauleryfau.com/es/proximas-subastas/"  style="height:46px;width:239px;v-text-anchor:middle;" arcsize="9%" fillcolor="#90825f">
+<v:stroke dashstyle="Solid" weight="0px" color="#90825f"/>
+<w:anchorlock/>
+<v:textbox inset="0px,0px,0px,0px">
+<center dir="false" style="color:#ffffff;font-family:Georgia, 'Times New Roman', serif;font-size:18px">
+<![endif]--><span class="button" style="background-color: #90825f; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 4px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #ffffff; display: inline-block; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 18px; font-weight: 700; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-left: 30px; padding-right: 30px; text-align: center; width: auto; word-break: keep-all; letter-spacing: normal;"><span style="word-break: break-word; line-height: 36px;">AUCTION CALENDAR</span></span><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="heading_block block-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:35px;text-align:center;width:100%;">
+<h1 style="margin: 0; color: #000000; direction: ltr; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 28px; font-weight: 700; letter-spacing: normal; line-height: 1.2; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 34px;">When will I receive the payment for my sales?</h1>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:5px;padding-left:10px;padding-right:10px;padding-top:10px;">
+<div style="color:#000000;direction:ltr;font-family:'Poppins', Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:1.5;text-align:left;mso-line-height-alt:24px;">
+<p style="margin: 0; margin-bottom: 19px;">After the auction ends, we’ll send you a provisional settlement with the total amount of your sales.<br/>30 days after the auction closes, we’ll issue the corresponding payment.</p>
+<p style="margin: 0;">You will receive an email confirming the payment, along with the invoice for your final settlement.</p>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 500px; margin: 0 auto;" width="500">
+<tbody>
+<tr>
+<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; vertical-align: top;" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:25px;padding-left:10px;padding-right:10px;padding-top:20px;">
+<div style="color:#000000;direction:ltr;font-family:'Poppins', Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:1.5;text-align:left;mso-line-height-alt:24px;">
+<p style="margin: 0; margin-bottom: 0px;">If you have any questions, don’t hesitate to reach out. Our team is here to help.</p>
+<p style="margin: 0; margin-bottom: 0px;">Thank you once again for your trust.</p>
+<p style="margin: 0; margin-bottom: 0px;"> </p>
+<p style="margin: 0;">Sincerely,<br/>The Tauler&Fau Team</p>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #314350;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #314350; border-radius: 0; color: #000000; width: 500px; margin: 0 auto;" width="500">
+<tbody>
+<tr>
+<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top;" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:20px;padding-top:20px;width:100%;">
+<div align="center" class="alignment">
+<div style="max-width: 150px;"><a href="https://www.tauleryfau.com/en/" style="outline:none" tabindex="-1" target="_blank"><img alt="" height="auto" src="[*APP_URL*]/themes/[*THEME*]/assets/img/emails/logo_TaulerFau-white.png" style="display: block; height: auto; border: 0; width: 100%;" title="" width="150"/></a></div>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:15px;padding-left:25px;padding-right:25px;padding-top:5px;">
+<div style="color:#ffffff;direction:ltr;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:12px;font-weight:400;letter-spacing:0px;line-height:1.2;text-align:center;mso-line-height-alt:14px;">
+<p style="margin: 0; margin-bottom: 5px;">Copyright (C) [*ACTUAL_YEAR*] TAULER Y FAU S.L.</p>
+<p style="margin: 0;"><a href="https://www.tauleryfau.com/en/auctions/" rel="noopener" style="text-decoration: underline; color: #ffffff;" target="_blank">Auctions</a> |  <a href="https://www.tauleryfau.com/es/proximas-subastas/" rel="noopener" style="text-decoration: underline; color: #ffffff;" target="_blank">Consign with us</a>  |  <a href="https://www.tauleryfau.com/en/contact-us/" rel="noopener" style="text-decoration: underline; color: #ffffff;" target="_blank">Contact</a><a href="https://www.tauleryfau.com/es/contact/" rel="noopener" style="text-decoration: underline; color: #ffffff;" target="_blank"></a></p>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="social_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:5px;text-align:center;padding-right:0px;padding-left:0px;">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" class="social-table" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;" width="144px">
+<tr>
+<td style="padding:0 2px 0 2px;"><a href="https://www.facebook.com/tauleryfau/" target="_blank"><img alt="Facebook" height="auto" src="[*APP_URL*]/themes/[*THEME*]/assets/img/emails/facebook2x.png" style="display: block; height: auto; border: 0;" title="facebook" width="32"/></a></td>
+<td style="padding:0 2px 0 2px;"><a href="https://www.instagram.com/tauleryfau_numismatics/" target="_blank"><img alt="Instagram" height="auto" src="[*APP_URL*]/themes/[*THEME*]/assets/img/emails/instagram2x.png" style="display: block; height: auto; border: 0;" title="instagram" width="32"/></a></td>
+<td style="padding:0 2px 0 2px;"><a href="https://www.youtube.com/channel/UC-3jokocQPW-OMZMPOu03XQ" target="_blank"><img alt="YouTube" height="auto" src="[*APP_URL*]/themes/[*THEME*]/assets/img/emails/youtube2x.png" style="display: block; height: auto; border: 0;" title="YouTube" width="32"/></a></td>
+<td style="padding:0 2px 0 2px;"><a href="https://wa.me/+34680803167" target="_blank"><img alt="WhatsApp" height="auto" src="[*APP_URL*]/themes/[*THEME*]/assets/img/emails/whatsapp2x.png" style="display: block; height: auto; border: 0;" title="WhatsApp" width="32"/></a></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table><!-- End -->
+</body>
+</html>

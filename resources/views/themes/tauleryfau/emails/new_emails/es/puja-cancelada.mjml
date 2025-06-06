@@ -1,0 +1,61 @@
+<mjml>
+  <mj-head>
+    <mj-title>Tu Puja Cancelada</mj-title>
+    <mj-font name="Bitter" href="https://fonts.googleapis.com/css2?family=Bitter:wght@100;200;300;400;500;600;700;800;900" />
+    <mj-font name="Cabin" href="https://fonts.googleapis.com/css2?family=Cabin:wght@100;200;300;400;500;600;700;800;900" />
+    <mj-font name="Poppins" href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900" />
+    <mj-style inline="inline">
+      sup, sub { font-size: 75%; line-height: 0; }
+    </mj-style>
+    <mj-attributes>
+      <mj-text font-family="Poppins, Arial, Helvetica, sans-serif" line-height="1.5" font-size="16px" font-weight="400" />
+    </mj-attributes>
+  </mj-head>
+
+  <mj-body width="500px">
+    <mj-section>
+      <mj-column>
+        <!-- Logo -->
+        <mj-image href="https://www.tauleryfau.com/es/" src="https://d15k2d11r6t6rl.cloudfront.net/pub/bfra/4ipvlkuf/wem/0ff/j6a/Logo%20Tauler%26Fau.png" alt="Tauler & Fau Logo" width="200px" align="center" />
+           </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+
+          <mj-text font-size="36px" font-weight="700" font-family="Bitter, Georgia, Times, 'Times New Roman', serif" align="center">
+            Tu Puja ha sido Cancelada
+          </mj-text>
+          <mj-text font-size="16px" font-weight="600" align="center">
+            Lote 700 - Subasta 154
+          </mj-text>
+        <mj-spacer></mj-spacer>
+
+        <mj-image src="https://d15k2d11r6t6rl.cloudfront.net/pub/bfra/4ipvlkuf/zmk/mdc/84v/001-3138-1.jpg">		</mj-image>
+        <mj-text font-size="16px" font-weight="400" align="center">
+            Felipe IV (1621-1665). 8 reales.  1655/4. México. P.
+        </mj-text>
+
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text>
+            Si necesitas más información o asistencia, estamos a tu disposición.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text>
+          Atentamente,
+          <br></br>
+          El equipo de Tauler&Fau
+        </mj-text>
+
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

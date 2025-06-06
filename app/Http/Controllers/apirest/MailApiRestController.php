@@ -8,10 +8,9 @@ use App\libs\EmailLib;
 use App\Models\Subasta;
 use App\Models\User;
 use App\Models\V5\FgDeposito;
-use App\Models\V5\FgSub;
 use App\Models\V5\FxCliWeb;
-use App\Models\V5\FxDvc0Seg;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Notifications\TrackingChangeNotificationService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 
@@ -75,8 +74,18 @@ class MailApiRestController extends ApiRestController {
                 }
 				return $this->sendMailTrackingChange();
 
+			case "CONSIGNED_LOTS":
+				$validate = $this->validateParams(['codCli', 'path']);
+				if (count($validate) != 0) {
+					Log::error('sendMail - Need the data params', ['params', $validate]);
+                    return $this->responder(false, "Need the data params", $validate, 401);
+                }
+
+				return $this->sendMailWithAttachment($type);
+
             case "OTHER":
                 return $this->sendTestMail();
+
             default :
                 return $this->responder(false, "the type of email is not valid", "", 401);
         }
@@ -88,38 +97,11 @@ class MailApiRestController extends ApiRestController {
 		$codCli = request('codCli');
 		$codSub = request('codSub');
 		$codSeg = request('codSeg');
+		$number = request('number', '');
+		$serie = request('serie', '');
 
-		$emailsTemplates = [
-			'1' => 'TRACKING_CHANGE_SEG_STATE_1',
-			'2' => 'TRACKING_CHANGE_SEG_STATE_2',
-			'3' => 'TRACKING_CHANGE_SEG_STATE_3',
-			'4' => 'TRACKING_CHANGE_SEG_STATE_4',
-		];
+		(new TrackingChangeNotificationService($codCli, $codSeg, $codSub, $number, $serie))->send();
 
-		if (!array_key_exists($codSeg, $emailsTemplates)) {
-			return $this->responder(false, "the type of email is not valid", "", 401);
-		}
-
-		$email = new EmailLib($emailsTemplates[$codSeg]);
-
-		if (empty($email->email)) {
-			return $this->responder(false, "the type of email is not valid", "", 401);
-		}
-
-		$email->setUserByCod($codCli, true);
-
-		$auction = FgSub::select('dfec_sub')
-			->joinLangSub()
-			->where('cod_sub', $codSub)
-			->first();
-
-		$email->setAtribute('AUCTION_NAME', $auction->des_sub);
-
-		$deliveryDate = FxDvc0Seg::getEstimatedDeliveryDate($auction->dfec_sub);
-
-		$email->setAtribute('DELIVERY_DATE', $deliveryDate);
-
-		$email->send_email();
 		return $this->responder(true, "Email sent", "", 200);
 	}
 
