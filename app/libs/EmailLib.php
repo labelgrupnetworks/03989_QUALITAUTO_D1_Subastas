@@ -20,6 +20,7 @@ use App\Models\V5\FgAsigl1Mt;
 use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\V5\FxCli;
 use App\Providers\ToolsServiceProvider;
+use App\Services\User\UserService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
@@ -269,13 +270,37 @@ class EmailLib
 	//si el usuario es el receptor debemos indicar que se le enviará a él
 	public function setUser($cod_cli, $cod_sub = NULL, $cod_licit = NULL, $recipient = false, $default_lang = null)
 	{
-		$user = new User();
 		$inf_user = NULL;
+
 		if (!empty($cod_cli)) {
-			$user->cod_cli = $cod_cli;
-			$inf_user = $user->getCliInfo(false);
+
+			$inf_user = (new UserService)->getUserQueryByCodCli($cod_cli)
+				->select(
+					'sexo_cli',
+					'cod_cli',
+					'cod2_cli',
+					'nom_cli',
+					'baja_tmp_cli',
+					'cif_cli',
+					'preftel_cli',
+					'tel1_cli',
+					'dir_cli',
+					'pob_cli',
+					'cp_cli',
+					'pais_cli',
+					'COALESCE(email_cli, email_cliweb) as email_cli',
+					'COALESCE(idioma_cli, idioma_cliweb) as idioma_cli',
+					'rsoc_cli',
+					'fisjur_cli',
+					'ries_cli',
+					'obs_cli',
+					'fecnac_cli',
+				)
+				->first();
+
 		} elseif (!empty($cod_sub) && !empty($cod_licit)) {
 
+			$user = new User();
 			$user->cod = $cod_sub;
 			$user->licit = $cod_licit;
 			$inf_user_array = $user->getFXCLIByLicit();
@@ -302,13 +327,17 @@ class EmailLib
 
 
 			$this->atributes['CIF'] = $inf_user->cif_cli;
+			$this->atributes['PREFIX_PHONE'] = $inf_user->preftel_cli ?? '';
 			$this->atributes['PHONE'] = $inf_user->tel1_cli;
+			$this->atributes['ADDRESS'] = $inf_user->dir_cli ?? '';
 			$this->atributes['CITY'] = $inf_user->pob_cli;
 			$this->atributes['ZIP_CODE'] = $inf_user->cp_cli;
 			$this->atributes['COUNTRY'] = $inf_user->pais_cli;
 			$this->atributes['RSOC_CLI'] = $inf_user->rsoc_cli;
 			$this->atributes['FISJUR'] = $inf_user->fisjur_cli;
 			$this->atributes['RIES_CLI'] = $inf_user->ries_cli;
+			$this->atributes['OBS'] = $inf_user->obs_cli ?? '';
+			$this->atributes['DATE_OF_BIRTH'] = $inf_user->fecnac_cli ? Carbon::parse($inf_user->fecnac_cli)->format('d/m/Y') : '';
 
 			if (isset($inf_user->sexo_cli)) {
 				$this->setSexo_Cli($inf_user->sexo_cli, App::getLocale());

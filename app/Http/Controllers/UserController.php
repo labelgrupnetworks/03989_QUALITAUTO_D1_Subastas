@@ -2107,22 +2107,6 @@ class UserController extends Controller
 		return View::make('front::pages.activate_account');
 	}
 
-	public function sendPasswordActivateRecovery()
-	{
-
-		$email = FacadeRequest::input('email');
-		$val_post = FacadeRequest::input('post');
-
-		$user = new User();
-		$user->email = $email;
-		$mail_exists = $user->getCliInfo(true);
-
-		return array(
-			'status'            => 'succes',
-			'msg'               => trans(Config::get('app.theme') . '-app.login_register.pass_recovery_mail_send')
-		);
-	}
-
 	public function passwordRecovery()
 	{
 		return View::make('front::pages.password_recovery');

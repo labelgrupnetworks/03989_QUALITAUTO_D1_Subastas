@@ -492,27 +492,6 @@ class User
 
 		return DB::select($sql, $bindings);
 	}
-	//NUEVA FUNCION QUE COJE LSO DATOS DE CLI Y SI HAY DE CLIWEB
-	public function getCliInfo($check_baja = true)
-	{
-		$emp = Config::get('app.emp');
-
-		$db = DB::table("FXCLI CLI")
-			->select("CLI.SEXO_CLI, CLI.COD_CLI, CLI.COD2_CLI, CLI.NOM_CLI, CLI.BAJA_TMP_CLI, CLI.CIF_CLI, CLI.TEL1_CLI, CLI.POB_CLI,CLI.CP_CLI, CLI.PAIS_CLI, NVL(WEB.EMAIL_CLIWEB,CLI.EMAIL_CLI) EMAIL_CLI, NVL(WEB.IDIOMA_CLIWEB,CLI.IDIOMA_CLI) IDIOMA_CLI, CLI.RSOC_CLI, CLI.FISJUR_CLI, CLI.RIES_CLI")
-			->leftjoin("FXCLIWEB WEB", function ($join) use ($emp) {
-				$join->on("WEB.GEMP_CLIWEB", "=", "CLI.GEMP_CLI")
-					->on("WEB.COD_CLIWEB", "=", "CLI.COD_CLI")
-					->on("WEB.EMP_CLIWEB", "=", "'$emp'");
-			})
-			->where("CLI.COD_CLI",  $this->cod_cli)
-			->where("CLI.GEMP_CLI", Config::get('app.gemp'));
-
-		if ($check_baja) {
-			$db->where("CLI.BAJA_TMP_CLI",  'N');
-		}
-
-		return $db->first();
-	}
 
 	public function getClientInfo($cod_cli)
 	{
