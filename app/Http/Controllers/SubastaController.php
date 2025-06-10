@@ -1286,14 +1286,11 @@ class SubastaController extends Controller
 			$SEO_metas->meta_description = mb_substr(strip_tags($lote[0]->desc_hces1), 0, 160);
 		}
 
-		//ponemos el canonical, de momento solo las subastas tematicas llevan variables, pero no afectara negativamente al resto
-		$webfriend = !empty($subasta_info->lote_actual->webfriend_hces1) ? $subasta_info->lote_actual->webfriend_hces1 :  str_slug($subasta_info->lote_actual->titulo_hces1);
-		$SEO_metas->canonical = "https://" . $_SERVER['HTTP_HOST'] . Routing::translateSeo('lote') . $subasta_info->lote_actual->cod_sub . "-" . $subasta_info->lote_actual->id_auc_sessions . '-' . $subasta_info->lote_actual->id_auc_sessions . "/" . $subasta_info->lote_actual->ref_asigl0 . '-' . $subasta_info->lote_actual->num_hces1 . '-' . $webfriend;
+		$webfriend = !empty($subasta_info->lote_actual->webfriend_hces1)
+			? $subasta_info->lote_actual->webfriend_hces1
+			: str_slug($subasta_info->lote_actual->titulo_hces1);
 
-		//quitamso las variables
-		if (!empty(strpos($SEO_metas->canonical, '?'))) {
-			$SEO_metas->canonical = substr($SEO_metas->canonical, 0, strpos($SEO_metas->canonical, '?'));
-		}
+		$SEO_metas->canonical = ToolsServiceProvider::url_lot($subasta_info->lote_actual->cod_sub, $subasta_info->lote_actual->id_auc_sessions, '', $subasta_info->lote_actual->ref_asigl0, $subasta_info->lote_actual->num_hces1, $webfriend, $subasta_info->lote_actual->descweb_hces1);
 
 		#datos para Open Graph
 		$SEO_metas->openGraphImagen = ToolsServiceProvider::url_img('lote_medium_large', $subasta_info->lote_actual->num_hces1, $subasta_info->lote_actual->lin_hces1);
