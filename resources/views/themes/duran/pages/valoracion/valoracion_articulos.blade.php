@@ -38,7 +38,7 @@ $bread[] = array("name" =>$data['title']  );
 								<option value="venta privada" <?= request("tipo") == "ventaprivada"? "selected='selected'" : "" ?>> {{trans($theme.'-app.valoracion_gratuita.venta_privada')   }} </option>
 								<option value="valoracion" <?= request("tipo") == "valoracion"? "selected='selected'" : "" ?>> {{trans($theme.'-app.valoracion_gratuita.valoracion')  }} </option>
 							</select>
-							<input type="hidden" id="email_category" name="email_category" value="<?= request("tipo") == "ventaprivada"? 'ventaprivada@duran-subastas.com' : ''?>">
+							<input type="hidden" id="email_category" name="email_category" value="<?= request("tipo") == "ventaprivada"? 'ventaprivada@duran-subastas.com' : 'catalogacion@duran-subastas.com'?>">
 						</div>
 
 
