@@ -137,7 +137,7 @@ $('.mini-upload-image').click(function (){
 	if($(this).val()=='venta privada'){
 		$('#email_category').val('ventaprivada@duran-subastas.com');
 	}else{
-		$('#email_category').val('');
+		$('#email_category').val('catalogacion@duran-subastas.com');
 	}
 
   })
