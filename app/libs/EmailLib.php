@@ -583,6 +583,17 @@ class EmailLib
 
 		$this->checkTo();
 
+		//para pruebas
+		if(Config::get('app.user_tests')) {
+			$userTests = explode(';', Config::get('app.user_tests'));
+			if (in_array(strtolower($this->to), $userTests)) {
+				$cod_email = $this->email->cod_email . '_TEST';
+				if($this->get_design($cod_email)) {
+					$this->replace();
+				}
+			}
+		}
+
 		//si esta configurada la opcción envio de copias y existe el mailbox, envia una copia a ese mailbox
 		//bcc de la tabla Config
 		if (
