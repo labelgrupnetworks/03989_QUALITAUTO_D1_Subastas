@@ -253,7 +253,7 @@ class Facturas extends Model
 	{
               $sql ="MERGE INTO FXPCOB1 pcob1
                     USING( SELECT :emp emp, :serie serie, :numero numero, :cod_cli cod, :efec efec FROM dual) src
-                    ON( pcob1.emp_pcob1 = src.emp and pcob1.SERIE_PCOB1 = src.serie  and pcob1.NUMERO_PCOB1 = src.numero and pcob1.cod_pcob1 = src.cod, pcob1.EFECTO_PCOB1 = src.efec)
+                    ON( pcob1.emp_pcob1 = src.emp and pcob1.SERIE_PCOB1 = src.serie  and pcob1.NUMERO_PCOB1 = src.numero and pcob1.cod_pcob1 = src.cod and pcob1.EFECTO_PCOB1 = src.efec)
                     WHEN MATCHED THEN
                     UPDATE SET ANUM_PCOB1 = :anum , NUM_PCOB1 = :num
                     where EMP_PCOB1 =:emp and SERIE_PCOB1 = :serie and NUMERO_PCOB1 = :numero and COD_PCOB1 = :cod_cli and EFECTO_PCOB1 = :efec
