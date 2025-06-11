@@ -176,6 +176,8 @@ class SitemapGenerator
 			$completeUrl .= "/$key_name";
 		}
 
+		$completeUrl = urldecode($completeUrl);
+
 		return "
            <url>
                 <loc>$completeUrl</loc>
