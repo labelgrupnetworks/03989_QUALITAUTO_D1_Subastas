@@ -202,11 +202,15 @@ class LotListController extends Controller
 
 		$seo_data = $this->lotListSeo($auction, $infoOrtsec, $infoSec, $infoSubSec,  $filters, $tipos_sub);
 
+		// como canonical utilizamos la url actual con los filtros de paginación, categoría, sección y subsección
+		$canonicalUrl = url()->current() . '?' . http_build_query(request()->only(['page', 'category', 'section', 'subSection']));
+		$seo_data->canonical = urldecode($canonicalUrl);
 
 		$bread = $this->generateBreadCrumb($auction, $infoOrtsec, $infoSec, $infoSubSec);
-		if (!empty($bread) && !empty($bread[0]) && empty($seo_data->canonical)) {
-			$seo_data->canonical = $bread[0]["url"];
-		}
+
+		// if (!empty($bread) && !empty($bread[0]) && empty($seo_data->canonical)) {
+		// 	$seo_data->canonical = $bread[0]["url"];
+		// }
 
 		$features = FgCaracteristicas::getFeatures();
 		if (Config::get("app.paginacion_grid_lotes")) {
