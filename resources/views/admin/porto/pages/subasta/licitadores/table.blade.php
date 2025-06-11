@@ -67,7 +67,7 @@
 </div>
 
 {{-- modal --}}
-<div class="modal fade" id="modalCreateLicit" role="dialog" aria-labelledby="modalCreateLicitLabel" aria-hidden="true">
+<div class="modal fade" id="modalCreateLicit" role="dialog" aria-labelledby="modalCreateLicitLabel" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

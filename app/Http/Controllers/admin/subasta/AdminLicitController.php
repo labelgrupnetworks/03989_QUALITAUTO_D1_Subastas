@@ -69,7 +69,7 @@ class AdminLicitController extends Controller
 		$formulario = [
 			//'subasta' => FormLib::Select('auction', 1, $auction, $auctionsPluck),
 			'subasta' => FormLib::TextReadOnly('idauction', 1, $auction),
-			'cliente' => FormLib::Select2WithAjax('cod_cli', 0, '', '', route('client.list'), trans_choice('admin-app.title.client', 1)),
+			'cliente' => FormLib::Select2WithAjax('cod_cli', 0, '', '', route('client.list'), trans_choice('admin-app.title.client', 1), 'modalCreateLicit'),
 			'cod_licit' => FormLib::Text("cod_licit", 1, $actualMaxLicit, 'required'),
 		];
 
