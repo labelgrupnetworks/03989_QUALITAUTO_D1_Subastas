@@ -202,8 +202,12 @@ class LotListController extends Controller
 
 		$seo_data = $this->lotListSeo($auction, $infoOrtsec, $infoSec, $infoSubSec,  $filters, $tipos_sub);
 
-		// como canonical utilizamos la url actual con los filtros de paginación, categoría, sección y subsección
-		$canonicalUrl = url()->current() . '?' . http_build_query(request()->only(['page', 'category', 'section', 'subSection']));
+		$canonicalUrl = url()->current();
+		$filtersToUrl = request()->only(['page', 'category', 'section', 'subSection']);
+		if (!empty($filtersToUrl)) {
+			$canonicalUrl .= '?' . http_build_query($filtersToUrl);
+		}
+
 		$seo_data->canonical = urldecode($canonicalUrl);
 
 		$bread = $this->generateBreadCrumb($auction, $infoOrtsec, $infoSec, $infoSubSec);
