@@ -337,7 +337,9 @@ class EmailLib
 			$this->atributes['FISJUR'] = $inf_user->fisjur_cli;
 			$this->atributes['RIES_CLI'] = $inf_user->ries_cli;
 			$this->atributes['OBS'] = $inf_user->obs_cli ?? '';
-			$this->atributes['DATE_OF_BIRTH'] = $inf_user->fecnac_cli ? Carbon::parse($inf_user->fecnac_cli)->format('d/m/Y') : '';
+			if(!empty($inf_user->fecnac_cli)) {
+				$this->atributes['DATE_OF_BIRTH'] = $inf_user->fecnac_cli ? Carbon::parse($inf_user->fecnac_cli)->format('d/m/Y') : '';
+			}
 
 			if (isset($inf_user->sexo_cli)) {
 				$this->setSexo_Cli($inf_user->sexo_cli, App::getLocale());
