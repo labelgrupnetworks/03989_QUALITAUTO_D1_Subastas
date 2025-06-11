@@ -171,11 +171,16 @@ class SitemapGenerator
 
 	private function xml($url, $key, $key_name, $fechaactual, $priority)
 	{
+		$completeUrl = "$url/$key";
+		if (!empty($key_name)) {
+			$completeUrl .= "/$key_name";
+		}
+
 		return "
            <url>
-                <loc>" . $url . "/$key/" . $key_name . "</loc>
-                <lastmod>" . $fechaactual . "</lastmod>
-                <priority>" . $priority . "</priority>
+                <loc>$completeUrl</loc>
+                <lastmod>$fechaactual</lastmod>
+                <priority>$priority</priority>
             </url>
             ";
 	}
