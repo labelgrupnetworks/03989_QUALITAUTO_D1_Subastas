@@ -9,6 +9,7 @@
         "barryvdh/laravel-dompdf": "v2.0.0",
         "guzzlehttp/guzzle": "7.4.5",
         "intervention/image": "2.7.2",
+        "laravel-notification-channels/microsoft-teams": "v2.0.0",
         "laravel/framework": "v9.52.17",
         "laravel/sanctum": "v2.15.1",
         "laravel/socialite": "v5.5.5",
