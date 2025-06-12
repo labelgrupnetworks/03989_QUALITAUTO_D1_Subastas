@@ -6,6 +6,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Config;
+use NotificationChannels\MicrosoftTeams\Actions\ActionOpenUrl;
+use NotificationChannels\MicrosoftTeams\ContentBlocks\TextBlock;
+use NotificationChannels\MicrosoftTeams\MicrosoftTeamsAdaptiveCard;
+use NotificationChannels\MicrosoftTeams\MicrosoftTeamsChannel;
 use Throwable;
 
 class ErrorOcurred extends Notification
@@ -31,6 +35,11 @@ class ErrorOcurred extends Notification
 	 */
 	public function via($notifiable)
 	{
+		$routes = array_keys($notifiable->routes);
+		if (in_array('NotificationChannels\MicrosoftTeams\MicrosoftTeamsChannel', $routes)) {
+			return [MicrosoftTeamsChannel::class];
+		}
+
 		return ['mail'];
 	}
 
@@ -58,6 +67,51 @@ class ErrorOcurred extends Notification
 			//->line("Stack trace: **{$this->exception->getTraceAsString()}**")
 			->action('Revisar', $logViewer)
 			->salutation('Saludos');
+	}
+
+	/**
+	 * Get the Microsoft Teams representation of the notification.
+	 *
+	 * @param  mixed  $notifiable
+	 * @see https://adaptivecards.microsoft.com/designer
+	 * @return \NotificationChannels\MicrosoftTeams\MicrosoftTeamsAdaptiveCard
+	 */
+	public function toMicrosoftTeams($notifiable)
+    {
+		$to = collect(data_get($notifiable, 'routes', []))->first();
+		$theme = mb_strtoupper(Config::get('app.theme'));
+
+		$title = "🥵 [$theme] - Ha ocurrido un error";
+		if($this->count > 0) {
+			$title .= " ({$this->count} veces en la última hora)";
+		}
+
+		$logViewer = Config::get('app.url', null) . '/admin/log-viewer';
+
+		return MicrosoftTeamsAdaptiveCard::create()
+			->to($to)
+			->title($title)
+			->content([
+        		TextBlock::create()
+					->setText("La excepción **{$this->exception->getMessage()}** ocurrió")
+					->setWeight('Default')
+					->setSize('Medium')
+					->setColor('Attention'),
+				TextBlock::create()
+					->setText("Archivo: **{$this->exception->getFile()}**")
+					->setWeight('Default')
+					->setSize('Small'),
+				TextBlock::create()
+					->setText("Línea: **{$this->exception->getLine()}**")
+					->setWeight('Default')
+					->setSize('Small'),
+
+			])
+			->actions([
+				ActionOpenUrl::create()
+					->setTitle('Revisar')
+					->setUrl($logViewer),
+			]);
 	}
 
 	/**

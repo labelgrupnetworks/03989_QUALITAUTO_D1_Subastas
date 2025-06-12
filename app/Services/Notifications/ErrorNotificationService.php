@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
+use NotificationChannels\MicrosoftTeams\MicrosoftTeamsChannel;
 use Throwable;
 
 class ErrorNotificationService
@@ -45,10 +46,10 @@ class ErrorNotificationService
 			return false;
 		}
 
-		// $dayOfWeek = date('N'); // 1 (lunes) a 7 (domingo)
-		// if ($dayOfWeek >= 6) { // 6 es sábado, 7 es domingo
-		// 	return false;
-		// }
+		$dayOfWeek = date('N'); // 1 (lunes) a 7 (domingo)
+		if ($dayOfWeek >= 6) { // 6 es sábado, 7 es domingo
+			return false;
+		}
 
 		if (!Config::get('app.notification_exceptions', false)) {
 			return false;
@@ -129,7 +130,10 @@ class ErrorNotificationService
 	private function sendNotification(Throwable $exception, ?int $attempts = 0): void
 	{
 		$notify = new ErrorOcurred($exception, $attempts);
-		$notification = Notification::route('mail', self::NOTIFICATION_EMAIL);
+
+		$notification = Config::get('services.microsoft_teams.webhook_url', null)
+			? Notification::route(MicrosoftTeamsChannel::class, Config::get('services.microsoft_teams.webhook_url'))
+			: Notification::route('mail', self::NOTIFICATION_EMAIL);
 
 		Config::get('app.debug', false)
 			? $notification->notifyNow($notify) // Sin colas
