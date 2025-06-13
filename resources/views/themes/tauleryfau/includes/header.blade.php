@@ -22,368 +22,42 @@
         }
     }
 @endphp
-<header>
-
-    {{-- header mobile --}}
-    <div class="header-responsive hidden-desktop d-flex" style="height: auto">
-
-        <div class="d-flex align-items-center" style="flex: 3">
-            <a href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
-                <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/logo-footer.png"
-                    alt="{{ \Config::get('app.name') }}" style="width: 300px">
-            </a>
-        </div>
-        <div style="flex: 2">
-            <div class="hamburguer d-flex justify-content-end">
-                <i class="fa fa-bars"></i>
-
-                <svg class="close-menu close-dims" style="display: none">
-                    <svg id="close" viewBox="0 0 43 43" xmlns="https://www.w3.org/2000/svg" width="100%"
-                        height="100%">
-                        <path fill-rule="evenodd"
-                            d="M42.997 5.724L26.546 21.511l16.355 15.765-4.126 5.728L21.5 26.353 4.148 43.004.003 37.276l16.451-15.787L.099 5.724 4.225-.004 21.5 16.647 38.852-.004l4.145 5.728z">
-                        </path>
-                    </svg>
-                </svg>
-
-            </div>
-        </div>
-
-
-
-    </div>
-
-    {{-- hedader descktop --}}
-    <div class="container header-container hidden-mobile hidden-tablet">
-
-        <div class="row h-100 header-wrapper d-flex align-items-center">
-
-            <div class="logo" style="flex:1">
-                <a href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
-                    <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/logo-web.png"
-                        alt="{{ \Config::get('app.name') }}" width="250" height="40">
+<header class="header-web">
+    <nav class="navbar navbar-default navbar-tauler">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" type="button"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="/themes/{{ $theme }}/assets/img/logo-web.png" alt="{{ \Config::get('app.name') }}">
                 </a>
             </div>
+            <div class="navbar-collapse collapse" id="navbar" aria-expanded="false" style="height: 1px;">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider" role="separator"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+    </nav>
 
-            <div class="session-language p-1" style="flex:1">
-
-                <div class="session">
-                    <ul class="panel-principal flex">
-                        @if (!Session::has('user'))
-                            <li class="session-start">
-                                <a class="btn btn-color flex valign" data-toggle="modal" data-target="#modalLogin"
-                                    title="<?= trans($theme . '-app.login_register.login') ?>"><?= trans($theme . '-app.login_register.login') ?></a>
-                            </li>
-                        @else
-                            <li class="myAccount">
-                                <a class="btn btn-color btn-account flex"
-                                    href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}">{{ trans($theme . '-app.login_register.my_panel') }}</a>
-                            </li>
-                            @if (Session::get('user.admin'))
-                                <li class="admin">
-                                    <a class="btn btn-color" href="/admin" target="_blank">
-                                        {{ trans($theme . '-app.login_register.admin') }}</a>
-                                </li>
-                            @endif
-
-                        @endif
-                    </ul>
-                </div>
-
-
-                <div class="lenguaje">
-                    <div class="selector" onclick="javascript:$('#selector_lenguaje').toggle();">
-
-                        <img src="{{ $flagsLanguage[config('app.locale')] }}"
-                            alt="{{ \Config::get('app.locales')[\Config::get('app.locale')] }}"
-                            style="width: 16px; height: 11px;" width="16" height="11">
-                        {{ \Config::get('app.locales')[\Config::get('app.locale')] }}
-                        <i class="fa fa-sort-down"></i>
-                    </div>
-
-                    <div id="selector_lenguaje">
-
-                        @foreach (Config::get('app.locales') as $key => $value)
-                            @if ($key != \Config::get('app.locale'))
-                                <a href="{{ "/$key" . $urlToOtherLanguage }}"
-                                    title="{{ trans("$theme-app.head.language_es") }}">
-
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <img src="{{ $flagsLanguage[$key] }}" alt="{{ $key }}"
-                                            style="width: 16px; height: 11px;" width="16" height="11">
-                                        {{ \Config::get('app.locales')[$key] }}
-                                    </div>
-                                </a>
-                            @endif
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-
-    </div>
 </header>
-
-{{-- nav enlaces --}}
-<nav class="menu top-bar">
-
-    <div class="container nav-container p-0">
-
-        <div class="nav navbar">
-            <ul class="flex valign">
-
-                <div class="hidden-desktop w-100">
-
-                    @if (!Session::has('user'))
-                        <li>
-                            <i class="fa fa-user-circle"></i>
-                            <a data-toggle="modal" data-target="#modalLogin">
-                                {{ trans("$theme-app.login_register.login") }}
-                            </a>
-                        </li>
-                    @elseif(Session::has('user'))
-                        <li>
-                            <i class="fa fa-user-circle"></i>
-                            <a href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}">
-                                {{ trans("$theme-app.login_register.my_panel") }}
-                            </a>
-                        </li>
-                    @endif
-
-                    @if (Session::get('user.admin'))
-                        <li>
-                            <i class="fab fa-buysellads"></i>
-                            <a href="/admin">
-                                {{ trans("$theme-app.login_register.admin") }}
-                            </a>
-                        </li>
-                    @endif
-
-                </div>
-
-
-                <li>
-                    <a href="{{ wpLink('wp_home') }}" title="{{ trans($theme . '-app.home.home') }}"><i
-                            class="icon_house"></i></a>
-                </li>
-
-                <li class="auctions">
-                    <a href="{{ wpLink('wp_auctions') }}">{{ trans($theme . '-app.foot.auctions') }}</a>
-                </li>
-
-                <li>
-                    <a href="{{ wpLink('wp_calendar') }}">{{ trans($theme . '-app.services.calendar') }}
-                        <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
-                    </a>
-
-                    {{-- enlaces desplegables en escritorio --}}
-                    <div class="menu_desp hidden-xs hidden-sm" id="">
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_calendar') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.subastas.next_auctions") }}</a>
-
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_events') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.events") }}</a>
-                    </div>
-                </li>
-
-                {{-- enlaces desplegables en móvil --}}
-                <div class="menu_desp-xs hidden-md hidden-lg" id="">
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_calendar') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.subastas.next_auctions") }}</a>
-                    </li>
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_events') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.events") }}</a>
-                    </li>
-                </div>
-
-                <li>
-                    <a href="{{ wpLink('wp_sell_coins') }}"
-                        title="{{ trans($theme . '-app.foot.how_to_sell') }}">{{ trans($theme . '-app.foot.how_to_sell') }}</a>
-                </li>
-
-                <li>
-                    <a href="{{ wpLink('wp_buy_coins') }}"
-                        title="{{ trans($theme . '-app.foot.how_to_buy') }}">{{ trans($theme . '-app.foot.how_to_buy') }}</a>
-                </li>
-
-                <li>
-                    <a href="{{ wpLink('wp_services') }}">{{ trans($theme . '-app.services.title') }}
-                        <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
-                    </a>
-
-                    {{-- enlaces desplegables en escritorio --}}
-                    <div class="menu_desp hidden-xs hidden-sm" id="">
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_valuations') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.valuations") }}</a>
-
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_photography') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.photography") }}</a>
-
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_coin_grading') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.coin_grading") }}</a>
-                    </div>
-                </li>
-
-                {{-- enlaces desplegables en móvil --}}
-                <div class="menu_desp-xs hidden-md hidden-lg" id="">
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_valuations') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.valuations") }}</a>
-                    </li>
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_photography') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.photography") }}</a>
-                    </li>
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_coin_grading') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.coin_grading") }}</a>
-                    </li>
-                </div>
-
-
-                @php
-                    # TEMPORALMENTE OCULTO POR PETICIÓN DE TAULER Y FAU
-                @endphp
-                {{-- <li>
-                    <a href="{{ wpLink('wp_onzas_macuquinas') }}">{{ trans($theme . '-app.foot.onzas_macuquinas') }}
-                        <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
-                    </a>
-
-					@php
-						# enlaces desplegables en escritorio
-					@endphp
-                    <div id="" class="menu_desp hidden-xs hidden-sm">
-                        <a href="{{ wpLink('wp_onzas_macuquinas') }}"
-                            class="color-letter flex-display link-header justify-center align-items-center"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.database_online") }}</a>
-
-						<a href="{{ wpLink('wp_catalogue_pdf') }}"
-                            class="color-letter flex-display link-header justify-center align-items-center"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.catalogue_pdf") }}</a>
-                    </div>
-                </li> --}}
-
-                {{-- enlaces desplegables en móvil --}}
-                {{-- <div id="" class="menu_desp-xs hidden-md hidden-lg">
-					<li>
-						<a href="{{ wpLink('wp_onzas_macuquinas') }}"
-						class="color-letter flex-display link-header justify-center align-items-center"
-						style="cursor: pointer;">{{ trans("$theme-app.foot.database_online") }}</a>
-					</li>
-					<li>
-						<a href="{{ wpLink('wp_catalogue_pdf') }}"
-                            class="color-letter flex-display link-header justify-center align-items-center"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.catalogue_pdf") }}</a>
-					</li>
-				</div> --}}
-
-                <li>
-                    <a href="{{ wpLink('wp_about_us') }}">{{ trans("$theme-app.foot.about_us") }}
-                        <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
-                    </a>
-
-                    {{-- enlaces desplegables en escritorio --}}
-                    <div class="menu_desp hidden-xs hidden-sm" id="">
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_about_us') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.about_us") }}</a>
-
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_faq') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.faq") }}</a>
-
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_blog') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.blog") }}</a>
-
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_term_condition') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.auctions_conditions") }}</a>
-                    </div>
-                </li>
-
-                {{-- enlaces desplegables en móvil --}}
-                <div class="menu_desp-xs hidden-md hidden-lg" id="">
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_about_us') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.about_us") }}</a>
-
-                    </li>
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_faq') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.faq") }}</a>
-                    </li>
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_blog') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.blog") }}</a>
-                    </li>
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center"
-                            href="{{ wpLink('wp_term_condition') }}"
-                            style="cursor: pointer;">{{ trans("$theme-app.foot.auctions_conditions") }}</a>
-                    </li>
-                </div>
-
-                <li>
-                    <a href="{{ wpLink('wp_contact') }}"
-                        title="{{ trans($theme . '-app.foot.contact') }}">{{ trans($theme . '-app.foot.contact') }}</a>
-                </li>
-
-                <div class="hidden-lg hidden-md w-100">
-
-                    <li>
-                        <a href="#">
-                            <img src="{{ $flagsLanguage[config('app.locale')] }}"
-                                alt="{{ \Config::get('app.locales')[\Config::get('app.locale')] }}"
-                                style="width: 16px; height: 11px; margin-right: 0.3em" width="16" height="11">
-
-                            {{ \Config::get('app.locales')[\Config::get('app.locale')] }}
-
-                            <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
-                        </a>
-                    </li>
-
-
-                    {{-- enlaces desplegables en móvil --}}
-                    <div class="menu_desp-xs" id="">
-                        @foreach (Config::get('app.locales') as $key => $value)
-                            @if ($key != \Config::get('app.locale'))
-                                <li>
-                                    <a href="{{ "/$key" . $urlToOtherLanguage }}"
-                                        title="{{ trans($theme . '-app.head.language_' . $key) }}">
-
-                                        <img src="{{ $flagsLanguage[$key] }}"
-                                            alt="{{ \Config::get('app.locales')[$key] }}"
-                                            style="width: 16px; height: 11px; margin-right: 0.3em" width="16"
-                                            height="11">
-
-                                        {{ \Config::get('app.locales')[$key] }}
-                                    </a>
-                                </li>
-                            @endif
-                        @endforeach
-                    </div>
-
-                </div>
-
-            </ul>
-        </div>
-    </div>
-</nav>
