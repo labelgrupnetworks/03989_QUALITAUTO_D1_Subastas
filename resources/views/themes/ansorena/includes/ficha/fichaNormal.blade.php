@@ -209,13 +209,15 @@
                     @if (!$retirado && !$devuelto && !$fact_devuelta)
                         <div class="ficha-info-content">
 
-                            @if ($sub_cerrada)
+							@if($isLastHistoryAuction && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta && !$retirado)
+								@include('includes.ficha.pujas_ficha_V')
+                            @elseif ($sub_cerrada)
                                 @include('includes.ficha.pujas_ficha_cerrada')
-                            @elseif($subasta_venta && !$cerrado && !$end_session)
+                            @elseif($subasta_venta && !$cerrado && !$end_session && !$retirado)
                                 @include('includes.ficha.pujas_ficha_V')
 
                                 {{-- si un lote cerrado no se ha vendido se podra comprar --}}
-                            @elseif(($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
+                            @elseif(($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta && !$retirado)
                                 @include('includes.ficha.pujas_ficha_V')
 
                                 {{-- si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta --}}

@@ -17,13 +17,12 @@
             <p>{{ trans("$theme-app.lot.commission_vat_incl") }}</p>
         </div>
 
-        @if (!$retirado && empty($lote_actual->himp_csub) && !$sub_cerrada)
-            <button class="lot-action_comprar_lot btn btn-lb-primary btn-medium" data-from="modal" type="button"
-                ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}"
-                codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">
-                {{ trans("$theme-app.lot.buy") }}
-            </button>
-        @endif
+		<button class="lot-action_comprar_lot btn btn-lb-primary btn-medium" data-from="modal" type="button"
+			ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}"
+			codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">
+			{{ trans("$theme-app.lot.buy") }}
+		</button>
+
     </div>
 
     @if (Config::get('app.urlToPackengers'))
