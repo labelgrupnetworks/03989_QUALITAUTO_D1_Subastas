@@ -125,4 +125,19 @@ class AuctionService
 		$page = intdiv($lotsInAuction, $lotsPerPage) +1;
 		return "$originalUrl?page=$page&total=$lotsPerPage#$codSub-$sessionInitLot";
 	}
+
+	public function isLastHistoryAuction($codSub)
+	{
+		$lastAuctionCod = FgSub::query()
+			->where('subc_sub', FgSub::SUBC_SUB_HISTORICO)
+			->orderBy('hfec_sub', 'desc')
+			->orderBy('hhora_sub', 'desc')
+			->value('cod_sub');
+
+		if(!$lastAuctionCod) {
+			return false;
+		}
+
+		return $lastAuctionCod == $codSub;
+	}
 }

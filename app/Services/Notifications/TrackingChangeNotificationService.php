@@ -20,8 +20,8 @@ class TrackingChangeNotificationService
 		private readonly string $codCli,
 		private readonly string $codSeg,
 		private readonly string $codSub,
-		private readonly string $number,
 		private readonly string $serie,
+		private readonly string $number,
 	) {}
 
 	public function send()
@@ -41,7 +41,7 @@ class TrackingChangeNotificationService
 		}
 
 		if(!empty($this->number) && !empty($this->serie)) {
-			$this->addOrderDetailsToEmail($email, $this->number, $this->serie);
+			$this->addOrderDetailsToEmail($email, $this->serie, $this->number);
 		}
 
 		$auction = FgSub::select('dfec_sub')
@@ -60,13 +60,14 @@ class TrackingChangeNotificationService
 		$email->send_email();
 	}
 
-	private function addOrderDetailsToEmail(EmailLib $email, string $number, string $serie): void
+	private function addOrderDetailsToEmail(EmailLib $email, string $serie, string $number): void
 	{
 		$orderService = new OrderService();
-		$order = $orderService->getOrderDetails($number, $serie);
+		$order = $orderService->getOrderDetails($serie, $number);
+
 		$orderTable = view('front::emails.component.order_detail', $order)->render();
 
-		$address = $orderService->getOrderShippingAddress($this->number, $this->serie);
+		$address = $orderService->getOrderShippingAddress($this->serie, $this->number);
 		$addressView = view('front::emails.component.order_address', [
 			'name' => $address->nom_dvc0dir,
 			'address' => $address->dir_dvc0dir,

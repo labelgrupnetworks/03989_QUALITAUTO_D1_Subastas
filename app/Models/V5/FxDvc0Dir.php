@@ -53,11 +53,11 @@ class FxDvc0Dir extends Model
 	 * @param string $serie Serie del pedido
 	 * @return FxDvc0Dir
 	 */
-	public static function getDirectionByIds(string $number, $serie): self
+	public static function getDirectionByIds(string $serie, $number): self
 	{
 		return self::where([
-			'anum_dvc0dir' => $number,
-			'num_dvc0dir' => $serie
+			'anum_dvc0dir' => $serie,
+			'num_dvc0dir' => $number
 		])->first() ?? new self();
 	}
 }

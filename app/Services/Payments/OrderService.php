@@ -8,11 +8,11 @@ use App\Providers\ToolsServiceProvider;
 
 class OrderService
 {
-	public function getOrderDetails($number, $serie)
+	public function getOrderDetails($serie, $number)
 	{
 		$orderLines = FgDvc1l::where([
-			'anum_dvc1l' => $number,
-			'num_dvc1l' => $serie
+			'anum_dvc1l' => $serie,
+			'num_dvc1l' => $number
 		])->get();
 
 		$lots = $orderLines->where('tl_dvc1l', 'P')
@@ -41,8 +41,8 @@ class OrderService
 		];
 	}
 
-	public function getOrderShippingAddress($number, $serie)
+	public function getOrderShippingAddress($serie, $number)
 	{
-		return FxDvc0Dir::getDirectionByIds($number, $serie);
+		return FxDvc0Dir::getDirectionByIds($serie, $number);
 	}
 }
