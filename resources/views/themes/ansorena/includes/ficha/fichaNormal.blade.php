@@ -208,27 +208,38 @@
 
                     @if (!$retirado && !$devuelto && !$fact_devuelta)
                         <div class="ficha-info-content">
+                            @php
+                                // Agrupamos las condiciones para mejor legibilidad
+                                $canBuy = empty($lote_actual->himp_csub) && $compra && !$fact_devuelta && !$retirado;
+                                $isHistoricAuctionBuyable = $isLastHistoryAuction && $cerrado && $canBuy;
+                                $isClosedLotBuyable = ($subasta_web || $subasta_online) && $cerrado && $canBuy;
+                                $isOpenOnlineAuction = ($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado;
+                                $isOpenSaleAuction = $subasta_venta && !$cerrado && !$end_session && !$retirado;
+                                $isOpenWebAuction = $subasta_web && !$cerrado;
+                            @endphp
 
-							@if($isLastHistoryAuction && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta && !$retirado)
-								@include('includes.ficha.pujas_ficha_V')
+                            @if ($isHistoricAuctionBuyable)
+                                {{-- Subasta histórica con posibilidad de compra --}}
+                                @include('includes.ficha.pujas_ficha_V')
                             @elseif ($sub_cerrada)
+                                {{-- Subasta cerrada --}}
                                 @include('includes.ficha.pujas_ficha_cerrada')
-                            @elseif($subasta_venta && !$cerrado && !$end_session && !$retirado)
+                            @elseif ($isOpenSaleAuction)
+                                {{-- Subasta de venta abierta --}}
                                 @include('includes.ficha.pujas_ficha_V')
-
-                                {{-- si un lote cerrado no se ha vendido se podra comprar --}}
-                            @elseif(($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta && !$retirado)
+                            @elseif ($isClosedLotBuyable)
+                                {{-- Lote cerrado que no se ha vendido y se puede comprar --}}
                                 @include('includes.ficha.pujas_ficha_V')
-
-                                {{-- si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta --}}
-                            @elseif(($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado)
+                            @elseif ($isOpenOnlineAuction)
+                                {{-- Subasta online abierta o web con modalidad P antes de iniciar --}}
                                 @include('includes.ficha.pujas_ficha_O')
-                            @elseif($subasta_web && !$cerrado)
+                            @elseif ($isOpenWebAuction)
+                                {{-- Subasta web abierta --}}
                                 @include('includes.ficha.pujas_ficha_W')
                             @else
+                                {{-- Otras condiciones: mostrar vista cerrada por defecto --}}
                                 @include('includes.ficha.pujas_ficha_cerrada')
                             @endif
-
                         </div>
                     @endif
 
