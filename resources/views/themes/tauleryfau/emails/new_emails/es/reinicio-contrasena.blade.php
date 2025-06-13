@@ -225,7 +225,7 @@
 	<w:anchorlock/>
 	<v:textbox inset="0px,0px,0px,0px">
 	<center dir="false" style="color:#ffffff;font-family:Georgia, 'Times New Roman', serif;font-size:20px">
-	<![endif]--><span class="button" style="background-color: #90825f; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 4px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #ffffff; display: inline-block; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 20px; font-weight: 700; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-left: 40px; padding-right: 40px; text-align: center; width: 55%; word-break: keep-all; letter-spacing: normal;"><span style="word-break: break-word; line-height: 40px;">NUEVA CONTRASEÑA</span></span><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div>
+	<![endif]--><span class="button" style="background-color: #90825f; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 4px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #ffffff; display: inline-block; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 20px; font-weight: 700; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-left: 40px; padding-right: 40px; text-align: center; word-break: keep-all; letter-spacing: normal;"><span style="word-break: break-word; line-height: 40px;">NUEVA CONTRASEÑA</span></span><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div>
 	</td>
 
 </tr>
