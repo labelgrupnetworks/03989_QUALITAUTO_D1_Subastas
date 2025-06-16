@@ -2,7 +2,7 @@
     use App\libs\TradLib;
 
     $lang = Config::get('app.locale');
-	$langName = Config::get('app.locales')[$lang];
+    $langName = Config::get('app.locales')[$lang];
     $flagsLanguage = [
         'es' =>
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAMAAABBPP0LAAAAflBMVEX/AAD9AAD3AADxAADrAAD/eXn9bGz8YWH8WVn6UVH5SEj5Pz/3NDT0Kir9/QD+/nL+/lT18lDt4Uf6+j/39zD39yf19R3n5wDxflXsZ1Pt4Y3x8zr0wbLs1NXz8xPj4wD37t3jmkvsUU/Bz6nrykm3vJ72IiL0FBTyDAvhAABEt4UZAAAAX0lEQVR4AQXBQUrFQBBAwXqTDkYE94Jb73+qfwVRcYxVQRBRToiUfoaVpGTrtdS9SO0Z9FR9lVy/g5c99+dKl30N5uxPuviexXEc9/msC7TOkd4kHu/Dlh4itCJ8AP4B0w4Qwmm7CFQAAAAASUVORK5CYII=',
@@ -23,42 +23,44 @@
         }
     }
 @endphp
-<header class="header-web">
+<header class="header-web" id="main-header">
     <div class="topbar">
-		@if(!Session::has('user'))
-		<a data-toggle="modal" data-target="#modalLogin" role="button" title="{{ trans("web.login_register.login") }}">
-			{{ trans("web.login_register.login") }}
-		</a>
-		@else
-		<a href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}">{{ trans("web.login_register.my_panel") }}</a>
+        @if (!Session::has('user'))
+            <a class="text-uppercase" data-toggle="modal" data-target="#modalLogin"
+                title="{{ trans('web.login_register.login') }}" role="button">
+                {{ trans('web.login_register.login') }}
+            </a>
+        @else
+            <a
+                href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}">{{ trans('web.login_register.my_panel') }}</a>
 
-			@if(Session::get('user.admin'))
-				<a href="/admin" target="_blank">{{ trans("web.login_register.admin") }}</a>
-			@endif
-		@endif
+            @if (Session::get('user.admin'))
+                <a href="/admin" target="_blank">{{ trans('web.login_register.admin') }}</a>
+            @endif
+        @endif
 
-		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-				aria-haspopup="true" aria-expanded="false">
-				 <img src="{{ $flagsLanguage[$lang] }}" alt="{{ $langName }}"
-                            style="width: 16px; height: 11px;" width="16" height="11">
-				{{ $langName }}
-				<span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu">
-				@foreach (Config::get('app.locales') as $key => $value)
-					@if ($key != $lang)
-						<li>
-							<a href="{{ "/$key" . $urlToOtherLanguage }}">
-								<img src="{{ $flagsLanguage[$key] }}" alt="{{ $key }}"
-									style="width: 16px; height: 11px;" width="16" height="11">
-								{{ $value }}
-							</a>
-						</li>
-					@endif
-				@endforeach
-			</ul>
-		</li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                <img src="{{ $flagsLanguage[$lang] }}" alt="{{ $langName }}" style="width: 16px; height: 11px;"
+                    width="16" height="11">
+                {{ $langName }}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-location">
+                @foreach (Config::get('app.locales') as $key => $value)
+                    @if ($key != $lang)
+                        <li>
+                            <a href="{{ "/$key" . $urlToOtherLanguage }}">
+                                <img src="{{ $flagsLanguage[$key] }}" alt="{{ $key }}"
+                                    style="width: 16px; height: 11px;" width="16" height="11">
+                                {{ $value }}
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
+            </ul>
+        </li>
     </div>
 
     <nav class="navbar navbar-default navbar-tauler">
@@ -72,12 +74,53 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#">
-                    <img src="/themes/{{ $theme }}/assets/img/logo-web.png" alt="{{ \Config::get('app.name') }}">
+                    <img src="/themes/{{ $theme }}/assets/img/logo-web.png"
+                        alt="{{ \Config::get('app.name') }}">
                 </a>
             </div>
             <div class="navbar-collapse collapse" id="navbar" aria-expanded="false" style="height: 1px;">
 
                 <ul class="nav navbar-nav navbar-right">
+
+                    <li class="visible-xs visible-sm">
+                        @if (!Session::has('user'))
+
+                            <a class="text-uppercase" data-toggle="modal" data-target="#modalLogin"
+                                title="{{ trans('web.login_register.login') }}" role="button">
+                                {{ trans('web.login_register.login') }}
+                            </a>
+                        @else
+                            <a
+                                href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}">{{ trans('web.login_register.my_panel') }}</a>
+
+                            @if (Session::get('user.admin'))
+                                <a href="/admin" target="_blank">{{ trans('web.login_register.admin') }}</a>
+                            @endif
+                        @endif
+                    </li>
+
+                    <li class="visible-xs visible-sm dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ $flagsLanguage[$lang] }}" alt="{{ $langName }}"
+                                style="width: 16px; height: 11px;" width="16" height="11">
+                            {{ $langName }}
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @foreach (Config::get('app.locales') as $key => $value)
+                                @if ($key != $lang)
+                                    <li>
+                                        <a href="{{ "/$key" . $urlToOtherLanguage }}">
+                                            <img src="{{ $flagsLanguage[$key] }}" alt="{{ $key }}"
+                                                style="width: 16px; height: 11px;" width="16" height="11">
+                                            {{ $value }}
+                                        </a>
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </li>
+
                     <li>
                         <a href="{{ wpLink('wp_home') }}">
                             {{ trans('web.home.home') }}
@@ -99,9 +142,9 @@
                     </li>
 
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-target="{{ wpLink('wp_services') }}" data-toggle="dropdown"
-                            href="{{ wpLink('wp_services') }}" role="button" aria-haspopup="true"
-                            aria-expanded="false">{{ trans('web.services.title') }} <span class="caret"></span></a>
+                        <a class="dropdown-toggle" href="{{ wpLink('wp_services') }}" role="button"
+                            aria-haspopup="true" aria-expanded="false">{{ trans('web.services.title') }} <span
+                                class="caret"></span></a>
 
                         <ul class="dropdown-menu">
                             <li>
@@ -134,9 +177,9 @@
                     </li>
 
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="{{ wpLink('wp_about_us') }}"
-                            href="{{ wpLink('wp_about_us') }}" role="button" aria-haspopup="true"
-                            aria-expanded="false">{{ trans('web.foot.about_us') }} <span class="caret"></span></a>
+                        <a class="dropdown-toggle" href="{{ wpLink('wp_about_us') }}" role="button"
+                            aria-haspopup="true" aria-expanded="false">{{ trans('web.foot.about_us') }} <span
+                                class="caret"></span></a>
 
                         <ul class="dropdown-menu">
                             <li>
@@ -167,3 +210,6 @@
     </nav>
 
 </header>
+<div class="sentinel" id="sentinel"></div>
+
+

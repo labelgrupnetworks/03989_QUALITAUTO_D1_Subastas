@@ -5,6 +5,8 @@ window.onscroll =
 		}
 	}
 
+const rootElement = document.querySelector(':root');
+
 
 $(function () {
 
@@ -309,12 +311,25 @@ $(function () {
 		}
 
 	});
+
+
 	$(document).scroll(function (e) {
+		 const cssOK = CSS.supports("animation-timeline: scroll()");
+
 		if ($(document).scrollTop() > 100) {
-			$('.button-up').show(500)
+			$('.button-up').show(500);
+
+			if (!cssOK) {
+				rootElement.style.setProperty('--header-height', 54 + 'px');
+			}
+
+
 		}
 		if ($(document).scrollTop() <= 100) {
 			$('.button-up').hide(500)
+			if (!cssOK) {
+				rootElement.style.setProperty('--header-height', 94 + 'px');
+			}
 		}
 	})
 
