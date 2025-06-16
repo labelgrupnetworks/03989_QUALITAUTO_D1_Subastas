@@ -1,16 +1,16 @@
 <section class="newsletter newsletter-js">
     <div class="container">
-        <div class="row flex-column-reverse flex-md-row">
+        <div class="row flex-column-reverse flex-md-row newsletter-wrapper">
 
             {{-- <div class="col-12 col-md-5 px-4 align-self-center">
             </div> --}}
 
-            <div class="col-12 col-md-7 px-4 ms-auto mb-5 mb-md-0 d-flex flex-column gap-4">
+            <div class="col-12 col-md-7 px-4 mb-5 mb-md-0 d-flex flex-column gap-4">
                 <h2 class="h1 newsletter-tittle lb-text-primary">{{ trans($theme . '-app.foot.newsletter_title') }}</h2>
                 <h3 class="h2 newsletter-subtittle">{{ trans($theme . '-app.foot.newsletter_description') }}</h3>
 
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-8 mx-auto">
                         <div class="input-group mb-3">
                             <input class="form-control newsletter-input-email-js" type="email" aria-label="email"
                                 aria-describedby="newsletter-btn" placeholder="email" autocomplete="email">

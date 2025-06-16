@@ -179,6 +179,19 @@ header .navbar-nav {
 	max-width: 90ch;
 }
 
+.static-page.home-static-page .container > * {
+	max-width: none;
+	text-align: justify;
+}
+
+
+.static-page span {
+	color: inherit !important;
+	font-weight: inherit !important;
+	font-family: inherit !important;
+	font-size: inherit !important;
+}
+
 footer .nav-link {
 	--bs-nav-link-color: inherit;
 	--bs-nav-link-hover-color: inherit;
@@ -194,4 +207,9 @@ footer .nav-link {
 		max-width: 100%;
 		margin: auto;
 	}
+}
+
+.newsletter-wrapper {
+	justify-content: center;
+	text-align: center;
 }

@@ -39,11 +39,11 @@
 							title="{{ trans($theme.'-app.foot.contact') }}" class="nav-link p-0 text-muted">
 							{{ trans($theme.'-app.foot.contact') }}</a>
 					</li>
-					<li class="nav-item mb-2">
+					{{-- <li class="nav-item mb-2">
 						<a href="{{ Routing::translateSeo(trans($theme.'-app.links.faq')) }}"
 							title="{{ trans($theme.'-app.foot.faq') }}" class="nav-link p-0 text-muted">{{
 							trans($theme.'-app.foot.faq') }}</a>
-					</li>
+					</li> --}}
 				</ul>
 			</div>
 
@@ -94,32 +94,6 @@
 						href="{{ trans($theme.'-app.foot.developed_url') }}" target="_blank">{{
 						trans($theme.'-app.foot.developedBy') }}</a></p>
 			</div>
-
-
-			<ul class="list-unstyled d-flex">
-				<li class="ms-3">
-					<a class="lb-text-primary" href="{{ Config::get('app.twitter') }}" target="_blank">
-						<x-icon.boostrap size=24 icon=twitter></x-icon.boostrap>
-					</a>
-				</li>
-
-				<li class="ms-3">
-					<a class="lb-text-primary" href="{{ Config::get('app.instagram') }}" target="_blank">
-						<x-icon.boostrap size=24 icon=instagram></x-icon.boostrap>
-					</a>
-				</li>
-
-				<li class="ms-3">
-					<a class="lb-text-primary" href="{{ Config::get('app.facebook') }}" target="_blank">
-						<x-icon.boostrap size=24 icon=facebook></x-icon.boostrap>
-					</a>
-				</li>
-				<li class="ms-3">
-					<a class="lb-text-primary" href="{{ Config::get('app.pinterest') }}" target="_blank">
-						<x-icon.boostrap size=24 icon=pinterest></x-icon.boostrap>
-					</a>
-				</li>
-			</ul>
 		</div>
 	</div>
 </footer>
