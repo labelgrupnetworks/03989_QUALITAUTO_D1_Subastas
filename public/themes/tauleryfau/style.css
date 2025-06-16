@@ -40,6 +40,20 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: "Poppins";
+	src: url("/themes/b2b/assets/fonts/Poppins-SemiBold.ttf") format("truetype");
+	font-weight: 600;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Poppins";
+	src: url("/themes/b2b/assets/fonts/Poppins-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-display: swap;
+}
+
 
 @font-face {
 	font-family: 'ElegantIcons';
@@ -9923,4 +9937,194 @@ span.select2, .select2 span{
 	font-size: 12px;
 	line-height: 1;
 	margin-bottom: .5rem;
+}
+
+.navbar.navbar-tauler {
+	height: auto;
+	font-family:'Poppins', Arial, Helvetica, sans-serif;
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: 600;
+	background-color: #fafafa;
+	-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+}
+
+.navbar-tauler img {
+	width: 326px;
+	height: auto;
+}
+
+.navbar-tauler .navbar-brand {
+    height: auto;
+}
+
+.navbar.navbar-tauler .navbar-nav>li>a {
+	color: rgba(17, 17, 17, 0.6) !important;
+}
+
+.navbar.navbar-tauler .dropdown-menu>li>a {
+	color: rgba(17, 17, 17, 0.7);
+}
+
+@media (max-width: 767px) {
+	.navbar.navbar-tauler {
+		height: auto;
+	}
+
+	.navbar.navbar-tauler .navbar-header {
+		margin: auto;
+		display: flex;
+		flex-direction: row-reverse;
+		height: 80px;
+		align-items: center;
+	}
+
+	.navbar.navbar-tauler .navbar-toggle {
+		background: none !important;
+		border: none;
+	}
+
+	.navbar.navbar-tauler .navbar-toggle .icon-bar {
+		color: #545454;
+	}
+
+	.navbar.navbar-tauler .navbar-brand {
+		padding: 0;
+		margin-right: auto;
+	}
+
+	.navbar.navbar-tauler img {
+		width: 250px;
+	}
+
+	.navbar.navbar-tauler .navbar-collapse {
+		padding: 20px;
+	}
+
+	.navbar.navbar-tauler .dropdown-menu {
+		display: block;
+		position: static;
+		float: none;
+		width: auto;
+		margin-top: 0;
+		background-color: transparent;
+		border: 0;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		padding-left: 20px;
+	}
+
+	.navbar.navbar-tauler li a {
+		border-bottom: 1px solid rgba(0, 0, 0, .03);
+	}
+
+	.navbar.navbar-tauler .caret {
+		display: none;
+	}
+
+	.navbar.navbar-tauler .navbar-nav .dropdown-toggle {
+		background-color: rgba(0, 0, 0, .03);
+	}
+
+	.navbar.navbar-tauler .navbar-nav>li>a {
+		padding: 10px 20px;
+	}
+
+	.navbar.navbar-tauler .dropdown-menu > li > a,
+    .navbar.navbar-tauler .dropdown-menu .dropdown-header {
+        padding: 10px 20px;
+    }
+
+    .navbar.navbar-tauler .dropdown-menu > li > a{
+        line-height: 20px;
+    }
+
+    .navbar.navbar-tauler .dropdown-menu > li > a{
+        color: #777;
+    }
+}
+
+@media (min-width: 768px) {
+
+	.header-web {
+		position: sticky;
+		top: 0;
+		z-index: 1000;
+	}
+
+	.header-web .topbar {
+		background-color: #b09c82;
+		color: #fff;
+		display: flex;
+		justify-content: flex-end;
+		gap: 15px;
+		padding: 10px 30px;
+	}
+
+	.header-web .topbar a, .header-web .topbar a:hover {
+		color: #fff;
+	}
+
+	.header-web .topbar a:hover {
+		opacity: 0.7;
+	}
+
+	.header-web .topbar .dropdown {
+		list-style: none;
+	}
+
+	.navbar.navbar-tauler {
+		font-size: 16px;
+	}
+
+	.navbar.navbar-tauler .navbar-nav {
+		height: 94px;
+	}
+
+	.navbar.navbar-tauler .navbar-nav>li {
+		height: 100%;
+		padding-right: 22px;
+		display: flex;
+        align-items: center;
+	}
+
+	.navbar.navbar-tauler .dropdown:hover .dropdown-menu {
+  		display: block;
+	}
+
+	.navbar.navbar-tauler .navbar-nav>.active>a {
+		color: #8f7447;
+		background-color: initial;
+	}
+
+	.navbar.navbar-tauler .navbar-nav>.open>a {
+		background-color: initial;
+	}
+
+	.navbar.navbar-tauler .navbar-nav>li>a:hover {
+    	opacity: 0.7;
+    	-webkit-transition: all 0.4s ease-in-out;
+    	transition: all 0.4s ease-in-out;
+	}
+
+	.navbar.navbar-tauler .navbar-nav>li>.dropdown-menu {
+		border-top: 3px solid #8f7447;
+		padding: 20px 0;
+		min-width: 240px;
+		font-size: 16px;
+	}
+
+	.navbar.navbar-tauler .dropdown-menu>li>a {
+		color: rgba(17, 17, 17, 0.7);
+		padding: 6px 40px;
+		line-height: 2em;
+	}
+
+	.navbar.navbar-tauler .dropdown-menu>li>a:hover {
+		background-color: rgba(0, 0, 0, .03);
+		opacity: 0.7;
+		-webkit-transition: all 0.4s ease-in-out;
+    	transition: all 0.4s ease-in-out;
+	}
 }
