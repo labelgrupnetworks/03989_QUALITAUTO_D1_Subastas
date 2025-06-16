@@ -5,6 +5,8 @@
         $importe = Tools::moneyFormat($lote_actual->impres_asigl0);
         $importeExchange = $lote_actual->impres_asigl0;
     }
+
+	$vat = $importeExchange <= 1000 ? 25 : 23;
 @endphp
 
 <div class="lot-sold ficha-v">
@@ -14,7 +16,7 @@
                 {{ trans("$theme-app.global.precio") . ' ' . $importe . ' ' . trans("$theme-app.subastas.euros") }}
             </p>
 
-            <p>{{ trans("$theme-app.lot.commission_vat_incl") }}</p>
+            <p>{{ trans("$theme-app.lot.commission_vat_incl", ['vat' => $vat]) }}</p>
         </div>
 
 		<button class="lot-action_comprar_lot btn btn-lb-primary btn-medium" data-from="modal" type="button"
