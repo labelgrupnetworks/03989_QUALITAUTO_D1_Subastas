@@ -39,23 +39,40 @@ class ErrorNotificationService
 
 	protected function checkConditionsToSendNotification(): bool
 	{
-		// Aquí puedes agregar condiciones adicionales para enviar notificaciones
+		if (!Config::get('app.notification_exceptions', false)) {
+			return false;
+		}
+
 		// No enviar notificaciones en entornos de desarrollo o pruebas
 		// Solo enviar en producción
 		if (in_array(Config::get('app.env'), ['local', 'testing'])) {
 			return false;
 		}
 
-		$dayOfWeek = date('N'); // 1 (lunes) a 7 (domingo)
-		if ($dayOfWeek >= 6) { // 6 es sábado, 7 es domingo
-			return false;
-		}
-
-		if (!Config::get('app.notification_exceptions', false)) {
+		if (!$this->isWithinBusinessHours()) {
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Por salud mental. Verifica si estamos dentro del horario laboral.
+	 * @return bool
+	 */
+	protected function isWithinBusinessHours(): bool
+	{
+		$now = new \DateTime();
+
+		$dayOfWeek = $now->format('N'); // 1 (lunes) a 7 (domingo)
+		if ($dayOfWeek >= 6) { // 6 es sábado, 7 es domingo
+			return false;
+		}
+
+		$start = new \DateTime('09:00');
+		$end = new \DateTime('18:00');
+
+		return $now >= $start && $now <= $end;
 	}
 
 	/**
