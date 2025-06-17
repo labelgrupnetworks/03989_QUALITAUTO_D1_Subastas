@@ -31,11 +31,11 @@
                 {{ trans('web.login_register.login') }}
             </a>
         @else
-            <a
+            <a class="text-uppercase"
                 href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}">{{ trans('web.login_register.my_panel') }}</a>
 
             @if (Session::get('user.admin'))
-                <a href="/admin" target="_blank">{{ trans('web.login_register.admin') }}</a>
+                <a class="text-uppercase" href="/admin" target="_blank">{{ trans('web.login_register.admin') }}</a>
             @endif
         @endif
 
@@ -74,7 +74,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#">
-                    <img src="/themes/{{ $theme }}/assets/img/logo-web.png"
+                    <img src="/themes/{{ $theme }}/assets/img/logo-web.png?v=17062025"
                         alt="{{ \Config::get('app.name') }}">
                 </a>
             </div>
@@ -204,7 +204,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ wpLink('wp_ediciones_tauler') }}">
+                                <a href="{{ wpLink('wp_catalogue_pdf') }}">
                                     {{ trans('web.foot.ediciones_tauler') }}
                                 </a>
                             </li>

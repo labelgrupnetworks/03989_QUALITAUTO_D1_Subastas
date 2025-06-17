@@ -10007,7 +10007,7 @@ span.select2, .select2 span{
 	.navbar.navbar-tauler .navbar-nav>li>.dropdown-menu {
 		border-top: 3px solid #8f7447;
 		padding: 20px 0;
-		min-width: 240px;
+		width: 240px;
 		font-size: 16px;
 	}
 
@@ -10015,6 +10015,7 @@ span.select2, .select2 span{
 		color: rgba(17, 17, 17, 0.7);
 		padding: 6px 40px;
 		line-height: 2em;
+		white-space: normal;
 	}
 
 	.navbar.navbar-tauler .dropdown-menu>li>a:hover {
