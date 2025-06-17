@@ -13,7 +13,6 @@ use App\libs\StrLib;
 use App\libs\TradLib;
 use App\Models\Favorites;
 use App\Models\Payments;
-use App\Models\Sec;
 use App\Models\Subasta;
 use App\Models\User;
 use App\Models\V5\AucSessionsFiles;
