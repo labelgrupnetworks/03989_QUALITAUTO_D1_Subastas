@@ -127,7 +127,7 @@
                         </a>
                     </li>
                     <li class="dropdown active">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                        <a class="dropdown-toggle" href="{{ wpLink('wp_auctions') }}" role="button"
                             aria-haspopup="true" aria-expanded="false">{{ trans('web.foot.auctions') }} <span
                                 class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -135,7 +135,8 @@
                                     {{ trans('web.foot.auctions') }}
                                 </a>
                             </li>
-                            <li><a href="#">Histórico</a></li>
+                            <li><a href="{{ wpLink('wp_history_auctions') }}">{{ trans("web.foot.historico") }}</a></li>
+                            <li><a href="{{ wpLink('wp_calendar') }}">{{ trans("web.foot.calendar") }}</a></li>
                             <li><a href="{{ wpLink('wp_events') }}">{{ trans('web.foot.events') }}</a></li>
 
                         </ul>
@@ -183,18 +184,28 @@
 
                         <ul class="dropdown-menu">
                             <li>
+                                <a href="{{ wpLink('wp_about_us') }}">
+                                    {{ trans('web.foot.about_us_2') }}
+                                </a>
+                            </li>
+							<li>
+								<a href="{{ wpLink('wp_blog') }}">
+									{{ trans('web.foot.blog') }}
+								</a>
+							</li>
+                            <li>
                                 <a href="{{ wpLink('wp_faq') }}">
                                     {{ trans('web.foot.faq') }}
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ wpLink('wp_blog') }}">
-                                    {{ trans('web.foot.blog') }}
+                                <a href="{{ wpLink('wp_term_condition') }}">
+                                    {{ trans('web.foot.auctions_conditions') }}
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ wpLink('wp_term_condition') }}">
-                                    {{ trans('web.foot.auctions_conditions') }}
+                                <a href="{{ wpLink('wp_ediciones_tauler') }}">
+                                    {{ trans('web.foot.ediciones_tauler') }}
                                 </a>
                             </li>
 

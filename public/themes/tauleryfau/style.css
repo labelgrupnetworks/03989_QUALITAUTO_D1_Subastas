@@ -42,18 +42,17 @@
 
 @font-face {
 	font-family: "Poppins";
-	src: url("/themes/b2b/assets/fonts/Poppins-SemiBold.ttf") format("truetype");
+	src: url("/default/assets/fonts/Poppins-SemiBold.ttf") format("truetype");
 	font-weight: 600;
 	font-display: swap;
 }
 
 @font-face {
 	font-family: "Poppins";
-	src: url("/themes/b2b/assets/fonts/Poppins-Bold.ttf") format("truetype");
+	src: url("/default/assets/fonts/Poppins-Bold.ttf") format("truetype");
 	font-weight: 700;
 	font-display: swap;
 }
-
 
 @font-face {
 	font-family: 'ElegantIcons';
@@ -10040,9 +10039,18 @@ span.select2, .select2 span{
     background: #545454;
     padding-top: 35px;
 	color: #fff;
-	font-family:'Poppins', Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Arial, sans-serif;
 	font-size: 14px;
+	font-weight: 500;
+}
+
+.custom-footer .btn.btn-footer {
+	font-family: 'Poppins', Arial, Helvetica, sans-serif;
 	font-weight: 600;
+}
+
+.custom-footer .btn, .custom-footer a, .custom-footer .btn:hover, .footer-link-button {
+	font-weight: 500;
 }
 
 .custom-footer > .container {
@@ -10059,6 +10067,11 @@ span.select2, .select2 span{
 .custom-footer a, .custom-footer a:hover, .custom-footer a:focus {
 	color: #fff;
 	text-decoration: none;
+}
+
+.custom-footer li {
+	line-height: 1em;
+	margin-bottom: .75lh;
 }
 
 .custom-footer img.img-responsive {

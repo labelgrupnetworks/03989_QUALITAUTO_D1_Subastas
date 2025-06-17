@@ -51,10 +51,9 @@
                 <ul>
                     <li><a href="{{ wpLink('wp_subastas') }}">{{ trans("$theme-app.foot.auctions-active") }}</a></li>
                     <li><a href="{{ wpLink('wp_calendar') }}">{{ trans("$theme-app.subastas.next_auctions") }}</a></li>
-                    <li><a href="{{ wpLink('wp_history_auctions') }}">{{ trans("$theme-app.subastas.next_auctions") }}</a></li>
-                    <li><a href="{{ wpLink('wp_valuations') }}">{{ trans("$theme-app.foot.free_valuations") }}</a></li>
-                    <li><a href="{{ wpLink('wp_sell_coins') }}">{{ trans("$theme-app.foot.consign_coins") }}</a></li>
-                    <li><a href="{{ wpLink('wp_contact') }}">{{ trans("$theme-app.foot.contact") }}</a></li>
+                    <li><a href="{{ wpLink('wp_history_auctions') }}">{{ trans("$theme-app.foot.history_auctions") }}</a></li>
+                    <li><a href="{{ wpLink('wp_events') }}">{{ trans("$theme-app.foot.envent_large") }}</a></li>
+                    <li><a href="{{ wpLink('wp_blog') }}">{{ trans("$theme-app.foot.blog_large") }}</a></li>
                 </ul>
             </div>
 
@@ -66,11 +65,9 @@
                     <li><a href="{{ wpLink('wp_sell_coins') }}">{{ trans("$theme-app.foot.sell_coins") }}</a></li>
                     <li><a href="{{ wpLink('wp_buy_coins') }}">{{ trans("$theme-app.foot.buy_coins") }}</a>
                     </li>
-                    <li><a href="{{ wpLink('wp_photography') }}">{{ trans("$theme-app.foot.coin_photography") }}</a>
+                    <li><a href="{{ wpLink('wp_photography') }}">{{ trans("$theme-app.foot.coin_photography_large") }}</a>
                     </li>
-                    <li><a href="{{ wpLink('wp_coin_grading') }}">{{ trans("$theme-app.foot.coin_grading") }}</a>
-                    </li>
-                    <li><a href="{{ wpLink('wp_blog') }} ">{{ trans("$theme-app.blog.blogTitle") }}</a>
+                    <li><a href="{{ wpLink('wp_coin_grading') }}">{{ trans("$theme-app.foot.coin_grading_large") }}</a>
                     </li>
                 </ul>
             </div>
