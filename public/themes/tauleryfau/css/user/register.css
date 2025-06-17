@@ -22,8 +22,8 @@
 }
 
 div[class^="col-"] {
-	padding-right: var(--lb-gutter-x);
-	padding-left: var(--lb-gutter-x);
+	padding-right: var(--lb-gutter-x, 15px);
+	padding-left: var(--lb-gutter-x, 15px);
 }
 
 .form-group {

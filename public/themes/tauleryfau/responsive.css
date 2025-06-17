@@ -136,9 +136,6 @@ Medida customizada para header, igualando a la de wordpress
 		display: none !important;
 	}
 
-	header {
-		height: 66px;
-	}
 }
 
 /* Todo de tablet hacia abajo */
@@ -290,10 +287,6 @@ Medida customizada para header, igualando a la de wordpress
 @media (max-width: 768px) {
 	.hidden-mobile {
 		display: none !important;
-	}
-
-	header {
-		height: 66px;
 	}
 }
 
