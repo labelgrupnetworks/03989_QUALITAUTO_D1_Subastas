@@ -1,8 +1,10 @@
 @php
     use App\Models\User;
+	use App\Models\V5\FxCli;
     $userMenu = Session::get('user');
     $userAvatar = (new User())->getAvatar($userMenu['cod']);
     $userName = mb_convert_case($userMenu['name'], MB_CASE_TITLE);
+	$ries = FxCli::where('cod_cli', $userMenu['cod'])->value('ries_cli');
 @endphp
 
 <div class="submenu-header-panel">
@@ -11,6 +13,9 @@
         <div class="panel_user-data">
             <p>{{ $userName }}</p>
             <small>{{ trans("$theme-app.user_panel.client") }} {{ $userMenu['cod'] }}</small>
+			@if($ries)
+				<p style="font-size: .9em">{{ trans("web.user_panel.bid_limit") }} {{ Tools::moneyFormat($ries, '€') }}</p>
+			@endif
         </div>
     </div>
 

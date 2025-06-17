@@ -42,8 +42,7 @@
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                 aria-expanded="false">
-                <img src="{{ $flagsLanguage[$lang] }}" alt="{{ $langName }}" style="width: 16px; height: 11px;"
-                    width="16" height="11">
+                <img class="flag-image" src="{{ $flagsLanguage[$lang] }}" alt="{{ $langName }}" width="16" height="11">
                 {{ $langName }}
                 <span class="caret"></span>
             </a>
@@ -52,8 +51,7 @@
                     @if ($key != $lang)
                         <li>
                             <a href="{{ "/$key" . $urlToOtherLanguage }}">
-                                <img src="{{ $flagsLanguage[$key] }}" alt="{{ $key }}"
-                                    style="width: 16px; height: 11px;" width="16" height="11">
+                                <img class="flag-image" src="{{ $flagsLanguage[$key] }}" alt="{{ $key }}" width="16" height="11">
                                 {{ $value }}
                             </a>
                         </li>
@@ -73,7 +71,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="/{{ $lang }}">
                     <img src="/themes/{{ $theme }}/assets/img/logo-web.png?v=17062025"
                         alt="{{ \Config::get('app.name') }}">
                 </a>

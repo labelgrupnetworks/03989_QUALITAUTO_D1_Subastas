@@ -9803,8 +9803,13 @@ span.select2, .select2 span{
 		margin-right: auto;
 	}
 
-	.navbar.navbar-tauler img {
-		width: 250px;
+	.navbar.navbar-tauler .navbar-brand img {
+		width: 170px;
+	}
+
+	.navbar.navbar-tauler .flag-image {
+		width: 16px;
+		height: 11px;
 	}
 
 	.navbar.navbar-tauler .navbar-collapse {
@@ -10040,13 +10045,8 @@ span.select2, .select2 span{
     background: #545454;
     padding-top: 35px;
 	color: #fff;
-	font-family: "Open Sans", Arial, sans-serif;
-	font-size: 14px;
-	font-weight: 500;
-}
-
-.custom-footer .btn.btn-footer {
 	font-family: 'Poppins', Arial, Helvetica, sans-serif;
+	font-size: 14px;
 	font-weight: 600;
 }
 
