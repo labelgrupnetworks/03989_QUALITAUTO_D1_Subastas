@@ -63,8 +63,8 @@
                 <p class="divider"></p>
                 <ul>
                     <li><a href="{{ wpLink('wp_sell_coins') }}">{{ trans("$theme-app.foot.sell_coins") }}</a></li>
-                    <li><a href="{{ wpLink('wp_buy_coins') }}">{{ trans("$theme-app.foot.buy_coins") }}</a>
-                    </li>
+                    <li><a href="{{ wpLink('wp_buy_coins') }}">{{ trans("$theme-app.foot.buy_coins") }}</a></li>
+					<li><a href="{{ wpLink('wp_valuations') }}">{{ trans('web.foot.valuations') }}</a></li>
                     <li><a href="{{ wpLink('wp_photography') }}">{{ trans("$theme-app.foot.coin_photography_large") }}</a>
                     </li>
                     <li><a href="{{ wpLink('wp_coin_grading') }}">{{ trans("$theme-app.foot.coin_grading_large") }}</a>
@@ -127,7 +127,7 @@
 
                 </div>
 
-                <a class="btn btn-footer pi-xl" href="https://mailchi.mp/tauleryfau/subscribe" target="_blank">SUSCRÍBETE A NUESTRA NEWSLETTER</a>
+                <a class="btn btn-footer pi-xl" href="https://mailchi.mp/tauleryfau/subscribe" target="_blank">{{ trans("web.foot.inscribete_catalogo") }}</a>
             </div>
         </div>
         <div class="row">
