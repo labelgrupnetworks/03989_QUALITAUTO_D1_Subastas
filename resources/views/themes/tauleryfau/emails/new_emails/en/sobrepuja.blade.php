@@ -275,7 +275,7 @@
 <tr>
 <td class="pad" style="padding-left:10px;padding-right:10px;padding-top:5px;">
 <div style="color:#000000;direction:ltr;font-family:'Poppins', Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:1.2;text-align:center;mso-line-height-alt:19px;">
-<!-- <p style="margin: 0;">Your maximum bid: € 1,001 </p> -->
+<p style="margin: 0;">Your maximum bid: € [*PUJA_PERDEDOR*]</p>
 </div>
 </td>
 </tr>
