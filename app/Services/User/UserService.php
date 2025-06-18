@@ -13,4 +13,22 @@ class UserService
 			->leftJoinCliWebCli()
 			->where('cod_cli', $codCli);
 	}
+
+	public function getUserQueryByEmail($email)
+	{
+		return FxCli::query()
+			->leftJoinCliWebCli()
+			->where('lower(email_cli)', strtolower($email));
+	}
+
+	public function getUserQueryByLicitCod($auctionCod, $licitCod)
+	{
+		return FxCli::query()
+			->leftJoinCliWebCli()
+			->joinLicitCli()
+			->where([
+				'sub_licit' => $auctionCod,
+				'cod_licit' => $licitCod,
+			]);
+	}
 }

@@ -11,10 +11,8 @@ namespace App\libs;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\V5\CarlandiaPayController;
 use App\Jobs\MailJob;
-use App\libs\TradLib;
 use App\Models\MailQueries;
 use App\Models\Subasta;
-use App\Models\User;
 use App\Models\V5\FgAsigl1;
 use App\Models\V5\FgAsigl1Mt;
 use App\Models\V5\FgCaracteristicas_Hces1;
@@ -259,126 +257,179 @@ class EmailLib
 
 	public function setUserByLicit($cod_sub, $cod_licit, $recipient = false)
 	{
-		$this->setUser(null, $cod_sub, $cod_licit, $recipient);
+		$user = (new UserService)->getUserQueryByLicitCod($cod_sub, $cod_licit)
+			->select(array_merge($this->userSelect(), [
+				'cod_licit',
+				'rsoc_licit'
+			]))
+			->where('baja_tmp_cli', 'N')
+			->first();
+
+		if (empty($user)) {
+			Log::error("No existe el usuario con código de subasta: $cod_sub y licitador: $cod_licit");
+			return $this;
+		}
+
+		$this->setUserAttributes($user);
+		$this->setLicit_code($cod_licit);
+
+		if ($recipient) {
+			$this->setUserAsRecipient($user);
+		}
+
+		return $this;
 	}
 
 	public function setUserByCod($cod_cli, $recipient = false, $default_lang = null)
 	{
-		$this->setUser($cod_cli, null, null, $recipient, $default_lang);
+		$user = (new UserService)->getUserQueryByCodCli($cod_cli)
+			->select($this->userSelect())
+			->first();
+
+		if (empty($user)) {
+			Log::error("No existe el usuario con código: $cod_cli");
+			return $this;
+		}
+
+		$this->setUserAttributes($user);
+
+		if ($recipient) {
+			$this->setUserAsRecipient($user, $default_lang);
+		}
+
+		return $this;
 	}
 
-	//si el usuario es el receptor debemos indicar que se le enviará a él
-	public function setUser($cod_cli, $cod_sub = NULL, $cod_licit = NULL, $recipient = false, $default_lang = null)
+	public function setUserByEmail($email, $recipient = false, $default_lang = null)
 	{
-		$inf_user = NULL;
+		$user = (new UserService)->getUserQueryByEmail($email)
+			->select($this->userSelect())
+			->first();
 
-		if (!empty($cod_cli)) {
-
-			$inf_user = (new UserService)->getUserQueryByCodCli($cod_cli)
-				->select(
-					'sexo_cli',
-					'cod_cli',
-					'cod2_cli',
-					'nom_cli',
-					'baja_tmp_cli',
-					'cif_cli',
-					'preftel_cli',
-					'tel1_cli',
-					'dir_cli',
-					'pob_cli',
-					'cp_cli',
-					'pais_cli',
-					'COALESCE(email_cli, email_cliweb) as email_cli',
-					'COALESCE(idioma_cli, idioma_cliweb) as idioma_cli',
-					'rsoc_cli',
-					'fisjur_cli',
-					'ries_cli',
-					'obs_cli',
-					'fecnac_cli',
-				)
-				->first();
-
-		} elseif (!empty($cod_sub) && !empty($cod_licit)) {
-
-			$user = new User();
-			$user->cod = $cod_sub;
-			$user->licit = $cod_licit;
-			$inf_user_array = $user->getFXCLIByLicit();
-			if (!empty($inf_user_array)) {
-				$inf_user = head($inf_user_array);
-			}
+		if (empty($user)) {
+			Log::error("No existe el usuario con email: $email");
+			return $this;
 		}
 
-		if (!empty($inf_user)) {
-			if (!empty($cod_licit)) {
-				$this->atributes['LICIT_CODE'] = $cod_licit;
-			}
+		$this->setUserAttributes($user);
 
-			$this->atributes['CLIENT_CODE'] = $inf_user->cod_cli;
-			$this->atributes['EXTERNAL_CLIENT_CODE'] = $inf_user->cod2_cli ?? '';
-			$this->atributes['EMAIL'] = $inf_user->email_cli;
-			#si viene por licitador cogemos el nombre de licitador, asi los usuarios con multiples licitadores reciben el email que toca
-			$this->atributes['NAME'] =  $inf_user->rsoc_licit ?? $inf_user->nom_cli;
-			#comprobamos si tiene separación de apellido por comas, si es así lo tratamos
-			$nameSurname = explode(",", $this->atributes['NAME']);
-			if (!empty($nameSurname[1])) {
-				$this->atributes['NAME'] = $nameSurname[1] . " " . $nameSurname[0];
-			}
-
-
-			$this->atributes['CIF'] = $inf_user->cif_cli;
-			$this->atributes['PREFIX_PHONE'] = $inf_user->preftel_cli ?? '';
-			$this->atributes['PHONE'] = $inf_user->tel1_cli;
-			$this->atributes['ADDRESS'] = $inf_user->dir_cli ?? '';
-			$this->atributes['CITY'] = $inf_user->pob_cli;
-			$this->atributes['ZIP_CODE'] = $inf_user->cp_cli;
-			$this->atributes['COUNTRY'] = $inf_user->pais_cli;
-			$this->atributes['RSOC_CLI'] = $inf_user->rsoc_cli;
-			$this->atributes['FISJUR'] = $inf_user->fisjur_cli;
-			$this->atributes['RIES_CLI'] = $inf_user->ries_cli;
-			$this->atributes['OBS'] = $inf_user->obs_cli ?? '';
-			if(!empty($inf_user->fecnac_cli)) {
-				$this->atributes['DATE_OF_BIRTH'] = $inf_user->fecnac_cli ? Carbon::parse($inf_user->fecnac_cli)->format('d/m/Y') : '';
-			}
-
-			if (isset($inf_user->sexo_cli)) {
-				$this->setSexo_Cli($inf_user->sexo_cli, App::getLocale());
-			}
-			//si es la persona receptora del mensaje
-			if ($recipient) {
-				$this->to = $inf_user->email_cli;
-				$this->to_name = $this->atributes['NAME'];
-				$this->lang = $inf_user->idioma_cli;
-				$locales = Config::get('app.locales');
-				$lang = strtolower($inf_user->idioma_cli);
-
-				$locales_long = Config::get('app.language_complete');
-
-				if (array_key_exists($lang, $locales) || array_key_exists($lang, $locales_long)) {
-					//si el idioma no es el actual cargamos de nuevo los textos en el idioma adecuado
-					if (App::getLocale() != $lang) {
-						$this->old_lang = App::getLocale();
-						//modificamos el locale para que los datos del lote/subasta etc se pasen en el idioma que toca
-						App::setLocale($lang);
-						if (isset($inf_user->sexo_cli)) {
-							$this->setSexo_Cli($inf_user->sexo_cli, $lang);
-						}
-						$this->lang = $lang;
-						$this->get_design($this->email->cod_email);
-					}
-				}
-
-				//Si no existe el idioma del cliente, y le damos al metodo uno por defecto, envia el mail en ese idioma
-				else {
-					if (!empty($default_lang)) {
-						//App::setLocale($default_lang);
-						$this->lang = $default_lang;
-						$this->setSexo_Cli($inf_user->sexo_cli, $default_lang);
-						$this->get_design($this->email->cod_email);
-					}
-				}
-			}
+		if ($recipient) {
+			$this->setUserAsRecipient($user, $default_lang);
 		}
+
+		return $this;
+	}
+
+	private function userSelect(): array
+	{
+		return [
+			'cod_cli',
+			'cod2_cli',
+			'nom_cli',
+			'baja_tmp_cli',
+			'cif_cli',
+			'preftel_cli',
+			'tel1_cli',
+			'dir_cli',
+			'pob_cli',
+			'cp_cli',
+			'pais_cli',
+			'COALESCE(email_cli, email_cliweb) as email_cli',
+			'COALESCE(idioma_cli, idioma_cliweb) as idioma_cli',
+			'rsoc_cli',
+			'fisjur_cli',
+			'ries_cli',
+			'obs_cli',
+			'fecnac_cli'
+		];
+	}
+
+	private function setUserAttributes(FxCli $user)
+	{
+		$this->atributes['CLIENT_CODE'] = $user->cod_cli;
+		$this->atributes['EXTERNAL_CLIENT_CODE'] = $user->cod2_cli ?? '';
+		$this->atributes['EMAIL'] = $user->email_cli;
+
+		#si viene por licitador cogemos el nombre de licitador, asi los usuarios con multiples licitadores reciben el email que toca
+		$name = $user->rsoc_licit ?? $user->nom_cli;
+		$this->atributes['NAME'] = $this->getUserName($name);
+
+		$this->atributes['CIF'] = $user->cif_cli;
+		$this->atributes['PREFIX_PHONE'] = $user->preftel_cli ?? '';
+		$this->atributes['PHONE'] = $user->tel1_cli;
+		$this->atributes['ADDRESS'] = $user->dir_cli ?? '';
+		$this->atributes['CITY'] = $user->pob_cli;
+		$this->atributes['ZIP_CODE'] = $user->cp_cli;
+		$this->atributes['COUNTRY'] = $user->pais_cli;
+		$this->atributes['RSOC_CLI'] = $user->rsoc_cli;
+		$this->atributes['FISJUR'] = $user->fisjur_cli;
+		$this->atributes['RIES_CLI'] = ToolsServiceProvider::moneyFormat($user->ries_cli ?? 0);
+		$this->atributes['OBS'] = $user->obs_cli ?? '';
+
+		if (!empty($user->fecnac_cli)) {
+			$this->atributes['DATE_OF_BIRTH'] = $user->fecnac_cli ? Carbon::parse($user->fecnac_cli)->format('d/m/Y') : '';
+		}
+
+		return $this;
+	}
+
+	private function getUserName($name)
+	{
+		$nameSurname = explode(",", $this->atributes['NAME']);
+		if (!empty($nameSurname[1])) {
+			return $nameSurname[1] . " " . $nameSurname[0];
+		}
+		return $name;
+	}
+
+	private function setUserAsRecipient(FxCli $user, ?string $fallbackLang = null): void
+	{
+		// locales soportados
+		$shortLocales = Config::get('app.locales');
+		$longLocales = Config::get('app.language_complete');
+
+		$name = $user->rsoc_licit ?? $user->nom_cli;
+		$this->to = $user->email_cli;
+		$this->to_name = $this->getUserName($name);
+		$this->lang = strtolower($user->idioma_cli);
+
+		// Si el idioma del usuario es soportado, ajustamos locale
+		if ($this->isSupportedLocale($this->lang, $shortLocales, $longLocales)) {
+			$this->applyNewLocale($this->lang);
+			return;
+		}
+
+		// Si no, usamos el idioma por defecto si está definido
+		if ($fallbackLang) {
+			$this->applyNewLocale($fallbackLang);
+		}
+	}
+
+	/**
+	 * Comprueba si un locale existe en los arrays de configuración.
+	 */
+	private function isSupportedLocale(string $lang, array $short, array $long): bool
+	{
+		return isset($short[$lang]) || isset($long[$lang]);
+	}
+
+	/**
+	 * Cambia el locale de la aplicación, guarda el idioma anterior y recarga el diseño.
+	 */
+	private function applyNewLocale(string $newLang): void
+	{
+		$current = App::getLocale();
+
+		if ($current === $newLang) {
+			return;
+		}
+
+		$this->old_lang = $current;
+		App::setLocale($newLang);
+		$this->lang = $newLang;
+
+		// Recargamos plantilla de email en el nuevo idioma
+		$this->get_design($this->email->cod_email);
 	}
 
 	public function setLot($cod_sub, $lot_ref)
@@ -584,11 +635,11 @@ class EmailLib
 		$this->checkTo();
 
 		//para pruebas
-		if(Config::get('app.user_tests')) {
+		if (Config::get('app.user_tests')) {
 			$userTests = explode(';', Config::get('app.user_tests'));
 			if (in_array(strtolower($this->to), $userTests)) {
 				$cod_email = $this->email->cod_email . '_TEST';
-				if($this->get_design($cod_email)) {
+				if ($this->get_design($cod_email)) {
 					$this->replace();
 				}
 			}
@@ -831,7 +882,6 @@ class EmailLib
 			'PUJA_PERDEDOR' => NULL,
 			'SESSION_NAME' => NULL,
 			'SESSION_START' => NULL,
-			'SEXO_CLI' => NULL,
 			'THEME' => Config::get('app.theme'),
 			'TEXT' => NULL,
 			'URL' => NULL,
@@ -882,7 +932,6 @@ class EmailLib
 			'PRICE_TAX' => "<span style=\"color:#000CFF;\">10.3</span>",
 			'PUJA_PERDEDOR' => "<span style=\"color:#000CFF;\">50</span>",
 			'SESSION_NAME' => "<span style=\"color:#000CFF;\">sesion name</span>",
-			'SEXO_CLI' => "<span style=\"color:#000CFF;\">Sr.</span>",
 			'THEME' => Config::get('app.theme'),
 			'TEXT' => "",
 			'URL' => $url,
@@ -1281,16 +1330,6 @@ class EmailLib
 	{
 
 		return $this->atributes;
-	}
-
-
-	public function setSexo_Cli($sexo_cli, $language)
-	{
-		if ($sexo_cli == 'M') {
-			$this->atributes['SEXO_CLI'] = TradLib::getWebTranslateWithStringKey('emails', 'gender_woman', $language);
-		} else {
-			$this->atributes['SEXO_CLI'] = TradLib::getWebTranslateWithStringKey('emails', 'gender_man', $language);
-		}
 	}
 
 	public function subtractCommissionToAttributes()
