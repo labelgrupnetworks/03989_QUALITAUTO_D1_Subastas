@@ -4233,7 +4233,7 @@ class SubastaTiempoRealController extends Controller
                 $email->setLot($cod, $ref);
 				$email->setBid(ToolsServiceProvider::moneyFormat($importe));
 				if(!empty($pujaPerdedor)){
-					$email->setAtribute("PUJA_PERDEDOR", $pujaPerdedor);
+					$email->setAtribute("PUJA_PERDEDOR", ToolsServiceProvider::moneyFormat($pujaPerdedor));
 				}
                 $email->send_email();
             }
