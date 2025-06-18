@@ -9948,16 +9948,20 @@ span.select2, .select2 span{
 	}
 
 	.navbar.navbar-tauler :is(.navbar-header, .navbar-nav) {
-		height: var(--header-height, 94px);
-		transition: height 0.3s ease;
+			height: var(--header-height, 94px);
+			transition: height 0.3s ease;
+	}
 
-		/* define la animación */
-		animation-name: shrinkHeader;
-		animation-duration: 200ms;              /* duración total */
-		animation-timing-function: ease;
-		animation-fill-mode: both;              /* conserva el estado final */
-		animation-timeline: scroll();             /* dispara según scroll */
-		animation-range: 10% 30%;               /* de scroll-top a scroll-bottom */
+	@supports (animation-timeline: scroll()) {
+		/* Animación de shrink del header */
+		.navbar.navbar-tauler :is(.navbar-header, .navbar-nav) {
+			animation-name: shrinkHeader;
+			animation-duration: 200ms;
+			animation-timing-function: ease;
+			animation-fill-mode: both;
+			animation-timeline: scroll();
+			animation-range: 10% 30%;
+		}
 	}
 
 	.navbar-tauler .navbar-brand {
@@ -9971,6 +9975,7 @@ span.select2, .select2 span{
 		height: 100%;
 		display: block;
 		object-fit: contain;
+		max-width: 325px;
 	}
 
 	/* Sentinel ocupa un píxel de alto justo después del header */
