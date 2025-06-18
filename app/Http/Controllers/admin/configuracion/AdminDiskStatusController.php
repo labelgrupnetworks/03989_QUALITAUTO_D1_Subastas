@@ -62,7 +62,8 @@ class AdminDiskStatusController extends Controller
 
 		$filesFilter = array_filter($items, function ($item) {
 			$isImage = preg_match('/\.(jpg|jpeg|png|gif|bmp|webp)$/i', $item);
-			return !is_dir(public_path($item)) && $isImage;
+			$isPdf = preg_match('/\.pdf$/i', $item);
+			return !is_dir(public_path($item)) && ($isImage || $isPdf);
 		});
 
 		$directories = array_map(fn ($item) => $this->getDirectoriesData($item), $directoriesFilter);
