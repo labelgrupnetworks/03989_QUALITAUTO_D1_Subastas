@@ -5,6 +5,7 @@
 
     use Carbon\Carbon;
     use App\Models\V5\AucSessionsFiles;
+	use App\Services\Auction\AuctionService;
 
     $completeLocale = Tools::getLanguageComplete(\Config::get('app.locale'));
     $localeToTime = str_replace('-', '_', $completeLocale);
@@ -50,6 +51,8 @@
         $catalogUrl = '';
     }
 
+	$auctionService = new AuctionService();
+	$isLastHistoryAuction = $auctionService->isLastHistoryAuction($auction->cod_sub);
 @endphp
 
 <main @class(['grid-page pt-2', 'grid-xmas-page' => $isOnlyPurchasables])>
