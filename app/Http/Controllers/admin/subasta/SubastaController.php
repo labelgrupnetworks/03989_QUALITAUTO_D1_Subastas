@@ -428,13 +428,11 @@ class SubastaController extends Controller
 
 	private function transformDate($value, $format = 'Y-m-d')
 	{
-		return date($format, strtotime($value));
-		/* try {
-			return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(strtotime($value)))->format($format);
-			// return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value))->format($format);
+		try {
+			return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value))->format($format);
 		} catch (\ErrorException $e) {
 			return date($format, strtotime($value));
-		} */
+		}
 	}
 
 	private function createImgObject($lots)
