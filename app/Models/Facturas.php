@@ -140,11 +140,24 @@ class Facturas extends Model
 					$query->addSelect('imp_cobro1');
 				})
 				->when(Config::get('app.agrsub'), function ($query) {
-					$query
-						->join('FXDVC0', 'FXDVC0.EMP_DVC0 = FXCOBRO1.EMP_COBRO1 and FXDVC0.ANUM_DVC0 = FXCOBRO1.AFRA_COBRO1 and FXDVC0.NUM_DVC0 = FXCOBRO1.NFRA_COBRO1')
-						->join('FGCSUB', 'FGCSUB.EMP_CSUB = FXDVC0.EMP_DVC0 and FGCSUB.AFRAL_CSUB = FXDVC0.ANUM_DVC0 and FGCSUB.NFRAL_CSUB = FXDVC0.NUM_DVC0')
-						->join('FGSUB', 'FGSUB.EMP_SUB = FGCSUB.EMP_CSUB and FGSUB.COD_SUB = FGCSUB.SUB_CSUB')
-						->where('FGSUB.AGRSUB_SUB', Config::get('app.agrsub'));
+					$agrsub = Config::get('app.agrsub');
+					$query->whereExists(function ($sub) use ($agrsub) {
+						$sub->select(DB::raw(1))
+							->from('FXDVC0')
+							->whereColumn('FXDVC0.EMP_DVC0', 'FXCOBRO1.EMP_COBRO1')
+							->whereColumn('FXDVC0.ANUM_DVC0', 'FXCOBRO1.AFRA_COBRO1')
+							->whereColumn('FXDVC0.NUM_DVC0', 'FXCOBRO1.NFRA_COBRO1')
+							->join('FGCSUB', function ($join) {
+								$join->on('FGCSUB.EMP_CSUB', '=', 'FXDVC0.EMP_DVC0')
+									->on('FGCSUB.AFRAL_CSUB', '=', 'FXDVC0.ANUM_DVC0')
+									->on('FGCSUB.NFRAL_CSUB', '=', 'FXDVC0.NUM_DVC0');
+							})
+							->join('FGSUB', function ($join) {
+								$join->on('FGSUB.EMP_SUB', '=', 'FGCSUB.EMP_CSUB')
+									->on('FGSUB.COD_SUB', '=', 'FGCSUB.SUB_CSUB');
+							})
+							->where('FGSUB.AGRSUB_SUB', $agrsub);
+					});
 				})
 				;
                 if(!empty(Config::get('app.allBills'))){
