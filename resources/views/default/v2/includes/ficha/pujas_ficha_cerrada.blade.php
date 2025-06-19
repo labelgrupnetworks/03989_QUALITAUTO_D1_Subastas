@@ -46,3 +46,9 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
 
 	@endif
 </div>
+
+@if (config('app.urlToPackengers'))
+	<div>
+		<x-button.packengers :codSub="$lote_actual->cod_sub" :refAsigl0="$lote_actual->ref_asigl0" source="estimate" />
+	</div>
+@endif

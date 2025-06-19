@@ -85,6 +85,24 @@
 					</button>
 				</div>
 
+				{{-- mi orden máxima --}}
+				@if(!$fact_devuelta)
+				<p @class(['hist_new mt-2 mb-1', 'hidden' => empty($data['js_item']['user']['ordenMaxima'])])>
+					{{trans('web.lot.max_puja')}}
+						<strong>
+							<span id="tuorden">
+								@if ( !empty($data['js_item']['user']['ordenMaxima']))
+								{{  \Tools::moneyFormat($data['js_item']['user']['ordenMaxima']) }}
+								@endif
+							</span>
+							{{trans('web.subastas.euros')}}
+							@if(\Config::get("app.exchange"))
+							|	<span  id="yourOrderExchange_JS" class="exchange"> </span>
+							@endif
+						</strong>
+					</p>
+				@endif
+
 				@if(!empty($lote_actual->ordentel_sub) && $lote_actual->ordentel_sub <= $lote_actual->impsalhces_asigl0)
 					<button type="button" id="pujar_orden_telefonica" data-from="modal"
 						class="btn btn-outline-lb-secondary w-100 mt-2"
@@ -99,23 +117,13 @@
 
 		@endif
 
-		{{-- mi orden máxima --}}
-		@if(!$fact_devuelta)
-		<p @class(['hist_new mt-3', 'hidden' => empty($data['js_item']['user']['ordenMaxima'])])>
-			{{trans('web.lot.max_puja')}}
-				<strong>
-					<span id="tuorden">
-						@if ( !empty($data['js_item']['user']['ordenMaxima']))
-						{{  \Tools::moneyFormat($data['js_item']['user']['ordenMaxima']) }}
-						@endif
-					</span>
-					{{trans('web.subastas.euros')}}
-					@if(\Config::get("app.exchange"))
-					|	<span  id="yourOrderExchange_JS" class="exchange"> </span>
-					@endif
-				</strong>
-			</p>
-		@endif
 
+
+	@endif
+
+	@if (config('app.urlToPackengers'))
+	<div class="mt-2">
+		<x-button.packengers :codSub="$lote_actual->cod_sub" :refAsigl0="$lote_actual->ref_asigl0" source="estimate" />
+	</div>
 	@endif
 </div>
