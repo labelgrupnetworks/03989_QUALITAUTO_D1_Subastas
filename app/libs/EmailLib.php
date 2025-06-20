@@ -1434,7 +1434,7 @@ class EmailLib
 			return;
 		}
 
-		$url .= "/{$codSub}-{$ref}?source=estimate";
+		$url .= "/{$codSub}-{$ref}?source=email";
 		$this->setAtribute('PACKENGERS_URL', $url);
 	}
 }
