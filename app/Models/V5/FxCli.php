@@ -100,8 +100,12 @@ class FxCli extends Model
 
 	public function scopeLeftJoinCliWebCli($query){
 		$emp = Config::get('app.emp');
-        $query = $query->addSelect("NVL(FXCLI.EMAIL_CLI,FXCLIWEB.EMAIL_CLIWEB) as EMAIL_CLI","FXCLIWEB.TIPACCESO_CLIWEB");
-        return  $query->leftjoin('FXCLIWEB', "FXCLIWEB.COD_CLIWEB = FXCLI.COD_CLI  AND FXCLIWEB.GEMP_CLIWEB = FXCLI.GEMP_CLI AND FXCLIWEB.EMP_CLIWEB = '$emp'");
+        return $query->addSelect("NVL(FXCLI.EMAIL_CLI, FXCLIWEB.EMAIL_CLIWEB) as EMAIL_CLI", "FXCLIWEB.TIPACCESO_CLIWEB")
+			->leftjoin('FXCLIWEB', function($join) use ($emp){
+				$join->on('FXCLIWEB.COD_CLIWEB', 'FXCLI.COD_CLI')
+					->on('FXCLIWEB.GEMP_CLIWEB', 'FXCLI.GEMP_CLI')
+					->where('FXCLIWEB.EMP_CLIWEB', $emp);
+			});
     }
 
     public function scopeJoinLicitCli($query){
