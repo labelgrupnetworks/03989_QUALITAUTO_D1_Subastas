@@ -32,6 +32,7 @@ return [
 	],
 	'microsoft_teams' => [
 		'webhook_url' => env('TEAMS_WEBHOOK_URL', null),
+		'webhook_calendar' => env('TEAMS_WEBHOOK_CALENDAR', null),
 	],
 	'google' => [
 		'client_id' => env('GOOGLE_CLIENT_ID'),

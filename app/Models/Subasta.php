@@ -5080,12 +5080,12 @@ class Subasta extends Model
 		return "https://www.google.com/calendar/render?action=TEMPLATE&text=" . $title . "&dates=" . $startDate . "/" . $endDate . "&details=" . $details . "&location=";
 	}
 
-	private function getOutlookCalendarLink($title, $description, $startDate, $endDate, $link)
+	public function getOutlookCalendarLink($title, $description, $startDate, $endDate, $link)
 	{
 		$startDate = $this->changeDateFormatToCalendar($startDate, 'Y-m-d\TH:i:s\Z');
 		$endDate = $this->changeDateFormatToCalendar($endDate, 'Y-m-d\TH:i:s\Z');
 		$details = "$description<br><br><a href='$link'>$link</a>";
-		return "https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&startdt=" . $startDate . "&enddt=" . $endDate . "&subject=" . $title . "&body=" . $details . "&location=";
+		return "https://outlook.office.com/calendar/0/action/compose?body={$details}&to=&enddt={$endDate}&location=&path=/calendar/action/compose&rru=addevent&startdt={$startDate}&subject={$title}";
 	}
 
 	private function getYahooCalendarLink($title, $description, $startDate, $endDate, $link)

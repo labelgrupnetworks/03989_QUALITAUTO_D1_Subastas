@@ -5,7 +5,9 @@ namespace App\Actions\Observability;
 use App\Actions\Traits\ActionNotificable;
 use App\Models\V5\FgSub;
 use App\Notifications\AuctionInTime;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
+use NotificationChannels\MicrosoftTeams\MicrosoftTeamsChannel;
 
 class HasAuctionAction
 {
@@ -34,7 +36,10 @@ class HasAuctionAction
 			$recipients = $recipientsList->getAllTeams();
 		}
 
-		$notification = Notification::route('mail', $recipients);
+		$notification = Config::get('services.microsoft_teams.webhook_calendar', null)
+			? Notification::route(MicrosoftTeamsChannel::class, Config::get('services.microsoft_teams.webhook_calendar'))
+			: Notification::route('mail', $recipients);
+
 		$this->sendNotification($notification, new AuctionInTime($this->auctionValueObject($auction), $when));
 	}
 

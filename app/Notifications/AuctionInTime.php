@@ -2,13 +2,17 @@
 
 namespace App\Notifications;
 
-use App\Models\V5\FgSub;
+use App\Models\Subasta;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Config;
+use NotificationChannels\MicrosoftTeams\Actions\ActionOpenUrl;
+use NotificationChannels\MicrosoftTeams\ContentBlocks\TextBlock;
+use NotificationChannels\MicrosoftTeams\MicrosoftTeamsAdaptiveCard;
+use NotificationChannels\MicrosoftTeams\MicrosoftTeamsChannel;
 
 class AuctionInTime extends Notification implements ShouldQueue
 {
@@ -26,8 +30,7 @@ class AuctionInTime extends Notification implements ShouldQueue
 	public function __construct(
 		private $auction,
 		private string $whenTime
-	) {
-	}
+	) {}
 
 	/**
 	 * Get the notification's delivery channels.
@@ -37,6 +40,11 @@ class AuctionInTime extends Notification implements ShouldQueue
 	 */
 	public function via($notifiable)
 	{
+		$routes = array_keys($notifiable->routes);
+		if (in_array('NotificationChannels\MicrosoftTeams\MicrosoftTeamsChannel', $routes)) {
+			return [MicrosoftTeamsChannel::class];
+		}
+
 		return ['mail'];
 	}
 
@@ -108,5 +116,49 @@ class AuctionInTime extends Notification implements ShouldQueue
 			'day' => "La subasta {$auction->name} se realizará hoy a las {$auction->session_start}",
 			'default' => "La subasta se realizará en 1 semana",
 		};
+	}
+
+	/**
+	 * Get the Microsoft Teams representation of the notification.
+	 *
+	 * @param  mixed  $notifiable
+	 * @see https://adaptivecards.microsoft.com/designer
+	 * @return \NotificationChannels\MicrosoftTeams\MicrosoftTeamsAdaptiveCard
+	 */
+	public function toMicrosoftTeams($notifiable)
+	{
+		$auctionUrl = ToolsServiceProvider::url_auction($this->auction->cod_sub, $this->auction->name, $this->auction->id_auc_sessions, $this->auction->reference);
+		$streamingUrl = ToolsServiceProvider::url_real_time_auction($this->auction->cod_sub, $this->auction->name, $this->auction->id_auc_sessions);
+		$textBlock = $this->whenTimeBody($this->whenTime, $this->auction);
+
+		$addOutlookLink = (new Subasta())->getOutlookCalendarLink($this->auction->name, $this->auction->description, $this->auction->session_start, $this->auction->session_end, $auctionUrl);
+
+		$to = collect(data_get($notifiable, 'routes', []))->first();
+
+		$actions = [
+			ActionOpenUrl::create()
+				->setTitle('Ver subasta')
+				->setUrl($auctionUrl),
+			ActionOpenUrl::create()
+				->setTitle('Añadir a calendario')
+				->setUrl($addOutlookLink)
+		];
+
+		if (Config::get('app.tr_show_streaming', false)) {
+			$actions[] = ActionOpenUrl::create()
+				->setTitle('Ver streaming')
+				->setUrl($streamingUrl);
+		}
+
+		return MicrosoftTeamsAdaptiveCard::create()
+			->to($to)
+			->title($this->whenTimeSubject($this->whenTime))
+			->content([
+				TextBlock::create()
+					->setText($textBlock)
+					->setWeight('Default')
+					->setSize('Medium')
+			])
+			->actions($actions);
 	}
 }
