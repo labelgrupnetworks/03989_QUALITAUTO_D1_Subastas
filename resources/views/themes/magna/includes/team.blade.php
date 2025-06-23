@@ -34,7 +34,7 @@
                 </div>
                 <div class="team-member-info">
                     <p>{{ $specialist->specialty?->title }}</p>
-                    <h3 class="ff-highlight">{{ $specialist->nom_especial1 }}</h3>
+                    <h3 class="ff-highlight">{{ Str::title($specialist->nom_especial1) }}</h3>
                     <p>{{ $specialist->description }}</p>
                 </div>
             </div>
