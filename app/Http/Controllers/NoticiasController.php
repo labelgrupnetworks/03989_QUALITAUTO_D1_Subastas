@@ -139,13 +139,19 @@ class NoticiasController extends Controller
 	public function museumPieces()
 	{
 		$banners = $this->eventBanner(WebNewbannerModel::UBICACION_MUSEO);
-		return View::make('front::pages.noticias.mosaic_blog', compact('banners'));
+		if (!View::exists('front::pages.noticias.museum_pieces')) {
+			return View::make('front::errors.404');
+		}
+		return View::make('front::pages.noticias.museum_pieces', ['banners' => $banners]);
 	}
 
 	public function events()
 	{
 		$banners = $this->eventBanner(WebNewbannerModel::UBICACION_EVENTO);
-		return View::make('front::pages.noticias.events', compact('banners'));
+		if (!View::exists('front::pages.noticias.events')) {
+			return View::make('front::errors.404');
+		}
+		return View::make('front::pages.noticias.events', ['banners' => $banners]);
 	}
 
 

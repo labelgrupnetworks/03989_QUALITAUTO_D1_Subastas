@@ -54,6 +54,8 @@ use Laravel\Socialite\Facades\Socialite;
 require __DIR__ . '/redirect.php';
 //require __DIR__ . '/test.php'; //Para mostrar momento de las consultas en el navegador
 
+$locales = implode('|', array_keys(Config::get('app.locales', [])));
+
 Route::get('/design', function () {
 	return view('pages.design');
 });
@@ -323,7 +325,7 @@ Route::get('/disbandment_lot', [MailController::class, 'disbandment_lot']);
 Route::get(Routing::slugSeo('blog', true) . '/{key_categ?}', [NoticiasController::class, 'index'])->name('blog.index');
 Route::get(Routing::slugSeo('blog', true) . '/{key_categ}/{key_news}', [NoticiasController::class, 'news'])->name('blog.news');
 Route::get(Routing::slugSeo('mosaic-blog', true), [NoticiasController::class, 'museumPieces']);
-Route::get(Routing::slugSeo('events', true), [NoticiasController::class, 'events']);
+Route::get(Routing::slugSeo('events', true), [NoticiasController::class, 'events'])->where(['lang' => $locales]);
 Route::get(Routing::slugSeo('events', true) . '/{id}', [NoticiasController::class, 'event']);
 
 Route::get(Routing::slugSeo('calendar'), [SubastaController::class, 'calendarController'])->name('calendar');
@@ -392,13 +394,14 @@ if (!empty(Config::get("app.gridLots")) && Config::get("app.gridLots") == "new")
 	#ver version nueva con URL test
 	Route::get(Routing::slugSeo('subastaTest') . '/{texto}_{cod}-{session}', [LotListController::class, 'getLotsList'])->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
 
-	#listado de lotes categorias y tematicos
-	Route::get(Routing::slugSeo('subastas') . '/{key}/page-{page?}', [SubastaController::class, 'customizeLotListCategory']);
-	Route::get(Routing::slugSeo('subastas') . '/{key}/{subcategory?}', [SubastaController::class, 'customizeLotListCategory']);
-	Route::get(Routing::slugSeo('subastas') . '/{key}/{subcategory?}/page-{page}', [SubastaController::class, 'customizeLotListCategory']);
+	// #listado de lotes categorias y tematicos
+	// [23/06/2025] - Eloy - Creo que no las usa nadie. Comentamos por el momento.
+	// Route::get(Routing::slugSeo('subastas') . '/{key}/page-{page?}', [SubastaController::class, 'customizeLotListCategory']);
+	// Route::get(Routing::slugSeo('subastas') . '/{key}/{subcategory?}', [SubastaController::class, 'customizeLotListCategory']);
+	// Route::get(Routing::slugSeo('subastas') . '/{key}/{subcategory?}/page-{page}', [SubastaController::class, 'customizeLotListCategory']);
 
-	Route::get(Routing::slugSeo('tematicas') . '/{key}', [SubastaController::class, 'customizeLotListTheme']);
-	Route::get(Routing::slugSeo('tematicas') . '/{key}/page-{page?}', [SubastaController::class, 'customizeLotListTheme']);
+	// Route::get(Routing::slugSeo('tematicas') . '/{key}', [SubastaController::class, 'customizeLotListTheme']);
+	// Route::get(Routing::slugSeo('tematicas') . '/{key}/page-{page?}', [SubastaController::class, 'customizeLotListTheme']);
 
 	#antiguo
 	Route::get(Routing::slugSeo('subasta') . '/{cod}-{texto}', [SubastaController::class, 'index'])->where(array('cod' => '[0-9a-zA-Z]+'))->name('urlAuctionOld');
