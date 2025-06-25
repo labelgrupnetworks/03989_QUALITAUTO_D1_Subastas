@@ -245,17 +245,18 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="button_block block-7" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
-
 <td class="pad">
-	<div align="center" class="alignment"><a href="https://subastas.tauleryfau.com/es/user/panel/allotments-bills" style="color:#ffffff;text-decoration:none;" target="_blank"><!--[if mso]>
-	<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"  href="https://subastas.tauleryfau.com/es/user/panel/allotments-bills"  style="height:50px;width:264px;v-text-anchor:middle;" arcsize="8%" fillcolor="#90825f">
-	<v:stroke dashstyle="Solid" weight="0px" color="#90825f"/>
-	<w:anchorlock/>
-	<v:textbox inset="0px,0px,0px,0px">
-	<center dir="false" style="color:#ffffff;font-family:Georgia, 'Times New Roman', serif;font-size:20px">
-	<![endif]--><span class="button" style="background-color: #90825f; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 4px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #ffffff; display: inline-block; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 19x; font-weight: 700; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-left: 40px; padding-right: 40px; text-align: center; width: 60%; word-break: keep-all; letter-spacing: normal;"><span style="word-break: break-word; line-height: 40px;">DESCARGAR FACTURA</span></span><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div>
+	<div align="center" class="alignment">
+		<a href="https://subastas.tauleryfau.com/es/user/panel/allotments-bills" style="color:#ffffff;text-decoration:none;" target="_blank"><!--[if mso]>
+		<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"  href="https://subastas.tauleryfau.com/es/user/panel/allotments-bills"  style="height:50px;width:264px;v-text-anchor:middle;" arcsize="8%" fillcolor="#90825f">
+		<v:stroke dashstyle="Solid" weight="0px" color="#90825f"/>
+		<w:anchorlock/>
+		<v:textbox inset="0px,0px,0px,0px">
+		<center dir="false" style="color:#ffffff;font-family:Georgia, 'Times New Roman', serif;font-size:18px">
+		<![endif]--><span class="button" style="background-color: #90825f; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 4px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #ffffff; display: inline-block; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 18px; font-weight: 700; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-left: 30px; padding-right: 30px; text-align: center; width: auto; word-break: keep-all; letter-spacing: normal;"><span style="word-break: break-word; line-height: 36px;">DESCARGAR FACTURA</span></span><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+		</a>
+	</div>
 </td>
-
 </tr>
 </table>
 </td>

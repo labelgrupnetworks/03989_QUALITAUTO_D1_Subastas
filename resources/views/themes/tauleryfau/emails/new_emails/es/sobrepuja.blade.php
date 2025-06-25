@@ -289,7 +289,7 @@
 <w:anchorlock/>
 <v:textbox inset="0px,0px,0px,0px">
 <center dir="false" style="color:#ffffff;font-family:Georgia, 'Times New Roman', serif;font-size:20px">
-<![endif]--><span class="button" style="background-color: #90825f; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 4px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #ffffff; display: inline-block; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 20px; font-weight: 700; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-left: 50px; padding-right: 50px; text-align: center; width: 50%; word-break: keep-all; letter-spacing: normal;"><span style="word-break: break-word; line-height: 40px;">PUJAR</span></span><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div>
+<![endif]--><span class="button" style="background-color: #90825f; border-bottom: 0px solid transparent; border-left: 0px solid transparent; border-radius: 4px; border-right: 0px solid transparent; border-top: 0px solid transparent; color: #ffffff; display: inline-block; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; font-size: 18px; font-weight: 700; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-left: 30px; padding-right: 30px; text-align: center; width: auto; word-break: keep-all; letter-spacing: normal;"><span style="word-break: break-word; line-height: 36px;">PUJAR</span></span><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div>
 </td>
 </tr>
 </table>

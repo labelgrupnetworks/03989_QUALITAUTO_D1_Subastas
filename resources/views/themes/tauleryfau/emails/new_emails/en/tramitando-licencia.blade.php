@@ -245,7 +245,7 @@
 <tr>
 <td class="pad" style="padding-bottom:5px;padding-left:10px;padding-right:10px;padding-top:15px;">
 <div style="color:#000000;direction:ltr;font-family:'Poppins', Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:1.5;text-align:left;mso-line-height-alt:24px;">
-<p style="margin: 0;">The export licence for your winning lots in <strong>Auction 154 – Spanish Coins</strong> is scheduled to be granted on <strong>March 16th, 2025</strong>, which is the expected shipping date for your items. Once your lots have been shipped, you will receive a confirmation email.</p>
+<p style="margin: 0;">The export licence for your winning lots in <strong>[*AUCTION_NAME*]</strong> is scheduled to be granted on <strong>[*DELIVERY_DATE*]</strong>, which is the expected shipping date for your items. Once your lots have been shipped, you will receive a confirmation email.</p>
 </div>
 </td>
 </tr>
