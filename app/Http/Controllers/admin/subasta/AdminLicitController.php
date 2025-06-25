@@ -88,17 +88,17 @@ class AdminLicitController extends Controller
 			'cod_licit' => 'required',
 		]);
 
-		$licitTemp = FgLicit::query()
-			->select('cod_licit', 'rsoc_cli', 'cli_licit')
-			->joinCli()
-			->where("sub_licit", $request->input('idauction'))
-			->where('cli_licit', $request->input('cod_cli'))
-			->first();
+		// $licitTemp = FgLicit::query()
+		// 	->select('cod_licit', 'rsoc_cli', 'cli_licit')
+		// 	->joinCli()
+		// 	->where("sub_licit", $request->input('idauction'))
+		// 	->where('cli_licit', $request->input('cod_cli'))
+		// 	->first();
 
-		if ($licitTemp) {
-			return redirect()->back()
-				->with(['errors' => [0 => 'El cliente ya tiene numero de licitador para esta subasta']]);
-		}
+		// if ($licitTemp) {
+		// 	return redirect()->back()
+		// 		->with(['errors' => [0 => 'El cliente ya tiene numero de licitador para esta subasta']]);
+		// }
 
 		$existCodLicit = FgLicit::query()
 			->where([
