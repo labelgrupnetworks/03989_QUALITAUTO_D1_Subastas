@@ -76,7 +76,7 @@
                         <tr>
                             <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                                 width="50%">
-                                {{ $lot['reference'] }}
+								{{ trans("web.emails.lot") . " " . $lot['reference'] }}
                             </td>
                             <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                                 width="50%">{{ $lot['award_price_format'] }} €</td>
