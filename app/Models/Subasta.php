@@ -3880,6 +3880,10 @@ class Subasta extends Model
 
 			$lotes[$key]->ocultarps_asigl0 = $value->ocultarps_asigl0 ?? 'N';
 
+			$lotes[$key]->sub_asigl0 = $value->sub_asigl0 ?? null;
+			$lotes[$key]->is_reauctioned = $lotes[$key]->sub_asigl0 != $lotes[$key]->sub_hces1;
+
+
 			$lotes[$key]->isItp = ToolsServiceProvider::isITPLot($lotes[$key]->sub_hces1, $lotes[$key]->ref_asigl0);
 
              $this->CleanStrLote($lotes[$key]);

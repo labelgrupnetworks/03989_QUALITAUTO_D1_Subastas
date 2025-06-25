@@ -411,6 +411,8 @@ class LotListController extends Controller
 				$bladeVars["subSec"] = $item->des_subsec;
 			}
 
+			$bladeVars["isReauctioned"] = $item->sub_asigl0 != $item->sub_hces1;
+
 			$item->bladeVars = $bladeVars;
 		}
 

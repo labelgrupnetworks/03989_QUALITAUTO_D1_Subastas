@@ -96,7 +96,7 @@
                     @endif
                 @endif
 
-				@if ($showResult && $showClosedAndNotBuyed && !$devuelto)
+				@if ($showResult && $showClosedAndNotBuyed && !$devuelto && !$isReauctioned && $compra)
 					<p class="text-uppercase"><a class="btn btn-outline-lb-primary btn-xsmall" {!! $url !!}>{{ trans("$theme-app.lot.buy") }}</a></p>
 				@endif
             </div>

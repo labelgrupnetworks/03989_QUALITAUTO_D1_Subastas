@@ -210,7 +210,7 @@
                         <div class="ficha-info-content">
                             @php
                                 // Agrupamos las condiciones para mejor legibilidad
-                                $canBuy = empty($lote_actual->himp_csub) && $compra && !$fact_devuelta && !$retirado;
+                                $canBuy = empty($lote_actual->himp_csub) && $compra && !$fact_devuelta && !$retirado && !$lote_actual->is_reauctioned;
                                 $isHistoricAuctionBuyable = $isLastHistoryAuction && $cerrado && $canBuy;
                                 $isClosedLotBuyable = ($subasta_web || $subasta_online) && $cerrado && $canBuy;
                                 $isOpenOnlineAuction = ($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado;
