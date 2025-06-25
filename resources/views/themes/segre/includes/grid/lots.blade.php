@@ -1,7 +1,13 @@
+@php
+	use App\Services\Auction\AuctionService;
+@endphp
 @if (empty($lots))
 	<br><br>
 	<center><big><big>{{ trans($theme.'-app.lot_list.no_results') }}</big></big></center>
 @else
+	@php
+		$isLastHistoryAuction = (new AuctionService)->isLastHistoryAuction($auction->cod_sub);
+	@endphp
 	@foreach ($lots as  $item)
 		<?php
 

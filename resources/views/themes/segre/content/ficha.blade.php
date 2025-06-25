@@ -2,6 +2,7 @@
 
 use App\Models\V5\FgHces1Files;
 use App\Models\V5\FgDeposito;
+use App\Services\Auction\AuctionService;
 
 $cerrado = $lote_actual->cerrado_asigl0 == 'S'? true : false;
 $cerrado_N = $lote_actual->cerrado_asigl0 == 'N'? true : false;
@@ -46,6 +47,9 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 	}
 	$resourcesList[] = $resource;
 }
+
+$auctionService = new AuctionService();
+$isLastHistoryAuction = $auctionService->isLastHistoryAuction($lote_actual->cod_sub);
 ?>
 
 
@@ -275,7 +279,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 						 }
                     ?>
 						{{-- quieren que se pueda comprar en históricas --}}
-                        @if ($sub_cerrada && !$sub_historica)
+                        @if ($sub_cerrada && $sub_historica && !$isLastHistoryAuction)
                             @include('includes.ficha.pujas_ficha_cerrada')
 
                         @elseif($subasta_venta && !$cerrado && !$end_session)

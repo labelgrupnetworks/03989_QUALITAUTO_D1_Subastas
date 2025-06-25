@@ -1,4 +1,6 @@
-
+@php
+	$showClosedAndNotBuyed = ($cerrado && empty($precio_venta) && !$compra) || ($isLastHistoryAuction && $cerrado && empty($precio_venta) && $compra);
+@endphp
 
 <div class="{{$class_square}} square" {!! $codeScrollBack !!}>
 	<a title="{{ $titulo }}" class="lote-destacado-link secondary-color-text" <?= $url?> >
@@ -64,9 +66,10 @@
 				</div>
 
 				@if (!$devuelto && !$retirado)
-					@if($cerrado &&  empty($precio_venta) && $compra)
+					@if($cerrado &&  empty($precio_venta) && $compra && (!$sub_historica || $sub_historica && $isLastHistoryAuction))
 						<p class="btn-bid-lotlist">{{ trans($theme.'-app.subastas.buy_lot') }}</p>
-					@elseif($subasta_venta  && !$cerrado)
+
+					@elseif($subasta_venta && !$cerrado)
 						@if(!$end_session)
 						<p class="btn-bid-lotlist">{{ trans($theme.'-app.subastas.buy_lot') }}</p>
 						@endif
