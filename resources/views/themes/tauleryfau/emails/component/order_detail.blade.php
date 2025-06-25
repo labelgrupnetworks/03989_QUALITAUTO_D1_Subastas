@@ -19,31 +19,41 @@
 
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%">Comisión</td>
+                            width="50%">
+							{{ trans("web.emails.commission") }}
+						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $commission }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%">Envío y Seguro</td>
+                            width="50%">
+							{{ trans("web.emails.shipping") }}
+						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $shipping_costs }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%">Exportación</td>
+                            width="50%">
+							{{ trans("web.emails.export") }}
+						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $export_license }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%">Pago tarjeta</td>
+                            width="50%">
+							{{ trans("web.emails.card_payment") }}
+						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $finance_charge }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%"><strong>TOTAL FACTURA</strong></td>
+                            width="50%"><strong>
+								{{ trans("web.emails.total_invoice") }}
+								</strong></td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%"><strong>{{ $total }} €</strong></td>
                     </tr>
@@ -75,31 +85,39 @@
 
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%">Comisión</td>
+                            width="50%">
+							{{ trans("web.emails.commission") }}
+						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $commission }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%">Envío y Seguro</td>
+                            width="50%">
+							{{ trans("web.emails.shipping") }}
+						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $shipping_costs }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%">Exportación</td>
+                            width="50%">
+							{{ trans("web.emails.export") }}
+						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $export_license }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%">Pago tarjeta</td>
+                            width="50%">
+							{{ trans("web.emails.card_payment") }}
+						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $finance_charge }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
-                            width="50%"><strong>TOTAL FACTURA</strong></td>
+                            width="50%"><strong>{{ trans("web.emails.total_invoice") }}</strong></td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%"><strong>{{ $total }} €</strong></td>
                     </tr>
