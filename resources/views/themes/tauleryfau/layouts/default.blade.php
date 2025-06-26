@@ -25,7 +25,7 @@
 	</div>
 
 	{!! Tools::querylog() !!}
-	@if(request("openLogin")=="S" && !Session::has('user') )
+	@if((request("openLogin")=="S" || ($openLogin ?? false)) && !Session::has('user'))
 		<script>
 			$(document).ready(function () {
 				$('#modalLogin').modal();
