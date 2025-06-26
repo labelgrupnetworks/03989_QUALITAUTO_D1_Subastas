@@ -137,6 +137,7 @@ class CronController extends Controller
 
 	public function EmailsAdjudicacionesGeneric()
 	{
+		Log::debug("EmailsAdjudicacionesGeneric ejecutado");
 		$mail = new MailController();
 		$deposito = new DepositController();
 		$emp =  Config::get('app.emp');
@@ -145,6 +146,7 @@ class CronController extends Controller
 			->where('ID_EMP', $emp)
 			->where('SENDED', 'N')
 			->get();
+
 		foreach ($index as $value) {
 			if (Config::get('app.payDepositTpv')) {
 				$deposito->confirmPreAuthorization($value->id_sub, $value->id_ref);
