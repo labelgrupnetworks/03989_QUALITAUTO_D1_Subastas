@@ -29,9 +29,8 @@ class TrackingChangeNotificationService
 		$emailsTemplates = [
 			'1' => 'TRACKING_CHANGE_SEG_STATE_1',
 			'2' => 'TRACKING_CHANGE_SEG_STATE_2',
-			'3' => 'TRACKING_CHANGE_SEG_STATE_3',
 			'4' => 'TRACKING_CHANGE_SEG_STATE_4',
-			'5' => 'TRACKING_CHANGE_SEG_STATE_5',
+			'6' => 'TRACKING_CHANGE_SEG_STATE_6',
 			'9' => 'TRACKING_CHANGE_SEG_STATE_9',
 		];
 
