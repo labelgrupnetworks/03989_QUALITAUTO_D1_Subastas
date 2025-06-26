@@ -687,7 +687,6 @@ class MailController extends Controller
 
 	public function sendEmailCerradoGeneric($emp, $cod_sub, $ref)
 	{
-		Log::debug("Enviando email cerrado generico para subasta: $cod_sub, lote: $ref");
 		try {
 
 			$mailquery = new MailQueries;
