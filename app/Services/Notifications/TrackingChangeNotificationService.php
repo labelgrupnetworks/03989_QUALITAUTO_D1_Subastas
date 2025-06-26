@@ -40,6 +40,8 @@ class TrackingChangeNotificationService
 			return;
 		}
 
+		$email->setUserByCod($this->codCli, true);
+
 		if(!empty($this->number) && !empty($this->serie)) {
 			$this->addOrderDetailsToEmail($email, $this->serie, $this->number);
 		}
@@ -51,7 +53,6 @@ class TrackingChangeNotificationService
 
 		$deliveryDate = FxDvc0Seg::getEstimatedDeliveryDate($auction->dfec_sub);
 
-		$email->setUserByCod($this->codCli, true);
 		$email->setAtribute('AUCTION_NAME', $auction->des_sub);
 		$email->setDate($auction->dfec_sub, null);
 
