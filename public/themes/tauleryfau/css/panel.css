@@ -201,11 +201,12 @@ body>header {
 	padding: 10px 15px;
 }
 
-.navbar-brand>img {
+/* Con width 100% ha dejado de mostrarse bien en safari */
+/* .navbar-brand>img {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
-}
+} */
 
 .navbar-panel .nav>li>a {
 	padding-left: 20px;
