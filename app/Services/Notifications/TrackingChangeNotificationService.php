@@ -34,6 +34,10 @@ class TrackingChangeNotificationService
 			'9' => 'TRACKING_CHANGE_SEG_STATE_9',
 		];
 
+		if (!array_key_exists($this->codSeg, $emailsTemplates)) {
+			return;
+		}
+
 		$email = new EmailLib($emailsTemplates[$this->codSeg]);
 		if (empty($email->email)) {
 			return;

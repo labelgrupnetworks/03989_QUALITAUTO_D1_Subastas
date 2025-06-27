@@ -25,16 +25,28 @@ class OrderService
 				];
 			})->values();
 
-		$shippingCosts = $orderLines->where('sec_dvc1l', 'G')->sum('basea_dvc1l');
-		$exportLicense = $orderLines->where('sec_dvc1l', 'LE')->sum('basea_dvc1l');
-		$financeCharge = $orderLines->where('sec_dvc1l', 'CF')->sum('basea_dvc1l');
+		//Gastos
+		$costLines = $orderLines->where('tl_dvc1l', 'G');
+
+		$shippingCosts = $costLines->where('sec_dvc1l', 'G')->sum('basea_dvc1l');
+		$shippingCostsIva = $costLines->where('sec_dvc1l', 'G')->max('iva_dvc1l');
+		$shippingCostsIvaValue = $shippingCosts * ($shippingCostsIva / 100);
+
+		$exportLicense = $costLines->where('sec_dvc1l', 'LE')->sum('basea_dvc1l');
+		$financeCharge = $costLines->where('sec_dvc1l', 'CF')->sum('basea_dvc1l');
+
 		$commission = $orderLines->where('tl_dvc1l', 'P')->sum('basea_dvc1l');
-		$total = $lots->sum('award_price') + $shippingCosts + $exportLicense + $financeCharge + $commission;
+		$ivaCommission = $orderLines->where('tl_dvc1l', 'P')->max('iva_dvc1l');
+		$ivaCommissionValue = $commission * ($ivaCommission / 100);
+
+		$total = $lots->sum('award_price') + $shippingCosts + $exportLicense + $financeCharge + $commission + $ivaCommissionValue + $shippingCostsIvaValue;
 
 		return [
 			'lots' => $lots,
 			'commission' => ToolsServiceProvider::moneyFormat($commission, false, 2),
+			'commission_iva' => ToolsServiceProvider::moneyFormat($ivaCommissionValue, false, 2),
 			'shipping_costs' => ToolsServiceProvider::moneyFormat($shippingCosts, false, 2),
+			'shipping_costs_iva' => ToolsServiceProvider::moneyFormat($shippingCostsIvaValue, false, 2),
 			'export_license' => ToolsServiceProvider::moneyFormat($exportLicense, false, 2),
 			'finance_charge' => ToolsServiceProvider::moneyFormat($financeCharge, false, 2),
 			'total' => ToolsServiceProvider::moneyFormat($total, false, 2),

@@ -10,7 +10,7 @@
                         <tr>
                             <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                                 width="50%">
-                                {{ $lot['reference'] }}
+                                	{{ trans("web.emails.lot") . " " . $lot['reference'] }}
                             </td>
                             <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                                 width="50%">{{ $lot['award_price_format'] }} €</td>
@@ -28,10 +28,26 @@
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">
+							{{ trans("web.emails.iva_commission") }}
+						</td>
+                        <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
+                            width="50%">{{ $commission_iva }} €</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
+                            width="50%">
 							{{ trans("web.emails.shipping") }}
 						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $shipping_costs }} €</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
+                            width="50%">
+							{{ trans("web.emails.shipping_iva") }}
+						</td>
+                        <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
+                            width="50%">{{ $shipping_costs_iva }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
@@ -94,10 +110,26 @@
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">
+							{{ trans("web.emails.iva_commission") }}
+						</td>
+                        <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
+                            width="50%">{{ $commission_iva }} €</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
+                            width="50%">
 							{{ trans("web.emails.shipping") }}
 						</td>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
                             width="50%">{{ $shipping_costs }} €</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
+                            width="50%">
+							{{ trans("web.emails.shipping_iva") }}
+						</td>
+                        <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
+                            width="50%">{{ $shipping_costs_iva }} €</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; word-break: break-word; border-top: 1px solid #90825f; border-right: 1px solid #90825f; border-bottom: 1px solid #90825f; border-left: 1px solid #90825f;"
