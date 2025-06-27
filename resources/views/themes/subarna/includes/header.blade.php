@@ -1,5 +1,5 @@
 @php
-	use App\Services\Auction\AuctionService;
+    use App\Services\Auction\AuctionService;
 
     $lang = Config::get('app.locale');
     $languages = Config::get('app.locales');
@@ -18,26 +18,26 @@
     $hasPermanent = $global['auctionTypes']->where('tipo_sub', 'P')->value('count');
     $hasVentaDirecta = $global['auctionTypes']->where('tipo_sub', 'V')->value('count');
 
+    $urlJewelryAuction = '';
+    $jewelryAuction = null;
+    $urlVentaDirecta = route('subastas.venta_directa');
 
-	$urlJewelryAuction = '';
-	$jewelryAuction = null;
-	$urlVentaDirecta = route('subastas.venta_directa');
+    if ($hasVentaDirecta) {
+        $auctionsV = (new AuctionService())->getActiveAuctionsToType('V');
 
-	if($hasVentaDirecta) {
-		$auctionsV = (new AuctionService())->getActiveAuctionsToType('V');
+        $jewelryAuction = $auctionsV->where('cod_sub', 'VDJ')->first();
+        if ($jewelryAuction) {
+            $urlJewelryAuction =
+                Tools::url_auction($jewelryAuction->cod_sub, $jewelryAuction->des_sub, null, '001') .
+                '?only_salable=on';
+        }
 
-		$jewelryAuction = $auctionsV->where('cod_sub', 'VDJ')->first();
-		if($jewelryAuction) {
-			$urlJewelryAuction =
-            	Tools::url_auction($jewelryAuction->cod_sub, $jewelryAuction->des_sub, null, '001') . '?only_salable=on';
-		}
-
-		if($hasVentaDirecta == 1) {
-			$subasta = $auctionsV->first();
-			$urlVentaDirecta =
-				Tools::url_auction($subasta->cod_sub, $subasta->des_sub, null, '001') . '?only_salable=on';
-		}
-	}
+        if ($hasVentaDirecta == 1) {
+            $subasta = $auctionsV->first();
+            $urlVentaDirecta =
+                Tools::url_auction($subasta->cod_sub, $subasta->des_sub, null, '001') . '?only_salable=on';
+        }
+    }
 @endphp
 
 <header @class(['fixed' => $isHomePage])>
@@ -145,7 +145,8 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                            aria-haspopup="true" aria-expanded="false"><span class="caret"></span> {{ trans("$theme-app.login_register.language") }}</a>
+                            aria-haspopup="true" aria-expanded="false"><span class="caret"></span>
+                            {{ trans("$theme-app.login_register.language") }}</a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             @foreach ($languages as $langKey => $language)
                                 <li>
@@ -166,6 +167,20 @@
                             @endforeach
                         </ul>
                     </li>
+                    <div class="google_translate1" style="display: none">
+                        <div id="google_translate_element"></div>
+                    </div>
+                    <script type="text/javascript">
+                        function googleTranslateElementInit() {
+                            new google.translate.TranslateElement({
+                                pageLanguage: '{{ $lang }}',
+                                includedLanguages: '{{ $lang }},ca,de,fr',
+                                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                            }, 'google_translate_element');
+                        }
+                    </script>
+                    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+                    </script>
                 </ul>
             </div>
 
@@ -208,7 +223,7 @@
                 <button class="navbar-toggle collapsed" id="btnResponsive" data-toggle="collapse" data-target="#navbar"
                     type="button" aria-expanded="false" aria-controls="navbar">
 
-					<x-icon.boostrap size="3em" color="currentColor" icon="list" />
+                    <x-icon.boostrap size="3em" color="currentColor" icon="list" />
                 </button>
 
                 <a class="navbar-brand" href="/{{ $lang }}" title="{{ config('app.name') }}">
@@ -220,8 +235,8 @@
                     <li>
                         <button class="search_btn btn-link" data-toggle="modal" data-target="#searchModal"
                             title="Buscar">
-							<x-icon.fontawesome icon=magnifying-glass version=6 />
-						</button>
+                            <x-icon.fontawesome icon=magnifying-glass version=6 />
+                        </button>
                     </li>
                     <li>
                         @if (Session::has('user'))
@@ -387,9 +402,9 @@
             </li>
         @endif
 
-            <li><a
-                    href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme . '-app.foot.historico') }}</a>
-            </li>
+        <li><a
+                href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme . '-app.foot.historico') }}</a>
+        </li>
 
         <li><a href="<?= \Routing::translateSeo(trans($theme . '-app.links.contact')) ?>"
                 title="{{ trans($theme . '-app.foot.contact') }}">{{ trans($theme . '-app.foot.contact') }}</a></li>
