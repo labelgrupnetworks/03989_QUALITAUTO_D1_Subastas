@@ -2,6 +2,8 @@
 
 namespace App\Services\Payments;
 
+use App\Models\Enums\FgDvc1lSecEnum;
+use App\Models\Enums\FgDvc1lTlDvc1lEnum;
 use App\Models\V5\FgDvc1l;
 use App\Models\V5\FxDvc0Dir;
 use App\Providers\ToolsServiceProvider;
@@ -15,7 +17,7 @@ class OrderService
 			'num_dvc1l' => $number
 		])->get();
 
-		$lots = $orderLines->where('tl_dvc1l', 'P')
+		$lots = $orderLines->where('tl_dvc1l', FgDvc1lTlDvc1lEnum::PRODUCT->value)
 			->sortBy('ref_dvc1l')
 			->map(function ($line) {
 				return [
@@ -26,17 +28,17 @@ class OrderService
 			})->values();
 
 		//Gastos
-		$costLines = $orderLines->where('tl_dvc1l', 'G');
+		$costLines = $orderLines->where('tl_dvc1l', FgDvc1lTlDvc1lEnum::COST->value);
 
-		$shippingCosts = $costLines->where('sec_dvc1l', 'G')->sum('basea_dvc1l');
-		$shippingCostsIva = $costLines->where('sec_dvc1l', 'G')->max('iva_dvc1l');
+		$shippingCosts = $costLines->where('sec_dvc1l', FgDvc1lSecEnum::SHIPPING->value)->sum('basea_dvc1l');
+		$shippingCostsIva = $costLines->where('sec_dvc1l', FgDvc1lSecEnum::SHIPPING->value)->max('iva_dvc1l');
 		$shippingCostsIvaValue = $shippingCosts * ($shippingCostsIva / 100);
 
-		$exportLicense = $costLines->where('sec_dvc1l', 'LE')->sum('basea_dvc1l');
-		$financeCharge = $costLines->where('sec_dvc1l', 'CF')->sum('basea_dvc1l');
+		$exportLicense = $costLines->where('sec_dvc1l', FgDvc1lSecEnum::EXPORT_LICENSE->value)->sum('basea_dvc1l');
+		$financeCharge = $costLines->where('sec_dvc1l', FgDvc1lSecEnum::FINANCE_CHARGE->value)->sum('basea_dvc1l');
 
-		$commission = $orderLines->where('tl_dvc1l', 'P')->sum('basea_dvc1l');
-		$ivaCommission = $orderLines->where('tl_dvc1l', 'P')->max('iva_dvc1l');
+		$commission = $orderLines->where('tl_dvc1l', FgDvc1lTlDvc1lEnum::PRODUCT->value)->sum('basea_dvc1l');
+		$ivaCommission = $orderLines->where('tl_dvc1l', FgDvc1lTlDvc1lEnum::PRODUCT->value)->max('iva_dvc1l');
 		$ivaCommissionValue = $commission * ($ivaCommission / 100);
 
 		$total = $lots->sum('award_price') + $shippingCosts + $exportLicense + $financeCharge + $commission + $ivaCommissionValue + $shippingCostsIvaValue;
