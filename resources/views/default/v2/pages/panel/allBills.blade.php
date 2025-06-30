@@ -16,18 +16,17 @@
             </div>
 
             <div class="col-lg-9">
-                <h1>{{ trans("web.user_panel.pending_bills") }}</h1>
+                <h1>{{ trans('web.user_panel.pending_bills') }}</h1>
 
                 <div class="accordion mb-2">
                     <h2 class="accordion-item accordion-header" id="bills-pending-heading">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#bills-pending-collapse" aria-expanded="true"
-                            aria-controls="bills-pending-collapse">
-                            {{ trans("web.user_panel.still_paid") }}
+                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#bills-pending-collapse"
+                            type="button" aria-expanded="true" aria-controls="bills-pending-collapse">
+                            {{ trans('web.user_panel.still_paid') }}
                         </button>
                     </h2>
 
-                    <div id="bills-pending-collapse" class="accordion-collapse collapse show"
+                    <div class="accordion-collapse collapse show" id="bills-pending-collapse"
                         aria-labelledby="#bills-pending-heading">
                         <div class="accordion-body p-0">
 
@@ -39,10 +38,10 @@
                                             <tr>
                                                 <th></th>
                                                 <th></th>
-                                                <th>{{ trans("web.user_panel.pending_bills") }}</th>
-                                                <th>{{ trans("web.user_panel.date") }}</th>
-                                                <th>{{ trans("web.user_panel.total_fact") }}</th>
-                                                <th>{{ trans("web.user_panel.total_price_fact") }}</th>
+                                                <th>{{ trans('web.user_panel.pending_bills') }}</th>
+                                                <th>{{ trans('web.user_panel.date') }}</th>
+                                                <th>{{ trans('web.user_panel.total_fact') }}</th>
+                                                <th>{{ trans('web.user_panel.total_price_fact') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -66,64 +65,68 @@
                                     </table>
                                 </form>
                             </div>
-							<div class="total-price checkout mb-2">
 
-								<div class="importe_total adj">
-									<h4>{{ trans("web.user_panel.total_price") }}</h4>
-									<h4><span id="total_bills">00</span> {{ trans("web.subastas.euros") }}</h4>
-								</div>
-								@if (\Config::get('app.PayBizum') || \Config::get('app.PayTransfer') || \Config::get('app.paymentPaypal'))
+                            @if (Config::get('app.pasarela_web'))
+                                <div class="total-price checkout mb-2">
 
-									<div class="btn-group gap-1" role="group" aria-label="Pay method">
+                                    <div class="importe_total adj">
+                                        <h4>{{ trans('web.user_panel.total_price') }}</h4>
+                                        <h4><span id="total_bills">00</span> {{ trans('web.subastas.euros') }}</h4>
+                                    </div>
+                                    @if (\Config::get('app.PayBizum') || \Config::get('app.PayTransfer') || \Config::get('app.paymentPaypal'))
 
-										@if (\Config::get('app.paymentUP2') || Config::get('app.paymentRedsys'))
-											<input type="radio" class="btn-check" name="paymethod" id="paycreditcard"
-												value="creditcard" autocomplete="off" checked>
-											<label class="btn btn-outline-lb-secondary" for="paycreditcard">
-												{{ trans('web.user_panel.pay_creditcard') }}
-											</label>
-										@endif
+                                        <div class="btn-group gap-1" role="group" aria-label="Pay method">
 
-										@if (\Config::get('app.PayBizum'))
-											<input type="radio" class="btn-check" name="paymethod" id="paybizum"
-												value="bizum" autocomplete="off">
-											<label class="btn btn-outline-lb-secondary" for="paybizum">
-												<img src="/default/img/logos/bizum-blue.png"
-													style="height: 20px;margin: 0px 6px;">
-												{{ trans('web.user_panel.pay_bizum') }}
-											</label>
-										@endif
+                                            @if (\Config::get('app.paymentUP2') || Config::get('app.paymentRedsys'))
+                                                <input class="btn-check" id="paycreditcard" name="paymethod" type="radio"
+                                                    value="creditcard" autocomplete="off" checked>
+                                                <label class="btn btn-outline-lb-secondary" for="paycreditcard">
+                                                    {{ trans('web.user_panel.pay_creditcard') }}
+                                                </label>
+                                            @endif
 
-										@if (\Config::get('app.PayTransfer'))
-											<input type="radio" class="btn-check" name="paymethod" id="paytransfer"
-												value="transfer" autocomplete="off">
-											<label class="btn btn-outline-lb-secondary" for="paytransfer">
-												{{ trans('web.user_panel.pay_transfer') }}
-											</label>
-										@endif
+                                            @if (\Config::get('app.PayBizum'))
+                                                <input class="btn-check" id="paybizum" name="paymethod" type="radio"
+                                                    value="bizum" autocomplete="off">
+                                                <label class="btn btn-outline-lb-secondary" for="paybizum">
+                                                    <img src="/default/img/logos/bizum-blue.png"
+                                                        style="height: 20px;margin: 0px 6px;">
+                                                    {{ trans('web.user_panel.pay_bizum') }}
+                                                </label>
+                                            @endif
 
-										@if (\Config::get('app.paymentPaypal'))
-											<input type="radio" class="btn-check" name="paymethod" id="paypaypal"
-												value="paypal" autocomplete="off">
-											<label class="btn btn-outline-lb-secondary" for="paypaypal">
-												<i class="fa fa-paypal" aria-hidden="true"></i>
-												{{ trans('web.user_panel.pay_paypal') }}
-											</label>
-										@endif
+                                            @if (\Config::get('app.PayTransfer'))
+                                                <input class="btn-check" id="paytransfer" name="paymethod" type="radio"
+                                                    value="transfer" autocomplete="off">
+                                                <label class="btn btn-outline-lb-secondary" for="paytransfer">
+                                                    {{ trans('web.user_panel.pay_transfer') }}
+                                                </label>
+                                            @endif
 
-									</div>
+                                            @if (\Config::get('app.paymentPaypal'))
+                                                <input class="btn-check" id="paypaypal" name="paymethod" type="radio"
+                                                    value="paypal" autocomplete="off">
+                                                <label class="btn btn-outline-lb-secondary" for="paypaypal">
+                                                    <i class="fa fa-paypal" aria-hidden="true"></i>
+                                                    {{ trans('web.user_panel.pay_paypal') }}
+                                                </label>
+                                            @endif
 
-								@endif
-								<div>
+                                        </div>
+                                    @endif
 
-									<button id="btoLoader" class="btn btn-custom hidden" type="button">
-										<div class="loader"></div>
-									</button>
 
-									<button id="submit_fact" type="button"
-										class="btn btn-lb-primary hidden">{{ trans("web.user_panel.pay") }}</button>
-								</div>
-							</div>
+                                    <div>
+
+                                        <button class="btn btn-custom hidden" id="btoLoader" type="button">
+                                            <div class="loader"></div>
+                                        </button>
+
+                                        <button class="btn btn-lb-primary hidden" id="submit_fact"
+                                            type="button">{{ trans('web.user_panel.pay') }}</button>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
 
                     </div>
@@ -132,14 +135,13 @@
 
                 <div class="accordion">
                     <h2 class="accordion-item accordion-header" id="bills-payed-heading">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#bills-payed-collapse" aria-expanded="true"
-                            aria-controls="bills-payed-collapse">
-                            {{ trans("web.user_panel.bills") }}
+                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#bills-payed-collapse"
+                            type="button" aria-expanded="true" aria-controls="bills-payed-collapse">
+                            {{ trans('web.user_panel.bills') }}
                         </button>
                     </h2>
 
-                    <div id="bills-payed-collapse" class="accordion-collapse collapse show"
+                    <div class="accordion-collapse collapse show" id="bills-payed-collapse"
                         aria-labelledby="#bills-payed-heading">
                         <div class="accordion-body p-0">
 
@@ -150,10 +152,10 @@
                                         <tr>
                                             <th></th>
                                             <th></th>
-                                            <th>{{ trans("web.user_panel.pending_bills") }}</th>
-                                            <th>{{ trans("web.user_panel.date") }}</th>
-                                            <th>{{ trans("web.user_panel.total_fact") }}</th>
-                                            <th>{{ trans("web.user_panel.paid_out") }}</th>
+                                            <th>{{ trans('web.user_panel.pending_bills') }}</th>
+                                            <th>{{ trans('web.user_panel.date') }}</th>
+                                            <th>{{ trans('web.user_panel.total_fact') }}</th>
+                                            <th>{{ trans('web.user_panel.paid_out') }}</th>
                                             <th></th>
                                         </tr>
                                     </thead>

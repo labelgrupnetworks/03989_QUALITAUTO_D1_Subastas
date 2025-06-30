@@ -17,7 +17,7 @@ foreach ($info_factura as $key_type => $inf_fact) {
 @endphp
 <tr>
     <td class="td-check">
-        @if (!empty($efec) && $bill->compraweb_sub != 'N')
+        @if (Config::get('app.pasarela_web') && !empty($efec) && $bill->compraweb_sub != 'N')
             <input class="form-check-input" name="factura[{{ $anum }}][{{ $num }}]"
                 id="checkFactura-{{ $anum }}-{{ $num }}-{{ $efec }}" type="checkbox" checked
 				onchange="reload_facturas()"/>
@@ -26,7 +26,7 @@ foreach ($info_factura as $key_type => $inf_fact) {
     <td class="td-img">
         <a target="_blank" href="/factura/{{ $anum }}-{{ $num }}"
             class="h-100 p-0 btn {{ !empty($bill->factura) && file_exists($bill->factura) ? '' : 'disabled' }}">
-            <img class="img-responsive" src="/img/icons/pdf.png">
+            <img class="img-responsive" src="/default/img/icons/pdf.png">
         </a>
     </td>
     <td data-title="{{ trans("web.user_panel.pending_bills") }}">
