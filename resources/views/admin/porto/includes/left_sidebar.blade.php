@@ -649,6 +649,13 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
                             </ul>
                             <ul class="nav nav-children">
                                 <li>
+                                    <a href="/admin/mesures" target="_blank">
+                                        <span>Estadísticas</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-children">
+                                <li>
                                     <a href="{{ route('admin.disk-status.index') }}">
                                         <span>Comprobar disco</span>
                                     </a>

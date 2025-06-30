@@ -29,10 +29,19 @@ class AdminClienteController extends Controller
 {
 	private $userSession;
 
+	protected $availableColumns = [
+		'cod_cli' => 'Código',
+		'nom_cli' => 'Nombre',
+		'rsoc_cli' => 'Razón Social',
+		'email_cli' => 'Email',
+		'falta_cliweb' => 'Fecha alta cliente web',
+	];
+
 	function __construct()
 	{
 		view()->share(['menu' => 'usuarios']);
 	}
+
 
 	public function index(Request $request)
 	{
@@ -144,7 +153,10 @@ class AdminClienteController extends Controller
 			'email_clid' => 0
 		] + $newsletterTableParam;
 
-		return view('admin::pages.usuario.cliente_v2.index', compact('clientes', 'formulario', 'fxcli', 'tableParams', 'newslettersSelect'));
+		$availableColumns = $this->availableColumns;
+		$visibleColumns = array_keys($this->availableColumns);
+
+		return view('admin::pages.usuario.cliente_v2.index', compact('clientes', 'formulario', 'fxcli', 'tableParams', 'newslettersSelect', 'availableColumns', 'visibleColumns'));
 	}
 
 	function create()
@@ -706,5 +718,49 @@ class AdminClienteController extends Controller
 		}
 
 		return $json;
+	}
+
+	public function data(Request $request)
+	{
+		// Recoger filtros y columnas
+		$filters        = $request->input('filters', []);
+		if (is_string($filters)) {
+			$filters = json_decode($filters, true);
+		}
+
+		//$visibleColumns = json_decode($request->input('columns', array_keys($this->availableColumns)), true);
+		$visibleColumns = array_keys($this->availableColumns);
+		$availableColumns = $this->availableColumns;
+
+		$query = self::clientsQueryBuilder();
+
+		foreach ($filters as $f) {
+			switch ($f['operator']) {
+				case 'contains':
+					$query->where($f['field'], 'like', "%{$f['value']}%");
+					break;
+				case 'equals':
+					$query->where($f['field'], $f['value']);
+					break;
+				case 'starts':
+					$query->where($f['field'], 'like', "{$f['value']}%");
+					break;
+			}
+		}
+
+		$clientes = $query
+			//falla la query con select, revisar.
+			//->select($visibleColumns)
+			->paginate(10);
+
+
+		// Renderizamos solo la tabla. necesitamos recuperar clases html de la original
+		$html = view('admin::pages.usuario.cliente_v2.table', compact('clientes', 'availableColumns', 'visibleColumns'))->render();
+
+
+		return response()->json([
+			'table'      => $html,
+			'pagination' => view('admin::pages.usuario.cliente_v2.pagination', compact('clientes'))->render(),
+		]);
 	}
 }

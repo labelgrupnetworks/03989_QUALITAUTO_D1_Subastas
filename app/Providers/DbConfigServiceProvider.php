@@ -22,7 +22,20 @@ class DbConfigServiceProvider extends ServiceProvider
 			resource_path('/views/themes/' . Config::get('app.theme')),
 			resource_path('/views/default/' . Config::get('app.default_theme')),
 		]);
-		View::addNamespace('admin', resource_path('/views/admin/' . Config::get('app.admin_theme')));
+		//View::addNamespace('admin', resource_path('/views/admin/' . Config::get('app.admin_theme')));
+		//View::addNamespace('admin', resource_path('/views/admin/v2'));
+
+		$adminTheme = Config::get('app.admin_theme', 'porto');
+		$adminThemeResources = [resource_path('/views/admin/porto')];
+
+		if ($adminTheme !== 'porto') {
+			//$adminThemeResources[] = resource_path('/views/admin/' . $adminTheme);
+			//add to first position and move porto to the end
+			array_unshift($adminThemeResources, resource_path("/views/admin/$adminTheme"));
+
+		}
+
+		View::addNamespace('admin', $adminThemeResources);
 	}
 
 	public function register()

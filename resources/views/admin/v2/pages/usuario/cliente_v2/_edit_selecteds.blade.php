@@ -1,0 +1,50 @@
+@php
+	use App\Models\V5\FxCli;
+	use App\Models\V5\FxTcli;
+    $formulario = [
+		[
+			'id' => 'cli_options',
+			'title' => trans("admin-app.title.options"),
+			'class' => '',
+	    	'inputs' => [
+				'source' => FormLib::Select('tipo_select', 0, '', FxTcli::pluck('des_tcli', 'cod_tcli')),
+        		'temporaryblock' => FormLib::Select('bloq_temporal_select', 0, '', (new FxCli)->getTipoBajaTmpTypes()),
+				'enviocatalogo' => FormLib::Select('envio_catalogo_select', 0, '', ['S' => 'Si', 'N' => 'No'])
+			]
+		],
+
+    ];
+@endphp
+
+<div class="modal fade" id="editMultpleClientsModal" role="dialog" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">{{ trans("admin-app.title.client_mass_update") }}</h5>
+                <button class="close" data-dismiss="modal" type="button" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" id="modal-create-body">
+                <form id="edit_multple_clients" name="edit_multple_clients"
+                    action="{{ route('clientes.update_selections') }}" method="POST">
+                    <div class="row">
+                        @include('admin::pages.usuario.cliente_v2._form_selecteds', ['formulario' => $formulario])
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" form="edit_multple_clients" type="submit">
+                    {{ trans("admin-app.button.save") }}
+                </button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">{{ trans("admin-app.button.close") }}</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
