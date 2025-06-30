@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Config;
 
 # Añadido excepcional ya que no funcionaba el admin
 
-Route::view('/admin', 'admin::pages.home');
+Route::view('/admin', 'admin::pages.home')->name('admin.home');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
@@ -300,6 +300,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('newsletter/export/', 'usuario\AdminNewsletterController@export')->name('newsletter.export');
 		Route::resource('newsletter', 'usuario\AdminNewsletterController');
 
+		Route::get('clientes/data', 'usuario\AdminClienteController@data')->name('admin.clientes.data');
+
 		Route::post('clientes/delete-with-filters', 'usuario\AdminClienteController@destroyWithFilters')->name('clientes.destroy_with_filters');
 		Route::post('clientes/delete-selection', 'usuario\AdminClienteController@destroySelections')->name('clientes.destroy_selections');
 		Route::post('clientes/update-with-filters', 'usuario\AdminClienteController@updateWithFilters')->name('clientes.update_with_filters');
@@ -523,7 +525,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 	Route::group(['middleware' => ['web']], function () {
 		Route::get('/login', [AdminUserController::class, 'login']);
 		Route::post('/login', [AdminUserController::class, 'login_post']);
-		Route::get('/logout', [AdminUserController::class, 'logout']);
+		Route::get('/logout', [AdminUserController::class, 'logout'])->name('admin.logout');
 	});
 
 	#ruta a la cual se debe poder acceder desde fuera del admin y sin estar logeado ya que la llamada la hace subalia
