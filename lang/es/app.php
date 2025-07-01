@@ -483,7 +483,9 @@ return [
 		'no' => 'No',
 		'nif_dni_nie' => 'NIF / DNI / NIE',
 		'files' => 'Archivos',
-
+		'attach_image_dni' => 'Adjuntar imagenes DNI / NIE / Pasaporte',
+		'attach_image_cif' => 'Adjuntar imagenes CIF',
+		'nif_question' => '¿Porqué es necesario?',
 	),
 	'lot' =>
 	array(
