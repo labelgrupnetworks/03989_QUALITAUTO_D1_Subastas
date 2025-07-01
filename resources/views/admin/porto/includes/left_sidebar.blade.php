@@ -563,6 +563,23 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
                         </li>
                     @endif
 
+					{{-- Solamente lo utiliza Gutinvest. Actualizar a los nuevos banners --}}
+					@if(in_array('banners',$config_menu_admin))
+					<li>
+						<a href="/admin/resources?see=all">
+							<i class="fa fa-folder" aria-hidden="true"></i>
+							<span>{{ trans('admin-app.title.resources') }}</span>
+						</a>
+					</li>
+					<li>
+						<a href="/admin/banner?see=B">
+							<i class="fa fa-folder" aria-hidden="true"></i>
+							<span>{{ trans('admin-app.title.banners') }}</span>
+						</a>
+
+					</li>
+					@endif
+
                     @if (in_array('bi', $config_menu_admin))
                         <li>
                             <a href="/admin/bi/report/categoryAwardsSales?years[]={{ date('Y') }}">
