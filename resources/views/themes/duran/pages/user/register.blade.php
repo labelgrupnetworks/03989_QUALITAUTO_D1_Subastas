@@ -94,164 +94,127 @@ $document_type = (new \App\Models\V5\FxCli)->getTipoDocumento();
 						<div class="clearfix"></div>
 						<br>
 
-
-						<div class="datos_left">
-							<label>{{ trans($theme.'-app.login_register.nombre') }}</label>
-							{!!$formulario->usuario!!}
-						</div>
-						<div class=" apellidos datos_right">
-							<label>{{ trans($theme.'-app.login_register.apellidos') }}</label>
-							{!!$formulario->last_name!!}
-						</div>
-
-
-
-						<div class="registerParticular datos_left">
-							<label>{{ trans($theme.'-app.login_register.document_type') }} </label>
-							{!!FormLib::Select("tdocid_cli", 1, "", $document_type, '', '', true)!!}
-						</div>
-
-						<div class="registerEnterprise datos_left">
-							<label> {{ trans($theme.'-app.login_register.en_calidad_de') }} </label>
-							<select data-placement="right" class="form-control select2 has-content" type="select"
-								name="tipv_cli" id="select__0__tipvcli" onblur="comprueba_campo(this)">
-								<option value="A">
-									{{ trans($theme.'-app.login_register.only_manager') }}</option>
-								<option value="R">
-									{{ trans($theme.'-app.login_register.legal_representative') }}
-								</option>
-							</select>
-						</div>
-
-						<div class="registerEnterprise datos_right">
-							<label>{{ trans($theme.'-app.login_register.dni_representante') }}</label>
-
-							<input type="text" class="form-control effect-16" name="docid_cli" id="texto__0__docidcli"
-								value="" onblur="comprueba_campo(this)" data-placement="right" placeholder=""
-								autocomplete="off">
-
-						</div>
-
-						<div class="registerEnterprise datos_left">
-							<label>{{ trans($theme.'-app.login_register.company') }}</label>
-							{!!$formulario->rsoc_cli!!}
-						</div>
-						<div class="datos_right">
-							<label
-								class="registerParticular">{{ trans($theme.'-app.login_register.dni') }}</label>
-							<label class="registerEnterprise"
-								style="display:none">{{ trans($theme.'-app.login_register.cif') }}</label>
-
-							<input type="text" class="form-control effect-16 has-content" name="nif" id="nif__1__nif"
-								value="" onblur="comprueba_campo(this)" data-placement="right" placeholder=""
-								autocomplete="off" data-content="">
-
-						</div>
-						<div class="registerEnterprise " style="color:#d0043c; float: left;width: 100%;">
-							<div class="datos_left"> </div>
-							<div class="datos_right">
-							{{ trans($theme.'-app.login_register.send_CIF') }}
+						<row>
+							<div class="col-xs-12 col-sm-6 mb-3">
+								<label>{{ trans($theme.'-app.login_register.nombre') }}</label>
+								{!!$formulario->usuario!!}
 							</div>
-						</div>
-						<div class="registerParticular  " style="color:#d0043c; float: left;width: 100%;">
-							<div class="datos_left"> </div>
-							<div class="datos_right">
-								{{ trans($theme.'-app.login_register.send_DNI') }}
+							<div class="col-xs-12 col-sm-6 mb-3 apellidos">
+								<label>{{ trans($theme.'-app.login_register.apellidos') }}</label>
+								{!!$formulario->last_name!!}
 							</div>
+
+							<div class="registerParticular col-xs-12 col-sm-6 mb-3">
+								<label>{{ trans($theme.'-app.login_register.document_type') }} </label>
+								{!!FormLib::Select("tdocid_cli", 1, "", $document_type, '', '', true)!!}
+							</div>
+
+							<div class="registerEnterprise col-xs-12 col-sm-6 mb-3">
+								<label> {{ trans($theme.'-app.login_register.en_calidad_de') }} </label>
+								<select data-placement="right" class="form-control select2 has-content" type="select"
+									name="tipv_cli" id="select__0__tipvcli" onblur="comprueba_campo(this)">
+									<option value="A">
+										{{ trans($theme.'-app.login_register.only_manager') }}</option>
+									<option value="R">
+										{{ trans($theme.'-app.login_register.legal_representative') }}
+									</option>
+								</select>
+							</div>
+
+							<div class="registerEnterprise col-xs-12 col-sm-6 mb-3">
+								<label>{{ trans($theme.'-app.login_register.dni_representante') }}</label>
+
+								<input type="text" class="form-control effect-16" name="docid_cli" id="texto__0__docidcli"
+									value="" onblur="comprueba_campo(this)" data-placement="right" placeholder=""
+									autocomplete="off">
+							</div>
+
+							<div class="registerEnterprise col-xs-12 col-sm-6 mb-3">
+								<label>{{ trans($theme.'-app.login_register.company') }}</label>
+								{!!$formulario->rsoc_cli!!}
+							</div>
+
+							<div class="col-xs-12 col-sm-6 mb-3">
+								<label
+									class="registerParticular">{{ trans($theme.'-app.login_register.dni') }}</label>
+								<label class="registerEnterprise"
+									style="display:none">{{ trans($theme.'-app.login_register.cif') }}</label>
+
+								<input type="text" class="form-control effect-16 has-content" name="nif" id="nif__1__nif"
+									value="" onblur="comprueba_campo(this)" data-placement="right" placeholder=""
+									autocomplete="off" data-content="">
+
+							</div>
+
+
+						<div class="dni-block col-xs-12 col-sm-6 mb-3">
+							<div class="d-flex justify-content-space-between">
+								<label class="registerParticular">{{ trans('web.login_register.attach_image_dni') }}</label>
+								<label class="registerEnterprise">{{ trans('web.login_register.attach_image_cif') }}</label>
+								<span onclick="javascript:showNIFMessage()">{{ trans('web.login_register.nif_question') }}</span>
+							</div>
+							{!! FormLib::File('files_email[]', $boolObligatorio = 1, $strExtra = "accept=\"image/png, image/jpeg, image/jpg, image/gif, image/bmp, image/tiff, application/pdf\" multiple") !!}
 						</div>
 
-
-
-
-						<div class="idioma datos_right">
+						<div class="idioma col-xs-12 col-sm-6 mb-3">
 							<label>{{ trans($theme.'-app.login_register.language') }}</label>
 							{!!$formulario->language!!}
 						</div>
 
-
-
-						<div class="datos_left">
+						<div class="col-xs-12 col-sm-6 mb-3">
 							<label>{{ trans($theme.'-app.login_register.phone') }}</label>
 							{!!$formulario->telefono!!}
 						</div>
 
-
-						<div class="movil datos_right ">
+						<div class="movil col-xs-12 col-sm-6 mb-3 ">
 							<label>{{ trans($theme.'-app.login_register.mobile') }}</label>
 							{!!$formulario->movil!!}
 						</div>
 
-
-
-						<div class="datos_left">
+						<div class="col-xs-12 col-sm-6 mb-3">
 							<labeL>{{ trans($theme.'-app.login_register.pais') }}</label>
 							{!!$formulario->pais!!}
 						</div>
 
-						<div class="datos_right">
+						<div class="col-xs-12 col-sm-6 mb-3">
 							<label>{{ trans($theme.'-app.login_register.cod_postal') }}</label>
 							{!!$formulario->cpostal!!}
 						</div>
 
-
-
-						<div class="datos_left">
+						<div class="col-xs-12 col-sm-6 mb-3">
 							<label>{{ trans($theme.'-app.login_register.provincia') }}</label>
 							{!!$formulario->provincia!!}
 						</div>
 
-
-
-
-						<div class="datos_right">
+						<div class="col-xs-12 col-sm-6 mb-3">
 							<label>{{ trans($theme.'-app.login_register.ciudad') }}</label>
 							{!!$formulario->poblacion!!}
 						</div>
 
-						<div class="datos_left">
+						<div class="col-xs-12 col-sm-6 mb-3">
 							<label>{{ trans($theme.'-app.login_register.direccion') }}</label>
 							{!!$formulario->direccion!!}
 						</div>
 
-
-
-						<div class="datos_right">
+						<div class="col-xs-12 col-sm-6 mb-3">
 							<label>{{ trans($theme.'-app.user_panel.date_birthday') }}</label>
 							{!! str_replace("fecha__1__date","fecha__0__date",$formulario->fecha_nacimiento) !!}
 						</div>
 
-
-
-						<div class="observaciones datos_left">
+						<div class="observaciones col-xs-12 col-sm-6 mb-3">
 							<label>{{ trans($theme.'-app.login_register.observacion') }}</label>
 							{!!$formulario->obscli!!}
 						</div>
 
-						<div class="moneda datos_left">
+						<div class="moneda col-xs-12 col-sm-6 mb-3">
 							<label>{{ trans($theme.'-app.login_register.currency') }}</label>
 							{!!$formulario->divisa!!}
 						</div>
 
-
-
-
-
-
-
-
-
-
+						</row>
 
 						<div class="clearfix"></div>
 					</div>
-
-
-
-
-
-
-
-
 
 					<!-- Bloque para dirección de envio -->
 
@@ -464,6 +427,28 @@ $document_type = (new \App\Models\V5\FxCli)->getTipoDocumento();
 		</div>
 	</div>
 </div>
+
+<div class="container modal-block mfp-hide" id="nifFilePopUpInformation">
+    <section class="panel">
+		<div class="modal-body">
+			<div class="align-items-center">
+				<h3 class="mb-2">{{ trans("$theme-app.login_register.nif_question") }}</h4>
+				<p class="registerEnterprise">
+					{{ trans("web.login_register.send_CIF") }}
+				</p>
+				<p class="registerParticular">
+					{{ trans("web.login_register.send_DNI") }}
+				</p>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn modal-dismiss btn-primary">
+				{{ trans("$theme-app.head.close") }}
+			</button>
+		</div>
+    </section>
+</div>
+
 <script>
 	$(document).ready(function () {
 

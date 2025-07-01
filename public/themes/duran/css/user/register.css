@@ -3,6 +3,10 @@
 
 #registerForm .movil {display:block;}
 
+.dni-block small {
+	display: block;
+	height: 0;
+}
 
 @media (max-width: 375px){
 	.g-recaptcha {

@@ -120,3 +120,6 @@ function prestaLoginRegister(res) {
 	return true;
 }
 
+function showNIFMessage() {
+	$.magnificPopup.open({ items: { src: '#nifFilePopUpInformation' }, type: 'inline' }, 0);
+}
