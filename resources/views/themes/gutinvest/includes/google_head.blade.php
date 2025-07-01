@@ -1,5 +1,10 @@
 @php
 	use \App\libs\TradLib;
+	use App\Models\Cookies;
+    $cookiesPreferences = new Cookies();
+
+	Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE]);
+    Config::set('app.cookies.advertising', [Cookies::THIRD_LINKEDIN, Cookies::THIRD_SMARTLOOK]);
 @endphp
 
 <meta charset="utf-8" http-equiv="content-type">
@@ -7,14 +12,11 @@
 <meta name="viewport" content="initial-scale=1,minimum-scale=0.15, maximum-scale=2, user-scalable=yes">
 <meta name="author" content="{{ trans(\Config::get('app.theme').'-app.head.meta_author') }}">
 <title>
-
     @if( !empty($data['seo']->meta_title) )
         {{$data['seo']->meta_title}}
     @else
         {{ trans(\Config::get('app.theme').'-app.head.title_app') }}
     @endif
-
-
 </title>
 <script>
  //fecha servidor
@@ -34,7 +36,7 @@ var fecha_js = new Date().getTime();
 <meta name="title" content="{{ trans(\Config::get('app.theme').'-app.head.title_app') }}">
 @endif
 @if(!empty($data['seo']->meta_description))
-    <meta name="description" content="<?= $data['seo']->meta_description ?>">
+    <meta name="description" content="<?= strip_tags(str_replace('"', "'", $data['seo']->meta_description)) ?>">
 @else
     <meta name="description" content="{{ trans(\Config::get('app.theme').'-app.head.meta_description') }}">
 @endif
@@ -91,7 +93,7 @@ var fecha_js = new Date().getTime();
 <meta name="twitter:image:src" content="https://www.gutinvest.es/themes/gutinvest/assets/img/logo.jpg" />
 <meta name="twitter:site" content="@gutinvest" />
 
-
+@if($cookiesPreferences->isAnalysisAllowed())
 <!-- Google Analytics -->
 <script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -116,6 +118,14 @@ ga('send', 'pageview');
 @endif
 <!-- gtag -->
 
+
+@else
+<script>
+	ga = () => {};
+</script>
+@endif
+
+@if($cookiesPreferences->isAdvertisingAllowed())
 <!-- linkedin_partner -->
 <script type="text/javascript">
 	_linkedin_partner_id = "600457"; window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || []; window._linkedin_data_partner_ids.push(_linkedin_partner_id);
@@ -138,3 +148,4 @@ ga('send', 'pageview');
 	})(document);
 </script>
 	<!-- Smartsupp Live Chat script -->
+@endif

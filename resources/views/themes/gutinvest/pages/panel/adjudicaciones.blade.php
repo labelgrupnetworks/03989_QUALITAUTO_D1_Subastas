@@ -203,7 +203,7 @@ $packengersMoneyValue = 0;
                                                             <div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
                                                                 <div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</div>
 																<p><?= $precio_remate ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
-																@if ($inf_lot->base_csub != 0)
+																@if ($comision !=0)
 																	<small class="comision-title">{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</small>
 																	<div>+ <?=  $comision ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</div>
 																@endif
@@ -470,7 +470,7 @@ $packengersMoneyValue = 0;
 																	<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
 																		<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</div>
 																		<p><?= $precio_remate ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
-																		@if ($inf_lot->base_csub != 0)
+																		@if ($comision !=0)
 																			<small class="comision-title">{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</small>
 																			<div>+ <?=  $comision ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</div>
 																		@endif

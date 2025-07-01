@@ -473,36 +473,6 @@
 
        });
 
-       $( "#large_square" ).click(function() {
-            see_desc();
-        });
-
-        $( "#square" ).click(function() {
-              see_img();
-        });
-
-        $( "#small_square" ).click(function() {
-              see_img_samll();
-        });
-
-        $( "#square_mobile" ).click(function() {
-              see_img();
-        });
-
-        $( "#large_square_mobile" ).click(function() {
-              see_desc();
-        });
-
-        if($.cookie('lot') == 'desc'){
-            see_desc();
-        }else if($.cookie('lot') == 'img'){
-            see_img();
-        }else if($.cookie('lot') == 'small_img'){
-            see_img_samll();
-        }else{
-            see_img();
-        }
-
         $( window ).resize(function() {
             if($(window).width() < 1200){
                  $('.small_square .item_lot').removeClass('col');
@@ -775,48 +745,7 @@ console.log((element.size/1024/1024).toFixed(2))
 
 
 
-
-	$('#admin_settings_box').on('click', '.desplegable', function () {
-        if ($('#admin_settings_box').hasClass('opened_box')) {
-            $('#admin_settings_box').removeClass('opened_box');
-            $('[data-id="left"]', this).addClass('hidden');
-            $('[data-id="right"]', this).removeClass('hidden');
-        } else {
-			$('#admin_settings_box').addClass('opened_box');
-            $('[data-id="right"]', this).addClass('hidden');
-            $('[data-id="left"]', this).removeClass('hidden');
-
-        }
-    });
-
   });
-
-function see_desc(){
-    $.removeCookie('lot');
-    $.cookie('lot','desc',{expires: 7,path: '/'});
-    $( ".square" ).addClass( "hidden" );
-    $( ".small_square" ).addClass( "hidden" );
-    $( ".large_square" ).removeClass( "hidden" );
-    $('.bar-lot-large').removeClass( "hidden" );
-}
-
-function see_img(){
-    $.removeCookie('lot');
-    $.cookie('lot','img',{expires: 7,path: '/'});
-    $( ".large_square" ).addClass( "hidden" );
-    $('.bar-lot-large').addClass( "hidden" );
-    $( ".small_square" ).addClass( "hidden" );
-    $( ".square" ).removeClass( "hidden" );
-}
-
-function see_img_samll(){
-    $.removeCookie('lot');
-    $.cookie('lot','small_img',{expires: 7,path: '/'});
-    $( ".large_square" ).addClass( "hidden" );
-    $('.bar-lot-large').addClass( "hidden" );
-    $( ".square" ).addClass( "hidden" );
-    $( ".small_square" ).removeClass( "hidden" );
-}
 
 function cerrarLogin(){
   $('.login_desktop').fadeToggle("fast");
@@ -844,6 +773,61 @@ function ajax_carousel(key,replace){
         });
 
 };
+
+function ajax_lot_grid(key,replace){
+        $( "#"+key ).siblings().removeClass('hidden');
+        $.ajax({
+                type: "POST",
+				url:  "/api-ajax/lot_grid",
+                data: {key: key, replace: replace},
+                success: function(result) {
+                    $( "#"+key ).siblings('.loader').addClass('hidden');
+                    $("#"+key).html(result);
+                    $('[data-countdown]').each(function() {
+                        $(this).data('ini', new Date().getTime());
+                        countdown_timer($(this))
+                    });
+					let paginator = create_ajax_paginator(key, $('#' + key + ' .lot_list_ajax').length);
+					$("#" + key).append(paginator);
+					change_ajax_lot_grid_page(key, 'first'); //options: first, last, or page number
+            }
+
+        });
+
+};
+
+function create_ajax_paginator(key, pages){
+	let newPaginator = `<ul class="pagination" role="navigation">
+    <li class="page-item" data-page="first">
+		<a class="page-link" href="javascript:change_ajax_lot_grid_page('${key}','first')">‹</a></li>
+    </li>`;
+
+	for (let i = 1; i <= pages; i++) {
+		newPaginator += `<li class="page-item" data-page="${i}"><a class="page-link" href="javascript:change_ajax_lot_grid_page('${key}',${i})">${i}</a></li>`;
+	}
+
+	newPaginator += `<li class="page-item" data-page="last">
+			<a class="page-link" href="javascript:change_ajax_lot_grid_page('${key}','last')">›</a></li>
+		</li>
+	</ul>`;
+	return newPaginator;
+}
+
+function change_ajax_lot_grid_page(id, page) {
+	$('#' + id + ' .lot_list_ajax').css('display', 'none');
+	let paginator = $('#' + id + ' .pagination');
+	paginator.find('.page-item').removeClass('active');
+	if (page === 'first') {
+		$('#' + id + ' .lot_list_ajax[data-lot_page="1"]').css('display', 'block');
+		paginator.find('.page-item[data-page="1"]').addClass('active');
+	} else if (page === 'last') {
+		$('#' + id + ' .lot_list_ajax[data-lot_page="' + $('#' + id + ' .lot_list_ajax').length + '"]').css('display', 'block');
+		paginator.find('.page-item[data-page="' + $('#' + id + ' .lot_list_ajax').length + '"]').addClass('active');
+	} else {
+		$('#' + id + ' .lot_list_ajax[data-lot_page="' + page + '"]').css('display', 'block');
+		paginator.find('.page-item[data-page="' + page + '"]').addClass('active');
+	}
+}
 
  function format_date(fecha){
 
@@ -1152,4 +1136,50 @@ $(document).on("click", "#button-open-user-menu", function () {
 	$('#user-account-ul').toggle()
 });
 
+$(document).ready(function () {
 
+	$("#square").click(() => seeLot('img'));
+	$("#square_mobile").click(() => seeLot('img'));
+	$("#small_square").click(() => seeLot('small_img'));
+	$("#large_square").click(() => seeLot('desc'));
+	$("#large_square_mobile").click(() => seeLot('desc'));
+
+	let styleLotSee = document.querySelector('[name=lot_see_configuration]')?.value;
+	if (styleLotSee) {
+		seeLot(styleLotSee, false);
+	}
+});
+
+function seeLot(style, save = true) {
+	const options = {
+		'desc': see_desc,
+		'img': see_img,
+		'small_img': see_img_samll
+	}
+
+	hideAllStylesLots();
+	options[style] ? options[style]() : options['img']();
+
+	if(!save) return;
+	saveConfigurationCookies({ lot: style });
+}
+
+function hideAllStylesLots() {
+	$(".square").addClass("hidden");
+	$(".small_square").addClass("hidden");
+	$(".large_square").addClass("hidden");
+	$('.bar-lot-large').addClass("hidden");
+}
+
+function see_desc() {
+	$(".large_square").removeClass("hidden");
+	$('.bar-lot-large').removeClass("hidden");
+}
+
+function see_img() {
+	$(".square").removeClass("hidden");
+}
+
+function see_img_samll() {
+	$(".small_square").removeClass("hidden");
+}

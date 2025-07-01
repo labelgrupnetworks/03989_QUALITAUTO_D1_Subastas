@@ -400,7 +400,6 @@
 					@endforeach
 				</div>
 				@endforeach
-				<input type="hidden" name="newsletter" value="on">
 
             </div>
 

@@ -56,16 +56,8 @@
                     <div style="width: 15px; display: inline-block;"></div>
                 </div>
                     <div class="item-subasta-data-text" style="text-align: right;">
-                        <small style="text-align: right;">
-                            @php($url_flat = '')
-                            @if(file_exists('img/paises/'.$subasta->pais_sub.'.JPG'))
-                            <?php $url_flat = '/img/paises/'.$subasta->pais_sub.'.JPG' ?>
-                           @else
-                            <?php $url_flat = '/img/paises/'.$subasta->pais_sub.'.jpg' ?>
-                           @endif
-                            @if(!empty($url_flat))
-                       <img style="width: 15px;border-radius: 50%;height: 15px;" src="{{$url_flat}}"></span>
-                   @endif
+                    <small style="text-align: right;">
+                       <img style="width: 15px;border-radius: 50%;height: 15px;" src="/img/icons/flags_png/{{ mb_strtolower($subasta->pais_sub) }}.png"></span>
                     @if(!empty(\Tools::NamePais($subasta->pais_sub)))
                    <span>{{ \Tools::NamePais($subasta->pais_sub) }}</span>
                    @endif
@@ -91,15 +83,7 @@
                 </div>
                     <div class="item-subasta-data-text" style="text-align: left;">
                         <small style="text-align: left;">
-                            @php($url_flat = '')
-                            @if(file_exists('img/paises/'.$subasta->pais_sub.'.JPG'))
-                            <?php $url_flat = '/img/paises/'.$subasta->pais_sub.'.JPG' ?>
-                           @else
-                            <?php $url_flat = '/img/paises/'.$subasta->pais_sub.'.jpg' ?>
-                           @endif
-                            @if(!empty($url_flat))
-                       <img style="width: 15px;border-radius: 50%;height: 15px;" src="{{$url_flat}}"></span>
-                   @endif
+						   <img style="width: 15px;border-radius: 50%;height: 15px;" src="/img/icons/flags/{{ mb_strtolower($subasta->pais_sub) }}.svg"></span>
                     @if(!empty(\Tools::NamePais($subasta->pais_sub)))
                    <span>{{ \Tools::NamePais($subasta->pais_sub) }}</span>
                    @endif

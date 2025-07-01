@@ -4,11 +4,12 @@
 	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
 @stop
 
+@php
+	$bread[] = array("name" => $data['name'] );
+@endphp
 
 @section('content')
-    <?php
-    $bread[] = array("name" => $data['name'] );
-    ?>
+
 <section class="bread-new">
     <div class="container">
         <div class="row">
@@ -33,7 +34,6 @@
     </div>
         @include('includes.breadcrumb')
 </section>
-
 
     @include('content.subastas')
 @stop

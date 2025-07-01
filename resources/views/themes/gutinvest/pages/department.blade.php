@@ -40,6 +40,17 @@
 				<?php
 				$metas = json_decode($ortsec->meta_contenido_ortsec0);
 				$lineas = intval(count($metas ?? 0) / 3) + 1;
+
+				$metaFunction = function ($metas) {
+					$metasForSearch = [];
+					foreach ($metas as $key => $meta) {
+						$metasForSearch[$key] = str_replace(' ', '+', mb_strtolower($meta));
+					}
+					return $metasForSearch;
+				};
+
+				$metasForSearch = $metaFunction($metas);
+
 				?>
 				<div class="col-xs-12">
 					<div class="row">
@@ -47,7 +58,7 @@
 						<div class="col-xs-12 col-md-4">
 							@for ($l = $i * $lineas; $l < ($lineas * ($i + 1)); $l++)
 
-							<h5 style="text-transform: capitalize;">{{ $metas[$l] ?? ''}}</h5>
+							<h5 style="text-transform: capitalize;"> <a href="{{ route('busqueda'). '?texto=' . ($metasForSearch[$l] ?? '')}}">{{ $metas[$l] ?? ''}}</a></h5>
 
 							@endfor
 						</div>
@@ -125,7 +136,9 @@
 				</h3>
 			</div>
 			<div class="loader"></div>
-			<div class="owl-theme owl-carousel" id="lotes_departamentos"></div>
+			<div class="row lotes-home-margin" id="lotes_departamentos">
+
+			</div>
 		</div>
 	</div>
 
@@ -160,9 +173,7 @@
     ?>
     var replace = <?= json_encode($replace) ?>;
     var key ="<?= $key ?>";
-    $( document ).ready(function() {
-            ajax_carousel(key,replace);
-     });
+	ajax_lot_grid(key,replace);
 </script>
 
 @stop
