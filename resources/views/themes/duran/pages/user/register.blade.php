@@ -29,6 +29,8 @@ $document_type = (new \App\Models\V5\FxCli)->getTipoDocumento();
 
 @section('content')
 
+@include('front::includes.header.pre_header')
+
 <div class="create-account color-letter mt-5">
 	<div class="container register pb-5">
 		<div class="row d-flex align-items-center justify-content-center">

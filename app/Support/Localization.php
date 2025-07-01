@@ -58,4 +58,14 @@ class Localization
     {
         return Str::upper(Config::get('app.locale'));
     }
+
+	/**
+	 * Obtiene las locales disponibles en la aplicación.
+	 *
+	 * @return array<string>
+	 */
+	public static function getAvailableLocales(): array
+	{
+		return array_keys(Config::get('app.locales'));
+	}
 }
