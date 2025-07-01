@@ -486,6 +486,16 @@ return [
 		'attach_image_dni' => 'Adjuntar imagenes DNI / NIE / Pasaporte',
 		'attach_image_cif' => 'Adjuntar imagenes CIF',
 		'nif_question' => '¿Porqué es necesario?',
+		'nif_files_rules' => '¿Qué documentos debo aportar?',
+		'if_you_are_individual' => 'Si es persona física',
+		'if_you_are_company' => 'Si es persona jurídica',
+		'individual_rule_1' => 'Si es persona física residente en España, copia del D.N.I. o N.I.E por ambas caras.',
+		'individual_rule_2' => 'Si es persona física no residente en España, copia del pasaporte u otro documento legalmente válido con fotografía.',
+		'company_rule_1' => 'Constitución de la sociedad',
+		'company_rule_2' => 'Acta de titularidad real',
+		'company_rule_3' => 'Documento de identidad del representante legal',
+		'company_rule_4' => 'Poder de representación',
+		'company_rule_5' => 'N.I.F. de la empresa',
 	),
 	'lot' =>
 	array(

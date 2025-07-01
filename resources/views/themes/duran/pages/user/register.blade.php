@@ -151,7 +151,7 @@ $document_type = (new \App\Models\V5\FxCli)->getTipoDocumento();
 							<div class="d-flex justify-content-space-between">
 								<label class="registerParticular">{{ trans('web.login_register.attach_image_dni') }}</label>
 								<label class="registerEnterprise">{{ trans('web.login_register.attach_image_cif') }}</label>
-								<span onclick="javascript:showNIFMessage()">{{ trans('web.login_register.nif_question') }}</span>
+								<span onclick="javascript:showNIFMessage()">{{ trans('web.login_register.nif_files_rules') }}</span>
 							</div>
 							{!! FormLib::File('files_email[]', $boolObligatorio = 1, $strExtra = "accept=\"image/png, image/jpeg, image/jpg, image/gif, image/bmp, image/tiff, application/pdf\" multiple") !!}
 						</div>
@@ -432,13 +432,20 @@ $document_type = (new \App\Models\V5\FxCli)->getTipoDocumento();
     <section class="panel">
 		<div class="modal-body">
 			<div class="align-items-center">
-				<h3 class="mb-2">{{ trans("$theme-app.login_register.nif_question") }}</h4>
-				<p class="registerEnterprise">
-					{{ trans("web.login_register.send_CIF") }}
-				</p>
-				<p class="registerParticular">
-					{{ trans("web.login_register.send_DNI") }}
-				</p>
+				<h3 class="mb-2">{{ trans("$theme-app.login_register.nif_files_rules") }}</h4>
+				<p class="bold">{{ trans('web.login_register.if_you_are_individual') }}</p>
+				<ul class="ml-2 mb-2">
+					<li>{{ trans("web.login_register.individual_rule_1") }}</li>
+					<li>{{ trans("web.login_register.individual_rule_2") }}</li>
+				</ul>
+				<p class="bold">{{ trans('web.login_register.if_you_are_company') }}</p>
+				<ul class="ml-2 mb-2">
+					<li>{{ trans("web.login_register.company_rule_1") }}</li>
+					<li>{{ trans("web.login_register.company_rule_2") }}</li>
+					<li>{{ trans("web.login_register.company_rule_3") }}</li>
+					<li>{{ trans("web.login_register.company_rule_4") }}</li>
+					<li>{{ trans("web.login_register.company_rule_5") }}</li>
+				</ul>
 			</div>
 		</div>
 		<div class="modal-footer">
