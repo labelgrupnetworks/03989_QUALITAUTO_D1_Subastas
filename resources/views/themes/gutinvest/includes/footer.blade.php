@@ -1,15 +1,12 @@
-<?php
-                            $subastaObj        = new \App\Models\Subasta();
+@php
+	$subastaObj = new \App\Models\Subasta();
+	$empresa = $global['company'];
+@endphp
 
-                        ?>
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-3 logo-footer">
-                <?php
-                    $empre= new \App\Models\Enterprise;
-                    $empresa = $empre->getEmpre();
-                ?>
                 <img height="40" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo_footer.png" alt="{{ trans(\Config::get('app.theme').'-app.home.name') }}">
                 <div class="name-footer_sub_title"style="margin-top: 10px;"><?= !empty($empresa->nom_emp)? $empresa->nom_emp : ''; ?></div>
             </div>

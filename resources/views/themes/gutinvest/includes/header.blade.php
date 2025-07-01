@@ -1,13 +1,13 @@
-<?php
-$fgortsec0 = new App\Models\V5\FgOrtsec0();
-$categories = $fgortsec0
-    ->GetAllFgOrtsec0('DEP')
-    ->get()
-    ->toarray();
-$sectorInmuebles = collect($categories)->firstWhere('lin_ortsec0', 8);
-$empre = new \App\Models\Enterprise();
-$empresa = $empre->getEmpre();
-?>
+@php
+	$fgortsec0 = new App\Models\V5\FgOrtsec0();
+	$categories = $fgortsec0
+		->GetAllFgOrtsec0('DEP')
+		->get()
+		->toarray();
+
+	$sectorInmuebles = collect($categories)->firstWhere('lin_ortsec0', 8);
+	$empresa = $global['company'];
+@endphp
 
 <header>
 	<div class="pre-header visible-xs" style="background: #2D3031">

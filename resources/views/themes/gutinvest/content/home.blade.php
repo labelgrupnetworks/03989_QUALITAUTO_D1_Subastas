@@ -1,3 +1,7 @@
+@php
+	use App\Services\Content\BannerService;
+	$bannerService = new BannerService();
+@endphp
 <div class="register-alert">
 	<div class="register-alert-close">X</div>
 	<div class="register-alert-register">
@@ -29,7 +33,7 @@
 					                <img class='img-responsive' src='{img}'  >
 					                </a>
 					                </div>";
-					$content = \Tools::slider($key, $html);
+					$content = $bannerService->getOldBannerWithSliderBlade($key, $html);
 					?>
 					<?= $content ?>
 
@@ -47,7 +51,7 @@
 					                <img class='img-responsive' src='{img}'  >
 
 					                </div>";
-					$content = \Tools::slider($key, $html);
+					$content = $bannerService->getOldBannerWithSliderBlade($key, $html);
 					?>
 					<?= $content ?>
 
@@ -114,7 +118,7 @@
 	            </a>
 	        </div>";
 
-	$content = \Tools::slider($key, $html);
+	$content = $bannerService->getOldBannerWithSliderBlade($key, $html);
 
 	?>
 	<?= $content ?>
@@ -156,7 +160,7 @@
 				                </div>
 
 				";
-				$content = \Tools::slider($key, $html);
+				$content = $bannerService->getOldBannerWithSliderBlade($key, $html);
 				?>
 				<?= $content ?>
 
@@ -187,7 +191,7 @@
 				<img class='ico-service' style='max-width: 340px;' src='{img}'  alt=''>
 				</div>
 				                        </div>";
-				$content = \Tools::slider($key, $html);
+				$content = $bannerService->getOldBannerWithSliderBlade($key, $html);
 				?>
 				<?= $content ?>
 
@@ -216,7 +220,7 @@
 				                                {html}
 				                            </div>
 				                        </div>";
-				$content = \Tools::slider($key, $html);
+				$content = $bannerService->getOldBannerWithSliderBlade($key, $html);
 				?>
 				<?= $content ?>
 			</div>
@@ -242,7 +246,7 @@
 				<p>{html}</p>
 				</div>
 				</div>";
-				$content = \Tools::slider($key, $html);
+				$content = $bannerService->getOldBannerWithSliderBlade($key, $html);
 				?>
 				<?= $content ?>
 

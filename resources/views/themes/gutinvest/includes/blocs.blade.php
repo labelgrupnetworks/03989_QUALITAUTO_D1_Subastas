@@ -1,22 +1,19 @@
-<?php
-$type= !empty($data['type'])? $data['type'] : null;
-$subc_sub= !empty($data['subc_sub'])? $data['subc_sub'] : 'S';
-?>
+@php
+	use App\Services\Content\BlocSectorService;
+	$blocSectorService = new BlocSectorService();
+
+	$type= !empty($data['type'])? $data['type'] : null;
+	$subc_sub= !empty($data['subc_sub'])? $data['subc_sub'] : 'S';
+
+	$blocs = $blocSectorService->getActiveBlocs($type,$subc_sub);
+    $blocs_auctions = $blocSectorService->getAuctionBlocs($type,$subc_sub);
+	$sectors = $blocSectorService->getSectors();
+@endphp
 
 
                 <div class="col-xs-12 col-md-10 col-md-offset-1 text-center">
                     <div class="view-subastas-lista">
                         <ul class="nav nav-tabs items-lista-subasta" role="tablist">
-                            <?php
-                                $blocs_obj = new  App\Models\BlocSector();
-
-                                $blocs = $blocs_obj->get_active_blocs($type,$subc_sub);
-
-                                $blocs_auctions = $blocs_obj->get_auction_blocs($type,$subc_sub);
-
-                                $sectors = $blocs_obj->get_sectors();
-                            ?>
-
 
                             @if(!empty($blocs_auctions))
                                 <div id="total_lots_home" class="hide">{{count($blocs_auctions['ALL'])}}</div>

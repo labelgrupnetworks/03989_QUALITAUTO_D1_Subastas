@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\DB;
  * Seguramente se puedan añadir las consultas a web_blocs y eliminar estos metodos.
  *
  * En caso de no poder eliminarlos, se deberia crear las consultas desde los modelos.
- *
- * get_sectors se ha eliminado porque no se usa en ningun sitio
  */
 class BlocSectorService
 {
@@ -129,4 +127,24 @@ class BlocSectorService
 
 		return $blocs_auctions;
 	}
+
+	public function getSectors(){
+
+        $sql = "SELECT COD_SECTOR, NVL(DES_SECTOR_LANG,DES_SECTOR) DES_SECTOR FROM FGSECTOR SEC
+                LEFT JOIN FGSECTOR_LANG SEC_LANG ON SEC_LANG.EMP_SECTOR_LANG = SEC.EMP_SECTOR AND  SEC_LANG.COD_SECTOR_LANG =SEC.COD_SECTOR AND SEC_LANG.LANG_SECTOR_LANG = :lang
+                WHERE EMP_SECTOR = :emp";
+
+        $bindings = array(
+            'emp'      => Config::get('app.emp'),
+            'lang'     => Localization::getLocaleComplete()
+
+        );
+        $sectors_tmp = DB::select($sql,$bindings);
+        $sectors = array();
+        foreach($sectors_tmp as $sector){
+            $sectors[$sector->cod_sector] = $sector->des_sector;
+        }
+
+        return $sectors;
+    }
 }
