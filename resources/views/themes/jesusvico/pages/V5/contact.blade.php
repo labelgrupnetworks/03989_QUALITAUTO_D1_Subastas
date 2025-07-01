@@ -90,7 +90,7 @@
                             </svg>
                             <p>Calle Jorge Juan, 83 duplicado,<br>28009 Madrid, España</p>
                         </div>
-                        <div class="d-flex align-items-center pt-2 pb-2">
+                        <div class="d-flex pt-2 pb-2">
                             <svg class="m-2" xmlns="http://www.w3.org/2000/svg" width="21" height="21"
                                 viewBox="0 0 21 21">
                                 <g id="time-outline" transform="translate(0.5 0.5)">
