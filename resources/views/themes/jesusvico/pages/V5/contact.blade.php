@@ -103,7 +103,9 @@
                                         stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
                                 </g>
                             </svg>
-                            <p>De lunes a viernes<br>de 9:30h a 18:00h</p>
+                            <p>
+								{!! trans("web.global.contact_schedule") !!}
+							</p>
                         </div>
                     </section>
                 </div>
