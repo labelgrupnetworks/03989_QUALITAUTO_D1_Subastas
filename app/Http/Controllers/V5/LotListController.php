@@ -747,6 +747,7 @@ class LotListController extends Controller
 			'prices.*' => 'nullable|numeric',
 			'filter_session' => 'nullable|string|max:3',
 			'session' => 'nullable|string|max:3',
+			'historic' => 'nullable|boolean',
 			'total' => 'nullable|integer',
 			'page' => 'nullable|integer',
 		];

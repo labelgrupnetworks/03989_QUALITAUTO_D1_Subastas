@@ -42,8 +42,8 @@
 						<span data-del_filter="#award" class="del_filter_js  filt-act cursor" ><i class="fas fa-times"></i> {{trans($theme.'-app.lot_list.award_filter')}}       </span>
 
 					@endif
-					<?php //el filtro de tipo de subasta solo debe aparecer por categorias , no por subasta ya que no se podrá quitar   ?>
-					@if(!empty($filters["typeSub"]) && empty($auction))
+					<?php //el filtro de tipo de subasta solo debe aparecer por categorias , no por subasta ya que no se podrá quitar?>
+					@if(!empty($filters["typeSub"]) && !empty($tipos_sub[$filters["typeSub"]]) && empty($auction))
 						<span class="del_filter_typeSub_js   filt-act cursor" ><i class="fas fa-times"></i> {{$tipos_sub[$filters["typeSub"]]}}      </span>
 
 					@endif
