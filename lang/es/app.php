@@ -496,6 +496,8 @@ return [
 		'company_rule_3' => 'Documento de identidad del representante legal',
 		'company_rule_4' => 'Poder de representación',
 		'company_rule_5' => 'N.I.F. de la empresa',
+		'reg_error_live_auction' => 'No se ha podido completar el registro. La subasta en vivo ya ha comenzado.',
+		'reg_error_live_auction_info' => 'Si desea mayor información, diríjase por correo electrónico al Departamento de Atención al siguiente email: info@tauleryfau.com',
 	),
 	'lot' =>
 	array(

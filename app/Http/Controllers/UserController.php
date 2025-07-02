@@ -526,8 +526,8 @@ class UserController extends Controller
 			Log::debug('Registro de usuario bloqueado por subasta activa', ['user' => $request->input('email')]);
 			return json_encode([
 				"err" => 2,
-				"title" => 'No se ha podido completar el registro. La subasta en vivo ya ha comenzado.',
-				"msg" => 'Si desea mayor información, diríjase por correo electrónico al Departamento de Atención al siguiente email: info@tauleryfau.com'
+				"title" => trans('web.login_register.reg_error_live_auction'),
+				"msg" => trans('web.login_register.reg_error_live_auction_info')
 			]);
 		}
 
