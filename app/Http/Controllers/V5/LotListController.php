@@ -17,6 +17,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
@@ -753,6 +754,10 @@ class LotListController extends Controller
 		];
 
 		$validator = Validator::make($request, $rules);
+		$maxAttempts = 30;
+		if(Session::has('user')){
+			$maxAttempts = 60;
+		}
 
 		//si hay errores, reemplazar por cadena vacía en la solicitud y reconstruir el validador
 		//si no reconstuimos se realizara una redireccion con los valores anteriores
@@ -764,6 +769,7 @@ class LotListController extends Controller
 				static $isLogged = false;
 				if (!$isLogged) {
 					$isLogged = true;
+					$maxAttempts = 5;
 					Log::debug("Error en el filtros de lotes", ['key' => $key, 'value' => $request[$key], 'ip' => request()->ip()]);
 				}
 
@@ -772,9 +778,23 @@ class LotListController extends Controller
 			$validator = Validator::make($request, $rules);
 		}
 
+		$this->applyRateLimit($maxAttempts);
+
 		$validatedFields = $validator->validated();
 		$filters = array_merge($filters, $validatedFields);
 		return $filters;
+	}
+
+	private function applyRateLimit($maxAttempts)
+	{
+		$key = request()->ip() . '|' . request()->path();
+		$decaySeconds = 60;
+
+		if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
+			abort(429);
+		}
+
+		RateLimiter::hit($key, $decaySeconds);
 	}
 
 	# se llama a cada una de las funciones de filtros u ordenacion
