@@ -16,6 +16,7 @@ use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\BloqueConfigController;
 use App\Http\Controllers\admin\configuracion\AdminMesuresController;
+use App\Http\Controllers\admin\contenido\AdminEmailsController;
 use App\Http\Controllers\admin\contenido\BannerController as ContenidoBannerController;
 use App\Http\Controllers\admin\EmailController;
 use App\Http\Controllers\admin\ResourceController;
@@ -437,6 +438,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		#ver imagenes de lotes de la subasta para comprobar que no faltam
 		Route::get("listado_imagenes_subasta/{cod_sub}", 'subasta\AdminLotController@listadoImagenesSubasta')->name('listado_imagenes_subasta');
 
+		Route::post('emails/send', [AdminEmailsController::class, 'sendEmail'])->name('admin.emails.send');
 		Route::resource('emails', 'contenido\AdminEmailsController')->only(['index', 'edit', 'update']);
 
 		Route::post('admin-config', [AdminConfigController::class, 'saveConfigurationSession']);

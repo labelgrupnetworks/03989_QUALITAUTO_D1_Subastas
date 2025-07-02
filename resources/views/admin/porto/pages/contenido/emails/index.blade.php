@@ -55,7 +55,11 @@
 						<td class="d-flex w-100 gap-5">
 							<a href="{{route('emails.edit', mb_strtolower($email->cod_email))}}" class="btn btn-primary btn-xs mr-1">
 								<i class="fa fa-pencil"></i>
-							{{-- <a href="{{ route('artist.edit', $artist->id_artist) }}" class="btn btn-primary btn-sm btn-block mt-0">{{ trans("admin-app.button.edit") }}</a> --}}
+							</a>
+
+							<button onclick="sendEmail('{{ mb_strtolower($email->cod_email) }}')" class="btn btn-success btn-xs mr-1">
+								<i class="fa fa-envelope"></i>
+							</button>
 						</td>
 					</tr>
 
@@ -71,5 +75,33 @@
 
 		</div>
 	</div>
+
+	<script>
+		function sendEmail(codEmail) {
+			const userEmail = prompt("Introduce la dirección de correo electrónico a la que enviar el email:");
+			if (!userEmail) {
+				alert("El email es obligatorio.");
+				return;
+			}
+			if (confirm("¿Estás seguro de que quieres enviar el email a " + userEmail + "?")) {
+
+				$.ajax({
+					url: "{{ route('admin.emails.send') }}".replace(':email', userEmail),
+					type: "POST",
+					data: {
+						cod_email: codEmail,
+						user_email: userEmail,
+						_token: $('input[name="_token"]').val()
+					},
+					success: function(response) {
+						alert("¡Email enviado con éxito!");
+					},
+					error: function(xhr, status, error) {
+						alert("Error al enviar el email: " + error);
+					}
+				});
+			}
+		}
+	</script>
 
 	@stop

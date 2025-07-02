@@ -232,8 +232,8 @@
 <table border="0" cellpadding="0" cellspacing="0" class="button_block block-8" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
 	<td class="pad" style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:5px;text-align:center;">
-		<div align="center" class="alignment"><a href="[*URL*]" style="color:#ffffff;text-decoration:none;" target="_blank"><!--[if mso]>
-			<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"  href="[*URL*]"  style="height:50px;width:264px;v-text-anchor:middle;" arcsize="8%" fillcolor="#90825f">
+		<div align="center" class="alignment"><a href="[*LINK_PSSW*]" style="color:#ffffff;text-decoration:none;" target="_blank"><!--[if mso]>
+			<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"  href="[*LINK_PSSW*]"  style="height:50px;width:264px;v-text-anchor:middle;" arcsize="8%" fillcolor="#90825f">
 			<v:stroke dashstyle="Solid" weight="0px" color="#90825f"/>
 			<w:anchorlock/>
 			<v:textbox inset="0px,0px,0px,0px">

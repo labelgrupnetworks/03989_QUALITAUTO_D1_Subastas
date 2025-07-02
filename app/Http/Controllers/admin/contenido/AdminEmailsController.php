@@ -10,6 +10,7 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FsEmail;
 use App\Models\V5\FsEmailTemplate;
 use App\Models\V5\FxCli;
+use Illuminate\Support\Facades\Config;
 
 class AdminEmailsController extends Controller
 {
@@ -86,6 +87,19 @@ class AdminEmailsController extends Controller
 		return str_replace('[*CONTENT*]', $email->body_email, $template->design_template);
 	}
 
+	public function sendEmail(Request $request)
+	{
+		$cod_email = mb_strtoupper($request->input('cod_email'));
+		$userEmail = $request->input('user_email');
 
+		$emailLib = new EmailLib($cod_email);
+		$emailLib->setUserByEmail($userEmail, true);
+		$emailLib->send_email();
+
+		return response()->json([
+			'status' => 'success',
+			'message' => 'Email enviado correctamente'
+		]);
+	}
 
 }
