@@ -5,25 +5,8 @@
 @stop
 
 @php
-    //query que mira si hay alguna subasta activa actualmente, si la hay no se pueden registrar 5/1440 es para bloquearlo 5 minutos antes de que empieze
-    $sql = "select count(asigl0.ref_asigl0) as cuantos  from \"auc_sessions\" auc
-join fgsub sub   on sub.emp_sub=auc.\"company\" and  sub.cod_sub = auc.\"auction\"
-join fgasigl0 asigl0 on asigl0.emp_asigl0=auc.\"company\" and asigl0.sub_asigl0 = sub.cod_sub
-where
-auc.\"company\" = :emp and
-sub.subc_sub in ('S') and
-sub.tipo_sub = 'W' and
-
-asigl0.ref_asigl0 >= auc.\"init_lot\"    AND
-asigl0.ref_asigl0 <=  auc.\"end_lot\" and
- asigl0.cerrado_asigl0 = 'N' and
-(auc.\"start\" - (5/1440))
-< sysdate  and auc.\"end\" > sysdate";
-
-    $bindings = [
-        'emp' => Config::get('app.emp'),
-    ];
-    $active_lots = DB::select($sql, $bindings);
+	use App\Services\Auction\AuctionService;
+	$hasActiveAuctions = (new AuctionService())->hasActiveAuctionsInXMinutes(5);
 
     $families = [
         2 => trans("$theme-app.user_panel.newsletter_2"),
@@ -35,7 +18,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
 @endphp
 
 @section('content')
-    @if (!empty($active_lots) && $active_lots[0]->cuantos > 0)
+    @if ($hasActiveAuctions)
         <section class="principal-bar no-principal body-auctions2">
             <div class="container">
                 <div class="row">

@@ -29,6 +29,7 @@ use App\Models\V5\SubAuchouse;
 use App\Models\V5\Web_Preferences;
 use App\Providers\RoutingServiceProvider;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Auction\AuctionService;
 use App\Services\User\UserAddressService;
 use App\Services\User\UserRegisterService;
 use Illuminate\Support\Facades\Cookie;
@@ -519,6 +520,17 @@ class UserController extends Controller
 	 */
 	public function registro(HttpRequest $request)
 	{
+
+		//si el cliente tiene configurado mirar si tienen subasta activa para poder registrarse
+		if (Config::get('app.check_active_auctions', false) && (new AuctionService())->hasActiveAuctionsInXMinutes(5)) {
+			Log::debug('Registro de usuario bloqueado por subasta activa', ['user' => $request->input('email')]);
+			return json_encode([
+				"err" => 2,
+				"title" => 'No se ha podido completar el registro. La subasta en vivo ya ha comenzado.',
+				"msg" => 'Si desea mayor información, diríjase por correo electrónico al Departamento de Atención al siguiente email: info@tauleryfau.com'
+			]);
+		}
+
 		if (!empty(Config::get('app.registerChecker' . $request["pri_emp"])) && !empty($request["pri_emp"])) {
 
 			$camposFormNoNullables = explode(",", Config::get('app.registerChecker' . $request["pri_emp"]));

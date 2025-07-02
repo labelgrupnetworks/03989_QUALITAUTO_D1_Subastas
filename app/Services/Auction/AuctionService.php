@@ -9,6 +9,7 @@ use App\Models\V5\FgSubInd;
 use App\Support\Localization;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class AuctionService
@@ -139,5 +140,26 @@ class AuctionService
 		}
 
 		return $lastAuctionCod == $codSub;
+	}
+
+	/**
+	 * Comprueba si hay subastas activas en los próximos X minutos.
+	 *
+	 * @param int $minutes Número de minutos para comprobar.
+	 * @param string $type Tipo de subasta a comprobar (por defecto, FgSub::TIPO_SUB_PRESENCIAL).
+	 * @return bool Verdadero si hay subastas activas, falso en caso contrario.
+	 */
+	public function hasActiveAuctionsInXMinutes(int $minutes, string $type = FgSub::TIPO_SUB_PRESENCIAL): bool
+	{
+		return FgAsigl0::query()
+			->joinSubastaAsigl0()
+			->joinSessionAsigl0()
+			->where([
+				['subc_sub', FgSub::SUBC_SUB_ACTIVO],
+				['tipo_sub', $type],
+				['cerrado_asigl0', 'N']
+			])
+			->whereRaw(DB::raw('auc."start" - (?/1440) < sysdate  and auc."end" > sysdate'), [$minutes])
+			->exists();
 	}
 }

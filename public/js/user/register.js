@@ -264,7 +264,12 @@ function successRegister(response, aux) {
 		response.message = response.msg;
 		response.status = "error";
 		showMessage(response);
-	} else if (response.err == 0) {
+	}
+	else if(response.err == 2) {
+		$('.submitButton').html(aux);
+		showMessage(response.msg, response.title);
+	}
+	else if (response.err == 0) {
 
 		if (response.info == undefined) {
 			document.location = response.msg;
@@ -280,7 +285,6 @@ function successRegister(response, aux) {
 		}
 	}
 }
-
 
 function inputRequired(name, required) {
 	let valRequired = required ? 1 : 0;
