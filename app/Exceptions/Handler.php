@@ -84,6 +84,7 @@ class Handler extends ExceptionHandler
         return ! ($exception instanceof \Illuminate\Validation\ValidationException)
             && ! ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
 			&& ! ($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException)
+			&& ! ($exception instanceof \Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException)
 			&& ! ($exception instanceof \Illuminate\Session\TokenMismatchException)
 			&& ! ($exception instanceof \Symfony\Component\Mailer\Exception\UnexpectedResponseException);
     }
