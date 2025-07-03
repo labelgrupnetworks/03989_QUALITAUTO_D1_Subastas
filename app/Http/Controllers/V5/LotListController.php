@@ -791,7 +791,8 @@ class LotListController extends Controller
 		$decaySeconds = 60;
 
 		if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
-			abort(429);
+			Log::debug("Too many attempts for lot list filters", ['ip' => request()->ip(), 'path' => request()->path(), 'agent' => request()->header('User-Agent')]);
+			abort(429, 'Too Many Attempts.');
 		}
 
 		RateLimiter::hit($key, $decaySeconds);

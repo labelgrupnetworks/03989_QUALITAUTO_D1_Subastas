@@ -154,7 +154,7 @@
 						<a
 							@if ($render) href="{{ route("$parent_name.show", ['subasta' => $cod_sub, 'menu' => 'subastas']) }}"
 							@else
-								href="{{ route("$parent_name.$resource_name.index", ['subasta' => $cod_sub, 'menu' => 'subastas']) }}" @endif
+								href="{{ route("$parent_name.$resource_name.index", ['subasta' => $cod_sub, 'menu' => 'subastas', 'cod_sub' => $cod_sub]) }}" @endif
 							class="btn btn-warning">{{ trans('admin-app.button.restart') }}
 						</a>
 					</td>
