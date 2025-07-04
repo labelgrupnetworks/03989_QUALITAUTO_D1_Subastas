@@ -1,5 +1,5 @@
 @php
-	$showClosedAndNotBuyed = ($cerrado && empty($precio_venta) && !$compra) || ($isLastHistoryAuction && $cerrado && empty($precio_venta) && $compra);
+	$showClosedAndNotBuyed = ($cerrado && empty($precio_venta) && !$compra) || (!empty($isLastHistoryAuction) && $isLastHistoryAuction && $cerrado && empty($precio_venta) && $compra);
 @endphp
 
 <div class="{{$class_square}} square" {!! $codeScrollBack !!}>
