@@ -33,43 +33,100 @@ class AdminOperadoresController extends Controller
 		'tipop_orlic' => FgOrlicTipopEnum::class,
 	];
 
+	/**
+	 * Campos base para las consultas de órdenes telefónicas
+	 */
+	protected $baseSelectFields = [
+		'sub_orlic',
+		'licit_orlic',
+		'ref_orlic',
+		'lin_orlic',
+		'himp_orlic',
+		'tipop_orlic',
+		'operador_orlic',
+		'descweb_hces1',
+		'rsoc_licit'
+	];
+
+	/**
+	 * Campos adicionales para consultas de impresión
+	 */
+	protected $printSelectFields = [
+		'tel1_orlic',
+		'tel2_orlic',
+		'tel3_orlic',
+		'impsalhces_asigl0'
+	];
+
+	/**
+	 * Obtiene la subasta por código o una instancia vacía
+	 */
+	private function getSubasta(?string $cod_sub = null): FgSub
+	{
+		if (empty($cod_sub)) {
+			return new FgSub();
+		}
+
+		return FgSub::where('cod_sub', $cod_sub)->first() ?? new FgSub();
+	}
+
+	/**
+	 * Query base para órdenes telefónicas
+	 */
+	private function getPhoneOrdersQuery(string $cod_sub, array $additionalFields = []): \Illuminate\Database\Eloquent\Builder
+	{
+		$selectFields = array_merge($this->baseSelectFields, $additionalFields);
+
+		return FgOrlic::query()
+			->select($selectFields)
+			->with(['phoneBiddingAgent'])
+			->joinLicit()
+			->joinAsigl0()
+			->joinFghces1()
+			->where('sub_orlic', $cod_sub)
+			->whereIn('tipop_orlic', [
+				FgOrlicTipopEnum::TELEFONO->value,
+				FgOrlicTipopEnum::TELEFONO_WEB->value
+			]);
+	}
+
+	/**
+	 * Añade subconsultas para determinar si hay pujas o órdenes más altas.
+	 */
+	private function addBiddingSubqueries(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
+	{
+		return $query->addSelect([
+			'has_max_bidds' => function ($subQuery) {
+				$subQuery->select(DB::raw('CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END'))
+					->from('fgasigl1 as bids')
+					->whereColumn('bids.emp_asigl1', 'fgorlic.emp_orlic')
+					->whereColumn('bids.sub_asigl1', 'fgorlic.sub_orlic')
+					->whereColumn('bids.ref_asigl1', 'fgorlic.ref_orlic')
+					->whereColumn('bids.imp_asigl1', '>', 'fgorlic.himp_orlic');
+			},
+			'is_max_order' => function ($subQuery) {
+				$subQuery->select(DB::raw('CASE WHEN max_order.licit_orlic = fgorlic.licit_orlic THEN 1 ELSE 0 END'))
+					->from('fgorlic as max_order')
+					->whereColumn('max_order.emp_orlic', 'fgorlic.emp_orlic')
+					->whereColumn('max_order.sub_orlic', 'fgorlic.sub_orlic')
+					->whereColumn('max_order.ref_orlic', 'fgorlic.ref_orlic')
+					->orderBy('max_order.himp_orlic', 'DESC')
+					->orderBy('max_order.fec_orlic', 'DESC')
+					->limit(1);
+			}
+		]);
+	}
+
 	public function index(Request $request, $cod_sub = null)
 	{
-		//para enlaces y mostrar el nombre de la subasta
-		$fgSub = new FgSub();
-		if (!empty($cod_sub)) {
-			$fgSub = FgSub::where('cod_sub', $cod_sub)
-				->first();
-		}
+		$fgSub = $this->getSubasta($cod_sub);
 
 		//si estamos dentro de la subasta no cal mostrar la columna de subasta
 		$availableColumns = $cod_sub
 			? array_except($this->availableColumns, ['sub_orlic'])
 			: $this->availableColumns;
 
-		$phoneOrders = FgOrlic::query()
-			->select([
-				'sub_orlic',
-				'licit_orlic',
-				'ref_orlic',
-				'lin_orlic',
-				'himp_orlic',
-				'tipop_orlic',
-				'operador_orlic',
-				'descweb_hces1',
-				'rsoc_licit'
-			])
-			->with(['phoneBiddingAgent'])
-			->joinLicit()
-			->joinAsigl0()
-			->joinFghces1()
-			->where([
-				'sub_orlic' => $fgSub->cod_sub
-			])
-			->whereIn('tipop_orlic', [
-				FgOrlicTipopEnum::TELEFONO->value,
-				FgOrlicTipopEnum::TELEFONO_WEB->value
-			])
+		$phoneOrders = $this->getPhoneOrdersQuery($fgSub->cod_sub)
 			->orderBy('ref_orlic')
 			->paginate(25);
 
@@ -109,59 +166,13 @@ class AdminOperadoresController extends Controller
 	 */
 	public function printBidPaddles(Request $request, $cod_sub)
 	{
-		$bidPaddles = FgOrlic::query()
-			->select([
-				'sub_orlic',
-				'licit_orlic',
-				'ref_orlic',
-				'lin_orlic',
-				'himp_orlic',
-				'tipop_orlic',
-				'operador_orlic',
-				'tel1_orlic',
-				'tel2_orlic',
-				'tel3_orlic',
-				'descweb_hces1',
-				'rsoc_licit',
-				'impsalhces_asigl0'
-			])
-			->addSelect([
-				'has_max_bidds' => function ($query) {
-					$query->select(DB::raw('CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END'))
-						->from('fgasigl1 as bids')
-						->whereColumn('bids.emp_asigl1', 'fgorlic.emp_orlic')
-						->whereColumn('bids.sub_asigl1', 'fgorlic.sub_orlic')
-						->whereColumn('bids.ref_asigl1', 'fgorlic.ref_orlic')
-						->whereColumn('bids.imp_asigl1', '>', 'fgorlic.himp_orlic');
-				},
-				'is_max_order' => function ($query) {
-					$query->select(DB::raw('CASE WHEN max_order.licit_orlic = fgorlic.licit_orlic THEN 1 ELSE 0 END'))
-						->from('fgorlic as max_order')
-						->whereColumn('max_order.emp_orlic', 'fgorlic.emp_orlic')
-						->whereColumn('max_order.sub_orlic', 'fgorlic.sub_orlic')
-						->whereColumn('max_order.ref_orlic', 'fgorlic.ref_orlic')
-						->orderBy('max_order.himp_orlic', 'DESC')
-						->orderBy('max_order.fec_orlic', 'DESC')
-						->limit(1);
-				}
-			])
-			//->whereNotNull('operador_orlic')
-			->with(['phoneBiddingAgent'])
-			->joinLicit()
-			->joinAsigl0()
-			->joinFghces1()
-			->where('sub_orlic', $cod_sub)
-			->whereIn('tipop_orlic', [
-				FgOrlicTipopEnum::TELEFONO->value,
-				FgOrlicTipopEnum::TELEFONO_WEB->value
-			])
-			->orderBy('ref_orlic')
-			->get();
-
+		$bidPaddles = $this->getPhoneOrdersQuery($cod_sub, $this->printSelectFields);
+		$bidPaddles = $this->addBiddingSubqueries($bidPaddles);
+		$bidPaddles = $bidPaddles->orderBy('ref_orlic')->get();
 
 		return view('admin::pages.subasta.operadores.paddles_print', [
 			'bidPaddles' => $bidPaddles,
-			'subasta' => FgSub::where('cod_sub', $cod_sub)->first(),
+			'subasta' => $this->getSubasta($cod_sub),
 		]);
 	}
 
@@ -173,59 +184,17 @@ class AdminOperadoresController extends Controller
 	 */
 	public function printBidPaddlesByOperator(Request $request, $cod_sub)
 	{
-		$bidPaddles = FgOrlic::query()
-			->select([
-				'sub_orlic',
-				'licit_orlic',
-				'ref_orlic',
-				'lin_orlic',
-				'himp_orlic',
-				'tipop_orlic',
-				'operador_orlic',
-				'tel1_orlic',
-				'tel2_orlic',
-				'tel3_orlic',
-				'descweb_hces1',
-				'rsoc_licit',
-				'impsalhces_asigl0'
-			])
-			->addSelect([
-				'has_max_bidds' => function ($query) {
-					$query->select(DB::raw('CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END'))
-						->from('fgasigl1 as bids')
-						->whereColumn('bids.emp_asigl1', 'fgorlic.emp_orlic')
-						->whereColumn('bids.sub_asigl1', 'fgorlic.sub_orlic')
-						->whereColumn('bids.ref_asigl1', 'fgorlic.ref_orlic')
-						->whereColumn('bids.imp_asigl1', '>', 'fgorlic.himp_orlic');
-				},
-				'is_max_order' => function ($query) {
-					$query->select(DB::raw('CASE WHEN max_order.licit_orlic = fgorlic.licit_orlic THEN 1 ELSE 0 END'))
-						->from('fgorlic as max_order')
-						->whereColumn('max_order.emp_orlic', 'fgorlic.emp_orlic')
-						->whereColumn('max_order.sub_orlic', 'fgorlic.sub_orlic')
-						->whereColumn('max_order.ref_orlic', 'fgorlic.ref_orlic')
-						->orderBy('max_order.himp_orlic', 'DESC')
-						->orderBy('max_order.fec_orlic', 'DESC')
-						->limit(1);
-				}
-			])
+		$bidPaddles = $this->getPhoneOrdersQuery($cod_sub, $this->printSelectFields);
+		$bidPaddles = $this->addBiddingSubqueries($bidPaddles);
+		$bidPaddles = $bidPaddles
 			->whereNotNull('operador_orlic')
-			->with(['phoneBiddingAgent'])
-			->joinLicit()
-			->joinAsigl0()
-			->joinFghces1()
-			->where('sub_orlic', $cod_sub)
-			->whereIn('tipop_orlic', [
-				FgOrlicTipopEnum::TELEFONO->value,
-				FgOrlicTipopEnum::TELEFONO_WEB->value
-			])
 			->orderBy('operador_orlic')
 			->orderBy('ref_orlic')
 			->get();
 
 		return view('admin::pages.subasta.operadores.list_bidder_phoneorders_print', [
 			'bidPaddles' => $bidPaddles,
-			'subasta' => FgSub::where('cod_sub', $cod_sub)->first(),
+			'subasta' => $this->getSubasta($cod_sub),
 		]);
 	}
 }
