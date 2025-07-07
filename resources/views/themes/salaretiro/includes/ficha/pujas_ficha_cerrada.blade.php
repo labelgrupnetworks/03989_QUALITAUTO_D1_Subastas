@@ -16,7 +16,11 @@ elseif($lote_actual->subc_sub == 'H' && $lote_actual->cod_sub == $lote_actual->s
         <div class="row">
                 <div class="col-xs-12 col-sm-6">
 
-                        @if($lote_actual->cerrado_asigl0 == 'S' && !empty($precio_venta) && $lote_actual->remate_asigl0 =='S' )
+						 @if (($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->lic_hces1 == 'S' && $lote_actual->subc_sub == 'H') ||
+									$lote_actual->retirado_asigl0 != 'N' || ($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == 'R')
+									|| (Config::get('app.awarded') && $lote_actual->cerrado_asigl0 == 'S' && !empty($lote_actual->impadj_asigl0)))
+						<p class="pre">{{ trans($theme.'-app.subastas.dont_available') }}</p>
+                        @elseif($lote_actual->cerrado_asigl0 == 'S' && !empty($precio_venta) && $lote_actual->remate_asigl0 =='S' )
                         <p class="pre">{{ trans($theme.'-app.subastas.buy_to') }}:</p> <div class="pre">{{ \Tools::moneyFormat($precio_venta) }} {{ trans($theme.'-app.subastas.euros') }}</div>
                         @elseif($lote_actual->cerrado_asigl0 == 'S' && !empty($precio_venta)  || $lote_actual->desadju_asigl0 =='S')
                         <p class="pre"> {{ trans($theme.'-app.subastas.dont_available') }}</p>

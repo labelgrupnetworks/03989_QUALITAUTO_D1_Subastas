@@ -95,7 +95,20 @@
                                 </a>
                             @endif
 
-                            @if ($lote_actual->retirado_asigl0 != 'N')
+							 @if (($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->lic_hces1 == 'S' && $lote_actual->subc_sub == 'H') ||
+									$lote_actual->retirado_asigl0 != 'N' ||
+									($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == 'R') ||
+									(Config::get('app.awarded') && $lote_actual->cerrado_asigl0 == 'S' && !empty($lote_actual->impadj_asigl0)))
+
+								<div class="retired-border">
+                                    <div class="retired dont">
+                                        <span class="retired-text lang-{{ \Config::get('app.locale') }}">
+                                            {{ trans('web.subastas.dont_available') }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                            @elseif ($lote_actual->retirado_asigl0 != 'N')
                                 <div class="retired-border">
                                     <div class="retired">
                                         <span class="retired-text lang-{{ \Config::get('app.locale') }}">
