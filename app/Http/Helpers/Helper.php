@@ -97,3 +97,10 @@ if(!function_exists('is_collection')){
 	}
 }
 
+if(!function_exists('is_enum')){
+	function is_enum($var)
+	{
+		return is_subclass_of($var, \BackedEnum::class);
+	}
+}
+

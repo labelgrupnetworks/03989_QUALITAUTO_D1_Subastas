@@ -5,9 +5,22 @@ namespace App\Models\V5;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Config;
-use phpDocumentor\Reflection\Types\Integer;
+use Illuminate\Support\Facades\Config;
 
+/**
+ * Modelo para las órdenes de licitación (FgOrlic)
+ *
+ * @property string emp_orlic
+ * @property string sub_orlic
+ * @property string ref_orlic
+ * @property int lin_orlic
+ * @property string licit_orlic
+ * @property float himp_orlic
+ * @property string tipop_orlic
+ * @property string operador_orlic
+ * @property string usr_update_orlic
+ * @property FsOperadores phoneBiddingAgent
+ */
 class FgOrlic extends Model
 {
     protected $table = 'FGORLIC';
@@ -108,9 +121,18 @@ class FgOrlic extends Model
                     ->where('licit_orlic', $item["licit_orlic"]);
     }
 
+	public function scopeJoinLicit($query)
+	{
+		return $query->join("fglicit", function ($join) {
+			$join->on("sub_licit", "sub_orlic")
+				->on("cod_licit", "licit_orlic")
+				->on("emp_licit", "emp_orlic");
+		});
+	}
+
     public function scopeJoinCli($query){
         return $query->join("FGLICIT", "EMP_LICIT = EMP_ORLIC AND SUB_LICIT = SUB_ORLIC AND COD_LICIT = LICIT_ORLIC ")
-                     ->join("FXCLI", "GEMP_CLI = '". \Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT");
+                     ->join("FXCLI", "GEMP_CLI = '". Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT");
 
     }
 
@@ -156,6 +178,17 @@ class FgOrlic extends Model
 
 	public function scopeJoinUsr($query){
         return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGORLIC.USR_UPDATE_ORLIC");
+	}
+
+	/**
+	 * Relación con el modelo FsOperadores
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function phoneBiddingAgent()
+	{
+		return $this->belongsTo(FsOperadores::class, 'operador_orlic', 'cod_operadores')
+			->where('emp_operadores', Config::get("app.emp"));
+
 	}
 
 

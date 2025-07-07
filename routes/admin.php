@@ -22,6 +22,8 @@ use App\Http\Controllers\admin\EmailController;
 use App\Http\Controllers\admin\ResourceController;
 use App\Http\Controllers\admin\subasta\AdminBidsController;
 use App\Http\Controllers\admin\subasta\AdminLicitController;
+use App\Http\Controllers\admin\subasta\AdminOperadoresController;
+use App\Http\Controllers\admin\subasta\AdminOrderController;
 use App\Http\Controllers\admin\TraduccionesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
@@ -232,6 +234,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/send_ws', 'subasta\AdminOrderController@send_ws');
 			Route::post('/delete-with-filters', 'subasta\AdminOrderController@destroyWithFilters')->name('orders.destroy_with_filters');
 			Route::post('/delete-selection', 'subasta\AdminOrderController@destroySelections')->name('orders.destroy_selections');
+			Route::post('/add-bidding-agent', [AdminOrderController::class, 'addBiddingAgent'])->name('orders.add_bidding_agent');
 		});
 		Route::resource('orders', 'subasta\AdminOrderController')->except(['show'])->parameters(['orders' => 'idAuction']);
 
@@ -396,6 +399,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			'subastas_concursales' => 'cod_sub',
 			'lotes_concursales' => 'lote'
 		]);
+
+		Route::post('operadores', [AdminOperadoresController::class, 'store'])->name('subastas.operadores.store');
+		Route::get('subastas/{cod_sub}/operadores/print-bid-paddles', [AdminOperadoresController::class, 'printBidPaddles'])->name('subastas.operadores.print_bid_paddles');
+		Route::get('subastas/{cod_sub}/operadores/print-bid-paddles-by-operator', [AdminOperadoresController::class, 'printBidPaddlesByOperator'])->name('subastas.operadores.print_bid_paddles_by_operator');
+		Route::get('subastas/{cod_sub}/operadores', [AdminOperadoresController::class, 'index'])->name('subastas.operadores.index');
 
 		Route::get('subastas/{num_hces1}/{lin_hces1}/files/create', 'subasta\AdminLotFilesController@create')->name('subastas.lotes.files.create');
 		Route::post('subastas/{num_hces1}/{lin_hces1}/files', 'subasta\AdminLotFilesController@store')->name('subastas.lotes.files.store');

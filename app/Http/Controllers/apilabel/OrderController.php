@@ -25,10 +25,22 @@ class OrderController extends ApiLabelController
 
 	protected $renameSpecialWhere = array('min_date' => "fec_orlic", 'max_date' => "fec_orlic" );
 	#fecha debe ser obligatoria
-    protected  $rules = array('idoriginlot' => "required|max:255", "idauction" => "required|max:8","idoriginclient" => "required|max:8", "order" => "required|numeric","type" => "alpha|max:1|nullable", "date" => "required|date_format:Y-m-d H:i:s","phone1" => "alpha_num|max:20|nullable", "phone2" => "alpha_num|max:20|nullable", "phone3" => "alpha_num|max:20|nullable",  "phone3" => "alpha_num|max:20|nullable", "num_award_conditional" => "integer" );
+	protected  $rules = [
+		'idoriginlot' => "required|max:255",
+		"idauction" => "required|max:8",
+		"idoriginclient" => "required|max:8",
+		"order" => "required|numeric",
+		"type" => "alpha|max:1|nullable",
+		"date" => "required|date_format:Y-m-d H:i:s",
+		"phone1" => "alpha_num|max:20|nullable",
+		"phone2" => "alpha_num|max:20|nullable",
+		"phone3" => "alpha_num|max:20|nullable",
+		"phone3" => "alpha_num|max:20|nullable",
+		"num_award_conditional" => "integer"
+	];
 
 
-    public function postOrder(){
+	public function postOrder(){
         $items =  request("items");
         return $this->createOrder( $items );
     }
