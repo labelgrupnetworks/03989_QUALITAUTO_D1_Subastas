@@ -63,6 +63,8 @@ class ArtistController extends Controller
 	{
 		$artist  = Web_Artist::select('id_artist', 'name_artist')->LeftJoinLang()->where("id_artist", $request->idArtist)->first();
 
+		abort_if(empty($artist), 404, 'Artist not found');
+
 		$articles = Web_Artist_Article::where("idartist_artist_article", $request->idArtist)->get();
 		#coger lotes activos, historicos los coje, ordenados por fecha y subasta
 		$lots = FgAsigl0::select('DESCWEB_HCES1, COD_SUB, "id_auc_sessions",	"name" , REF_ASIGL0, NUM_HCES1, LIN_HCES1, WEBFRIEND_HCES1, SUBC_SUB, CERRADO_ASIGL0, OFERTA_ASIGL0, RETIRADO_ASIGL0,FAC_HCES1, IMPLIC_HCES1, SUBC_SUB, IMPADJ_ASIGL0')->ActiveLotAsigl0()->joinFgCaracteristicasAsigl0()->joinFgCaracteristicasHces1Asigl0()->where("IDVALUE_CARACTERISTICAS_HCES1", $request->idArtist)->orderby('"start"', "desc")->orderby('cod_sub')->get();
