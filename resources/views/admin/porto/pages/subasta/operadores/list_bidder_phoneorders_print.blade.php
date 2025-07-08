@@ -50,14 +50,10 @@
             max-width: 150px;
         }
 
-        /* Espacio en el contenido para no tapar la cabecera */
         .print-content {
             margin-top: 110px;
-            /* > altura de header */
             margin-bottom: 0px;
-            /* si tienes footer fijo */
             page-break-after: always;
-            /* para forzar un salto de página después de cada sección */
         }
 
         td {
@@ -124,8 +120,6 @@
             </table>
         </div>
     @endforeach
-
-    <!-- o tu maquetación completa del documento -->
 </body>
 
 </html>

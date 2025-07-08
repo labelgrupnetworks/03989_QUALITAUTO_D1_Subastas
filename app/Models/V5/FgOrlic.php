@@ -6,6 +6,7 @@ namespace App\Models\V5;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Modelo para las órdenes de licitación (FgOrlic)
@@ -35,7 +36,7 @@ class FgOrlic extends Model
     #definimos la variable emp para no tener que indicarla cada vez
     public function __construct(array $vars = []){
         $this->attributes=[
-            'emp_orlic' => \Config::get("app.emp")
+            'emp_orlic' => Config::get("app.emp")
         ];
         parent::__construct($vars);
     }
@@ -46,7 +47,7 @@ class FgOrlic extends Model
         parent::boot();
 
         static::addGlobalScope('emp', function(Builder $builder) {
-            $builder->where('emp_orlic', \Config::get("app.emp"));
+            $builder->where('emp_orlic', Config::get("app.emp"));
         });
     }
     protected $casts = [
@@ -138,7 +139,7 @@ class FgOrlic extends Model
 
 	public function scopeleftJoinCli($query){
         return $query->join("FGLICIT", "EMP_LICIT = EMP_ORLIC AND SUB_LICIT = SUB_ORLIC AND COD_LICIT = LICIT_ORLIC ")
-                     ->leftjoin("FXCLI", "GEMP_CLI = '". \Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT");
+                     ->leftjoin("FXCLI", "GEMP_CLI = '". Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT");
 
     }
 
@@ -147,9 +148,40 @@ class FgOrlic extends Model
     }
 
 	//no funcionara sino se hace el antes el join con Asigl0
-	public function scopeJoinFghces1($query){
+	public function scopeJoinFghces1($query)
+	{
         return $query->join('FGHCES1', 'FGHCES1.EMP_HCES1 = FGASIGL0.EMP_ASIGL0 AND FGHCES1.NUM_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1.LIN_HCES1 = FGASIGL0.LINHCES_ASIGL0');
     }
+
+	public function scopeAddSelectHasMaxBidds($query)
+	{
+		return $query->addSelect([
+			'has_max_bidds' => function ($subQuery) {
+				$subQuery->select(DB::raw('CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END'))
+					->from('fgasigl1 as bids')
+					->whereColumn('bids.emp_asigl1', 'fgorlic.emp_orlic')
+					->whereColumn('bids.sub_asigl1', 'fgorlic.sub_orlic')
+					->whereColumn('bids.ref_asigl1', 'fgorlic.ref_orlic')
+					->whereColumn('bids.imp_asigl1', '>', 'fgorlic.himp_orlic');
+			}
+		]);
+	}
+
+	public function scopeAddSelectIsMaxOrder($query)
+	{
+		return $query->addSelect([
+			'is_max_order' => function ($subQuery) {
+				$subQuery->select(DB::raw('CASE WHEN max_order.licit_orlic = fgorlic.licit_orlic THEN 1 ELSE 0 END'))
+					->from('fgorlic as max_order')
+					->whereColumn('max_order.emp_orlic', 'fgorlic.emp_orlic')
+					->whereColumn('max_order.sub_orlic', 'fgorlic.sub_orlic')
+					->whereColumn('max_order.ref_orlic', 'fgorlic.ref_orlic')
+					->orderBy('max_order.himp_orlic', 'desc')
+					->orderBy('max_order.fec_orlic', 'desc')
+					->limit(1);
+			}
+		]);
+	}
 
 	public function getTipoOrderTypeAttribute()
 	{

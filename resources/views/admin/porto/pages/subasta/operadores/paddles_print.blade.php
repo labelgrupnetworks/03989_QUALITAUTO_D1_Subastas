@@ -106,7 +106,7 @@
                     <p @class([
                         'licit-number',
                         'licit-number-open' =>
-                            $bidPaddle->himp_orlic == $bidPaddle->impsalhces_asigl0,
+                            (!$bidPaddle->has_max_bidds && $bidPaddle->is_max_order),
                     ])>{{ $bidPaddle->licit_orlic }}</p>
 
                     {{-- Por debajo mostrar el nombre de la palete, numero de lote e importe --}}

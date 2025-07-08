@@ -5,12 +5,16 @@
 
 <div class="col-xs-12 d-flex mb-1 pt-1 pb-1" style="background-color: #ffe7e7; gap:5px; flex-wrap: wrap">
     @if (!empty($fgSub->cod_sub))
-        <button class="btn btn-success btn-sm" onclick="openPrintWindow('{{ $fgSub->cod_sub }}')">
+        <button class="btn btn-success btn-sm" onclick="printBidPaddles('{{ $fgSub->cod_sub }}')">
             Imprimir paletas
         </button>
 
-		<button class="btn btn-success btn-sm" onclick="openPrint2Window('{{ $fgSub->cod_sub }}')">
+        <button class="btn btn-success btn-sm" onclick="printBidPaddlesByOperator('{{ $fgSub->cod_sub }}')">
             Imprimir Lista de Operadores
+        </button>
+
+        <button class="btn btn-success btn-sm" onclick="printBidPaddlesByReference('{{ $fgSub->cod_sub }}')">
+            Imprimir Lista Ordenes Telefónicas
         </button>
     @endif
 
@@ -192,23 +196,33 @@
         $('#modalCrearOperador').modal('show');
     });
 
-    function openPrintWindow(id) {
+    function printBidPaddles(id) {
         const url = `{{ route('subastas.operadores.print_bid_paddles', ':id') }}`.replace(':id', id);
         // Ajusta width/height según necesites
         window.open(
             url,
             'printWindow',
             'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=600'
-			);
-		}
+        );
+    }
 
-	function openPrint2Window(id) {
-		const url = `{{ route('subastas.operadores.print_bid_paddles_by_operator', ':id') }}`.replace(':id', id);
-		// Ajusta width/height según necesites
-		window.open(
-			url,
-			'printWindow',
-			'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=600'
-			);
-		}
+    function printBidPaddlesByOperator(id) {
+        const url = `{{ route('subastas.operadores.print_bid_paddles_by_operator', ':id') }}`.replace(':id', id);
+        // Ajusta width/height según necesites
+        window.open(
+            url,
+            'printWindow',
+            'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=600'
+        );
+    }
+
+    function printBidPaddlesByReference(id) {
+        const url = `{{ route('subastas.operadores.print_bid_paddles_by_reference', ':id') }}`.replace(':id', id);
+        // Ajusta width/height según necesites
+        window.open(
+            url,
+            'printWindow',
+            'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=600'
+        );
+    }
 </script>

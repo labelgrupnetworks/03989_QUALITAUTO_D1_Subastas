@@ -402,6 +402,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::post('operadores', [AdminOperadoresController::class, 'store'])->name('subastas.operadores.store');
 		Route::get('subastas/{cod_sub}/operadores/print-bid-paddles', [AdminOperadoresController::class, 'printBidPaddles'])->name('subastas.operadores.print_bid_paddles');
+		Route::get('subastas/{cod_sub}/operadores/print-bid-paddles-by-reference', [AdminOperadoresController::class, 'printBidPaddlesByReference'])->name('subastas.operadores.print_bid_paddles_by_reference');
 		Route::get('subastas/{cod_sub}/operadores/print-bid-paddles-by-operator', [AdminOperadoresController::class, 'printBidPaddlesByOperator'])->name('subastas.operadores.print_bid_paddles_by_operator');
 		Route::get('subastas/{cod_sub}/operadores', [AdminOperadoresController::class, 'index'])->name('subastas.operadores.index');
 

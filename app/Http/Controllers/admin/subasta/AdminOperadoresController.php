@@ -45,18 +45,12 @@ class AdminOperadoresController extends Controller
 		'tipop_orlic',
 		'operador_orlic',
 		'descweb_hces1',
-		'rsoc_licit'
-	];
-
-	/**
-	 * Campos adicionales para consultas de impresión
-	 */
-	protected $printSelectFields = [
+		'rsoc_licit',
 		'tel1_orlic',
 		'tel2_orlic',
 		'tel3_orlic',
-		'impsalhces_asigl0'
 	];
+
 
 	/**
 	 * Obtiene la subasta por código o una instancia vacía
@@ -88,33 +82,6 @@ class AdminOperadoresController extends Controller
 				FgOrlicTipopEnum::TELEFONO->value,
 				FgOrlicTipopEnum::TELEFONO_WEB->value
 			]);
-	}
-
-	/**
-	 * Añade subconsultas para determinar si hay pujas o órdenes más altas.
-	 */
-	private function addBiddingSubqueries(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
-	{
-		return $query->addSelect([
-			'has_max_bidds' => function ($subQuery) {
-				$subQuery->select(DB::raw('CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END'))
-					->from('fgasigl1 as bids')
-					->whereColumn('bids.emp_asigl1', 'fgorlic.emp_orlic')
-					->whereColumn('bids.sub_asigl1', 'fgorlic.sub_orlic')
-					->whereColumn('bids.ref_asigl1', 'fgorlic.ref_orlic')
-					->whereColumn('bids.imp_asigl1', '>', 'fgorlic.himp_orlic');
-			},
-			'is_max_order' => function ($subQuery) {
-				$subQuery->select(DB::raw('CASE WHEN max_order.licit_orlic = fgorlic.licit_orlic THEN 1 ELSE 0 END'))
-					->from('fgorlic as max_order')
-					->whereColumn('max_order.emp_orlic', 'fgorlic.emp_orlic')
-					->whereColumn('max_order.sub_orlic', 'fgorlic.sub_orlic')
-					->whereColumn('max_order.ref_orlic', 'fgorlic.ref_orlic')
-					->orderBy('max_order.himp_orlic', 'DESC')
-					->orderBy('max_order.fec_orlic', 'DESC')
-					->limit(1);
-			}
-		]);
 	}
 
 	public function index(Request $request, $cod_sub = null)
@@ -161,14 +128,15 @@ class AdminOperadoresController extends Controller
 
 	/**
 	 * Imprimir las paletas de los operadores de la subasta.
-	 * @param Request $request
 	 * @param string $cod_sub
 	 */
-	public function printBidPaddles(Request $request, $cod_sub)
+	public function printBidPaddles($cod_sub)
 	{
-		$bidPaddles = $this->getPhoneOrdersQuery($cod_sub, $this->printSelectFields);
-		$bidPaddles = $this->addBiddingSubqueries($bidPaddles);
-		$bidPaddles = $bidPaddles->orderBy('ref_orlic')->get();
+		$bidPaddles = $this->getPhoneOrdersQuery($cod_sub)
+			->addSelectHasMaxBidds()
+			->addSelectIsMaxOrder()
+			->orderBy('ref_orlic')
+			->get();
 
 		return view('admin::pages.subasta.operadores.paddles_print', [
 			'bidPaddles' => $bidPaddles,
@@ -179,20 +147,35 @@ class AdminOperadoresController extends Controller
 
 	/**
 	 * Imprimir listado de ordenes por operador de la subasta.
-	 *
-	 * @param Request $request
 	 */
-	public function printBidPaddlesByOperator(Request $request, $cod_sub)
+	public function printBidPaddlesByOperator($cod_sub)
 	{
-		$bidPaddles = $this->getPhoneOrdersQuery($cod_sub, $this->printSelectFields);
-		$bidPaddles = $this->addBiddingSubqueries($bidPaddles);
-		$bidPaddles = $bidPaddles
+		$bidPaddles = $this->getPhoneOrdersQuery($cod_sub)
+			->addSelectHasMaxBidds()
+			->addSelectIsMaxOrder()
 			->whereNotNull('operador_orlic')
 			->orderBy('operador_orlic')
 			->orderBy('ref_orlic')
 			->get();
 
 		return view('admin::pages.subasta.operadores.list_bidder_phoneorders_print', [
+			'bidPaddles' => $bidPaddles,
+			'subasta' => $this->getSubasta($cod_sub),
+		]);
+	}
+
+	/**
+	 * Imprimir listado de ordenes por lote
+	 */
+	public function printBidPaddlesByReference($cod_sub)
+	{
+		$bidPaddles = $this->getPhoneOrdersQuery($cod_sub)
+			->addSelectHasMaxBidds()
+			->addSelectIsMaxOrder()
+			->orderBy('ref_orlic')
+			->get();
+
+		return view('admin::pages.subasta.operadores.list_phoneorders_print', [
 			'bidPaddles' => $bidPaddles,
 			'subasta' => $this->getSubasta($cod_sub),
 		]);
