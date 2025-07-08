@@ -91,11 +91,11 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                     @endif
                     <div class="views-content d-inline-flex">
                             <div class="title-views d-flex align-items-center justify-content-center color-letter">{{ trans(\Config::get('app.theme').'-app.lot_list.view') }}</div>
-                            <a id="square" class="grid-icon-square color-letter d-block" href="javascript:;"><i class="fas fa-th"></i></a>
-                            <a id="large_square" class="grid-icon-square d-block color-letter" href="javascript:;"><i class="fas fa-bars"></i></a>
+                            <a id="square" class="grid-icon-square color-letter d-block" href="javascript:;"><i class="fa fa-th"></i></a>
+                            <a id="large_square" class="grid-icon-square d-block color-letter" href="javascript:;"><i class="fa fa-bars"></i></a>
                     </div>
                     <div class="hidden-xs widget full-screen d-inline-flex">
-                            <a id="full-screen" class="grid-icon-square color-letter d-flex" href="javascript:;"><i class="fas fa-expand"></i></a>
+                            <a id="full-screen" class="grid-icon-square color-letter d-flex" href="javascript:;"><i class="fa fa-expand"></i></a>
                     </div>
                 </div>
             </div>

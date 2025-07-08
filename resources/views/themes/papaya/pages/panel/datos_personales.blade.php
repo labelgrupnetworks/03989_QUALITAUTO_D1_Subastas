@@ -71,21 +71,16 @@
 
                 <form method="post" class="frmLogin" id="frmUpdateUserInfoADV" data-toggle="validator">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" class="form-control">
-                    <?php
-                        if($data['user']->fisjur_cli == 'F' || $data['user']->fisjur_cli == null){
+
+					<?php
+						//Las R para que no de error durante la actulización con representatntes.
+						//una vez actualizado se puede eliminar esa condición
+                        if($data['user']->fisjur_cli == 'F' || $data['user']->fisjur_cli == null || $data['user']->fisjur_cli == 'R'){
 							$name = explode(",", $data['user']->nom_cli);
                             if(count($name)!= 2){
                                 $name[1] = $data['user']->nom_cli;
                                 $name[0] = '';
                             }
-						}
-						else if($data['user']->fisjur_cli == 'R'){
-							$name = explode(",", $data['user']->rsoc_cli);
-							if(count($name)!= 2){
-                                $name[1] = $data['user']->nom_cli;
-                                $name[0] = '';
-                            }
-
 						}
                     ?>
                                                         <div class="col_reg_form"></div>
@@ -102,15 +97,14 @@
                         </div>
 					@if($data['user']->fisjur_cli == 'J')
 
-						<input type="hidden" class="form-control"  name="representar" value="S">
                         <div class="form-group input-group name_client col-xs-12 col-sm-4">
-                            <label class="" for="">{{ trans(\Config::get('app.theme').'-app.login_register.company') }}</label>
-                            <input type="text" class="form-control"  placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.company') }}" type="text" name="rsoc_cli" value="{{$data['user']->nom_cli}}" required>
-                            <input type="hidden" class="form-control"  name="title_rsoc_cli" value="{{ trans(\Config::get('app.theme').'-app.login_register.company') }}">
+                            <label class="" for="">{{ trans(\Config::get('app.theme').'-app.user_panel.business_name') }}</label>
+                            <input type="text" class="form-control"  placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.company') }}" type="text" name="rsoc_cli" value="{{$data['user']->rsoc_cli}}" required>
+                            <input type="hidden" class="form-control"  name="title_rsoc_cli" value="{{ trans(\Config::get('app.theme').'-app.user_panel.company') }}">
                         </div>
                         <div class="form-group input-group name_client col-xs-12 col-sm-4">
                             <label class="" for="apellido">{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
-                            <input type="text" class="form-control"  placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}" type="text" name="usuario" value="{{$data['user']->rsoc_cli}}" required>
+                            <input type="text" class="form-control"  placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}" type="text" name="usuario" value="{{$data['user']->nom_cli}}" required>
                             <input type="hidden" class="form-control"  name="title_contact" value="{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}">
 
 						</div>
@@ -128,53 +122,6 @@
 
                         </div>
 					@endif
-
-					@if($data['user']->fisjur_cli == 'R' || $data['user']->fisjur_cli == 'F')
-						<div class="form-group input-group name_client col-xs-12 col-sm-3">
-							<label class="" for="nombre">{{ trans(\Config::get('app.theme').'-app.login_register.representar') }}</label>
-                                        <select data-placement="right" class="form-control select2" type="select" name="representar" id="select__1__representar"
-											onblur="comprueba_campo(this)">
-											@if($data['user']->fisjur_cli == 'F')
-											<option value="N">{{ trans(\Config::get('app.theme').'-app.login_register.no') }}</option>
-											<option value="S">{{ trans(\Config::get('app.theme').'-app.login_register.yes') }}</option>
-											@else
-											<option value="S">{{ trans(\Config::get('app.theme').'-app.login_register.yes') }}</option>
-											<option value="N">{{ trans(\Config::get('app.theme').'-app.login_register.no') }}</option>
-											@endif
-										</select>
-						</div>
-						<div class="form-group input-group name_client col-xs-12 col-sm-9">
-                            <label class="" for="">{{ trans(\Config::get('app.theme').'-app.login_register.company') }}</label>
-                            <input type="text" class="form-control"  placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.company') }}" type="text" name="rsoc_cli" @if($data['user']->fisjur_cli == 'R') value="{{ $data['user']->nom_cli }}" required @endif >
-                            <input type="hidden" class="form-control"  name="title_rsoc_cli" value="{{ trans(\Config::get('app.theme').'-app.login_register.company') }}">
-                        </div>
-					@endif
-
-
-					<?php /* OCULTO GENERO Y FECHA DE NACIMIENTO
-
-
-
-							<div class="form-group input-group name_client col-xs-12 col-sm-3">
-							<label class="" for="genero">{{ trans(\Config::get('app.theme').'-app.login_register.genre') }}</label>
-							<select name="genero"  class="form-control" >
-								<option value="H" <?= $data['user']->sexo_cli == "H"? "selected" : ""  ?>> {{ trans(\Config::get('app.theme').'-app.login_register.hombre') }}</option>
-								<option value="M" <?= $data['user']->sexo_cli == "M"? "selected" : ""  ?>> {{ trans(\Config::get('app.theme').'-app.login_register.mujer') }}</option>
-
-							</select>
-							<input type="hidden" class="form-control" name="title_name" value="{{ trans(\Config::get('app.theme').'-app.login_register.genre') }}">
-
-                        </div>
-						<div class="form-group input-group name_client col-xs-12 col-sm-3">
-                            <label class="" for="genero">{{ trans(\Config::get('app.theme').'-app.user_panel.date_birthday') }}</label>
-							<input type="date" class="form-control"  name="nacimiento"    value="<?= date("Y-m-d", strtotime($data['user']->fecnac_cli)) ?>" data-content="" >
-                            <input type="hidden" class="form-control" name="title_name" value="{{ trans(\Config::get('app.theme').'-app.user_panel.date_birthday') }}">
-
-						</div>
-
-
-
-					*/ ?>
 
                     <div class="form-group form-group-custom col-xs-12 col-sm-4">
                         <label class="" for="telefono">{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}</label>
@@ -303,22 +250,4 @@
 </div>
 <?php } ?>
 
-
-
-<script>
-$(document).on('ready', function () {
-	$('select[name="representar"]').on("change", function(){
-		$rsoc_cli_input = $('input[name="rsoc_cli"]');
-		if($(this).val() == 'S'){
-			$rsoc_cli_input.prop('required',true)
-		}
-		else{
-			$rsoc_cli_input.removeAttr('required').val("");
-			$('#frmUpdateUserInfoADV').validator('destroy');
-			$('#frmUpdateUserInfoADV').validator();
-		}
-	});
-});
-
-</script>
 @stop

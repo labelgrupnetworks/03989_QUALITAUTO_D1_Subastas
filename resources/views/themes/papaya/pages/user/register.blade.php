@@ -82,7 +82,18 @@
                                         <label class="" for="nombre">{{ trans(\Config::get('app.theme').'-app.login_register.apellidos') }}</label>
                                         {!!$formulario->last_name!!}
 									</div>
-									<div class="form-group input-group name_client registerParticular col-xs-12 col-sm-6">
+
+
+                                    <div class="form-group input-group registerEnterprise col-xs-12 col-sm-6 mt-3">
+                                        <label class="" for="">{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+                                        {!!$formulario->contact!!}
+									</div>
+									<div class="form-group input-group registerEnterprise col-xs-12 col-sm-6 mt-3">
+                                        <label class="" for="">{{ trans(\Config::get('app.theme').'-app.login_register.company') }}</label>
+                                        {!!$formulario->rsoc_cli!!}
+									</div>
+
+									<div class="form-group input-group name_client col-xs-12 col-sm-6">
                                         <label class="" for="nombre">{{ trans(\Config::get('app.theme').'-app.login_register.representar') }}</label>
                                         <select data-placement="right" class="form-control select2" type="select" name="representar" id="select__1__representar"
 											onblur="comprueba_campo(this)">
@@ -91,13 +102,39 @@
 										</select>
 									</div>
 
-                                    <div class="form-group input-group registerEnterprise col-xs-12 col-sm-6 mt-3">
-                                        <label class="" for="">{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
-                                        {!!$formulario->contact!!}
-									</div>
-									<div class="form-group input-group rsoc_inputgroup col-xs-12 col-sm-6">
-                                        <label class="" for="">{{ trans(\Config::get('app.theme').'-app.login_register.company') }}</label>
-                                        {!!$formulario->rsoc_cli!!}
+									<div class="rsoc_table table-responsive col-xs-12 mt-2 mb-2 pb-1">
+										<table id="js-repre-table" class="table table-bordered" style="display: none">
+											<thead>
+												<tr>
+													<th>{{ trans("$theme-app.login_register.represented_alias") }}</th>
+													<th>{{ trans("$theme-app.login_register.represented_name") }}</th>
+													<th>{{ trans("$theme-app.login_register.represented_cif") }}</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<input type="text" class="form-control effect-16" name="repre[0][alias]" onblur="comprueba_campo(this)" placeholder="Alias" autocomplete="off">
+													</td>
+													<td>
+														<input type="text" class="form-control effect-16" name="repre[0][name]" onblur="comprueba_campo(this)" placeholder="{{ trans("$theme-app.login_register.nombre") }}" autocomplete="off">
+													</td>
+													<td>
+														<input type="text" class="form-control effect-16" name="repre[0][cif]" onblur="comprueba_campo(this)" placeholder="C.I.F" autocomplete="off">
+													</td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr id="rowButton">
+													<td colspan="3" class="text-center">
+														<button class="btn btn-primary btn-xs" type="button" onclick="addRow()">
+															<i class="fa fa-plus"></i>
+														</button>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+
 									</div>
 
                                     <div class="form-group input-group col-xs-12 col-sm-4">
@@ -213,15 +250,17 @@
 
 <script>
 $(document).ready(function(){
-    $('input[type="text"]').each(function(){
 
-        $(this).attr('placeholder', $(this).siblings('label').text())
+	$('input[type="text"]').each(function(){
+		const labelText = $(this).siblings('label').text();
+		if(labelText){
+			$(this).attr('placeholder', labelText);
+		}
     })
 
     $('input[type="password"]').each(function(){
-
-$(this).attr('placeholder', $(this).siblings('label').text())
-})
+		$(this).attr('placeholder', $(this).siblings('label').text())
+	})
 
 })
 </script>

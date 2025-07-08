@@ -4,7 +4,7 @@
 
 empresa = function () {
 
-    $("#pri_emp").val("R");
+    $("#pri_emp").val("J");
     $("#inlineCheckbox2").prop('checked', true);
     $("#inlineCheckbox1").prop('checked', false);
     //muestra cuadro en form clasico
@@ -16,7 +16,6 @@ empresa = function () {
     $(".registerParticular").hide();
 	$(".registerEnterprise").show();
 
-	$(".rsoc_inputgroup").addClass("mt-3");
 	rsocEnabled();
 
     $(".datos_contacto .cif").show();
@@ -38,18 +37,12 @@ particular = function () {
     $(".registerParticular").show();
 	$(".registerEnterprise").hide();
 
-	$(".rsoc_inputgroup").removeClass("mt-3");
-
-	$('select[name="representar"]').val('N').trigger('change');
-
     $(".datos_contacto .cif").hide();
     $(".datos_contacto .nif").show();
 
     $('.gener-group').show();
     $('.fech_nac').show();
 }
-
-
 
 /*
  * Metodos nuevos
@@ -59,7 +52,7 @@ $(document).ready(function () {
 	rsocDisabled();
 
 	$('select[name="representar"]').on("change", function(){
-		$(this).val() == 'S' ? rsocEnabled() : rsocDisabled();
+		$(this).val() == 'S' ? showRepreTable() : hideRepreTable();
 	});
 
 });
@@ -72,7 +65,47 @@ function rsocDisabled(){
 
 function rsocEnabled(){
 	$('input[name="rsoc_cli"]').attr("id", 'texto__1__rsoc_cli')
-	.prop("disabled", false);
+		.prop("disabled", false);
+}
 
-	$("#pri_emp").val("R");
+function showRepreTable() {
+	$("#js-repre-table").show();
+	//add required in all inputs in table
+	const table = document.getElementById('js-repre-table');
+	table.querySelectorAll('input').forEach(input => input.required = true);
+}
+
+function hideRepreTable() {
+	$("#js-repre-table").hide();
+	const table = document.getElementById('js-repre-table');
+	table.querySelectorAll('input').forEach(input => {
+		input.required = false;
+		input.value = '';
+	});
+
+}
+
+function addRow() {
+	const table = document.getElementById('js-repre-table');
+	const rowNumber = table.rows.length - 1;
+	const arrayNumber = rowNumber - 1;
+
+	const clonRow = table.rows[1].cloneNode(true);
+	clonRow.querySelector('[name*=alias]').value = '';
+	clonRow.querySelector('[name*=alias]').attributes['name'].value = 'repre['+arrayNumber+'][alias]';
+	clonRow.querySelector('[name*=name]').value = '';
+	clonRow.querySelector('[name*=name]').attributes['name'].value = 'repre['+arrayNumber+'][name]';
+	clonRow.querySelector('[name*=cif]').value = '';
+	clonRow.querySelector('[name*=cif]').attributes['name'].value = 'repre['+arrayNumber+'][cif]';
+
+	const trashButton = $('<button type="button" class="btn btn-xs btn-danger" onclick="removeRow(this)"><i class="fa fa-trash"></i></button>');
+	clonRow.querySelector('[name*=cif]').parentNode.appendChild(trashButton[0]);
+
+	//instert row in tbody
+	table.querySelector('tbody').appendChild(clonRow);
+}
+
+function removeRow(button) {
+	const row = button.closest('tr');
+	row.remove();
 }

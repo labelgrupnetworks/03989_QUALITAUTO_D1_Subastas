@@ -26,6 +26,14 @@ function verifyLang(actualLang){
     }
 }
 
+function loadVideo(video) {
+	$('#video_main_wrapper').empty();
+	$('.img-global-content').hide();
+	$videoDom = $('<video width="100%" height="auto" autoplay="true" controls>').append($(`<source src="${video}">`));
+	$('#video_main_wrapper').append($videoDom);
+	$('#video_main_wrapper').show();
+}
+
 function reloadDate(){
 	$('#this-moment').text(new Date().toLocaleDateString('es-ES', {timeZoneName:"short",weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', minute:'numeric', second: 'numeric'}));
 }
@@ -760,50 +768,12 @@ $('#button-open-user-menu').click(function() {
 
 	});
 
-
-
-
-
-    $("#large_square").click(function () {
-        see_desc();
-    });
-
-    $("#square").click(function () {
-        see_img();
-    });
-
-    $("#small_square").click(function () {
-        see_img_samll();
-    });
-
-    $("#square_mobile").click(function () {
-        see_img();
-    });
-
-    $("#large_square_mobile").click(function () {
-        see_desc();
-    });
-
-    if ($.cookie('lot') == 'desc') {
-        see_desc();
-    } else if ($.cookie('lot') == 'img') {
-        see_img();
-    } else if ($.cookie('lot') == 'small_img') {
-        see_img_samll();
-    } else {
-        see_desc();
-    }
-
     $(window).resize(function () {
         if ($(window).width() < 1200) {
             $('.small_square .item_lot').removeClass('col');
         }
     });
 
-
-    if ($(window).width() < 768) {
-        see_img();
-    }
 
     $("#save_change_orden").click(function () {
 
@@ -985,51 +955,7 @@ $('#button-open-user-menu').click(function() {
         capaOculta.hide()
     })
 
-	$('#admin_settings_box').on('click', '.desplegable', function () {
-        if ($('#admin_settings_box').hasClass('opened_box')) {
-            $('#admin_settings_box').removeClass('opened_box');
-            $('[data-id="left"]', this).addClass('hidden');
-            $('[data-id="right"]', this).removeClass('hidden');
-        } else {
-			$('#admin_settings_box').addClass('opened_box');
-            $('[data-id="right"]', this).addClass('hidden');
-            $('[data-id="left"]', this).removeClass('hidden');
-
-        }
-    });
-
 });
-
-
-
-
-
-function see_desc() {
-    $.removeCookie('lot');
-    $.cookie('lot', 'desc', { expires: 7, path: '/' });
-    $(".square").addClass("hidden");
-    $(".small_square").addClass("hidden");
-    $(".large_square").removeClass("hidden");
-    $('.bar-lot-large').removeClass("hidden");
-}
-
-function see_img() {
-    $.removeCookie('lot');
-    $.cookie('lot', 'img', { expires: 7, path: '/' });
-    $(".large_square").addClass("hidden");
-    $('.bar-lot-large').addClass("hidden");
-    $(".small_square").addClass("hidden");
-    $(".square").removeClass("hidden");
-}
-
-function see_img_samll() {
-    $.removeCookie('lot');
-    $.cookie('lot', 'small_img', { expires: 7, path: '/' });
-    $(".large_square").addClass("hidden");
-    $('.bar-lot-large').addClass("hidden");
-    $(".square").addClass("hidden");
-    $(".small_square").removeClass("hidden");
-}
 
 function cerrarLogin() {
     $('.login_desktop').fadeToggle("fast");
@@ -1720,7 +1646,7 @@ function newsletterSuscription (event) {
 	const lang = $('#lang-newsletter').val();
 	$("#insert_msgweb").html('');
 
-	if (!$('#condiciones').prop("checked")) {
+	if (!$('#condiciones').prop("checked") || !$('#bool__0__comercial').prop("checked")) {
 		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
 		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 		return;
@@ -1783,5 +1709,57 @@ function addNewsletter(data) {
 	});
 }
 
+$(document).ready(function () {
 
+	$("#square").click(() => seeLot('img'));
+	$("#square_mobile").click(() => seeLot('img'));
+	$("#small_square").click(() => seeLot('small_img'));
+	$("#large_square").click(() => seeLot('desc'));
+	$("#large_square_mobile").click(() => seeLot('desc'));
 
+	let styleLotSee = document.querySelector('[name=lot_see_configuration]')?.value;
+	if (styleLotSee) {
+		seeLot(styleLotSee, false);
+	}
+});
+
+function seeLot(style, save = true) {
+	const options = {
+		'desc': see_desc,
+		'img': see_img,
+		'small_img': see_img_samll
+	}
+
+	hideAllStylesLots();
+	options[style] ? options[style]() : options['img']();
+
+	if(!save) return;
+	saveConfigurationCookies({ lot: style });
+}
+
+function hideAllStylesLots() {
+	$(".square").addClass("hidden");
+	$(".small_square").addClass("hidden");
+	$(".large_square").addClass("hidden");
+	$('.bar-lot-large').addClass("hidden");
+}
+
+function see_desc() {
+	$(".large_square").removeClass("hidden");
+	$('.bar-lot-large').removeClass("hidden");
+}
+
+function see_img() {
+	$(".square").removeClass("hidden");
+}
+
+function see_img_samll() {
+	$(".small_square").removeClass("hidden");
+}
+
+function askConfirmModal(message, title, callback) {
+	$("#modalMensajeWebConfirm .modal-message").html(message);
+	$("#modalMensajeWebConfirm .modal-title").html(title);
+	$("#modalMensajeWebConfirm .modal-submit").off('click').on('click', callback);
+	$.magnificPopup.open({ items: { src: '#modalMensajeWebConfirm' }, type: 'inline' }, 0);
+}

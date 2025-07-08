@@ -120,7 +120,7 @@
                         <div id="cerrados" ></div>
                     </div>
                     <div class="owl-theme owl-carousel owl-loaded owl-drag m-0 pl-10" id="navs-arrows">
-                        <div class="owl-nav"><div class="owl-prev"><i class="fas fa-chevron-left"></i></div><div class="owl-next"><i class="fas fa-chevron-right"></i></div></div>
+                        <div class="owl-nav"><div class="owl-prev"><i class="fa fa-chevron-left"></i></div><div class="owl-next"><i class="fa fa-chevron-right"></i></div></div>
                     </div>
                 </div>
             </div>

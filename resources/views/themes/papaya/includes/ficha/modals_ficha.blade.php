@@ -29,7 +29,16 @@
 						<p class="mb-3">
 							<span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }}</span> <strong><span class="precio_orden"></span> €</strong>
 						</p>
-						<button class="confirm_puja btn button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
+
+						@if(config('app.withRepresented', false))
+							<button class="confirm_puja_with_represented btn button_modal_confirm btn-custom">
+								{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}
+							</button>
+						@else
+							<button class="confirm_puja btn button_modal_confirm btn-custom">
+								{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}
+							</button>
+						@endif
 
 						@if(config('app.withMultipleBidders', false))
 						<button id="multipleBiddersLink" class="btn btn-custom">{{ trans("$theme-app.lot.add_bidders") }}</button>
@@ -185,7 +194,7 @@
 	</section>
 </div>
 
-@if(!$auctionConditionsAccepted)
+@if(!empty($auctionBasesFile))
 <div id="modalCheckBasesFicha" class="mfp-hide">
 	<section class="panel">
 		<div class="panel-body">

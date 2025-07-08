@@ -8,6 +8,9 @@
 @section('content')
  <?php
 
+	use App\Models\Cookies;
+    $styleLotSeeConfiguration = (new Cookies())->getLotConfiguration();
+
 	$typeSub = '';
     if(empty($data['type']) && !empty($data['sub_data']) ){
         $sub_data = $data['sub_data'];
@@ -61,6 +64,8 @@
                     </div>
                 </div>
             </section>
+
+	<input type="hidden" name="lot_see_configuration" value="{{ $styleLotSeeConfiguration }}">
 
     @include('content.subasta')
 

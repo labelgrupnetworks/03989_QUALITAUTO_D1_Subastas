@@ -24,7 +24,7 @@
                     </div>
                     <div>
                         <label for="accept_new" class="accept_new">
-                            <input type="checkbox" name="families[]" class="form-control" value="1" id="bool__0__comercial" autocomplete="off"/>
+                            <input type="checkbox" name="families[1]" class="form-control" value="1" id="bool__0__comercial" autocomplete="off"/>
                             <span>{{ trans(\Config::get('app.theme').'-app.emails.accept_news') }}</span>
                         </label>
                     </div>

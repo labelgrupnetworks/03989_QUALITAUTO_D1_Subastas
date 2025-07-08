@@ -516,3 +516,18 @@ form input[type="date"],form input[type="hour"] {
     padding: 0px;
     margin: 0px;
 }
+
+#js-repre-table tbody tr {
+	position: relative;
+}
+
+#js-repre-table tbody tr td:last-child {
+	padding-right: 20px;
+}
+
+#js-repre-table .btn-danger {
+	position: absolute;
+	right: -10px;
+	top: 50%;
+	transform: translateY(-50%);
+}

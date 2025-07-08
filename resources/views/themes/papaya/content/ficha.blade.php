@@ -57,6 +57,16 @@ if ($retirado || $fact_devuelta || $cerrado || $lot_close_at) {
 								src="{{ \Tools::url_img("lote_medium_large", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
 						</div>
 						<?php } ?>
+
+						@if(!empty($lote_actual->videos) && count($lote_actual->videos) > 0)
+							@foreach($lote_actual->videos as $video)
+								<div class="item_content_img_single video-item">
+									<video width="100%" controls>
+										<source src="{{$video}}" type="video/mp4">
+									</video>
+								</div>
+							@endforeach
+						@endif
 					</div>
 
 				</div>
@@ -76,13 +86,18 @@ if ($retirado || $fact_devuelta || $cerrado || $lot_close_at) {
 					</div>
 					@endif
 
-					<div id="img_main" class="img_single">
-						<a title="{{$lote_actual->titulo_hces1 ?? $lote_actual->descweb_hces1}}" href="javascript:action_fav_modal('remove')">
-							<img class="img-responsive"
-								src=""
-								alt="{{$lote_actual->titulo_hces1 ?? $lote_actual->descweb_hces1}}">
-						</a>
+					<div id="video_main_wrapper" class="img_single_border video_single_border" style="display:none"></div>
+
+					<div class="img-global-content position-relative">
+						<div id="img_main" class="img_single">
+							<a title="{{$lote_actual->titulo_hces1 ?? $lote_actual->descweb_hces1}}" href="javascript:action_fav_modal('remove')">
+								<img class="img-responsive"
+									src=""
+									alt="{{$lote_actual->titulo_hces1 ?? $lote_actual->descweb_hces1}}">
+							</a>
+						</div>
 					</div>
+
 					@if(Session::has('user') && !$retirado)
 					<div class="col-xs-12 no-padding favoritos">
 						<a class="secondary-button  <?= $lote_actual->favorito? 'hidden':'' ?>" id="add_fav"
@@ -106,7 +121,18 @@ if ($retirado || $fact_devuelta || $cerrado || $lot_close_at) {
 								</div>
 							</div>
 							<?php } ?>
+
+							@if(!empty($lote_actual->videos) && count($lote_actual->videos) > 0)
+								@foreach($lote_actual->videos as $video)
+								<div class="mini-img-ficha no-360">
+									<a class="view-thumbs-open-dragon video-thumbs" data-index='{{ $video }}'>
+										<img class="img-openDragon" src="{{ asset('/themes/'. Config::get('app.theme') .'/assets/img/play.png?a=1') }}" data-video ='{{ $video }}'/>
+									</a>
+								</div>
+								@endforeach
+							@endif
 						</div>
+
 					</div>
 
 				</div>
@@ -284,8 +310,8 @@ if(is_dir(getcwd() . $path)){
 				<div id="lotes_recomendados" class="owl-theme owl-carousel"></div>
 				<div class="owl-theme owl-carousel owl-loaded owl-drag m-0 pl-10" id="navs-arrows">
 					<div class="owl-nav">
-						<div class="owl-prev"><i class="fas fa-chevron-left"></i></div>
-						<div class="owl-next"><i class="fas fa-chevron-right"></i></div>
+						<div class="owl-prev"><i class="fa fa-chevron-left"></i></div>
+						<div class="owl-next"><i class="fa fa-chevron-right"></i></div>
 					</div>
 				</div>
 			</div>
@@ -321,6 +347,11 @@ $replace = array(
 	$(document).ready(function() {
         //Mostramos la fecha
 
+		$('.video-thumbs').on('click', function(){
+			let videoHref = $(this).find('img').data("video");
+			loadVideo(videoHref);
+		})
+
 		$("#cierre_lote").html(format_date_large(new Date("{{$timeCountdown}}".replace(/-/g, "/")),''));
 
 		$('.img-thumbs').on('click', function(){
@@ -329,6 +360,13 @@ $replace = array(
 	});
 
     function loadSeaDragon(img){
+
+		$('#video_main_wrapper').hide();
+		if(typeof $videoDom != 'undefined'){
+			$videoDom[0].pause();
+		}
+
+		$('.img-global-content').show();
 
         var element = document.getElementById("img_main");
         console.log()

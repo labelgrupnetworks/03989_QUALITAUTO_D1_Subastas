@@ -18,10 +18,10 @@ $empresa = $empre->getEmpre();
                 <div class="col-xs-12">
                     <div class="navbar-top-wrapper d-flex justify-content-space-between">
                         <div class="navbar-info">
-                            <span><i class="fas fa-phone"></i>
+                            <span><i class="fa fa-phone"></i>
                                 <a class="color-white font-ligther" title="<?= !empty($empresa->tel1_emp) ? $empresa->tel1_emp : ''; ?>" href="tel:{{$empresa->tel1_emp}}"><?= !empty($empresa->tel1_emp) ? $empresa->tel1_emp : ''; ?></a>
                             </span>
-                            <span><i class="fas fa-envelope"></i></span><span><a class="color-white font-ligther" title="<?= !empty($empresa->email_emp) ? $empresa->email_emp : ''; ?>" href="mailto:<?= !empty($empresa->email_emp) ? $empresa->email_emp : ''; ?>"><?= !empty($empresa->email_emp) ? $empresa->email_emp : ''; ?></a>
+                            <span><i class="fa fa-envelope"></i></span><span><a class="color-white font-ligther" title="<?= !empty($empresa->email_emp) ? $empresa->email_emp : ''; ?>" href="mailto:<?= !empty($empresa->email_emp) ? $empresa->email_emp : ''; ?>"><?= !empty($empresa->email_emp) ? $empresa->email_emp : ''; ?></a>
                             </span>
                         </div>
                         <div class="search-component hidden-xs">
@@ -79,7 +79,7 @@ $empresa = $empre->getEmpre();
 
             <div class=" hidden-lg col-xs-6 d-flex align-items-center">
                 <div class="menu-responsive">
-                    <div role="button" class="menu-text color-letter ml-2 "><i class="fas fa-bars"></i></div>
+                    <div role="button" class="menu-text color-letter ml-2 "><i class="fa fa-bars"></i></div>
 
                 </div>
                 <div class="hidden-md hidden-lg logo-header img-responsive d-flex alig-items-center justify-content-flex-start">

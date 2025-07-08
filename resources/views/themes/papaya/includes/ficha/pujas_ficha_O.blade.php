@@ -79,7 +79,7 @@
 	<div class="insert-bid-input col-lg-10 col-lg-offset-1 d-flex justify-content-center flex-column">
 
 		@if (Session::has('user') && Session::get('user.admin'))
-		<div class="d-block w-100">
+		<div class="d-block w-100 mb-2">
 			<input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value="" type="text"
 				style="border: 1px solid red;" placeholder="Código de licitador">
 			@if ($subasta_abierta_P || $subasta_online)
@@ -90,61 +90,80 @@
 		<input type="hidden" id="tipo_puja_gestor" value="">
 		@endif
 
+		{{-- Selector de representate --}}
+		@if(!empty($representedArray))
+		<div class="d-block w-100 mb-2">
+			<label for="representante">Pujar por:</label>
+
+			<select id="representante" class="form-control">
+				<option value="N">
+					{{ $data['usuario']->fisjur_cli === 'F' ? $data['usuario']->nom_cli : $data['usuario']->rsoc_cli }}
+				</option>
+				@foreach ($representedArray as $id => $representedName)
+				<option value="{{ $id }}">{{ $representedName }}</option>
+				@endforeach
+			</select>
+
+			<p class="mt-1">
+				{!! trans("$theme-app.lot.link_add_representatives") !!}
+			</p>
+		</div>
+		@else
+		<input type="hidden" id="representante" value="N">
+		@endif
+
 		{{-- Puja directa --}}
 		<div class="input-group d-block group-pujar-custom ">
-			<div>
-				<div class="insert-bid insert-max-bid">{{ trans(\Config::get('app.theme').'-app.lot.insert_firm_bid') }}
-				</div>
+
+			<div class="insert-bid insert-max-bid">
+				{{ trans(\Config::get('app.theme').'-app.lot.insert_firm_bid') }}
 			</div>
+
 			<div class="d-flex mb-2">
+
 				<input id="bid_amount_firm" style="font-size: 20px;" placeholder="{{ $data['precio_salida'] }}"
 					class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
 				<div class="input-group-btn">
 
 					@if(!Session::has('user'))
-					<button type="button" data-from="modal"
-						class="btn-blue lot-action_pujar_no_user ficha-btn-bid ficha-btn-bid-height button-principal"
-						type="button">{{ trans(\Config::get('app.theme').'-app.lot.firm_bid') }}</button>
-					@elseif(!$deposito)
-					<button type="button" data-from="modal" data-codcli="{{Session::get('user')['cod'] }}"
-						data-ref="{{ $lote_actual->ref_asigl0 }}" data-codsub="{{ $lote_actual->cod_sub }}"
-						data-lang="{{\App::getLocale()}}"
-						class="btn-blue lot-action_pujar_no_licit ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>"
+					<button type="button"
+						onclick="pujarWithoutLogin()"
+						class="btn-blue ficha-btn-bid ficha-btn-bid-height button-principal"
 						type="button">
-						{{ trans(\Config::get('app.theme').'-app.lot.firm_bid') }}
-					</button>
-					@elseif(!$auctionConditionsAccepted)
-					<button type="button" data-from="modal" data-codcli="{{Session::get('user')['cod'] }}"
-						data-lang="{{\App::getLocale()}}"
-						ref="{{ $lote_actual->ref_asigl0 }}"
-						codsub="{{ $lote_actual->cod_sub }}"
-						data-tipoPuja="firme"
-						class="btn-blue lot-action_pujar_no_bases ficha-btn-bid ficha-btn-bid-height button-principal {{ Session::has('user') ? 'add_favs' : '' }}"
-						type="button">
-					{{ trans(\Config::get('app.theme').'-app.lot.firm_bid') }}
+						{{ trans("$theme-app.lot.firm_bid") }}
 					</button>
 					@else
-					<button type="button" data-tipoPuja="firme" data-from="modal"
-						class="btn-blue lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>"
-						type="button" ref="{{ $lote_actual->ref_asigl0 }}"
-						codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.firm_bid') }}</button>
+					{{-- dinamyc onclick button --}}
+					<button type="button"
+						id="bid-button"
+						class="btn-blue ficha-btn-bid ficha-btn-bid-height button-principal"
+						data-codcli="{{ Session::get('user.cod') }}"
+						data-ref="{{ $lote_actual->ref_asigl0 }}"
+						data-codsub="{{ $lote_actual->cod_sub }}"
+						data-lang="{{ App::getLocale() }}"
+						data-tipoPuja="firme"
+						ref="{{ $lote_actual->ref_asigl0 }}"
+						codsub="{{ $lote_actual->cod_sub }}"
+						>
+						{{ trans("$theme-app.lot.firm_bid") }}
+					</button>
 					@endif
+
 				</div>
 			</div>
 		</div>
 
 		{{-- Puja automatica --}}
-		{{-- Comentada por orden de Inbusa --}}
-
-		<div class="input-group d-block group-pujar-custom " style="display: none">
+		<div class="input-group d-block group-pujar-custom ">
 			<div>
 				<div class="insert-bid insert-max-bid">
 					{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}
 					<!-- HTML to write -->
 					<a href="#" class="d-inline-flex align-items-center" data-toggle="tooltip" data-placement="top"
-						title="{{ trans(\Config::get('app.theme').'-app.lot.info_auto_content') }}"><i
-							class="fa fa-info-circle" aria-hidden="true"></i>
-						<small>{{ trans(\Config::get('app.theme').'-app.lot.info_auto') }}</small></a>
+						title="{{ trans(\Config::get('app.theme').'-app.lot.info_auto_content') }}">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+						<small>{{ trans(\Config::get('app.theme').'-app.lot.info_auto') }}</small>
+					</a>
 
 				</div>
 				<script>
@@ -153,24 +172,38 @@
 						});
 				</script>
 			</div>
+
 			<div class="d-flex mb-2">
 				<input id="bid_amount" style="font-size: 20px;" placeholder="{{ $data['precio_salida'] }}"
 					class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
 				<div class="input-group-btn">
-					@if(!$deposito)
-					<button type="button" data-from="modal"
-						class="btn-red lot-action_pujar_no_licit ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>"
-						type="button">{{ trans(\Config::get('app.theme').'-app.lot.automatic_bid') }}</button>
+
+					@if(!Session::has('user'))
+					<button type="button"
+						onclick="pujarWithoutLogin()"
+						class="btn-red lot-action_pujar_no_licit ficha-btn-bid ficha-btn-bid-height button-principal"
+						type="button">
+						{{ trans("$theme-app.lot.automatic_bid") }}
+					</button>
 					@else
-					<button type="button" data-from="modal"
-						class="btn-red lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>"
-						type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
-						codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.automatic_bid') }}</button>
+					{{-- lot-action_pujar_on_line --}}
+					<button type="button"
+						id="bid-button-auto"
+						data-from="modal"
+						class="btn-red ficha-btn-bid ficha-btn-bid-height button-principal"
+						data-codcli="{{ Session::get('user.cod') }}"
+						data-ref="{{ $lote_actual->ref_asigl0 }}"
+						data-codsub="{{ $lote_actual->cod_sub }}"
+						data-lang="{{ App::getLocale() }}"
+						ref="{{ $lote_actual->ref_asigl0 }}"
+						codsub="{{ $lote_actual->cod_sub }}">
+						{{ trans("$theme-app.lot.automatic_bid") }}
+					</button>
 					@endif
+
 				</div>
 			</div>
 		</div>
-
 
 	</div>
 	@else
@@ -183,35 +216,11 @@
     </div>
 	@endif
 
-
-
 	<?php //solo se debe recargar la fecha en las subatsas tipo Online, ne las abiertas tipo P no se debe ejecutar ?>
 	@if($subasta_online)
 	<script>
 		$(document).ready(function() {
-
-            $("#actual_max_bid").bind('DOMNodeInserted', function(event) {
-                if (event.type == 'DOMNodeInserted') {
-
-                   $.ajax({
-                        type: "GET",
-                        url:  "/lot/getfechafin",
-                        data: { cod: cod_sub, ref: ref},
-                        success: function( data ) {
-
-                            if (data.status == 'success'){
-                               $(".timer").data('ini', new Date().getTime());
-                               $(".timer").data('countdownficha',data.countdown);
-                               //var close_date = new Date(data.close_at * 1000);
-                              // $("#cierre_lote").html(close_date.toLocaleDateString('es-ES') + " " + close_date.toLocaleTimeString('es-ES'));
-                               $("#cierre_lote").html(format_date_large(new Date(data.close_at * 1000),''));
-                            }
-
-
-                        }
-                    });
-                }
-            });
+			observeMaxBidUpdates(cod_sub, ref);
         });
 	</script>
 	@endif

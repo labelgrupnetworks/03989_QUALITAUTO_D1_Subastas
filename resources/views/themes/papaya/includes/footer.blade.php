@@ -43,10 +43,20 @@ $empresa = $empre->getEmpre();
 
 						</div>
 
+						<div class="footer-address-title">
+							<span>Delegación Andalucia</span>
+							<span class="footer-link footer-link-address no-hover">
+								Marbella, Málaga
+							</span>
+							<span>
+								<a class="footer-link footer-link-address" title="Teléfono"
+									href="tel:+34608743835">Tel: +34 608 743 835</a>
+							</span>
+						</div>
 					</div>
 
 					<div class="col-xs-2 col-xs-offset-5 col-md-3 col-md-offset-0">
-						<a href="/themes/{{$theme}}/assets/files/27001 cast - INTERNATIONAL BUSINESS AUCTIONS.pdf" target="_blank">
+						<a href="/themes/{{$theme}}/assets/files/ISO 27001 CAST - INTERNATIONAL BUSINESS AUCTIONS_signed.pdf" target="_blank">
 							<img class="img-responsive" src="/themes/{{$theme}}/assets/img/iso_27001.png" alt="ISO logo">
 						</a>
 					</div>
@@ -101,7 +111,7 @@ $empresa = $empre->getEmpre();
 					</li>
 					<li>
 						<a class="footer-link" title="{{ trans(\Config::get('app.theme').'-app.foot.psi')}}"
-							href="/files/PSI.pdf" target="_blank"><span>{{ trans(\Config::get('app.theme').'-app.foot.psi')}}</span></a>
+							href="/files/PSI_v2.pdf" target="_blank"><span>{{ trans(\Config::get('app.theme').'-app.foot.psi')}}</span></a>
 					</li>
 
 					<li>
@@ -147,6 +157,11 @@ $empresa = $empre->getEmpre();
 						<a class="footer-link" title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}"
 							href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}</a>
 					</li>
+					<li>
+						<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
+							{{ trans("$theme-app.cookies.configure") }}
+						</button>
+					</li>
 				</ul>
 
 			</div>
@@ -157,9 +172,10 @@ $empresa = $empre->getEmpre();
 </footer>
 
 
-@if (!Cookie::get("cookie_law"))
-@include("includes.cookie")
-<script>
-	cookie_law();
-</script>
+
+@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+    @include('includes.cookie', ['style' => 'popover'])
 @endif
+
+@include('includes.cookies_personalize')
+

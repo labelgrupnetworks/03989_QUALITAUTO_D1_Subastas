@@ -79,7 +79,7 @@
 											<li class="col-md-12 col-xs-6 no-padding">
 												<a target="_blank" class="cat-pdf color-letter d-flex"
 													href="{{$pdf_cat}}" role="button">
-													<div class="text-center"><i class="fas  fa-file-download"></i></div>
+													<div class="text-center"><i class="fa  fa-file-download"></i></div>
 													<small>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}</small>
 												</a>
 											</li>
@@ -88,7 +88,7 @@
 											<li class="col-md-12 col-xs-6 no-padding">
 												<a target="_blank" class="cat-pdf color-letter d-flex"
 													href="{{$pdf_man}}" role="button">
-													<div class="text-center"><i class="fas fa-file-download"></i></div>
+													<div class="text-center"><i class="fa fa-file-download"></i></div>
 													<small>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_man') }}</small>
 												</a>
 											</li>
@@ -98,7 +98,7 @@
 											<li class="col-md-12 col-xs-6 no-padding">
 												<a target="_blank" class="cat-pdf color-letter d-flex"
 													href="{{$pdf_pre}}" role="button">
-													<div class="text-center"><i class="fas fa-file-download"></i></div>
+													<div class="text-center"><i class="fa fa-file-download"></i></div>
 													<small>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_pre') }}</small>
 												</a>
 											</li>
@@ -108,7 +108,7 @@
 											<li class="col-md-12 col-xs-6 no-padding">
 												<a target="_blank" class="cat-pdf color-letter d-flex"
 													href="{{$pdf_adj}}" role="button">
-													<div class="text-center"><i class="fas fa-file-download"></i></div>
+													<div class="text-center"><i class="fa fa-file-download"></i></div>
 													<small>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_adj') }}</small>
 												</a>
 											</li>

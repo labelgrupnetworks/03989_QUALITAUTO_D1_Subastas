@@ -39,9 +39,9 @@
 
                 <thead>
                     <tr>
+                        <th>{{ trans("$theme-app.reports.lot_name") }}</th>
                         <th>{{ trans("$theme-app.reports.licit") }}</th>
                         <th>{{ trans("$theme-app.reports.cli_name") }}</th>
-                        <th>{{ trans("$theme-app.reports.lot_name") }}</th>
                         <th>{{ trans("$theme-app.reports.imp_asigl1") }}</th>
                         <th>{{ trans("$theme-app.reports.bid_date") }}</th>
                     </tr>
@@ -55,7 +55,15 @@
 
                             @if ($bid->isBid)
                                 <td>{{ $bid->cod_licit . ' - ' . $bid->cli_licit }}</td>
-                                <td>{{ substr($bid->nom_cli, 0, 25) }}</td>
+                                <td>
+									@if(!empty($bid->nom_representados))
+										{{ substr($bid->nom_representados, 0, 25) }}
+									@elseif($bid->fisjur_cli == 'J')
+										{{ substr($bid->rsoc_cli, 0, 25) }}
+									@else
+										{{ substr($bid->nom_cli, 0, 25) }}
+									@endif
+								</td>
                                 <td>{{ Tools::moneyFormat($bid->imp_asigl1) . ' €' }}</td>
                                 <td>{{ Tools::getDateFormat($bid->fec_asigl1, 'Y-m-d H:i:s', 'd/m/Y H:i:s') }}</td>
                             @else

@@ -22,34 +22,27 @@
 
 <?php
 use App\Models\V5\AucSessionsFiles;
-use App\Models\V5\FgSubConditions;
+use App\Models\V5\FgRepresentados;
 
 //gardamos el código de licitador para saber is esta logeado o no y mostrar mensaje de que debe logearse
 $user = "";
 $cod_licit ="null";
-$deposito= null;
 
 $auctionBasesFile = AucSessionsFiles::whereAuctionBases($data['subasta_info']->lote_actual->cod_sub)->get();
 $auctionBasesFile = $auctionBasesFile->where('locale', config('app.locale'))->first() ?? $auctionBasesFile->first();
-$auctionConditionsAccepted = is_null($auctionBasesFile);
+$representedArray = [];
 
 if(Session::has('user')){
-
 	$user = Session::get('user');
 	$cod_sub = $data['subasta_info']->lote_actual->cod_sub;
 	$ref = $data['subasta_info']->lote_actual->ref_asigl0;
-	$fgdeposito = new \App\Models\V5\FgDeposito();
-	$deposito = $fgdeposito->isValid($user['cod'], $cod_sub, $ref);
-
 	$cod_licit = $data['js_item']['user']['cod_licit'] ?? "null";
-
-	$auctionConditionsAccepted = $auctionConditionsAccepted ?: FgSubConditions::isAcceptedCondtition($user['cod'], $data['subasta_info']->lote_actual->cod_sub);
+	$representedArray = FgRepresentados::getRepresentedToSelect(Session::get('user.cod'));
 }
 ?>
 
 <script>
 var auction_info = $.parseJSON('<?php  echo str_replace("\u0022","\\\\\"",json_encode($data["js_item"],JSON_HEX_QUOT)); ?>');
-
 
 var cod_sub = '{{$data['subasta_info']->lote_actual->cod_sub}}';
 var ref = '{{$data['subasta_info']->lote_actual->ref_asigl0}}';
