@@ -4173,7 +4173,7 @@ class SubastaTiempoRealController extends Controller
 					// Si el primer licitador soy yo y el segundo no lo soy, y el segundo no hizo la licitación por telefono entonces enviamos
 					#Añadida una segunda condicion, para que en caso de ser el admin quien realiza la puja por un licitador, ha este le llegue el email de sobrepuja en las ordenes automaticas.
 					if(	($pujas[0]->licit_asigl1 == $licit && $pujas[1]->licit_asigl1!= $licit && $pujas[0]->imp_asigl1 > $pujas[1]->imp_asigl1)
-						|| (!empty($this->cod_original_licit) && $this->cod_original_licit != $licit && $pujas[0]->imp_asigl1 > $pujas[1]->imp_asigl1)
+						|| (!empty($this->cod_original_licit) && $this->cod_original_licit != $licit && $pujas[0]->licit_asigl1 != $pujas[1]->licit_asigl1 && $pujas[0]->imp_asigl1 > $pujas[1]->imp_asigl1)
                     )
                     {
                        $importe = $pujas[0]->imp_asigl1;
