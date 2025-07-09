@@ -60,6 +60,15 @@ Route::get('/design', function () {
 	return view('pages.design');
 });
 
+Route::get('/robots.txt', function () {
+    $env = app()->environment();
+	$content = public_path('robots.' . $env . '.txt');
+	if (!file_exists($content)) {
+		abort(404);
+	}
+	return response()->file($content, ['Content-Type' => 'text/plain']);
+});
+
 Route::get('/{lang}/img/load/{size}/{img}', [ImageController::class, 'return_image_lang']);
 Route::get('/img/load/{size}/{img}', [ImageController::class, 'return_image']);
 #load img url amigable
