@@ -1,0 +1,19 @@
+@import url("global.css");
+
+.home-slider .column_banner {
+	padding: 0;
+}
+
+.home-slider img {
+	max-height: 750px;
+}
+
+.newsletter-wrapper {
+	justify-content: center;
+	text-align: center;
+}
+
+body > footer {
+	background-color: var(--color-black);
+	color: var(--bs-gray-300);
+}
