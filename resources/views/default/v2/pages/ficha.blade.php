@@ -83,8 +83,10 @@
             $('.add_bid').removeClass('loading');
         });
     </script>
-    @php
+
+	@php
         $lote_actual = $data['subasta_info']->lote_actual;
+		$representedArray = $data['representedArray'];
 
         if (!empty($lote_actual)) {
             $bread = [];

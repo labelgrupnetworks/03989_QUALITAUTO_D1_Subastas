@@ -530,6 +530,8 @@ section.ficha-image {
 @media (min-width: 992px) {
 	.ficha-grid {
 		grid-template-columns: 1fr 2fr 2fr;
+		column-gap: 2rem;
+		row-gap: 2rem;
 	}
 
 	section.ficha-title {

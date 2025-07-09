@@ -177,12 +177,14 @@
 						<div class="col-12">
                             <label class="form-label">
                                 {!! $formulario->condiciones2 !!}
-                                {!! trans("web.login_register.read_conditions2") !!}
+                                {!! trans('web.login_register.read_conditions2', ['name' => Config::get('app.name')]) !!}
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
+
+			@includeWhen(Config::get('app.withRepresented', false), 'front::pages.user._register_represented')
 
             <div @class([
                 'row mb-5',

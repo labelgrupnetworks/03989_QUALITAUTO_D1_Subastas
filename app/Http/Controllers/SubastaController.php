@@ -1321,6 +1321,12 @@ class SubastaController extends Controller
 
 		$data['divisas'] =  $currency->getAllCurrencies($js_item['subasta']['currency']->name);
 
+		$data['representedArray'] = [];
+		if(Session::has('user') && Config::get('app.withRepresented', false)) {
+			$data['representedArray'] = FgRepresentados::getRepresentedToSelect(Session::get('user.cod'));
+		}
+
+
 		SeoLib::saveVisit($subasta_info->lote_actual->sub_hces1, null, $subasta_info->lote_actual->sec_hces1, $subasta_info->lote_actual->ref_asigl0);
 
 		/* FIN  codigo temporal */

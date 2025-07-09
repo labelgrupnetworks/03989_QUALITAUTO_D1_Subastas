@@ -125,7 +125,7 @@ async function handleSubmitRegisterForm(event) {
 function copyPrincipalAddress() {
 	const inputsNames = ['pais', 'cpostal', 'provincia', 'poblacion', 'codigoVia', 'direccion'];
 	inputsNames.forEach((inputName) => {
-		if(document.querySelector(`[name='clid_${inputName}']`) == null) {
+		if (document.querySelector(`[name='clid_${inputName}']`) == null) {
 			return;
 		}
 		document.querySelector(`[name='clid_${inputName}']`).value = document.querySelector(`[name='${inputName}']`).value;
@@ -241,4 +241,54 @@ function checkExistNif(event) {
 			nifInput.classList.add("is-invalid");
 			return;
 		})
+}
+
+/**
+ * Bloque para solamente para clientes con representación
+ */
+
+/**
+ * Elementos a mostrar y su requerimiento cuando seleccionamos dirección de envio
+ * @param {HTMLInputElement} checkElement
+ */
+function handleCheckedRepresented(checkElement) {
+	const isChecked = checkElement.checked;
+	const representedBlock = document.getElementById('js-representar');
+
+	representedBlock.classList.toggle('d-none', !isChecked);
+
+	representedBlock.querySelectorAll('input').forEach((input) => {
+		input.required = isChecked;
+		input.value = '';
+	});
+
+	// Puede que necesite un input donde añadir S o N
+	document.querySelector('[name=representar]').value = isChecked ? 'S' : 'N';
+}
+
+function addRow() {
+	const table = document.getElementById('js-repre-table');
+	const rowNumber = table.rows.length - 1;
+	const arrayNumber = rowNumber - 1;
+
+	const clonRow = table.rows[1].cloneNode(true);
+	clonRow.querySelector('[name*=alias]').value = '';
+	clonRow.querySelector('[name*=alias]').attributes['name'].value = 'repre['+arrayNumber+'][alias]';
+	clonRow.querySelector('[name*=name]').value = '';
+	clonRow.querySelector('[name*=name]').attributes['name'].value = 'repre['+arrayNumber+'][name]';
+	clonRow.querySelector('[name*=cif]').value = '';
+	clonRow.querySelector('[name*=cif]').attributes['name'].value = 'repre['+arrayNumber+'][cif]';
+
+	const trashIcon = document.getElementById('js-repre-delete-icon').getElementsByTagName('svg')[0].cloneNode(true);
+	const trashButton = $('<button type="button" class="btn btn-sm btn-danger" onclick="removeRow(this)"></button>').append(trashIcon);
+
+	clonRow.querySelector('td:last-child').appendChild(trashButton[0]);
+
+	//instert row in tbody
+	table.querySelector('tbody').appendChild(clonRow);
+}
+
+function removeRow(button) {
+	const row = button.closest('tr');
+	row.remove();
 }
