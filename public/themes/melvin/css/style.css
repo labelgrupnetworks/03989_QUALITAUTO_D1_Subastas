@@ -5,7 +5,7 @@
 }
 
 .home-slider img {
-	max-height: 750px;
+	max-height: initial;
 }
 
 .newsletter-wrapper {
@@ -16,4 +16,8 @@
 body > footer {
 	background-color: var(--color-black);
 	color: var(--bs-gray-300);
+}
+
+.hist_content .info {
+	color: #fff;
 }
