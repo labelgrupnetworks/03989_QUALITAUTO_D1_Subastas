@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use stdClass;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 class LotListController extends Controller
 {
@@ -681,7 +682,18 @@ class LotListController extends Controller
 	#  FUNCIONES DE FILTROS Y ORDENACION  #
 	#######################################
 
-	#generamos las variables por cada input que se espera
+	/**
+	 * Generamos las variables por cada input que se espera
+	 * @param string $typeSub Tipo de subasta (P, O, V, W, M, I)
+	 * @param int|null $category ID de la categoría (opcional)
+	 * @param string|null $section Código de la sección (opcional)
+	 * @param int|null $subsection ID de la subsección (opcional)
+	 * @param string|null $search Texto de búsqueda (opcional)
+	 * @return array Filtros validados y normalizados
+	 * @throws TooManyRequestsHttpException Si se excede el límite de solicitudes
+	 * @throws \Illuminate\Validation\ValidationException Si los filtros no son válidos
+	 * @throws \Exception Si ocurre un error al validar los filtros
+	 */
 	public function getInputFilters($typeSub, $category = null, $section = null, $subsection = null,  $search = null)
 	{
 		$request = request()->all();
@@ -785,6 +797,11 @@ class LotListController extends Controller
 		return $filters;
 	}
 
+	/**
+	 * Aplica un límite de tasa a las solicitudes para evitar abusos.
+	 * @param int $maxAttempts
+	 * @throws TooManyRequestsHttpException
+	 */
 	private function applyRateLimit($maxAttempts)
 	{
 		$key = request()->ip() . '|' . request()->path();
@@ -792,7 +809,7 @@ class LotListController extends Controller
 
 		if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
 			Log::debug("Too many attempts for lot list filters", ['ip' => request()->ip(), 'path' => request()->path(), 'agent' => request()->header('User-Agent')]);
-			abort(429, 'Too Many Attempts.');
+			throw new TooManyRequestsHttpException('Too Many Attempts.');
 		}
 
 		RateLimiter::hit($key, $decaySeconds);
