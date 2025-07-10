@@ -62,6 +62,13 @@
             {{ trans("$theme-app.foot.term_condition") }}
         </a>
 
+		 @if(Session::has('user') && $ficha_subasta->opcioncar_sub  == 'S' && strtotime($ficha_subasta->start) > time())
+			<a class="btn btn-block btn-subasta" href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$ficha_subasta->cod_sub}}">
+				<x-icon.fontawesome version=5 icon=gavel></x-icon.fontawesome>
+				{{ trans('web.lot_list.ver_ofertas') }}
+			</a>
+		@endif
+
         <div class="share-panel-auction">
 			@include('includes.share_list', ['url' => url()->full(), 'text' => $ficha_subasta->des_sub])
         </div>
