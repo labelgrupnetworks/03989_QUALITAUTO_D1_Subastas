@@ -142,7 +142,15 @@ header .navbar-nav {
 }
 
 .hist_content {
-	--logo-size: 1.5em;
+	--logo-size: 2em;
+}
+
+.hist_item .bidder-identifier:has(.yo + .dos) {
+	font-size: 1em;
+}
+
+.hist_item .bidder-identifier :is(.yo + .dos) {
+	font-size: .8em;
 }
 
 .hist_content .info {
