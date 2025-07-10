@@ -44,6 +44,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use SplFileInfo;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SubastaController extends Controller
 {
@@ -343,14 +344,18 @@ class SubastaController extends Controller
 		/* datos de la session */
 
 		if (!empty($cod_sub)) {
+
+			//si se busca por subasta, será necesario tener la sesión de subasta
+			if(empty($subastaObj->id_auc_sessions)){
+				throw new NotFoundHttpException('Subasta no encontrada');
+			}
+
 			$sub_data = $subastaObj->getInfSubasta();
 			ToolsServiceProvider::exit404IfEmpty($sub_data);
 
 			if (!empty($sub_data) && $sub_data->subc_sub == 'H') {
 				$cache_sql = true;
 			}
-		} else {
-			//$sub_data->tipo_sub = 'P';
 		}
 		$SEO_metas = new \stdClass();
 
