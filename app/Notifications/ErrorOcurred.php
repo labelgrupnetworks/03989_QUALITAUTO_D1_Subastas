@@ -62,6 +62,7 @@ class ErrorOcurred extends Notification
 			->when($this->count, function ($message) {
 				$message->line("El error se ha producido **{$this->count} veces** en la última hora");
 			})
+			->line("Tipo de excepción: **" . get_class($this->exception) . "**")
 			->line("Archivo: **{$this->exception->getFile()}**")
 			->line("Línea: **{$this->exception->getLine()}**")
 			//->line("Stack trace: **{$this->exception->getTraceAsString()}**")
@@ -97,6 +98,10 @@ class ErrorOcurred extends Notification
 					->setWeight('Default')
 					->setSize('Medium')
 					->setColor('Attention'),
+				TextBlock::create()
+					->setText("Tipo de excepción: **" . get_class($this->exception) . "**")
+					->setWeight('Default')
+					->setSize('Small'),
 				TextBlock::create()
 					->setText("Archivo: **{$this->exception->getFile()}**")
 					->setWeight('Default')
