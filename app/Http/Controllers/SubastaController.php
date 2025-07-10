@@ -215,7 +215,6 @@ class SubastaController extends Controller
 	# lista de lotes que cargaremos en la página subasta
 	public function lotList($cod_sub = NULL, $key_customize = NULL,  $route_customize = NULL, $type = NULL)
 	{
-
 		if (!empty($_GET) && !empty($_GET['querylog'])) {
 			DB::enableQueryLog();
 		}
@@ -225,7 +224,6 @@ class SubastaController extends Controller
 		$subasta->tipo          = "'W', 'V', 'O'";
 		$subasta->texto         = Route::current()->parameter('texto');
 		$subasta->page          = 'all';
-		$referencia             = Route::current()->parameter('ref');
 		$dataAuxSubasta = array();
 
 		if (isset($_GET['s']) && is_numeric($_GET['s'])) {
@@ -248,6 +246,8 @@ class SubastaController extends Controller
 			$subasta->rsoc      = !empty($usuario->rsoc_cli) ? $usuario->rsoc_cli : $usuario->nom_cli;
 
 			# Check dummy bidder y codigo licitador de subasta
+
+			$js_item['user']['cod_licit'] =  0;
 			if (!empty($subasta->cod)) {
 
 				$subasta->checkDummyLicitador();
@@ -261,10 +261,8 @@ class SubastaController extends Controller
 
 				if ($res) {
 					$js_item['user']['cod_licit'] = head($res)->cod_licit;
-				} else {
-					$js_item['user']['cod_licit'] =  0;
 				}
-				//$js_item['user']['cod_licit']       = head($res)->cod_licit;
+
 			} elseif (isset($_GET['s'])) {
 
 				$subasta_aux        = new Subasta();
@@ -274,75 +272,52 @@ class SubastaController extends Controller
 				$subasta_aux->tipo          = "'W', 'V', 'O'";
 				//$subasta_aux->texto         = Route::current()->parameter('texto');
 				$subasta_aux->page          = 'all';
-				$referencia             = $_GET['s'];
 				$res = $subasta_aux->checkLicitador();
+
 				if ($res) {
 					$js_item['user']['cod_licit'] = head($res)->cod_licit;
-				} else {
-					$js_item['user']['cod_licit'] =  0;
 				}
-			} else {
-				$js_item['user']['cod_licit'] = 0;
+
 			}
 
-
 			$subasta->licit = Session::get('user.cod');
-
-
 			$js_item['user']['is_gestor']       = $usuario->tipacceso_cliweb == 'S' ? TRUE : FALSE;
 			$js_item['user']['adjudicaciones']  = array();
 			$js_item['user']['favorites']       = array();
 
 			$fav = new Favorites($subasta->cod, $js_item['user']['cod_licit']);
-			/*$favs = $fav->getFavs();
-
-            if (!empty($favs['data'])){
-                $js_item['user']['favorites'] = $favs['data'];
-            }*/
 			$lots_favs = $fav->getFavsSub($subasta->cod, $user->cod_cli);
 		}
 
-		if (!empty(Request::input('total'))) {
-			$itemsPerPage = Request::input('total');
-		} else {
-			$itemsPerPage   = head(Config::get('app.filter_total_shown_options'));
-		}
+		$itemsPerPage = Request::input('total', head(Config::get('app.filter_total_shown_options')));
 
 		//solo debe funcionar el goto si no han clicado una página
+		$goto = null;
 		if (empty(Route::current()->parameter('page'))) {
 			$goto = Request::input('goto');
-		} else {
-			$goto = NULL;
 		}
 
-
 		$subastaObj            = new Subasta();
-
-
-
-
 		$subastaObj->tipo      = "'W','O','V'";
 		$subastaObj->cod       = $cod_sub;
-
 		$subastaObj->texto     = Route::current()->parameter('texto');
+
 		preg_match('#.*-(\d+)$#', $subastaObj->texto, $matches);
 		if (!empty($matches[1]) || (isset($matches[1]) && $matches[1] == 0)) {
-
 			$subastaObj->id_auc_sessions = $matches[1];
 		}
 
 		$subastaObj->page      = 'all';
 		$subastaObj->cat       = Route::current()->parameter('cat'); // Categorias de la subasta
+
 		//indicamso el orden elegido
 		$this->set_order($subastaObj);
 
-
 		$subastaObj->itemsPerPage = $itemsPerPage;
-		//$sub_data= new \stdClass();
-		$sub_data = NULL;
+		$sub_data = null;
 		$cache_sql = false;
-		/* datos de la session */
 
+		/* datos de la session */
 		if (!empty($cod_sub)) {
 
 			//si se busca por subasta, será necesario tener la sesión de subasta
@@ -374,8 +349,6 @@ class SubastaController extends Controller
 
 		$this->set_filter($subastaObj);
 
-
-
 		//se usaran solo para tauler y fau de momento y estan configurados mediante web_config
 		$filters = NULL;
 
@@ -398,7 +371,6 @@ class SubastaController extends Controller
 		} else {
 			$currentPage    = Route::current()->parameter('page');
 		}
-
 
 		$arr_position = 0;
 		$find = false;
@@ -446,16 +418,10 @@ class SubastaController extends Controller
 			$url_indice = null;
 		}
 		$SEO_metas->canonical = $_SERVER['HTTP_HOST'] . $url;
-		$urlPattern     = $url . '/page-(:num)';
 
-		//$paginator      = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
-		//$subastaObj->page  = Route::current()->parameter('page');
 		$subastaObj->page = intval($currentPage);
 
-		# Bug de paginador, a menos que se muestre 1 registro por pagina
-		//$paginator->numPages    = ($paginator->numPages -1);
 		//Si hay código de subasta debemos llamar a la funcion que carga los datos con el cod de subasta
-
 		$subasta = $subastaObj->getLots("normal", $cache_sql);
 
 		$paginator = new LengthAwarePaginator(range(1, $totalItems), $totalItems, $itemsPerPage, $currentPage, ["path" => $url]);
@@ -474,10 +440,8 @@ class SubastaController extends Controller
 
 		// KIKE - Guardamos el código de subasta en una variable aparte para cuando se está llamando a la lista de lotes por
 		//        categoria y filtrando por sesión ?s=XXXX  si forzamos el cod_sub pasan cosas raras.
-
 		$cod_sub_aux = 0;
 		if (!empty($subastaObj->cod) && isset($_GET['s'])) {
-
 			$cod_sub_aux = $subastaObj->getInfSubasta();
 		}
 
@@ -508,8 +472,6 @@ class SubastaController extends Controller
 			'totalItems' => $totalItems,
 		);
 
-
-
 		if (!empty(Request::input('description'))) {
 			$data['filterDescription'] = Request::input('description');
 		}
@@ -529,12 +491,6 @@ class SubastaController extends Controller
 		);
 
 		$data['js_item'] = $js_item;
-		/*
-       echo "<pre>";
-        print_r($data);
-      die();
-      */
-
 
 		return View::make('front::pages.subasta', array('data' => $data));
 	}
