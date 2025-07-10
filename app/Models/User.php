@@ -76,32 +76,19 @@ class User
 		return $this;
 	}
 
-	public function getUserModelByCodCli($cod_cli, $select = ['*'])
-	{
-		$user = FxCli::joinCliWebCli()->select($select)->where('cod_cli', $cod_cli)->first();
-		return new self($user->toArray());
-	}
-
 	public function login()
 	{
-		//devolvemos el usuario siempre que no sea baja temporal (BAJA_TMP_CLI = 'N')
-		return head(DB::select(
-			"SELECT c.baja_tmp_cli,cw.* FROM FXCLIWEB cw
-                     JOIN FXCLI c
-                                ON (c.COD_CLI = cw.COD_CLIWEB and c.GEMP_CLI = cw.GEMP_CLIWEB)
-                            WHERE
-                            lower(USRW_CLIWEB) = :usr
-                            AND cw.PWDW_CLIWEB= :pass
-                             AND cw.EMP_CLIWEB = :emp AND cw.GEMP_CLIWEB = :gemp and c.BAJA_TMP_CLI = :baja_tmp",
-			array(
-				'usr'   => strtolower($this->user),
-				'emp'       => Config::get('app.emp'),
-				'gemp'       => Config::get('app.gemp'),
-				'pass'       => $this->password,
-				'baja_tmp'  => 'N'
-			)
-		));
+		return FxCli::query()
+			->joinCliWebCli()
+			->where([
+				'lower(usrw_cliweb)' => strtolower($this->user),
+				'pwdw_cliweb' => $this->password,
+				'emp_cliweb' => Config::get('app.emp'),
+				'baja_tmp_cli' => 'N'
+			])
+			->first();
 	}
+
 	public function login_encrypt()
 	{
 
@@ -349,6 +336,10 @@ class User
 	}
 
 	# Ordenes de Licitación de un Lote en concreto
+	/**
+	 * Creo que no se esta útilizando.
+	 * 23-06-25
+	 */
 	public function getOrdenes()
 	{
 		/*

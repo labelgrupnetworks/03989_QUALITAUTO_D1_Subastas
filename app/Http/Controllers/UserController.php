@@ -97,21 +97,23 @@ class UserController extends Controller
 	//Buscar informacion del usuario
 	public function GetInfUser($email, $password)
 	{
-
 		$user           = new User();
 		$user->user     = $email;
 		$user->password = $password;
 		#si tienen una semilla para cada usuario
+
+		//@todo: quitar el login sin ecriptación. Los ifs determinaran el password y finalemnte se llamara a la query de login_encrypt
+
 		if (!empty(Config::get('app.multi_key_pass'))) {
 
 			$user->email     = $email;
-			$dataUser = $user->getUserByLogin();
+			$dataUser = $user->getUserByLogin(); //@todo: realizar la query directamente y obteniendo solo el pwd
 
 			if (empty($dataUser)) {
 				return null;
 			}
-			$passBD = explode(":", $dataUser[0]->pwdwencrypt_cliweb);
 
+			$passBD = explode(":", $dataUser[0]->pwdwencrypt_cliweb);
 
 			#debe existir la clave de encriptación y el password encriptado
 			if (count($passBD) < 2) {
@@ -121,22 +123,21 @@ class UserController extends Controller
 			$seed = $passBD[1];
 			#encriptamos el password k mandan y añadimos la semilla para que concuerde con lo que hay guardado en base de datos.
 			$user->password =  md5($seed . $user->password) . ":" . $seed;
-			$login          = $user->login_encrypt();
+
+
 		} #una semilla para todos lso usuarios
 		elseif (!empty(Config::get('app.password_MD5'))) {
 
 			$user->password =  md5(Config::get('app.password_MD5') . $user->password);
-			$login          = $user->login_encrypt();
 
 			if (!Config::get('app.strict_password_validation', false) && empty($login) && strlen($password) > 8) {
 				$user->password = substr($password, 0, 8);
 				$user->password =  md5(Config::get('app.password_MD5') . $user->password);
-				$login          = $user->login_encrypt();
 			}
-		} else {
-			$login          = $user->login();
 		}
-		return $login;
+
+		//@todo. El usuario tiene que ser un dto (userSessionDTO o similar) así poderemos identificar cuando llamemmos a session:get
+		return $user->login_encrypt();
 	}
 
 	//Crear la session del usuario
