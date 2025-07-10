@@ -330,7 +330,7 @@ function reloadHistory({subasta, pujas, licits, importeReserva, minPriceSurpass}
 
 		historyList.innerHTML += line;
 
-		if(minPriceSurpass && parseInt(minPriceSurpass) == parseInt(puja.imp_asigl1)){
+		if(minPriceSurpass && parseInt(minPriceSurpass) == parseInt(puja.imp_asigl1) && importeReserva > 0) {
 			historyList.innerHTML += reservePriceSurpassElement ;
 		}
 
