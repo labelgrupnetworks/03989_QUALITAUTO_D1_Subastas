@@ -2,20 +2,6 @@
 @section('content')
 
 <section role="main" class="content-body">
-        <header class="page-header">
-                <div class="right-wrapper pull-right">
-                        <ol class="breadcrumbs">
-                                <li>
-                                        <a href="/admin">
-                                                <i class="fa fa-home"></i>
-                                        </a>
-                                </li>
-                                
-                        </ol>
-
-                        <a class="sidebar-right-toggle" ><i class="fa fa-chevron-left"></i></a>
-                </div>
-        </header>
 
         <!-- contenedor -->
         <div id="CSSchildfav" class="row mb-3">
@@ -24,18 +10,18 @@
         <br>
 
         @foreach($favorites as $cod_sub =>$auction)
-        
+
               <!-- subasta -->
               <div class="col-md-12">
-                
+
                 <!-- titulo -->
                 <h2 class="JSauction" onclick="javascript:$('#JSul{{$cod_sub}}').slideToggle('blind')" style="cursor:pointer"> {{$cod_sub}} -{{head(head($auction))['des_sub']}}</h2>
                 <!-- contenedor lotes -->
-                
+
                 <ul id="JSul{{$cod_sub}}" class="nav nav-main navbar-dark orange contenedorLotes">
                 @foreach($auction as $ref =>$favorites)
-                   
-                    <!-- lotes --> 
+
+                    <!-- lotes -->
                    <li class="nav-parent" >
                       <a class="linkLotes" onclick="javascript:$('#{{$cod_sub}}-{{$ref}}').slideToggle('blind')" style="cursor:pointer">
                           <strong>Lote: {{$ref}}-{{head($favorites)["titulo_hces1"]}}  ({{count($favorites)}})</strong>
@@ -44,15 +30,15 @@
                         <!-- contenedor usuarios -->
                         <ul  class="nav nav-children contenedorUsuarios" id='{{$cod_sub}}-{{$ref}}'>
                         @foreach($favorites as $favorite)
-                            
+
                             <!-- usuarios -->
                             <li style="margin-left:40px" >
                                 {{$favorite["cod_cliweb"]}} - {{$favorite["nom_cliweb"]}}
-                            </li>                    
-                        @endforeach      
+                            </li>
+                        @endforeach
                         </ul>
                    </li>
-                   
+
                 @endforeach
                 </ul>
             </div>

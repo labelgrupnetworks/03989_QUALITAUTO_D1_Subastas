@@ -4,22 +4,6 @@
     $crs=isset($_GET['crs'])?$_GET['crs'] : '';
 ?>
 <section role="main" class="content-body">
-        <header class="page-header">
-			<h2></h2>
-
-			<div class="right-wrapper pull-right">
-				<ol class="breadcrumbs">
-					<li>
-						<a href="javascript:;">
-							<i class="fa fa-home"></i>
-						</a>
-					</li>
-					<li><span> </span></li>
-				</ol>
-
-				<a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
-			</div>
-		</header>
 
 	<div id="cms">
             <div class="row mb-10">
@@ -32,7 +16,7 @@
                         <div id="datatable-default_wrapper" class="dataTables_wrapper no-footer">
                                 <div class="">
                                         <table class=" bloque-conf table table-bordered table-striped mb-none dataTable no-footer" id="datatable-default" role="grid" aria-describedby="datatable-default_info">
-                                                
+
                                                 <tbody>
                                                     @foreach($data['inf'] as $bloque)
                                                         <tr role="row" class="odd">
@@ -41,7 +25,7 @@
                                                                 {{$bloque->title}}
                                                                 </a>
                                                             </td>
-                                                            
+
                                                             <td class="text-center"><a class="mb-xs mt-xs mr-xs btn btn-primary " href="resources/name/<?= $bloque->id_web_resource ?>?&crs={{$crs}}">{{ trans('admin-app.title.edit') }}</td>
                                                             <td class="text-center">
                                                             @if(empty($bloque->id_web_resource_banner))
@@ -56,7 +40,7 @@
                         </div>
                 </div>
             </section>
-	</div>	
+	</div>
 </section>
 
 

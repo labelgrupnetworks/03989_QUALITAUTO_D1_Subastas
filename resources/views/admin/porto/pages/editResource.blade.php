@@ -2,22 +2,6 @@
 @section('content')
 
 	<section role="main" class="content-body">
-		<header class="page-header">
-			<h2></h2>
-
-			<div class="right-wrapper pull-right">
-				<ol class="breadcrumbs">
-					<li>
-						<a href="javascript:;">
-							<i class="fa fa-home"></i>
-						</a>
-					</li>
-					<li><span> </span></li>
-				</ol>
-
-				<a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
-			</div>
-		</header>
 
 		<div id="resources">
 			<div class="row">
@@ -67,37 +51,37 @@
 
 
                                                                 <div class="mb-md hidden-lg hidden-xl"></div>
-                                       
-                                                                       
+
+
                                                         </div>
                                                         <div class="row form-group ">
-                                                            <div class="col-md-6 imagen" style="display:<?= ((empty($see) && (empty($bloque->type) || $bloque->type == 'I')) || ((!empty($bloque->type) && $bloque->type == 'C') || (!empty($see) && $see == 'calendar')))? 'block' : 'none'; ?>" >   
-                                                                <p>{{ trans('admin-app.placeholder.url') }}</p>        
+                                                            <div class="col-md-6 imagen" style="display:<?= ((empty($see) && (empty($bloque->type) || $bloque->type == 'I')) || ((!empty($bloque->type) && $bloque->type == 'C') || (!empty($see) && $see == 'calendar')))? 'block' : 'none'; ?>" >
+                                                                <p>{{ trans('admin-app.placeholder.url') }}</p>
                                                                 <input type="text" name="url_link" placeholder="{{ trans('admin-app.placeholder.url') }}" class="form-control" value="{{ empty($bloque)? '' : $bloque->url_link}}">
-                        
+
                                                              </div>
-                                                             <div class="col-md-3 imagen" style="display:<?= ((empty($see) && (empty($bloque->type) || $bloque->type == 'I')) || ((!empty($bloque->type) && $bloque->type == 'C') || (!empty($see) && $see == 'calendar')))? 'block' : 'none'; ?> " >                   
+                                                             <div class="col-md-3 imagen" style="display:<?= ((empty($see) && (empty($bloque->type) || $bloque->type == 'I')) || ((!empty($bloque->type) && $bloque->type == 'C') || (!empty($see) && $see == 'calendar')))? 'block' : 'none'; ?> " >
                                                                  <p>&nbsp;</p>
                                                                  <div class="checkbox-custom checkbox-default">
                                                                     <input name="new_windows" type="checkbox" <?= (empty($see) && (empty($bloque->new_window) || $bloque->new_window == 0))? '' : 'checked' ; ?>  id="checkboxPage">
                                                                     <label for="checkboxPage">{{ trans('admin-app.selected.new_page') }}</label>
                                                                  </div>
-                                                                 
+
                                                             </div>
-                               
-                                                            <div class="col-md-3">   
-                                                                
+
+                                                            <div class="col-md-3">
+
                                                             </div>
-                                                          
-                                                            <div class="col-md-12 imagen mt-10" style="display:<?= (empty($see) && (empty($bloque->type) || $bloque->type == 'I'))? 'block' : 'none'; ?>">   
-                                                                    <p>{{ trans('admin-app.placeholder.text') }}</p>        
+
+                                                            <div class="col-md-12 imagen mt-10" style="display:<?= (empty($see) && (empty($bloque->type) || $bloque->type == 'I'))? 'block' : 'none'; ?>">
+                                                                    <p>{{ trans('admin-app.placeholder.text') }}</p>
                                                                     <input type="text" name="text_html" placeholder="{{ trans('admin-app.placeholder.text') }}" class="form-control" value="{{ empty($bloque->content)? '' : $bloque->content}}">
 
                                                             </div>
-                                                            <div class="col-md-12 imagen mt-10" style="display:<?= ((!empty($bloque->type) && $bloque->type == 'C') || (!empty($see) && $see == 'calendar'))? 'block' : 'none'; ?>;margin-top: 20px;">   
+                                                            <div class="col-md-12 imagen mt-10" style="display:<?= ((!empty($bloque->type) && $bloque->type == 'C') || (!empty($see) && $see == 'calendar'))? 'block' : 'none'; ?>;margin-top: 20px;">
                                                                    <label for="datetimepicker">Fecha de subasta:</label>
                                                                     <div class="form-group" style="display: inline-table;">
-                                                                        <input name="fecha" class="form-control" type="date" required="" id="datetimepicker" value="{{ empty($bloque->content)? '' : $bloque->content}}">                                                                    
+                                                                        <input name="fecha" class="form-control" type="date" required="" id="datetimepicker" value="{{ empty($bloque->content)? '' : $bloque->content}}">
                                                                     </div>
                                                             </div>
 
@@ -107,7 +91,7 @@
                                                         </div>
                                                             <input id="html" type="hidden" name="html" value="">
                                                 </div>
-                                                
+
                                 </section>
                              </div>
                             <div class="col-md-2">
@@ -132,18 +116,18 @@
                                                                 <div class="mb-md hidden-lg hidden-xl"></div>
 
                                                         </div>
-                                                    
+
                                                             <input type="hidden" class="id_input" name="id" value="{{!empty($bloque->id_web_resource)? $bloque->id_web_resource : '0' }}" >
                                                             <input type="hidden" name="file_url" value="{{!empty($bloque->url_resource)? $bloque->url_resource : ' ' }}"/>
                                                             <input class="cod_sec" type="hidden" name="cod_sec" value="<?= isset($_GET['crs'])?$_GET['crs'] : '' ?>" >
                                                 </div>
-                                               
+
                                 </section>
                             </div>
                              </form>
 		</div>
 
-			
+
 		</div>
 
 		<div id="thumbnails" class="hidden"></div>
@@ -171,19 +155,19 @@
                                                                                             @endif
 											</div>
 										</div>
-										
+
 									</div>
 								</section>
 							</div>
-                                                   
-							
+
+
 						</div>
 
 				</div>
 			</div>
 
-			
+
 		</div>
 	</section>
-		
+
 @stop

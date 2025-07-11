@@ -2,25 +2,9 @@
 @section('content')
 
 <section role="main" class="content-body">
-        <header class="page-header">
-            
-
-                <div class="right-wrapper pull-right">
-                        <ol class="breadcrumbs">
-                                <li>
-                                        <a href="/admin">
-                                                <i class="fa fa-home"></i>
-                                        </a>
-                                </li>
-                                
-                        </ol>
-
-                        <a class="sidebar-right-toggle" ><i class="fa fa-chevron-left"></i></a>
-                </div>
-        </header>
 
 	<div id="cms">
-           
+
             <section class="panel">
 
                 <div class="panel-body">
@@ -39,11 +23,11 @@
                                                     <tr role="row" class="odd">
                                                             <td style="width: 20%; ">
                                                                {{$email->cod_email}}
-                                                               
+
                                                             </td>
                                                             <td style="width: 70%; ">
                                                                {{$email->des_email}}
-                                                               
+
                                                             </td>
                                                             <td class="text-center"><a class="mb-xs mt-xs mr-xs btn btn-primary " href="email/ver/<?= $email->cod_email ?>" target="blank">{{ trans('admin-app.title.email_ver') }}</td>
                                                         </tr>
@@ -54,7 +38,7 @@
                         </div>
                 </div>
             </section>
-	</div>	
+	</div>
 </section>
 
 @stop

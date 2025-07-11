@@ -2,22 +2,6 @@
 @section('content')
 
     <section class="content-body" role="main">
-        <header class="page-header">
-            <h2></h2>
-
-            <div class="right-wrapper pull-right">
-                <ol class="breadcrumbs">
-                    <li>
-                        <a href="javascript:;">
-                            <i class="fa fa-home"></i>
-                        </a>
-                    </li>
-                    <li><span> </span></li>
-                </ol>
-
-                <a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
-            </div>
-        </header>
 
 		@if (count(config('app.locales')) > 1)
 			<div class="lang-changer">

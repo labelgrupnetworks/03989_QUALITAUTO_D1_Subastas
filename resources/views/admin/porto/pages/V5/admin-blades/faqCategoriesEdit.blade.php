@@ -5,26 +5,14 @@
 	$see =  isset($_GET['see'])?$_GET['see'] : 'B' ;
 ?>
 <section role="main" class="content-body">
-	<header class="page-header">
-		<div class="right-wrapper pull-right">
-			<ol class="breadcrumbs">
-				<li>
-					<a href="/admin">
-						<i class="fa fa-home"></i>
-					</a>
-				</li>
-			</ol>
-			<a class="sidebar-right-toggle" href="/admin/faqs" ><i class="fa fa-chevron-left"></i></a>
-			</div>
-	</header>
 
 	<div id="faqs">
-			
+
 		<section class="panel">
 			<div class="panel-body">
 
 				<h1>Faqs - Edit Category</h1>
-                                
+
 				<div class="tabs tabs-bottom tabs-primary">
 					<form name="formWEB_FAQCAT" id="formWEB_FAQCAT" method="post" action="javascript:saveFaqCat();">
 
@@ -34,8 +22,8 @@
 								<label>Categoria:</label>
 								{!! $data['formulario']['PARENT_FAQCAT'] !!}
 							</div>
-						
-								
+
+
 							{!! $data['formulario']['COD_FAQCAT'] !!}
 
 								<div class="col-xs-12 col-md-6">
@@ -49,10 +37,10 @@
 							<br>
 						</div>
 					</form>
-	
+
 			</div>
 		</section>
-	</div>	
+	</div>
 </section>
 
 @stop
