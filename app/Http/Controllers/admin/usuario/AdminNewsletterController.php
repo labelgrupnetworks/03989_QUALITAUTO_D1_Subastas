@@ -17,7 +17,15 @@ class AdminNewsletterController extends Controller
 
 	public function __construct()
 	{
-		view()->share(['menu' => 'usuarios']);
+		view()->share(
+			[
+				'menu' => 'usuarios',
+				'layout' => [
+					'section' => 'usuarios',
+					'title' => 'Newsletters',
+				]
+			]
+		);
 		$this->newsletterModel = new Newsletter();
 	}
 
@@ -37,10 +45,10 @@ class AdminNewsletterController extends Controller
 
 	public function edit($id)
 	{
-		$newsletter = Fx_Newsletter::when(isMultilanguage(), function($query) {
+		$newsletter = Fx_Newsletter::when(isMultilanguage(), function ($query) {
 			return $query->with('languages');
 		})
-		->findOrFail($id);
+			->findOrFail($id);
 		return response()->json(['newsletter' => $newsletter]);
 	}
 
@@ -58,7 +66,7 @@ class AdminNewsletterController extends Controller
 
 		unset($names[$locale]);
 
-		collect($names)->filter()->each(function($name, $lang) use ($id_newsletter) {
+		collect($names)->filter()->each(function ($name, $lang) use ($id_newsletter) {
 			Fx_Newsletter::Create([
 				'id_newsletter' => $id_newsletter,
 				'name_newsletter' => $name,
@@ -81,9 +89,9 @@ class AdminNewsletterController extends Controller
 
 		unset($names[$locale]);
 
-		collect($names)->filter()->each(function($name, $lang) use ($newsletterLocale) {
+		collect($names)->filter()->each(function ($name, $lang) use ($newsletterLocale) {
 			Fx_Newsletter::updateOrCreate(
-				['id_newsletter'=> $newsletterLocale->id_newsletter, 'lang_newsletter' => $lang],
+				['id_newsletter' => $newsletterLocale->id_newsletter, 'lang_newsletter' => $lang],
 				['name_newsletter' => $name]
 			);
 		});
@@ -110,7 +118,7 @@ class AdminNewsletterController extends Controller
 		$service = $request->input('service', null);
 		$date = now()->format('Y_m_d\TH_i_s');
 
-		if($service == 'mailchimp') {
+		if ($service == 'mailchimp') {
 			return (new MailChimpExport(false))->download("export_{$date}.$format", $typesExport[$format]);
 		}
 

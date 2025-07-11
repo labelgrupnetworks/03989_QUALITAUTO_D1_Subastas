@@ -10,6 +10,9 @@
 
             <div class="inner-wrapper">
                 @include('admin::includes.left_sidebar')
+
+				@include('admin::includes.header_content')
+
                 @yield('content')
             </div>
 

@@ -20,7 +20,6 @@
 <input type="hidden" name="css_styles" value='{{ trans("admin-app.config.css_framework_5") }}'>
 
 <section role="main" class="content-body">
-	@include('admin::includes.header_content')
 
 	<div class="row well header-well d-flex align-items-center">
 		<div class="col-xs-9">

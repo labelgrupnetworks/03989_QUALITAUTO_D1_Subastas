@@ -6,7 +6,6 @@
 		<div class="lds-ripple"><div></div><div></div></div>
 	</section>
 
-	@include('admin::includes.header_content')
 
 	@csrf
 

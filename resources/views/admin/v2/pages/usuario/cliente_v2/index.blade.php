@@ -1,4 +1,4 @@
-@extends('admin::layouts.logged', ['title' => trans_choice('admin-app.title.client', 2), 'subTitle' => 'Backoffice'])
+@extends('admin::layouts.logged')
 
 @section('content')
 

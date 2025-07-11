@@ -2,8 +2,7 @@
 @section('content')
 
     <section role="main" class="content-body">
-        @include('admin::includes.header_content')
-        <div class="row well header-well d-flex align-items-center">
+                <div class="row well header-well d-flex align-items-center">
             <div class="col-xs-12">
                 <h1>{{ trans('admin-app.button.sort') }} {{ trans('admin-app.title.articles') }}</h1>
             </div>

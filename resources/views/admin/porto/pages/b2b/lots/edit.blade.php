@@ -2,7 +2,6 @@
 @section('content')
 
     <section class="content-body" role="main">
-        @include('admin::includes.header_content')
 
         <div class="row">
             <div class="col-xs-12">

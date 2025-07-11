@@ -19,12 +19,9 @@
         <div class="page-content">
 
             <div class="container-fluid">
-                @if (isset($title))
-                    @include('admin::layouts.partials/page-title', [
-                        'title' => $title,
-                        'subTitle' => $subTitle ?? '',
-                    ])
-                @endif
+
+				@includeWhen(!empty($layout), 'admin::layouts.partials.page-title')
+
                 @yield('content')
             </div>
 

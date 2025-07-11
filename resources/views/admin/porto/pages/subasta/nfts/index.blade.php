@@ -9,7 +9,6 @@
 		</div>
 	</section>
 
-	@include('admin::includes.header_content')
 
 	@csrf
 

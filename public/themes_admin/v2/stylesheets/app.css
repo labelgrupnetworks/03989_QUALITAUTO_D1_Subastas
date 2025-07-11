@@ -23173,3 +23173,9 @@ p.no-span::after {
    siga siendo coherente si está en el mismo archivo CSS. */
 /* Si este código para #modalPujarFicha está en un archivo separado, esto no es necesario.
    Pero si está en el mismo archivo que #modalMensaje, mantén los estilos que compartan. */
+
+.wrapper .main-nav {
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-gutter: stable;
+}

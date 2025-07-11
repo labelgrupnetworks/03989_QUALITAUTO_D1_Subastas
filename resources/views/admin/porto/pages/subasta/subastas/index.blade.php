@@ -7,8 +7,7 @@
 @endphp
 
 <section role="main" class="content-body">
-	@include('admin::includes.header_content')
-	@csrf
+		@csrf
 
 	<div class="row well header-well d-flex align-items-center">
 		<div class="col-xs-12">

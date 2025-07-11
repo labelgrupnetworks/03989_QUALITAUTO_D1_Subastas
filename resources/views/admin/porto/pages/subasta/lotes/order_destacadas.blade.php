@@ -5,8 +5,7 @@
 
 
     <section role="main" class="content-body">
-        @include('admin::includes.header_content')
-        <div class="row well header-well d-flex align-items-center">
+                <div class="row well header-well d-flex align-items-center">
             <div class="col-xs-12">
                 <h1>{{ trans('admin-app.fields.orden_asigl0') }} {{ trans('admin-app.title.featured_sales') }}</h1>
             </div>

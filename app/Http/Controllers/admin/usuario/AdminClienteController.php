@@ -39,7 +39,13 @@ class AdminClienteController extends Controller
 
 	function __construct()
 	{
-		view()->share(['menu' => 'usuarios']);
+		view()->share([
+			'menu' => 'usuarios',
+			'layout' => [
+				'section' => 'usuarios',
+				'title' => trans_choice('admin-app.title.client', 2)
+			]
+		]);
 	}
 
 
@@ -430,6 +436,7 @@ class AdminClienteController extends Controller
 			'newsletters' => $this->newsletterForm($fxcli, $cliente),
 			'additional' => [
 				'enviocatalogo' =>  FormLib::Select('enviocatalogo', 0, old('enviocatalogo', $fxcli->cli2->envcat_cli2 ?? 'N'), $booleanSelectOptions, '', '', false),
+				'publi' => FormLib::Select('publi', 0, old('publi', $fxcli->publi_cliweb ?? 'N'), $booleanSelectOptions, '', '', false),
 			],
 			'submit' => FormLib::Submit('Guardar', $save)
 		];

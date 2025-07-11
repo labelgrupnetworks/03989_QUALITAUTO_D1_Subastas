@@ -14,7 +14,6 @@
 
     <section role="main" class="content-body pb-5" id="blog-edit-page">
 
-        @include('admin::includes.header_content')
 
 		<form action="{{ route('admin.contenido.blog.store') }}" method="POST" enctype="multipart/form-data">
 			@csrf
