@@ -278,13 +278,13 @@
                     </li>
 
                     @if ($hasPermanent)
-                        <li>
+                        <li class="permanent-auction-nav-link">
                             <a href="{{ route('allCategories', ['typeSub' => 'P']) }}">
                                 {{ trans("$theme-app.foot.online_auction") }}
                             </a>
                         </li>
                     @elseif ($hasOnline)
-                        <li>
+                        <li class="online-auction-nav-link">
                             <a href="{{ Routing::translateSeo('subastas-online') }}">
                                 {{ trans("$theme-app.foot.online_auction") }}
                             </a>
@@ -397,7 +397,7 @@
         @endif
 
         @if ($global['auctionTypes']->where('tipo_sub', 'P')->value('count'))
-            <li><a
+            <li class="permanent-auction-nav-link"><a
                     href="{{ route('allCategories', ['typeSub' => 'P']) }}">{{ trans($theme . '-app.foot.online_auction') }}</a>
             </li>
         @endif

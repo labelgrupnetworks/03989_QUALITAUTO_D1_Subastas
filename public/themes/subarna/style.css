@@ -5189,3 +5189,6 @@ div.item_subasta img {
 	width: 100%;
 }
 
+li.permanent-auction-nav-link {
+	display: none;
+}
