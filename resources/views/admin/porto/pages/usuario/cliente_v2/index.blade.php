@@ -12,10 +12,7 @@
 		</div>
 	</div>
 
-	<div class="row well">
-
-		<div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
-
+	<x-admin::table.toolbar>
 			<div class="btn-group left" id="js-dropdownItems">
 				<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
 				<button
@@ -56,7 +53,9 @@
 				{{ trans("admin-app.fields.cli_creditosub") }}</a>
 
 			@include('admin::includes.config_table', ['id' => 'clientes', 'params' => $tableParams])
-		</div>
+			</x-admin::table.toolbar>
+
+	<div class="row well">
 
 		<div class="col-xs-12 table-responsive">
 			<table id="clientes" class="table table-striped table-condensed table-responsive" style="width:100%" data-order-name="order">
