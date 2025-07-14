@@ -51,7 +51,7 @@ class DuranController extends Controller
 			$xmlRes =  new SimpleXMLElement($res->AccesoWbResult);
 
 			if(Config::get('app.logginWS',false)){
-				Log::info('Duran Ws', ['petición' => $stringXML, 'respuesta' => $xmlRes]);
+				Log::info('Duran Ws', ['petición' => $stringXML, 'respuesta' => $xmlRes, 'funcion' => $function]);
 			}
 
 			if( request("debug")==1){
