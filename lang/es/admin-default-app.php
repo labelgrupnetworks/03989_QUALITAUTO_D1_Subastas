@@ -352,6 +352,17 @@ return [
 		'jobs' => 'Jobs',
 		'cache' => 'Cache',
 		'logs' => 'Logs',
+		'products' => 'Productos',
+		'extra' => 'Extra',
+		'reports' => 'Informes',
+		'bids' => 'Pujas',
+		'uploads' => 'Subidas',
+		'resources' => 'Recursos',
+		'bi' => 'BI',
+		'thumbs' => 'Miniaturas',
+		'test_auctions' => 'Subastas de Prueba',
+		'statistics' => 'Estadísticas',
+		'disk_status' => 'Estado del Disco'
 	),
 	'button' => array(
 		'import' => 'Importar',

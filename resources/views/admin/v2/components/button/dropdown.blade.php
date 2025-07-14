@@ -1,4 +1,4 @@
-<div class="btn-group" id="js-dropdownItems">
+<div class="btn-group" id="{{ $id }}">
     <button class="btn btn-secondary btn-sm" type="button">
         {{ $label }}
     </button>
@@ -7,7 +7,7 @@
         <span class="visually-hidden">Toggle Dropdown</span>
     </button>
 
-	<ul class="dropdown-menu" aria-labelledby="js-dropdownItems">
+	<ul class="dropdown-menu" aria-labelledby="{{ $id }}">
         {{ $slot }}
     </ul>
 </div>

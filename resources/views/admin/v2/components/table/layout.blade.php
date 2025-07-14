@@ -9,7 +9,9 @@
 
         {{-- Aquí va tu tabla + paginación --}}
         <div id="table-container">
-            {{ $table ?? '' }}
+            <div class="table-responsive">
+                {{ $table ?? '' }}
+            </div>
         </div>
     </div>
 </div>

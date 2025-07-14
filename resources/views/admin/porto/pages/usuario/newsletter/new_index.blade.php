@@ -9,109 +9,108 @@
 
         <x-admin::table.layout>
             <x-slot:toolbar>
-				<x-admin::button.dropdown label="{{ trans('admin-app.button.export') }}" id="js-dropdownItems">
-					<li><a class="dropdown-item"
-							href="{{ route('newsletter.export', ['format' => 'xlsx']) }}">{{ trans('admin-app.button.file_excel') }}</a>
-					</li>
-					<li><a class="dropdown-item"
-							href="{{ route('newsletter.export', ['format' => 'csv']) }}">{{ trans('admin-app.button.file_csv') }}</a>
-					</li>
-					{{-- <li><a href="{{ route('newsletter.export', ['format' => 'csv', 'service' => 'mailchimp']) }}">Formato para Mailchimp</a></li> --}}
-				</x-admin::button.dropdown>
+                <x-admin::button.dropdown id="js-dropdownItems" label="{{ trans('admin-app.button.export') }}">
+                    <li><a class="dropdown-item"
+                            href="{{ route('newsletter.export', ['format' => 'xlsx']) }}">{{ trans('admin-app.button.file_excel') }}</a>
+                    </li>
+                    <li><a class="dropdown-item"
+                            href="{{ route('newsletter.export', ['format' => 'csv']) }}">{{ trans('admin-app.button.file_csv') }}</a>
+                    </li>
+                    {{-- <li><a href="{{ route('newsletter.export', ['format' => 'csv', 'service' => 'mailchimp']) }}">Formato para Mailchimp</a></li> --}}
+                </x-admin::button.dropdown>
             </x-slot:toolbar>
 
-			<div class="col-xs-12 table-responsive">
-				<x-slot:table>
-					<table class="table table-striped table-condensed" id="newsletter" style="width:100%">
+            <x-slot:table>
+                <table class="table table-striped table-condensed" id="newsletter" style="width:100%">
 
-						<thead>
-							<tr>
+                    <thead>
+                        <tr>
 
-								<th>{{ trans('admin-app.fields.id') }}</th>
-								<th>{{ trans('admin-app.fields.name') }}</th>
-								<th>{{ trans('admin-app.fields.suscribers') }}</th>
+                            <th>{{ trans('admin-app.fields.id') }}</th>
+                            <th>{{ trans('admin-app.fields.name') }}</th>
+                            <th>{{ trans('admin-app.fields.suscribers') }}</th>
 
-								<th>
-									<span>{{ trans('admin-app.fields.actions') }}</span>
-								</th>
-							</tr>
-						</thead>
+                            <th>
+                                <span>{{ trans('admin-app.fields.actions') }}</span>
+                            </th>
+                        </tr>
+                    </thead>
 
-						<tbody>
+                    <tbody>
 
-							<tr id="fila_all">
+                        <tr id="fila_all">
 
-								<td>{{ trans('admin-app.fields.numeral_sign') }}</td>
-								<td>{{ trans('admin-app.fields.all') }}</td>
-								<td>{{ $allSuscriptors }}</td>
+                            <td>{{ trans('admin-app.fields.numeral_sign') }}</td>
+                            <td>{{ trans('admin-app.fields.all') }}</td>
+                            <td>{{ $allSuscriptors }}</td>
 
-								<td>
-									<a class="btn btn-xs btn-default" href="{{ route('user_newsletter.show', [0]) }}"><i
-											class="fa fa-list"></i> {{ trans('admin-app.button.see_suscriptors') }}</a>
+                            <td>
+                                <a class="btn btn-xs btn-default" href="{{ route('user_newsletter.show', [0]) }}"><i
+                                        class="fa fa-list"></i> {{ trans('admin-app.button.see_suscriptors') }}</a>
 
-								</td>
-							</tr>
+                            </td>
+                        </tr>
 
-							@forelse ($newsletters as $newsletter)
-								<tr id="fila_{{ $newsletter->id }}">
+                        @forelse ($newsletters as $newsletter)
+                            <tr id="fila_{{ $newsletter->id }}">
 
-									<td>{{ $newsletter->id_newsletter }}</td>
-									<td>{{ $newsletter->name_newsletter }}</td>
-									<td>{{ $newsletter->suscriptors_count }}</td>
+                                <td>{{ $newsletter->id_newsletter }}</td>
+                                <td>{{ $newsletter->name_newsletter }}</td>
+                                <td>{{ $newsletter->suscriptors_count }}</td>
 
-									<td>
-										<button class="btn btn-xs btn-default"
-											onclick="editNewsletter('{{ route('newsletter.edit', ['newsletter' => $newsletter->id]) }}')">
-											<i class="fa fa-edit"></i> {{ trans('admin-app.button.edit') }}</button>
+                                <td>
+                                    <button class="btn btn-xs btn-default"
+                                        onclick="editNewsletter('{{ route('newsletter.edit', ['newsletter' => $newsletter->id]) }}')">
+                                        <i class="fa fa-edit"></i> {{ trans('admin-app.button.edit') }}</button>
 
-										<a class="btn btn-xs btn-default"
-											href="{{ route('user_newsletter.show', [$newsletter->id_newsletter]) }}"><i
-												class="fa fa-list"></i> {{ trans('admin-app.button.see_suscriptors') }}</a>
+                                    <a class="btn btn-xs btn-default"
+                                        href="{{ route('user_newsletter.show', [$newsletter->id_newsletter]) }}"><i
+                                            class="fa fa-list"></i> {{ trans('admin-app.button.see_suscriptors') }}</a>
 
-										<button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal"
-											data-id="{{ $newsletter->id_newsletter }}"
-											data-name="{{ $newsletter->name_newsletter }}">
-											<i class="fa fa-trash-o"></i>
-											{{ trans('admin-app.button.destroy') }}
-										</button>
-									</td>
-								</tr>
+                                    <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal"
+                                        data-id="{{ $newsletter->id_newsletter }}"
+                                        data-name="{{ $newsletter->name_newsletter }}">
+                                        <i class="fa fa-trash-o"></i>
+                                        {{ trans('admin-app.button.destroy') }}
+                                    </button>
+                                </td>
+                            </tr>
 
-							@empty
+                        @empty
 
-								<tr>
-									<td colspan="6">
-										<h3 class="text-center">{{ trans('admin-app.title.without_results') }}</h3>
-									</td>
-								</tr>
-							@endforelse
+                            <tr>
+                                <td colspan="6">
+                                    <h3 class="text-center">{{ trans('admin-app.title.without_results') }}</h3>
+                                </td>
+                            </tr>
+                        @endforelse
 
-							@if ($catalogsCount)
-								<tr id="fila_catalogs">
+                        @if ($catalogsCount)
+                            <tr id="fila_catalogs">
 
-									<td>{{ trans('admin-app.fields.numeral_sign') }}</td>
-									<td>{{ trans('admin-app.fields.catalogue') }}</td>
-									<td>{{ $catalogsCount }}</td>
+                                <td>{{ trans('admin-app.fields.numeral_sign') }}</td>
+                                <td>{{ trans('admin-app.fields.catalogue') }}</td>
+                                <td>{{ $catalogsCount }}</td>
 
-									<td>
-										<a class="btn btn-xs btn-default" href="{{ route('user_newsletter.catalog') }}">
-											<i class="fa fa-list"></i> {{ trans('admin-app.button.see_suscriptors') }}
-										</a>
+                                <td>
+                                    <a class="btn btn-xs btn-default" href="{{ route('user_newsletter.catalog') }}">
+                                        <i class="fa fa-list"></i> {{ trans('admin-app.button.see_suscriptors') }}
+                                    </a>
 
-									</td>
-								</tr>
-							@endif
+                                </td>
+                            </tr>
+                        @endif
 
-						</tbody>
+                    </tbody>
 
-					</table>
+                </table>
 
-					<button class="btn btn-sm btn-success" onclick="createNewsletter()">
-						<i class="fa fa-plus"></i>
-						{{ trans('admin-app.button.add') }}
-					</button>
-				</x-slot:table>
-            </div>
+                <button class="btn btn-sm btn-success" onclick="createNewsletter()">
+                    <i class="fa fa-plus"></i>
+                    {{ trans('admin-app.button.add') }}
+                </button>
+            </x-slot:table>
+
 
         </x-admin::table.layout>
 
