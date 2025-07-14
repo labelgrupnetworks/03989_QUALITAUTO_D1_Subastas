@@ -123,21 +123,25 @@ class UserController extends Controller
 			$seed = $passBD[1];
 			#encriptamos el password k mandan y añadimos la semilla para que concuerde con lo que hay guardado en base de datos.
 			$user->password =  md5($seed . $user->password) . ":" . $seed;
+			$login = $user->login_encrypt();
 
 
 		} #una semilla para todos lso usuarios
 		elseif (!empty(Config::get('app.password_MD5'))) {
 
 			$user->password =  md5(Config::get('app.password_MD5') . $user->password);
+			$login = $user->login_encrypt();
 
+			//@ojo. Si quitamos el login de todas las variantes.
 			if (!Config::get('app.strict_password_validation', false) && empty($login) && strlen($password) > 8) {
 				$user->password = substr($password, 0, 8);
 				$user->password =  md5(Config::get('app.password_MD5') . $user->password);
+				$login = $user->login_encrypt();
 			}
 		}
 
-		//@todo. El usuario tiene que ser un dto (userSessionDTO o similar) así poderemos identificar cuando llamemmos a session:get
-		return $user->login_encrypt();
+		//@todo. El usuario tiene que ser un dto (userSessionDTO o similar) así poderemos identificar cuando llamemos a session:get
+		return $login;
 	}
 
 	//Crear la session del usuario
