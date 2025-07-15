@@ -588,6 +588,7 @@ return [
 		'pay_deposit' => 'MAKE A DEPOSIT',
 		'accept_conditions' => 'I have read and accept the <a href=":url" target="_blank">General Rules</a>',
 		'accept_conditions_auction' => 'I accept the general rules of the auction',
+		'add_representative' => 'Add representative',
 	),
 	'lot_list' =>
 	array(

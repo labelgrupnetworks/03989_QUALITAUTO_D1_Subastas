@@ -93,30 +93,13 @@
         </span>
     </p>
 
-	{{-- Selector de representante --}}
-	{{-- Falta toda la lógica en customized_tr --}}
-	@if(!empty($representedArray))
-		<div class="d-block w-100 mb-2">
-			<label for="representante">Pujar por:</label>
-
-			<select id="representante" class="form-select">
-				<option value="N">
-					{{ $data['usuario']->fisjur_cli === 'F' ? $data['usuario']->nom_cli : $data['usuario']->rsoc_cli }}
-				</option>
-				@foreach ($representedArray as $id => $representedName)
-				<option value="{{ $id }}">{{ $representedName }}</option>
-				@endforeach
-			</select>
-
-			<p class="mt-1">
-				{!! trans("$theme-app.lot.link_add_representatives") !!}
-			</p>
-		</div>
-	@endif
-
     {{-- inputs pujar --}}
     @if ($start_session || $subasta_abierta_P)
-        @include('includes.ficha.inputs_pujar_O')
+		@if(Config::get('app.withRepresented', false))
+			@include('includes.ficha.inputs_pujar_en_firme')
+		@else
+        	@include('includes.ficha.inputs_pujar_O')
+		@endif
     @endif
 
     {{-- mi orden máxima --}}

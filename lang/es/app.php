@@ -596,10 +596,10 @@ return [
 		'text_pay_deposit' => 'Para poder realizar una puja debes hacer un depósito de <strong> :imp_deposito </strong>',
 		'pay_deposit' => 'HACER DEPÓSITO',
 		'accept_conditions' => 'He leido y acepto las <a href=":url" target="_blank">Bases Generales</a>',
-		//Aceptación de las bases de la subasta
 		'accept_conditions_auction' => 'Acepto las bases generales de la subasta',
 		'authorization' => 'Autorización de Puja para lote ',
-		'upload_document_size' => 'Los archivos no deben pesar más de 2Mb'
+		'upload_document_size' => 'Los archivos no deben pesar más de 2Mb',
+		'add_representative' => 'Añadir representante',
 	),
 	'lot_list' =>
 	array(

@@ -609,6 +609,10 @@ section.ficha-image {
 |--------------------------------------------------------------------------
  */
 
+.ficha-info-clock {
+	font-variant-numeric: tabular-nums;
+}
+
 .ficha-title p:first-of-type {
 	display: inline;
 }
@@ -701,6 +705,7 @@ section.ficha-image {
 
 .ficha-pujas .price:not(.next-price) span:nth-of-type(2) {
 	float: right;
+	font-variant-numeric: tabular-nums;
 }
 
 .ficha-pujas .bid-price {
@@ -811,6 +816,10 @@ section.ficha-image {
 	height: 500px;
 	margin-bottom: 10px;
 	/* border: 1px solid #cccccc; */
+}
+
+.panel .form-authorize {
+	text-align: left;
 }
 
 .gird-features {

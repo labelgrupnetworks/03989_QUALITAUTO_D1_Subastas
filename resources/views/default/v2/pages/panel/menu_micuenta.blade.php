@@ -83,7 +83,7 @@
             {{ trans('web.user_panel.addresses') }}
         </a>
 
-		@if(Config::get('app.withRepresented', true))
+		@if(Config::get('app.withRepresented', false))
         <a href="{{ route('panel.represented.list', ['lang' => config('app.locale')]) }}"
             aria-current="{{ $pageName == 'panel.represented.list' }}" @class([
                 'list-group-item list-group-item-action',

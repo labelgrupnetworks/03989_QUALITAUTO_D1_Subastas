@@ -6,89 +6,39 @@
 */
 $(document).ready(function () {
 
-	$('.lot-action_pujar_on_line').on('click', function (e) {
-		e.stopPropagation();
-		$.magnificPopup.close();
-		//si pulsan el boton de puja donde viene un valor
+	$('.lot-action_pujar_on_line').on('click', pujarAction);
+	$('.lot-action_pujar_no_licit').on('click', (e) => { pujarWithoutDeposit(e.currentTarget) });
 
 
+	$('#representante').on('change', checkBidCondition);
+	$('#send_form_ficha').on('click', sendDepositForm);
 
-
-		if ($(e.currentTarget)[0].hasAttribute("value")) {
-			precioOrden = $(e.currentTarget).attr("value");
-			$("#bid_amount").val(precioOrden);
-
-		} else { //si pulsan el boton de autopuja
-			precioOrden = $("#bid_amount").val();
-		}
-
-		$(".precio_orden").html(precioOrden.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."));
-
-		//divisas, debe existir el selector
-		if(typeof $("#currencyExchange").val() != 'undefined'){
-			changeCurrency(precioOrden, $("#currencyExchange").val(),"newBidExchange_JS");
-		}
-
-
-		if (typeof cod_licit == 'undefined' || cod_licit == null) {
-
-			//este codigo abre directamente la ventana emergente de login
-			$('.login_desktop').fadeToggle("fast");
-			$('.login_desktop [name=email]').focus();
-
-			return;
-
-		} else {
-
-			if (typeof auction_info.lote_actual.inversa_sub == 'undefined' || auction_info.lote_actual.inversa_sub != "S") {
-				var inversa = false;
-			} else{
-				var inversa = true;
-			}
-
-			if (!auction_info.user.is_gestor && (isNaN(parseInt($("#bid_amount").val())) || (parseInt($("#bid_amount").val()) < parseInt(auction_info.lote_actual.importe_escalado_siguiente)) && !inversa  )) {
-				$("#insert_msg_title").html(messages.error.lower_bid);
-				$("#insert_msg").html(messages.error.your_bid + " " + auction_info.lote_actual.importe_escalado_siguiente + " € " + messages.error.as_minimum);
-				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-			}
-			else {
-				$.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
-			}
-		}
-	});
-
-	$('.lot-action_pujar_no_licit').on('click', function(e){
-
-		let params = {
-			cod_sub : this.dataset.codsub,
-			cod_cli : this.dataset.codcli,
-			ref : this.dataset.ref,
-			lang : this.dataset.lang
-		};
-
-		requestDataForDeposit(params);
-	});
+	// Con representantes revisamos si es necesario solicitar un depósito
+	const isNecesaryRequestDeposit = document.getElementById('isNecesaryRequestDeposit') ? document.getElementById('isNecesaryRequestDeposit').value : false;
+	if (isNecesaryRequestDeposit) {
+		checkBidCondition();
+	}
 
 	initSlick();
 });
 
 const frontCurrencies = ['$', 'US$', 'COP '];
 
-function requestDataForDeposit({cod_sub, cod_cli, ref, lang}) {
-	let params = {
-		cod_sub,
-		cod_cli,
-		ref,
-		lang
-	};
+function requestDataForDeposit({cod_sub, ref, lang}) {
 
 	$.ajax({
 		type: "POST",
 		url: "/api-ajax/formulario-pujar",
-		data: params,
+		data: {
+			cod_sub,
+			ref,
+			lang
+		},
 		success: function (response) {
 			$("#insert_msg").html(response);
 			$.magnificPopup.open({ items: { src: '#modalFormularioFicha' }, type: 'inline' }, 0);
+
+			$('[name="representado"]').val($('#representante').val());
 		},
 		error: function (result) {
 			$("#insert_msg_title").html("");
@@ -685,4 +635,170 @@ function showStreaming() {
 
 function hideStreaming() {
 	document.getElementById('nav-streaming').style.opacity = '0';
+}
+
+function checkBidCondition() {
+	const bidButton = document.getElementById('button-bid');
+	bidButton.disabled = true;
+	bidButton.classList.add('disabled');
+
+	$('.lot-action_pujar_no_licit').off('click');
+	$('.lot-action_pujar_on_line').off('click');
+
+	const representedValue = document.getElementById('representante').value;
+	const representedCod = representedValue == 'N' ? null : representedValue;
+
+	fetch(`/api-ajax/check-bid-conditions`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			codSub: auction_info.lote_actual.cod_sub,
+			ref: auction_info.lote_actual.ref_asigl0,
+			representedCod
+		})
+	})
+		.then(response => response.json())
+		.then(data => {
+			if (!data.deposito) {
+				bidButton.onclick = () => pujarWithoutDeposit(bidButton);
+			} else if (!data.conditions) {
+				bidButton.onclick = () => pujarWithoutConditions(bidButton);
+			} else {
+				bidButton.onclick = (event) => pujarAction(event);
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		})
+		.finally(() => {
+			bidButton.disabled = false;
+			bidButton.classList.remove('disabled');
+		});
+
+}
+
+function pujarAction(e) {
+	e.stopPropagation();
+	$.magnificPopup.close();
+	//si pulsan el boton de puja donde viene un valor
+
+	if ($(e.currentTarget)[0].hasAttribute("value")) {
+		precioOrden = $(e.currentTarget).attr("value");
+		$("#bid_amount").val(precioOrden);
+
+	} else { //si pulsan el boton de autopuja
+		precioOrden = $("#bid_amount").val();
+	}
+
+	$(".precio_orden").html(precioOrden.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."));
+
+	//divisas, debe existir el selector
+	if (typeof $("#currencyExchange").val() != 'undefined') {
+		changeCurrency(precioOrden, $("#currencyExchange").val(), "newBidExchange_JS");
+	}
+
+
+	if (typeof cod_licit == 'undefined' || cod_licit == null) {
+
+		//este codigo abre directamente la ventana emergente de login
+		$('.login_desktop').fadeToggle("fast");
+		$('.login_desktop [name=email]').focus();
+
+		return;
+
+	} else {
+
+		if (typeof auction_info.lote_actual.inversa_sub == 'undefined' || auction_info.lote_actual.inversa_sub != "S") {
+			var inversa = false;
+		} else {
+			var inversa = true;
+		}
+
+		if (!auction_info.user.is_gestor && (isNaN(parseInt($("#bid_amount").val())) || (parseInt($("#bid_amount").val()) < parseInt(auction_info.lote_actual.importe_escalado_siguiente)) && !inversa)) {
+			$("#insert_msg_title").html(messages.error.lower_bid);
+			$("#insert_msg").html(messages.error.your_bid + " " + auction_info.lote_actual.importe_escalado_siguiente + " € " + messages.error.as_minimum);
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+		}
+		else {
+			$.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
+		}
+	}
+}
+
+function pujarWithoutLogin() {
+	$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+	$("#insert_msg_title").html("");
+	$("#insert_msg").html(messages.error.mustLogin);
+
+
+	$('.open-login').on('click', function () {
+		$.magnificPopup.close();
+		$('.login_desktop').fadeToggle("fast");
+		$('.login_desktop [name=email]').focus();
+	});
+	return;
+}
+
+function pujarWithoutDeposit(buttonElement) {
+	let params = {
+		cod_sub: buttonElement.dataset.codsub,
+		ref: buttonElement.dataset.ref,
+		lang: buttonElement.dataset.lang
+	};
+
+	requestDataForDeposit(params);
+}
+
+function pujarWithoutConditions(buttonElement) {
+	$.magnificPopup.open({ items: { src: '#modalCheckBasesFicha' }, type: 'inline' }, 0);
+}
+
+function sendDepositForm(e) {
+
+	e.stopPropagation();
+	$.magnificPopup.close();
+
+	let maxSize = 2000;
+	var formData = new FormData();
+	$.each($("input[type='file']")[0].files, function (i, file) {
+
+		let sizeFileInKb = file.size / 1024;
+		if (sizeFileInKb > maxSize) {
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			$("#insert_msg_title").html("");
+			$("#insert_msg").html($('.form-authorize small').text());
+			throw $('.form-authorize small').text();
+		}
+
+		formData.append('file[]', file);
+	});
+
+	formData.append('nom', $('input[name="nom"]').val());
+	formData.append('cod_sub', $('input[name="cod_sub"]').val());
+	formData.append('ref', $('input[name="ref"]').val());
+	formData.append('represented', $('[name="representado"]').val());
+
+	$.ajax({
+		async: true,
+		type: "POST",
+		dataType: "html",
+		contentType: false,
+		processData: false,
+		url: "/api-ajax/enviar-formulario-pujar",
+		data: formData,
+		success: function (response) {
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			$("#insert_msg_title").html("");
+			$("#insert_msg").html(response);
+
+		},
+		error: function (error) {
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			$("#insert_msg_title").html("");
+			$("#insert_msg").html(error.responseText);
+		},
+	});
+
 }

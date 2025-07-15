@@ -40,7 +40,7 @@
 					'lot-action_pujar_on_line btn btn-lb-primary',
 					'add_favs' => Session::has('user')
 				])
-				ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}">
+				ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" lang="{{ config('app.locale') }}">
 				{{ trans('web.lot.pujar') }}
 			</button>
 		</div>

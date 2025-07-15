@@ -55,9 +55,13 @@
                         {{ trans("web.subastas.euros") }}</strong></p>
             </div>
             <div class="modal-footer">
-                <button class="confirm_puja btn button_modal_confirm">
-                    {{ trans("web.lot.confirm") }}
-                </button>
+				<button @class([
+						'btn button_modal_confirm',
+						'confirm_puja_with_represented' => config('app.withRepresented', false),
+						'confirm_puja' => !config('app.withRepresented', false),
+					])>
+					{{ trans("web.lot.confirm") }}
+				</button>
             </div>
         </div>
     </section>
