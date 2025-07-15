@@ -16,9 +16,8 @@
 	<input type="submit" class="btn btn-success" value="{{ trans("admin-app.button.save") }}"  style="margin-top: 1rem">
 </div>
 
-@if (Config::get('withRepresented', false))
+@if (Config::get('app.withRepresented', false))
     <script>
-
 		$('[name=cli_deposito]').on('change', (event) => getRepresented(event.target.value));
 
 		function getRepresented(id) {

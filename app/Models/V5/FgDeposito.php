@@ -77,7 +77,10 @@ class FgDeposito extends Model
 			->when($representado_deposito, function ($query) use ($representado_deposito) {
 				$query->where('REPRESENTADO_DEPOSITO', $representado_deposito);
 			}, function ($query) {
-				$query->whereNull('REPRESENTADO_DEPOSITO');
+				$query->where(function (Builder $query) {
+					$query->whereNull('REPRESENTADO_DEPOSITO')
+						->orWhere('REPRESENTADO_DEPOSITO', 0);
+				});
 			})
 			->whereValidConditions($sub_deposito, $ref_deposito)
 			->first();

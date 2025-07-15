@@ -975,6 +975,7 @@ return [
 		'visible' => 'Visible',
 		'select_initial_template' => 'Seleccionar la plantilla inicial',
 		'notification_is_sent' => 'Notificación enviada',
+		'representado_deposito' => 'Representando a'
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
@@ -1183,6 +1184,7 @@ return [
 		'permission_hces1_files' => 'Determina que usuarios podrán acceder a la descarga del archivo',
 		'file_hces1_files' => 'Archivo/s',
 		'extrainfo' => 'Información extra',
+		'representado_deposito' => 'Persona o entidad representada por el cliente',
 	),
 	'general' => array(
 		'yes' => 'SI',
