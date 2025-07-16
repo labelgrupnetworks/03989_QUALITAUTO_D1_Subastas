@@ -48,6 +48,18 @@ class AdminClienteController extends Controller
 		]);
 	}
 
+	public function exampleNewIndex(Request $request)
+	{
+		$filters = Session::get('clientes_filters', []);
+		$availableColumns = $this->availableColumns;
+		$visibleColumns = Session::get('clientes_visible_columns', array_keys($this->availableColumns));
+
+		$clientes = self::clientsQueryBuilder()
+			->select($visibleColumns)
+			->paginate(10);
+
+		return view('admin::pages.usuario.cliente_v2.index', compact('clientes', 'formulario', 'fxcli', 'tableParams', 'newslettersSelect', 'availableColumns', 'visibleColumns'));
+	}
 
 	public function index(Request $request)
 	{
@@ -730,13 +742,12 @@ class AdminClienteController extends Controller
 	public function data(Request $request)
 	{
 		// Recoger filtros y columnas
-		$filters        = $request->input('filters', []);
+		$filters = $request->input('filters', []);
 		if (is_string($filters)) {
 			$filters = json_decode($filters, true);
 		}
 
-		//$visibleColumns = json_decode($request->input('columns', array_keys($this->availableColumns)), true);
-		$visibleColumns = array_keys($this->availableColumns);
+		$visibleColumns = json_decode($request->input('columns', array_keys($this->availableColumns)), true);
 		$availableColumns = $this->availableColumns;
 
 		$query = self::clientsQueryBuilder();
@@ -757,17 +768,21 @@ class AdminClienteController extends Controller
 
 		$clientes = $query
 			//falla la query con select, revisar.
-			//->select($visibleColumns)
+			->select($visibleColumns)
 			->paginate(10);
 
+		Session::put('clientes_filters', $filters);
+		Session::put('clientes_visible_columns', $visibleColumns);
 
 		// Renderizamos solo la tabla. necesitamos recuperar clases html de la original
 		$html = view('admin::pages.usuario.cliente_v2.table', compact('clientes', 'availableColumns', 'visibleColumns'))->render();
 
-
 		return response()->json([
 			'table'      => $html,
 			'pagination' => view('admin::pages.usuario.cliente_v2.pagination', compact('clientes'))->render(),
+			'columns'    => $visibleColumns,
+			'filters'    => $filters,
+			'page' => $clientes->currentPage(),
 		]);
 	}
 }

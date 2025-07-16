@@ -94,6 +94,12 @@
                     @include('admin::pages.usuario.cliente_v2.pagination', compact('clientes'))
                 </div>
 
+				{{-- icono de loading --}}
+
+				<div class="" style="display:none;" id="loadingIcon">
+					<div class="spinner-border" ></div>
+				</div>
+
             </div>
         </div>
 
@@ -140,6 +146,9 @@
 
     </section>
 
+
+
+	{{-- Modal para editar múltiples clientes --}}
     @include('admin::pages.usuario.cliente_v2._edit_selecteds')
 
 
@@ -152,6 +161,7 @@
 
                 const tagsDiv = document.getElementById('filters-tags');
                 const container = document.getElementById('table-container');
+				const loadingIcon = document.getElementById('loadingIcon');
 
                 function renderTags() {
                     tagsDiv.innerHTML = '';
@@ -179,9 +189,20 @@
 
                 function fetchData(page = null) {
                     const params = new URLSearchParams();
-                    params.set('filters', JSON.stringify(filters));
+					const urlParams = new URLSearchParams(window.location.search);
+
+					params.set('filters', JSON.stringify(filters));
                     params.set('columns', JSON.stringify(columns));
-                    if (page) params.set('page', page);
+
+					if (page) {
+						params.set('page', page)
+					} else if(urlParams.has('page')) {
+						params.set('page', urlParams.get('page'));
+					}
+
+
+					container.classList.add('opacity-50');
+					loadingIcon.style.display = 'flex';
 
                     fetch("{{ route('admin.clientes.data') }}?" + params, {
                             headers: {
@@ -191,8 +212,22 @@
                         .then(r => r.json())
                         .then(json => {
                             container.innerHTML = json.table + json.pagination;
+
+							//add page in location url (json.page)
+							if (json.page) {
+								const url = new URL(window.location);
+								url.searchParams.set('page', json.page);
+								window.history.pushState({}, '', url);
+							}
+
+
                             bindPagination();
-                        });
+                        })
+						.finally(() => {
+							container.classList.remove('opacity-50');
+							loadingIcon.style.display = 'none';
+						});
+
                 }
 
                 // Añadir filtro
@@ -223,11 +258,14 @@
                             columns = columns.filter(c => c !== col);
                             e.target.nextElementSibling.classList.add('text-muted');
                         }
+
                         fetchData();
                     });
                 });
 
-                // Paginación AJAX
+				/**
+				 * Añade los eventos a los enlaces de paginación
+				 **/
                 function bindPagination() {
                     container.querySelectorAll('.pagination a').forEach(a => {
                         a.addEventListener('click', ev => {
