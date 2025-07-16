@@ -23179,3 +23179,20 @@ p.no-span::after {
 	overflow-x: hidden;
 	scrollbar-gutter: stable;
 }
+
+#loadingIcon {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 50%;
+	width: 100%;
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+
+#loadingIcon .spinner-border {
+	--bs-spinner-width: 4rem;
+    --bs-spinner-height: 4rem;
+    --bs-spinner-border-width: .4rem;
+}

@@ -9,7 +9,7 @@
 
         <x-admin::table.layout>
             <x-slot:toolbar>
-                <x-admin::button.dropdown id="js-dropdownItems" label="{{ trans('admin-app.button.export') }}">
+                <x-admin::button.dropdown label="{{ trans('admin-app.button.export') }}">
                     <li><a class="dropdown-item"
                             href="{{ route('newsletter.export', ['format' => 'xlsx']) }}">{{ trans('admin-app.button.file_excel') }}</a>
                     </li>
