@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use App\Services\Content\SitemapGenerator;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
@@ -46,36 +45,6 @@ class PageController extends Controller
             return $data->content_web_page;
         }
    }
-
-    /**
-     * Metodo usado en Alcala para mostrar articulos en paginas estaticas
-     * @param type $id
-     * @return type
-     */
-    public function getArticle($id){
-
-       $sql="SELECT * FROM WEB_RESOURCE WHERE ID_WEB_RESOURCE = :id AND ID_EMP = :emp";
-       $bindings =  array(
-                        'emp'       => Config::get('app.emp'),
-                        'id'       => $id,
-                    );
-        $res = DB::select($sql, $bindings);
-
-        if(empty($res)){
-           exit (View::make('front::errors.404'));
-        }
-
-        $data = array(
-            'data' => $res[0],
-        );
-
-        $data['data']->name_web_page = $res[0]->title;
-        $data['data']->id_web_page = $res[0]->title;
-        $data['data']->content_web_page = $res[0]->content;
-
-        return View::make('front::pages.page', array('data' => $data));
-
-    }
 
     public function getDepartment($lang){
 

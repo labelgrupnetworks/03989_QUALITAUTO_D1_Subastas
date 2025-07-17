@@ -12,14 +12,12 @@ use App\Http\Controllers\admin\b2b\{
 	AdminB2BAwardsController,
     AdminB2BCompaniesController
 };
-use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\BloqueConfigController;
 use App\Http\Controllers\admin\configuracion\AdminMesuresController;
 use App\Http\Controllers\admin\contenido\AdminEmailsController;
 use App\Http\Controllers\admin\contenido\BannerController as ContenidoBannerController;
 use App\Http\Controllers\admin\EmailController;
-use App\Http\Controllers\admin\ResourceController;
 use App\Http\Controllers\admin\subasta\AdminBidsController;
 use App\Http\Controllers\admin\subasta\AdminLicitController;
 use App\Http\Controllers\admin\subasta\AdminOperadoresController;
@@ -43,15 +41,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('/bloque', [BloqueConfigController::class, 'index']);
 		Route::get('/bloque/name/{id?}', [BloqueConfigController::class, 'SeeBloque']);
 		Route::post('/bloque/edit', [BloqueConfigController::class, 'EditBloque']);
-
-		Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
-		Route::get('/resources/name/{id?}', [ResourceController::class, 'SeeResources']);
-		Route::post('/resources/edit', [ResourceController::class, 'EditResources']);
-		Route::post('/resources/delete', [ResourceController::class, 'DeleteResource']);
-
-		Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');
-		Route::get('/banner/name/{id?}', [BannerController::class, 'SeeBanner']);
-		Route::post('/banner/edit', [BannerController::class, 'EditBanner']);
 
 		Route::get('/traducciones/{head}/{lang}', [TraduccionesController::class, 'index']);
 		Route::get('/traducciones', [TraduccionesController::class, 'getTraducciones']);

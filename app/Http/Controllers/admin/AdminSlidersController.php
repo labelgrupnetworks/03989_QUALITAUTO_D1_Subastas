@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 
 /**
- * Revisar peticiones por Ajax, pero creo que solo queda Gutinvest utilizando este controlador
+ * 17/07/2025
+ * Revisar peticiones por Ajax
+ * Se utiliza principalmente para gestionar imagenes en blog antiguo.
+ * A falta de comprobar creo que solamente queda Subarna *
  */
 class AdminSlidersController extends Controller
 {

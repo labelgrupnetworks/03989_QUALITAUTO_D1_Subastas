@@ -198,52 +198,6 @@ $(function() {
                          });
           }
 
-          $(".save_resources").click(function() {
-            var html = ($(".note-editable").html()) ;
-            $( "#html" ).val(html);
-            var str = $( "#edit_resources" ).serializeArray();
-
-            $.ajax ({
-                url: "/admin/resources/edit",
-                type: "post",
-                data: str,
-                success: function(e) {
-                    $( ".id_input" ).val(e);
-                    saved(e);
-                },
-            });
-          });
-
-          $(".save_banner").click(function() {
-            var str = $( "#new_banner" ).serializeArray();
-           $.ajax ({
-                url: "/admin/banner/edit",
-                type: "post",
-                data: str,
-                success: function(e) {
-                    $( ".id_input" ).val(e);
-                    saved();
-                },
-            });
-          });
-
-	//Recursos imagen o HTML
-
-        $( ".target" ).change(function() {
-            var value = $( this ).val();
-            change_resources(value);
-         });
-
-         function change_resources(value){
-             if(value=='I'){
-                $( ".imagen" ).show();
-                $( ".html" ).hide();
-            }else{
-                $( ".html" ).show();
-                 $( ".imagen" ).hide();
-            }
-         }
-
         $(".save_auc_index").click(function() {
             var str = $( "#auc_index" ).serializeArray();
             $(".save_auc_index").prop('disabled',true);
@@ -515,20 +469,6 @@ $(function() {
             });
         });
 
-         $(".delete_resource").click(function() {
-             $("#delete_resource").attr("value",$(this).attr( "data-id" ))
-         });
-          $("#delete_resource").click(function() {
-              $.ajax ({
-                url: "/admin/resources/delete",
-                type: "post",
-                data: { id_resource: $(this).attr( "value" )},
-                success: function() {
-                    location.reload();
-                }
-            });
-          });
-
           $(".save_category_blog").click(function() {
               var descriptions = '';
             $('.summernote_descrip').each(function () {
@@ -586,19 +526,6 @@ $(function() {
 	  });
 
 });
-
-function delete_resource(id_resource ){
-    $.ajax ({
-        url: "/admin/resources/delete",
-        type: "post",
-        data: { id_resource: id_resource},
-        success: function() {
-            location.reload();
-        }
-    });
-}
-
-
 
 function dump(obj) {
     var out = '';

@@ -259,7 +259,6 @@ Route::get(Routing::slug('thanks'), function () {
 
 # CMS / Gestor de contenido
 Route::get(Routing::slugSeo('pagina', true) . '/{pagina}', [PageController::class, 'getPagina'])->name('staticPage');
-Route::get('/article/{id}', [PageController::class, 'getArticle']);
 Route::get(Routing::translateSeo('mapa-web'), [PageController::class, 'siteMapPage']);
 
 //Soler esta utilizando un sistema de preguntas frequentes con csv.
