@@ -20,7 +20,6 @@ use App\Models\Subasta;
 use App\Models\User;
 use App\Models\Chat;
 use App\Models\Favorites;
-use App\Models\Subalia;
 use App\libs\EmailLib;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -39,6 +38,7 @@ use App\Models\V5\Web_Cancel_Log;
 use App\Providers\ToolsServiceProvider as Tools;
 use App\Models\V5\FgSub;
 use App\Providers\ToolsServiceProvider;
+use App\Services\User\UserService;
 
 class SubastaTiempoRealController extends Controller
 {
@@ -2067,15 +2067,13 @@ class SubastaTiempoRealController extends Controller
         //ponemos el código de token que corresponda, el del user o el del gestor
         //el gestor usa su token pero asigna la licitacion a otro código
         $licitSubalia   = !empty(Config::get('app.subalia_min_licit'))? Config::get('app.subalia_min_licit') : 100000;
-        if($cod_original_licit >= $licitSubalia){
-            $subalia = new Subalia();
 
-            $tk_cliweb = $subalia->getTokenByLicit($cod_original_licit);
-
-        }else if($is_gestor){
+		if($cod_original_licit >= $licitSubalia) {
+			$tk_cliweb = (new UserService)->getSubaliaTokenByLicit($cod_original_licit);
+        } else if($is_gestor) {
             $tk_cliweb = $g[0]->tk_cliweb;
-        }else{
-             $tk_cliweb = $u[0]->tk_cliweb;
+        } else {
+            $tk_cliweb = $u[0]->tk_cliweb;
         }
         $user->tk_CLIWEB =$tk_cliweb;
 
