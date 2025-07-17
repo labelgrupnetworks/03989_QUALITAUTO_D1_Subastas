@@ -15,6 +15,14 @@ header("X-Frame-Options:     DENY");
 <link rel="stylesheet" type="text/css" href="/css/jquery.jqzoom.css" >
 <link rel="stylesheet" type="text/css" href="/css/hint.css" >
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.css') }}" />
+
+<!-- Slick / banner -->
+<link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick.css') }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick.css') }}" /></noscript>
+
+<link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick-theme.css') }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick-theme.css') }}" /></noscript>
+
 <!-- Magnific popup -->
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.css') }}" />
 <link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/animate/3.5.2/animate.min.css') }}">
@@ -67,4 +75,5 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script>
 <script src="{{ URL::asset('js/numeral.js') }}"></script>
+<script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
 

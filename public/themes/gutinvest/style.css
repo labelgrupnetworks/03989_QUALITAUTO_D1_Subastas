@@ -3092,9 +3092,11 @@ h1.titlePage{
 }
 
 .img-contacto-home{
-       overflow: hidden;
+    overflow: hidden;
     height: 500px;
     position: relative;
+	display: flex;
+	align-items: center;
 }
 
 .img-contacto-home img{
@@ -3109,21 +3111,18 @@ h1.titlePage{
     margin-top: 40px;
 }
 
-
-.contacto-home-title a{
-    position: absolute;
+.contacto-home-title {
+	position: absolute;
+    left: 0;
+    top: 0;
     height: 100%;
     width: 100%;
-    top: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.contacto-home-title a{
     background-color: transparent;
     text-transform: uppercase;
     font-size: 50px;
@@ -4826,4 +4825,19 @@ a.inherit_design {
 	font-weight: inherit;
 	font-size: inherit;
 	font-family: inherit;
+}
+
+.home_contact img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.home_about_us img {
+	max-width: 340px;
+}
+
+.home_sell img {
+	max-width: 90%;
 }
