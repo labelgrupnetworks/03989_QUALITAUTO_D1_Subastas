@@ -91,9 +91,7 @@ class AdminMenuService
 					['id' => 'new_calendar', 'icon' => 'calendar', 'label' => 'calendar', 'route' => '/admin/calendar'],
 					['id' => 'emails_clients', 'icon' => 'envelope', 'label' => 'emails_log', 'route' => route('adminemails.showlog')],
 					['id' => 'blog', 'icon' => 'blog', 'label' => 'entries', 'route' => '/admin/blog-admin'],
-					['id' => 'blog_categories', 'icon' => 'folder', 'label' => 'categories', 'route' => '/admin/category-blog'],
-					['id' => 'banner_resource_a', 'icon' => 'folder', 'label' => 'resources', 'route' => '//admin/resources?see=all'],
-					['id' => 'banner_resource_b', 'icon' => 'folder', 'label' => 'banners', 'route' => '/admin/banner?see=B'],
+					['id' => 'blog_categories', 'icon' => 'folder', 'label' => 'categories', 'route' => '/admin/category-blog']
 				],
 			],
 			'extra' => [
