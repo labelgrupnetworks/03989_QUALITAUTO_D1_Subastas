@@ -67,15 +67,10 @@
 
 						<div class="content_art_container">
 							@php
-								$bannerService = new \App\Services\Content\BannerService();
-								$key = 'article_' . strtoupper(Config::get('app.locale'));
-								$slidders = $bannerService->getOldBannerByKeyname($key);
+								$data = (new  \App\Models\Page())->getPagina(config('app.locale'), 'proximas-subastas');
 							@endphp
 
-							@foreach($slidders as $article)
-								{!! $article->content !!}
-							<br>
-							@endforeach
+							{!! $data->content_web_page !!}
 						</div>
 					</div>
 				</div>

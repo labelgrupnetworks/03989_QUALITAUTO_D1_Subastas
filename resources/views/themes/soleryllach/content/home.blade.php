@@ -45,16 +45,11 @@
         <div class="col-xs-12 col-sm-6 calendar">
             <h2 style="margin-top: 0">{{ trans(\Config::get('app.theme') . '-app.home.calendar-news') }}</h2>
             <div class="content_art">
-                @php
-					$bannerService = new \App\Services\Content\BannerService();
-					$key = 'article_' . strtoupper(Config::get('app.locale'));
-					$slidders = $bannerService->getOldBannerByKeyname($key);
-                @endphp
+               @php
+					$data = (new  \App\Models\Page())->getPagina(config('app.locale'), 'subastas-programadas');
+				@endphp
 
-                @foreach ($slidders as $article)
-                    {!! $article->content !!}
-                    <br>
-                @endforeach
+				{!! $data->content_web_page !!}
             </div>
         </div>
     </div>
