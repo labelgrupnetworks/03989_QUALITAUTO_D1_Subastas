@@ -34,7 +34,7 @@ class AdminClienteController extends Controller
 		'nom_cli' => 'Nombre',
 		'rsoc_cli' => 'Razón Social',
 		'email_cli' => 'Email',
-		'falta_cliweb' => 'Fecha alta cliente web',
+		'fecalta_cliweb' => 'Fecha alta cliente web',
 	];
 
 	function __construct()

@@ -1,4 +1,6 @@
-<div class="btn-group" id="{{ $id }}">
+@props(['id' => null, 'label' => ''])
+
+<div class="btn-group" {{ $attributes->merge(['id' => $id]) }}>
     <button class="btn btn-secondary btn-sm" type="button">
         {{ $label }}
     </button>
