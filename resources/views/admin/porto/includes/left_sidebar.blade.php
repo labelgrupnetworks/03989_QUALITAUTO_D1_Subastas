@@ -332,14 +332,14 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
                             </a>
                         </li>
                     @endif
-                    @if (in_array('bloque', $config_menu_admin))
+                    {{-- @if (in_array('bloque', $config_menu_admin))
                         <li>
                             <a href="/admin/bloque">
                                 <i class="fa fa-columns" aria-hidden="true"></i>
                                 <span>{{ trans('admin-app.nav_menu.blocks') }}</span>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
                     @if (in_array('newbanner', $config_menu_admin) || $isB2bWihtLabel)
                         <li>
                             <a href="/admin/newbanner">
@@ -443,36 +443,6 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
                             <a href="/admin/favoritos">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <span>{{ trans('admin-app.nav_menu.favorites') }}</span>
-                            </a>
-                        </li>
-                    @endif
-
-                    @if (in_array('articulos', $config_menu_admin))
-                        <li>
-                            <a href="/admin/resources?see=A">
-                                <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                <span>{{ trans('admin-app.nav_menu.articles') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/admin/banner?see=N">
-                                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-                                <span>{{ trans('admin-app.nav_menu.news') }}</span>
-                            </a>
-                        </li>
-                    @endif
-
-                    @if (in_array('calendar', $config_menu_admin))
-                        <li>
-                            <a href="/admin/banner?see=C">
-                                <i class="fa fa-ban fa-calendar-o" aria-hidden="true"></i>
-                                <span>{{ trans('admin-app.nav_menu.calendar') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/admin/resources?see=C">
-                                <i class="fa fa-ban fa-calendar-o" aria-hidden="true"></i>
-                                <span>{{ trans('admin-app.nav_menu.calendar_resource') }}</span>
                             </a>
                         </li>
                     @endif

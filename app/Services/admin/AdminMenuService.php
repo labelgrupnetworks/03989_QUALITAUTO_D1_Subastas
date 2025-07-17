@@ -74,7 +74,7 @@ class AdminMenuService
 				'icon' => 'palette',
 				'label' => 'content',
 				'sub_sections' => [
-					['id' => 'bloque', 'icon' => 'columns', 'label' => 'blocks', 'route' => '/admin/bloque'],
+					//['id' => 'bloque', 'icon' => 'columns', 'label' => 'blocks', 'route' => '/admin/bloque'], //tengo dudas de que se use para algo
 					['id' => 'newbanner', 'icon' => 'image', 'label' => 'banners', 'route' => '/admin/newbanner'],
 					['id' => 'newbannerHome', 'icon' => 'image', 'label' => 'home_banners', 'route' => '/admin/newbanner/ubicacionhome'],
 					['id' => 'event_museum', 'icon' => 'calendar-event', 'label' => 'museum_pieces', 'route' => route('event.index', ['ubicacion' => WebNewbannerModel::UBICACION_MUSEO])],
@@ -83,10 +83,6 @@ class AdminMenuService
 					['id' => 'edit_emails', 'icon' => 'envelope', 'label' => 'email_editor', 'route' => route('emails.index')],
 					['id' => 'blog_cms', 'icon' => 'blog', 'label' => 'blog', 'route' => route('admin.contenido.blog.index')],
 					['id' => 'uploads', 'icon' => 'upload', 'label' => 'uploads', 'route' => route('admin.contenido.uploads.index')],
-					['id' => 'articles_resources', 'icon' => 'folder', 'label' => 'articles', 'route' => '/admin/resources?see=A'],
-					['id' => 'articles_banner', 'icon' => 'folder', 'label' => 'news', 'route' => '/admin/banner?see=N'],
-					['id' => 'calendar', 'icon' => 'calendar', 'label' => 'calendar', 'route' => '/admin/banner?see=C'],
-					['id' => 'calendar_resources', 'icon' => 'folder', 'label' => 'calendar', 'route' => '/admin/resources?see=C'],
 					['id' => 'newemail', 'icon' => 'envelope', 'label' => 'emails', 'route' => '/admin/email'],
 					['id' => 'content_page', 'icon' => 'desktop', 'label' => 'web_content', 'route' => '/admin/content'],
 					['id' => 'faq', 'icon' => 'question-circle', 'label' => 'faq', 'route' => '/admin/faqs/es'],
