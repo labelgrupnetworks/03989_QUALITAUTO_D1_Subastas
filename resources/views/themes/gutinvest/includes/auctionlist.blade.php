@@ -14,6 +14,7 @@
 					alt="{{ $subasta->name }}"
 					class="img-responsive"
 					style="margin: 0 auto"
+					loading="lazy"
 				/>
             </div>
     </a>
