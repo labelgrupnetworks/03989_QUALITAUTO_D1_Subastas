@@ -25,45 +25,19 @@
 		<div class="row">
 			<div class="col-xs-12 col-md-9 carousel-fijo">
 				<div class="owl-carousel owl-theme" data-slider-id="1" id="owl-carousel">
-
-					<?php
-					$key = 'slider_home_' . strtoupper(Config::get('app.locale'));
-					$html = "<div class='item-carousel'>
-					                <a href='{url}'>
-					                <img class='img-responsive' src='{img}'  >
-					                </a>
-					                </div>";
-					$content = $bannerService->getOldBannerWithSliderBlade($key, $html);
-					?>
-					<?= $content ?>
-
-
+					{!! BannerLib::bannerWithView('home', 'slide') !!}
 				</div>
 			</div>
 			<div class="col-md-3  hidden-xs hidden-sm controls-carousel" style="padding-left:  0">
 
 				<div class="controls-carousel-container">
-
-
-					<?php
-					$key = 'slider_home_' . strtoupper(Config::get('app.locale'));
-					$html = "<div class='controls_slider'>
-					                <img class='img-responsive' src='{img}'  >
-
-					                </div>";
-					$content = $bannerService->getOldBannerWithSliderBlade($key, $html);
-					?>
-					<?= $content ?>
-
-
+					{!! BannerLib::bannerWithView('home', 'slide_control') !!}
 				</div>
-
-
-
 			</div>
 		</div>
 	</div>
 </section>
+
 <section class="subastas-home">
 	<div class="container">
 		<div class="titulos-home mb-0">
