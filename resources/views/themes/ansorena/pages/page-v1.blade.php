@@ -13,10 +13,7 @@ foreach($menusEstaticos as $key){
 		$menuEstatico = strpos($data['data']->content_web_page ,"[*".$key."*]");
 
 		if($menuEstatico !== FALSE){
-
-			$pagina = new App\Models\Page();
-
-			$menuEstaticoHtml  = $pagina->getPagina($data["lang"],$key);
+			$menuEstaticoHtml = (new App\Services\Content\PageService())->getPage($key);
 			#borramos la clave [*MENUCONDECORACIONES*], por que la pondremos a mano en la página
 
 			$data['data']->content_web_page = str_replace( "[*".$key."*]",$menuEstaticoHtml->content_web_page,$data['data']->content_web_page );

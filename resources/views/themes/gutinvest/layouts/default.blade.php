@@ -17,6 +17,8 @@
 
         @include('includes.footer')
 
+		{!! App\Services\Content\ManagementService::render() !!}
+
         @include('includes.modals')
 
 <div class="button-up-search">

@@ -19,6 +19,9 @@
             @yield('content')
         @include('includes.newsletter')
         @include('includes.footer')
+
+		{!! App\Services\Content\ManagementService::render() !!}
+
         @include('includes.modals')
     @endif
 

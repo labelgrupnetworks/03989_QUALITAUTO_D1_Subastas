@@ -19,9 +19,8 @@
             ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false],
             null,
             false,
-            '',
-            $page_settings,
-        ) !!}
+            ''
+s        ) !!}
     </section>
 @endif
 
@@ -56,8 +55,7 @@
             ],
             null,
             false,
-            '',
-            $page_settings,
+            ''
         ) !!}
     </div>
 </section>

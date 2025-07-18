@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Content\ManagementService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
@@ -20,7 +21,9 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		//
+		$this->app->singleton(ManagementService::class, function () {
+			return new ManagementService();
+		});
 	}
 
 	/**
@@ -54,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
 			);
 		}
 
-		Auth::provider('md5', function($app, array $config) {
+		Auth::provider('md5', function ($app, array $config) {
 			return new Md5UserProvider($config['model']);
 		});
 

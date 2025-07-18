@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\V5;
 
-//opcional
-use App;
 use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
@@ -17,6 +15,7 @@ use App\libs\FormLib;
 use App\libs\EmailLib;
 use App\libs\MessageLib;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Content\PageService;
 use Illuminate\Support\Facades\View;
 
 class AutoFormulariosController extends Controller
@@ -29,8 +28,8 @@ class AutoFormulariosController extends Controller
 	/****************************************************************************************************/
 	public function workWidthUs($key = "workwithus")
 	{
-		$pagina = new App\Models\Page();
-		$curriculumArte  = $pagina->getPagina(Config::get("app.locale"), $key);
+		$paginaService = new PageService();
+		$curriculumArte  = $paginaService->getPage($key);
 		ToolsServiceProvider::exit404IfEmpty($curriculumArte);
 
 		$autoFormulario = new AutoFormulariosController();

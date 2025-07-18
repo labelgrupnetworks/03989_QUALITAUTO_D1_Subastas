@@ -1,5 +1,3 @@
-@include('includes.admin_shortcut')
-
 <footer class="py-5">
     <div class="container">
         <div class="row">

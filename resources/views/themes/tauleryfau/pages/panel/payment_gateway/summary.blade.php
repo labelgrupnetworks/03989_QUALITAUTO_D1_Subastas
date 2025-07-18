@@ -1,7 +1,6 @@
 @php
-	$pageService = new App\Models\Page;
     $euroSymbol = trans("$theme-app.lot.eur");
-	$transferContent = $pageService->getPagina(Config::get('app.locale'), 'transfer-pay');
+	$transferContent = (new App\Services\Content\PageService())->getPage('transfer-pay');
 @endphp
 
 @if ($isCorrCli)

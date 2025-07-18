@@ -3,44 +3,45 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Page;
-use Illuminate\Support\Facades\Request;
+use App\Models\V5\Web_Page;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 class ContentController extends Controller
 {
 	public function index()
 	{
-		$page = new Page();
+		$pages = Web_Page::query()
+			->whereNull('manageable_web_page')
+			->orderBy('name_web_page', 'asc')
+			->get();
 
-		$data = $page->allPage($page->emp);
-
-		return View::make('admin::pages.page_content', array('data' => $data));
+		return View::make('admin::pages.page_content', ['data' => $pages]);
 	}
 
 	public function getPage($id)
 	{
-		$page = new Page();
+		$page = Web_Page::query()
+			->where('id_web_page', $id)
+			->first();
 
-		$content = $page->getPage($page->emp, $id);
-
-		return View::make('admin::pages.editPage_content', array('content' => $content));
+		return View::make('admin::pages.editPage_content', ['content' => $page]);
 	}
 
-	public function savedPage()
+	public function savedPage(Request $request)
 	{
-		$page = new Page();
-		$page->id = Request::input('id');
-		$page->name = Request::input('name_web_page');
-		$page->content = Request::input('html');
-		$page->webmetat = Request::input('webmetat_web_page');
-		$page->webmetad = Request::input('webmetad_web_page');
-		$page->webnoindex = Request::input('webnoindex_web_page');
-		if (empty($page->webnoindex)) {
-			$page->webnoindex = 0;
-		} else {
-			$page->webnoindex = 1;
-		}
-		$page->updatePage();
+		$id = $request->input('id');
+
+		$dataToUpdate = [
+			'name_web_page' => $request->input('name_web_page'),
+			'content_web_page' => $request->input('html'),
+			'webmetat_web_page' => $request->input('webmetat_web_page'),
+			'webmetad_web_page' => $request->input('webmetad_web_page'),
+			'webnoindex_web_page' => empty($request->input('webnoindex_web_page')) ? 0 : 1,
+		];
+
+		Web_Page::query()
+			->where('id_web_page', $id)
+			->update($dataToUpdate);
 	}
 }

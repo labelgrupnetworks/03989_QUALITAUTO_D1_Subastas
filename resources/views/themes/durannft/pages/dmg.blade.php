@@ -4,9 +4,7 @@
 
 
 	@php
-		$pagina = new App\Models\Page();
-
-		$page  = $pagina->getPagina(\Config::get('app.locale'),"dmg");
+		$page  = (new App\Services\Content\PageService())->getPage("dmg");
 
 		$seo= new \stdClass();
 		if(!empty($page->webnoindex_web_page) && $page->webnoindex_web_page == 1){

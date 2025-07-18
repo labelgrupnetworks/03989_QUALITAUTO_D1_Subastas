@@ -33,9 +33,8 @@
                 $menuEstatico = strpos($html, '[*' . $key . '*]');
 
                 if ($menuEstatico !== false) {
-                    $pagina = new App\Models\Page();
+					$menuEstaticoHtml = (new App\Services\Content\PageService())->getPage($key);
 
-                    $menuEstaticoHtml = $pagina->getPagina($data['lang'], $key);
                     #borramos la clave [*MENUCONDECORACIONES*], por que la pondremos a mano en la página
 
                     $html = str_replace('[*' . $key . '*]', $menuEstaticoHtml->content_web_page, $html);
@@ -77,7 +76,7 @@
 
 		preg_match_all('/\[\*MENU\-(.*?)\*\]/', $html, $menuMatches);
 		foreach ($menuMatches[0] as $key => $replace) {
-			$menu = (new App\Models\Page())->getPagina($data['lang'], "MENU-{$menuMatches[1][$key]}");
+			$menu = (new App\Services\Content\PageService())->getPage("MENU-{$menuMatches[1][$key]}");
 			$html = str_replace($replace, $menu->content_web_page, $html);
 		}
 

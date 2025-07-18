@@ -10,32 +10,20 @@ use App\libs\MessageLib;
 use App\libs\FormLib;
 use App\libs\EmailLib;
 use App\Models\V5\Web_Page;
+use App\Services\Content\PageService;
 
 class ContactController extends Controller
 {
-	public function index(Request $request)
+	public function index(PageService $pageService)
 	{
-		#cogemos la empresa principal y si no existe la actual, de esta manera solo contenidos solo deben estar en la empresa principal
-		$emp = Config::get('app.main_emp');
 		$withPlaceHolders = Config::get('app.contat_with_placeholders', 0);
 
-		$data = array();
-		$data['formulario'] = $this->formContact($withPlaceHolders);
-
-		$a = Web_Page::where("key_web_page", "contacto")->where("lang_web_page", strtoupper(Config::get("app.locale")))->where("emp_web_page", $emp)->first();
-		if (!empty($a)) {
-			$data['content'] = $a->content_web_page;
-		}
-
-		$a = Web_Page::where("key_web_page", "contacto2")->where("lang_web_page", strtoupper(Config::get("app.locale")))->where("emp_web_page", $emp)->first();
-		if (!empty($a)) {
-			$data['content2'] = $a->content_web_page;
-		}
-
-		$a = Web_Page::where("key_web_page", "contacto3")->where("lang_web_page", strtoupper(Config::get("app.locale")))->where("emp_web_page", $emp)->first();
-		if (!empty($a)) {
-			$data['content3'] = $a->content_web_page;
-		}
+		$data = [
+			'formulario' => $this->formContact($withPlaceHolders),
+			'content' => $pageService->getPage('contacto')?->content_web_page,
+			'content2' => $pageService->getPage('contacto2')?->content_web_page,
+			'content3' => $pageService->getPage('contacto3')?->content_web_page,
+		];
 
 		if (Config::get('app.seo_in_contact', 0)) {
 			$data['seo'] = new \stdClass();

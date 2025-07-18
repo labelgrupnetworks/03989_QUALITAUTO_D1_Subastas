@@ -46,7 +46,7 @@
             <h2 style="margin-top: 0">{{ trans(\Config::get('app.theme') . '-app.home.calendar-news') }}</h2>
             <div class="content_art">
                @php
-					$data = (new  \App\Models\Page())->getPagina(config('app.locale'), 'subastas-programadas');
+					$data = (new App\Services\Content\PageService())->getPage('subastas-programadas');
 				@endphp
 
 				{!! $data->content_web_page !!}

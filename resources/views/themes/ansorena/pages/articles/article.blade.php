@@ -41,9 +41,7 @@
         $bread[] = ['url' => Route('articles'), 'name' => trans($theme . '-app.articles.articles')];
     }
     $bread[] = ['name' => $article->model_art0];
-
-    $locale = Config::get('app.locale');
-    $menuEstaticoHtml = (new App\Models\Page())->getPagina(mb_strtoupper($locale), 'MENUJOYERIA');
+	$menuEstaticoHtml = (new App\Services\Content\PageService())->getPage('MENUJOYERIA');
 @endphp
 
 @section('content')

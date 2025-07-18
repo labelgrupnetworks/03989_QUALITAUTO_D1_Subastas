@@ -169,6 +169,9 @@ class UserController extends Controller
 			Session::push('user.adminconfig', 1);
 			Session::push('user.admin', 1);
 		}
+
+		$isSuperAdmin = mb_strtolower($login->usrw_cliweb) === 'subastas@labelgrup.com';
+		Session::put('user.is_super_admin', $isSuperAdmin);
 	}
 
 	/**

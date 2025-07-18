@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Config;
 use App\Http\View\Composers\GlobalComposer;
-use App\Models\PageSetting;
 use App\Services\admin\AdminMenuService;
 
 class ShareVarsProvider extends ServiceProvider
@@ -38,7 +37,6 @@ class ShareVarsProvider extends ServiceProvider
 		View::share('img_url', $img_url);
 		View::share('images_url', $images_url);
 		View::share('host', $host);
-		View::share('page_settings', new PageSetting());
 
 		View::composer('admin::layouts.partials.main-nav', function ($view) {
             $view->with('sidebarMenu', (new AdminMenuService)->getMenuItems());

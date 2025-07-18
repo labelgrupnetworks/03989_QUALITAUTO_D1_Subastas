@@ -1,8 +1,3 @@
-@php
-	// This function is used to view in page the route and route parameters
-	// $page_settings->tempDumpRouteData()
-@endphp
-
 <header class="header">
 	<div class="logo-container">
 		<a href="javascript:;" class="logo">

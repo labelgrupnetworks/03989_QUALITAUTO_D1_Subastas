@@ -4,13 +4,13 @@ namespace App\Http\Controllers\V5;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaymentsController;
-use App\Models\Page;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FgDeposito;
 use App\Models\V5\FxCli;
 use App\Models\V5\WebPayCart;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Content\PageService;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -240,11 +240,9 @@ class DepositController extends Controller
 
 		$url = ToolsServiceProvider::url_lot($lote->cod_sub, $lote->id_auc_sessions, "", $lote->ref_asigl0, $lote->num_hces1, $lote->webfriend_hces1, $lote->titulo_hces1);
 
-
 		#cargamos la página de deposito
-		$pagina = new Page();
-
-		$data  = $pagina->getPagina($lang, $keyWebPage);
+		$pageService = new PageService();
+		$data  = $pageService->getPage($keyWebPage);
 		if (empty($data)) {
 			exit(View::make('front::errors.404'));
 		}

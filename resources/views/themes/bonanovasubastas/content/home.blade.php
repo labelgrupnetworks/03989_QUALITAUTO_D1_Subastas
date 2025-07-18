@@ -67,7 +67,7 @@
 
 						<div class="content_art_container">
 							@php
-								$data = (new  \App\Models\Page())->getPagina(config('app.locale'), 'proximas-subastas');
+								$data = (new App\Services\Content\PageService())->getPage('proximas-subastas');
 							@endphp
 
 							{!! $data->content_web_page !!}

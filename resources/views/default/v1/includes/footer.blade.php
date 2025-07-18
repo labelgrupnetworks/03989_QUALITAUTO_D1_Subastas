@@ -1,5 +1,3 @@
-@include('includes.admin_shortcut')
-
 <footer>
 	<div class="container">
 		<div class="row">

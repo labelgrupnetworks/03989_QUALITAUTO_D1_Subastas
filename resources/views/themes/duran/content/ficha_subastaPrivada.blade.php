@@ -1,7 +1,6 @@
 @extends('layouts.default')
 @php
-	$pagina = new App\Models\Page();
-	$page  = $pagina->getPagina(\Config::get("app.locale"),"subasta-ventas-privadas");
+	$page  = (new App\Services\Content\PageService())->getPage("subasta-ventas-privadas");
 @endphp
 @section('title')
 	{{ $page->name_web_page }}

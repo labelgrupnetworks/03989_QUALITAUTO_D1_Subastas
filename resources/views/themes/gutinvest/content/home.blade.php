@@ -1,6 +1,5 @@
 @php
-    use App\Models\Page;
-    $pageModel = new Page();
+	$pageService = new App\Services\Content\PageService();
     $locale = config('app.locale');
 @endphp
 
@@ -91,7 +90,7 @@
         <div class="row">
             <div class="col-xs-12 contact-home-content">
                 <div class='col-xs-12 col-sm-6 slogan-big no-padding'>
-                    {!! $pageModel->getPagina($locale, 'contact-home')?->content_web_page !!}
+                    {!! $pageService->getPage('contact-home')?->content_web_page !!}
                 </div>
                 <div class='col-xs-12 col-sm-6 col-md-5 col-md-offset-1 img-contacto-home no-padding d-flex'>
                     <div class="hidden-xs">
@@ -122,7 +121,7 @@
             <div class="sobre-nosotros-home-bg hidden-xs"></div>
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-lg-6 col-md-6 serivicios-content">
-                    {!! $pageModel->getPagina($locale, 'about-home')?->content_web_page !!}
+                    {!! $pageService->getPage('about-home')?->content_web_page !!}
                 </div>
 
                 <div class="hidden-xs col-xs-12 col-sm-3 col-xs-offset-0 col-md-offset-1 sobre-nosotros-home-img"
@@ -152,7 +151,7 @@
 					</div>
                 </div>
                 <div class="col-xs-6 vendemos-home-desc">
-                    {!! $pageModel->getPagina($locale, 'sell-home')?->content_web_page !!}
+                    {!! $pageService->getPage('sell-home')?->content_web_page !!}
                 </div>
             </div>
 

@@ -15,8 +15,7 @@
                 ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false],
                 null,
                 false,
-                '',
-                $page_settings,
+                ''
             ) !!}
         </section>
 

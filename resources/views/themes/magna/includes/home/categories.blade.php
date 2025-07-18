@@ -65,8 +65,7 @@
             ],
             null,
             false,
-            '',
-            $page_settings,
+            ''
         ) !!}
     </div>
 </div>
