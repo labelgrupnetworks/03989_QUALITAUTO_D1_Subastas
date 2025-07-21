@@ -1,6 +1,6 @@
 @php
-    use App\Models\Cookies;
-    $cookiesPreferences = new Cookies();
+    use App\Services\Content\CookieService;
+    $cookiesPreferences = new CookieService();
 @endphp
 
 @if ($cookiesPreferences->isAnalysisAllowed())

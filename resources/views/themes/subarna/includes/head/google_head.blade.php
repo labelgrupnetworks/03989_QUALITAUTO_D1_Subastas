@@ -1,8 +1,8 @@
 @php
-    use App\Models\Cookies;
-    $cookiesPreferences = new Cookies();
+    use App\Services\Content\CookieService;
+    $cookiesPreferences = new CookieService();
 
-    Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE, Cookies::THIRD_HOTJAR, Cookies::THIRD_LIVEAGENT]);
+    Config::set('app.cookies.analysis', [CookieService::THIRD_GOOGLE, CookieService::THIRD_HOTJAR, CookieService::THIRD_LIVEAGENT]);
 @endphp
 
 <script>

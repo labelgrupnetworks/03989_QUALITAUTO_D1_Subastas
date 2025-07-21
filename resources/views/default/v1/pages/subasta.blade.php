@@ -5,8 +5,8 @@
 @stop
 
 @php
-    use App\Models\Cookies;
-    $styleLotSeeConfiguration = (new Cookies())->getLotConfiguration();
+    use App\Services\Content\CookieService;
+    $styleLotSeeConfiguration = (new CookieService())->getLotConfiguration();
     if (empty($data['type']) && !empty($data['sub_data'])) {
         $sub_data = $data['sub_data'];
         $url_subasta = \Routing::translateSeo('info-subasta') . $sub_data->cod_sub . '-' . str_slug($sub_data->des_sub);

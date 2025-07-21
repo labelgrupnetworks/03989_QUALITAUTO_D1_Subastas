@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cookies;
+use App\Services\Content\CookieService;
 use Illuminate\Http\Request;
 
 class CookiesController extends Controller
 {
+	private $cookieService;
+
+	public function __construct()
+	{
+		$this->cookieService = new CookieService();
+	}
+
 	public function acceptAllCookies()
 	{
-		(new Cookies)->setAllPermissions();
+		$this->cookieService->setAllPermissions();
 		return response()->json([
 			'success' => true
 		]);
@@ -17,7 +24,7 @@ class CookiesController extends Controller
 
 	public function rejectAllCookies()
 	{
-		(new Cookies)->removeAllPermissions();
+		$this->cookieService->removeAllPermissions();
 		return response()->json([
 			'success' => true
 		]);
@@ -26,7 +33,7 @@ class CookiesController extends Controller
 	public function setPreferencesCookies(Request $request)
 	{
 		$preferences = $request->get('preferences');
-		(new Cookies)->setPermissions($preferences);
+		$this->cookieService->setPermissions($preferences);
 		return response()->json([
 			'success' => true
 		]);
@@ -35,7 +42,7 @@ class CookiesController extends Controller
 	public function addConfigurationsCookies(Request $request)
 	{
 		$configurations = $request->get('configurations');
-		(new Cookies)->addConfigurations($configurations);
+		$this->cookieService->addConfigurations($configurations);
 		return response()->json([
 			'success' => true
 		]);

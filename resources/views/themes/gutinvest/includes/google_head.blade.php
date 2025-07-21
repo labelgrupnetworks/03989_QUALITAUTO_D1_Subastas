@@ -1,10 +1,10 @@
 @php
 	use \App\libs\TradLib;
-	use App\Models\Cookies;
-    $cookiesPreferences = new Cookies();
+	use App\Services\Content\CookieService;
+    $cookiesPreferences = new CookieService();
 
-	Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE]);
-    Config::set('app.cookies.advertising', [Cookies::THIRD_LINKEDIN, Cookies::THIRD_SMARTLOOK]);
+	Config::set('app.cookies.analysis', [CookieService::THIRD_GOOGLE]);
+    Config::set('app.cookies.advertising', [CookieService::THIRD_LINKEDIN, CookieService::THIRD_SMARTLOOK]);
 @endphp
 
 <meta charset="utf-8" http-equiv="content-type">

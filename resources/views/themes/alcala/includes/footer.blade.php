@@ -163,7 +163,7 @@ Todos los derechos reservados |
 </footer>
 
 
-@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+@if (!Cookie::get((new App\Services\Content\CookieService)->getCookieName()))
 	@include('includes.cookie', ['style' => 'popover'])
 @endif
 

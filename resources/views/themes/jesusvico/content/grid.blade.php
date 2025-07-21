@@ -1,6 +1,6 @@
 @php
-    use App\Models\Cookies;
-    $styleLotSeeConfiguration = (new Cookies())->getLotConfiguration();
+    use App\Services\Content\CookieService;
+    $styleLotSeeConfiguration = (new CookieService())->getLotConfiguration();
 
     $count_lots = 0;
     foreach ($tipos_sub as $typeSub => $desType) {

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Services\Content;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 
-class Cookies
+class CookieService
 {
 	private $cookieName;
 	private $preferences;

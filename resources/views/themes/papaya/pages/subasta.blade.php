@@ -8,8 +8,8 @@
 @section('content')
  <?php
 
-	use App\Models\Cookies;
-    $styleLotSeeConfiguration = (new Cookies())->getLotConfiguration();
+	use App\Services\Content\CookieService;
+    $styleLotSeeConfiguration = (new CookieService())->getLotConfiguration();
 
 	$typeSub = '';
     if(empty($data['type']) && !empty($data['sub_data']) ){

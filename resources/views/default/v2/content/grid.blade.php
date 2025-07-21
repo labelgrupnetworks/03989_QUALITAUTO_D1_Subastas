@@ -1,6 +1,6 @@
 @php
-    use App\Models\Cookies;
-    $styleLotSeeConfiguration = (new Cookies())->getLotConfiguration();
+    use App\Services\Content\CookieService;
+    $styleLotSeeConfiguration = (new CookieService())->getLotConfiguration();
 @endphp
 
 <div class="info-auction-tab-contet">

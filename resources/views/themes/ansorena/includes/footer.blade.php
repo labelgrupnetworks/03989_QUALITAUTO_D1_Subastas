@@ -166,7 +166,7 @@
 
 </footer>
 
-@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+@if (!Cookie::get((new App\Services\Content\CookieService)->getCookieName()))
 	@include('includes.cookie', ['style' => 'popover'])
 @endif
 
@@ -208,7 +208,7 @@
 		$('.message_modal')[0].style.display = 'none';
 	}
 
-	
+
 	function closeMessageModal() {
 		$('.message_modal')[0].style.display = 'none';
 	}

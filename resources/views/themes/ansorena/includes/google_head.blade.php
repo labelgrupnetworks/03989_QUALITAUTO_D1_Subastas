@@ -1,9 +1,9 @@
 @php
-    use App\Models\Cookies;
-    $cookiesPreferences = new Cookies();
+    use App\Services\Content\CookieService;
+    $cookiesPreferences = new CookieService();
 
-    Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE]);
-    Config::set('app.cookies.advertising', [Cookies::THIRD_FACEBOOK]);
+    Config::set('app.cookies.analysis', [CookieService::THIRD_GOOGLE]);
+    Config::set('app.cookies.advertising', [CookieService::THIRD_FACEBOOK]);
 @endphp
 
 @if ($cookiesPreferences->isAnalysisAllowed() && Config::get('app.emp') == '001')
