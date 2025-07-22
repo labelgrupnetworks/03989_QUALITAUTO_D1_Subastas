@@ -25,6 +25,7 @@ class CronController extends Controller
 
 	public function CloseLotsWebServiceCall()
 	{
+		Log::notice("cron CloseLotsWebServiceCall ejecutado");
 
 		$emp =  Config::get('app.emp');
 
@@ -55,6 +56,8 @@ class CronController extends Controller
 	#función que llama al webservice de duran para cancelar las reservas
 	public function CancelReservationWS()
 	{
+		Log::notice("cron CancelReservationWS ejecutado");
+
 		$codSub = "7500";
 		$theme  = Config::get('app.theme');
 		$rutaReservationController = "App\Http\Controllers\\externalws\\$theme\ReservationController";
@@ -80,6 +83,8 @@ class CronController extends Controller
 
 	public function cronEmailReports()
 	{
+		Log::notice("cron EmailReports ejecutado");
+
 		$mail = new MailController();
 		$emp =  Config::get('app.emp');
 		$mailquery = new MailQueries;
@@ -108,6 +113,8 @@ class CronController extends Controller
 
 	public function EmailsAdjudicaciones()
 	{
+		Log::notice("cron EmailsAdjudicaciones ejecutado");
+
 		$mail = new MailController();
 		$emp =  Config::get('app.emp');
 
@@ -137,6 +144,8 @@ class CronController extends Controller
 
 	public function EmailsAdjudicacionesGeneric()
 	{
+		Log::notice("cron EmailsAdjudicacionesGeneric ejecutado");
+
 		$mail = new MailController();
 		$deposito = new DepositController();
 		$emp =  Config::get('app.emp');
@@ -160,6 +169,8 @@ class CronController extends Controller
 	 */
 	public function EmailCloseAuction()
 	{
+		Log::notice("cron EmailCloseAuction ejecutado");
+
 		$mail = new MailController();
 		$emp = Config::get('app.emp');
 
@@ -204,6 +215,8 @@ class CronController extends Controller
 
 	public function EmailFirstAuction()
 	{
+		Log::notice("cron EmailFirstAuction ejecutado");
+
 		$mail = new MailController();
 		$params = array(
 			'emp'       =>  Config::get('app.emp')
@@ -222,6 +235,8 @@ class CronController extends Controller
 
 	public function emailsReSaleLots()
 	{
+		Log::notice("cron emailsReSaleLots ejecutado");
+
 		$mail = new MailController();
 		$params = array(
 			'emp'       =>  Config::get('app.emp')
@@ -264,6 +279,7 @@ class CronController extends Controller
 
 	public function lastCall()
 	{
+		Log::notice("cron lastCall ejecutado");
 
 		$mailquery = new MailQueries;
 		$mail = new MailController();
@@ -275,6 +291,8 @@ class CronController extends Controller
 
 	public function LotePendingPay()
 	{
+		Log::notice("cron LotePendingPay ejecutado");
+
 		$mail = new MailController();
 		$days = explode(",", Config::get('app.email_lote_pending'));
 		foreach ($days as $id_key => $day) {
@@ -284,6 +302,7 @@ class CronController extends Controller
 
 	public function LotePendingCollect()
 	{
+		Log::notice("cron LotePendingCollect ejecutado");
 
 		$mail = new MailController();
 
@@ -301,9 +320,10 @@ class CronController extends Controller
 		}
 	}
 
-
 	public function emailNotBiddedYet()
 	{
+		Log::notice("cron emailNotBiddedYet ejecutado");
+
 		$mail = new MailController();
 		$days = array('3');
 		foreach ($days as $id_key => $day) {
@@ -313,6 +333,8 @@ class CronController extends Controller
 
 	public function emailCedenteAmedidaError()
 	{
+		Log::notice("cron emailCedenteAmedidaError ejecutado");
+
 		$sql = "select wnc.*, impsalhces_asigl0,fini_asigl0 from web_notificar_prop_error  wnc
                 join fgasigl0 asigl0 on asigl0.numhces_asigl0 = wnc.numhces1 and asigl0.linhces_asigl0 = wnc.linhces1  and emp_asigl0 = '" . Config::get('app.emp') . "'
                 join fghces1 hces1 on hces1.emp_hces1 ='" . Config::get('app.emp') . "'  and hces1.num_hces1 =  wnc.numhces1 and hces1.lin_hces1 = wnc.linhces1
@@ -360,6 +382,7 @@ class CronController extends Controller
 
 	public function emailCedeneteAMedida()
 	{
+		Log::notice("cron emailCedeneteAMedida ejecutado");
 
 		$subasta = new Subasta();
 		$usercli = new User();
@@ -479,6 +502,8 @@ class CronController extends Controller
 
 	function generateProductFeed()
 	{
+		Log::notice("cron generateProductFeed ejecutado");
+
 		$sql = "SELECT  HCES1.NUM_HCES1,HCES1.LIN_HCES1,SUB.COD_SUB, ASIGL0.ref_asigl0,AUC.\"id_auc_sessions\",TRUNC(ASIGL0.FFIN_ASIGL0) - TRUNC(SYSDATE) DAYS,
 
                     NVL(ORTSEC0_LANG.DES_ORTSEC0_LANG, ORTSEC0.DES_ORTSEC0) CATEGORY,
@@ -653,6 +678,8 @@ class CronController extends Controller
 
 	public function update_divisa()
 	{
+		Log::notice("cron update_divisa ejecutado");
+
 		//Cogemos divisas del cliente
 		$divisa = FsDiv::getDivisas();
 
@@ -699,8 +726,13 @@ class CronController extends Controller
 		}
 	}
 
+	/**
+	 * Carga los coches de Motorflash
+	 * Es un cron de carlandia
+	 */
 	public function loadCarsMotorflash()
 	{
+		Log::notice("cron loadCarsMotorflash ejecutado");
 
 		$fxCli = FxCli::select("COD_CLI")->WHERE("TIPO_CLI", "V")->get();
 
@@ -709,9 +741,13 @@ class CronController extends Controller
 		}
 	}
 
-	#hacemos la carga por cedente para que si alguno da error no afecte al resto
+	/**
+	 * Carga los coches de un cedente desde Motorflash
+	 * Es un cron de carlandia
+	 */
 	public function loadCarsCedente($cedente)
 	{
+		Log::notice("cron loadCarsCedente ejecutado");
 		try {
 			$url = Config::get("app.urlMotorflash");
 			$cod_cli = $cedente->cod_cli;
@@ -727,8 +763,14 @@ class CronController extends Controller
 		}
 	}
 
+	/**
+	 * Genera el feed de anuncios dinámicos para Google Merchant Center
+	 * Es un cron de carlandia
+	 * @return void
+	 */
 	public function dynamicAds()
 	{
+		Log::notice("cron dynamicAds ejecutado");
 		# Lanza la query para coger los datos
 		$queryForExport = FgAsigl0::selectRaw("
 				 SUB_ASIGL0  || '-' || REF_ASIGL0 as id,
