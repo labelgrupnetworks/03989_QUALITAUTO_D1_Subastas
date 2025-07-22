@@ -54,43 +54,6 @@ class ToolsServiceProvider extends ServiceProvider
 		DB::select($sql);
 	}
 
-	public static function conservationCurrency($num_hces, $lin_hces, $campos = array())
-	{
-
-		if (empty($campos)) {
-			return null;
-		}
-
-		$select = '';
-
-		foreach ($campos as $valor) {
-			$select = $select . 'NVL(otv_lang."' . $valor . '_lang",  otv."' . $valor . '") "' . $valor . '",';
-		}
-
-		$select = trim($select, ',');
-
-
-		$sql = " Select $select from \"object_types_values\" otv LEFT JOIN \"object_types_values_lang\" otv_lang on (otv_lang.\"transfer_sheet_number_lang\" = :num_hces and otv_lang.\"company_lang\" = :emp and otv_lang.\"transfer_sheet_line_lang\" = :lin_hces and otv_lang.\"lang_object_types_values_lang\" = :lang)
-             where \"company\" = :emp and \"transfer_sheet_number\" = :num_hces and \"transfer_sheet_line\" = :lin_hces ";
-
-
-
-		$params = array(
-			'emp' => Config::get('app.emp'),
-			'num_hces' => $num_hces,
-			'lin_hces' => $lin_hces,
-			'lang'     => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
-		);
-
-
-		$consulta = DB::select($sql, $params);
-		if (empty($consulta)) {
-			return null;
-		}
-
-		return head($consulta);
-	}
-
 	public static function friendlyDesc($str)
 	{
 

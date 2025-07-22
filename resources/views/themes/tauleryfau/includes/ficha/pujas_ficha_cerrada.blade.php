@@ -101,28 +101,6 @@ elseif($lote_actual->subc_sub == 'H' && $lote_actual->cod_sub == $lote_actual->s
         </div>
 
     </div>
-    <?php
-    //   capturando la conversion de la moneda
-
-    /*
-    $moneda=\Tools::conservationCurrency( $data['subasta_info']->lote_actual->num_hces1,  $data['subasta_info']->lote_actual->lin_hces1, array("conservation_1","conservation_2"));
-
-
-    <div class="input-group direct-puja">
-        <div class='explanation_bid text-right' >
-            <a data-toggle="modal" data-target="#currency-types" href=""><span><i class="fa fa-info-circle fa-lg"></i></span>
-            </a>
-        </div>
-        <div class="currency-input">
-            @if ($lote_actual->tipo_sub != 'V' && !empty($moneda) && !empty($moneda->conservation_1))
-                <button data-toggle="modal" data-target="#currency-types"  class="currency-show-button" style="width: 100%; margin-right: 0px;">
-                    {{ !empty($moneda->conservation_2)?  $moneda->conservation_1.' / '.$moneda->conservation_2: $moneda->conservation_1}}
-                </button>
-            @endif
-        </div>
-    </div>
-</div>
-                    */?>
 
 @if($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->tipo_sub == 'V' )
 <div class="exit-price prices finalized">

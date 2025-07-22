@@ -23,6 +23,7 @@ use App\Models\V5\FgLicit;
 use App\Models\V5\FgRepresentados;
 use App\Models\V5\FgSubConditions;
 use App\Models\V5\FxCli;
+use App\Models\V5\ObjectTypeValues;
 use App\Models\V5\WebCalendar;
 use App\Models\V5\WebCalendarEvent;
 use App\Providers\RoutingServiceProvider as Routing;
@@ -1290,10 +1291,27 @@ class SubastaController extends Controller
 
 		SeoLib::saveVisit($subasta_info->lote_actual->sub_hces1, null, $subasta_info->lote_actual->sec_hces1, $subasta_info->lote_actual->ref_asigl0);
 
+		$data['extras'] = $this->addExtraLotAttributes($subasta_info->lote_actual);
 		/* FIN  codigo temporal */
 		return View::make('front::pages.ficha', array('data' => $data));
 	}
 
+	/**
+	 * Atributos extra para la ficha que dependeran de cada cliente
+	 */
+	private function addExtraLotAttributes($lot)
+	{
+		$extras = [
+			'conservation' => null,
+		];
+
+		//Para mostrar en tauler los botones de conservación
+		if(Config::get('app.extra_conservation', false)) {
+			$extras['conservation'] = ObjectTypeValues::getConservationCurrency($lot->num_hces1, $lot->lin_hces1);
+		}
+
+		return $extras;
+	}
 
 	//clean los SEO metas
 	public function cleanStrMeta($meta)

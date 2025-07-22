@@ -74,11 +74,6 @@
                 </div>
             <?php /* no ponemos CET   <span id="cet_o"> {{ trans($theme.'-app.lot.cet') }}</span> */ ?>
         </div>
-    <?php
-    //   capturando la conversion de la moneda
-         $moneda=\Tools::conservationCurrency($lote_actual->num_hces1, $lote_actual->lin_hces1, array("conservation_1","conservation_2"));
-
-    ?>
 	@if ($lote_actual->retirado_asigl0 == 'N' && empty($lote_actual->himp_csub) && ($lote_actual->subc_sub == 'S' || $lote_actual->subc_sub == 'A'))
 
     <div class="botones-puja-vetadirecta">

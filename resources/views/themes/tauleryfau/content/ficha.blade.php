@@ -2,8 +2,8 @@
 use Detection\MobileDetect;
 $MobileDetect = new MobileDetect();
 
-//   capturando la conversion de la moneda
-$moneda = \Tools::conservationCurrency($data['subasta_info']->lote_actual->num_hces1, $data['subasta_info']->lote_actual->lin_hces1, ['conservation_1', 'conservation_2']);
+// Conversion de la moneda
+$moneda = $data['extras']['conservation'];
 $existMoneda = !empty($moneda) && !empty($moneda->conservation_1);
 //condición subasta O/W
 $conservationW = $lote_actual->cerrado_asigl0 == 'N' && $lote_actual->fac_hces1 == 'N' && strtotime('now') < strtotime($lote_actual->start_session);

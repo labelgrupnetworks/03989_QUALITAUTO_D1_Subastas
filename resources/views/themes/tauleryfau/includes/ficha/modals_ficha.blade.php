@@ -510,11 +510,6 @@
 
 								@if($lote_actual->cerrado_asigl0=='N' && $lote_actual->fac_hces1=='N')
 								<div class="info_single_content">
-
-									<?php
-											   //   capturando la conversion de la moneda
-											$moneda=\Tools::conservationCurrency( $data['subasta_info']->lote_actual->num_hces1,  $data['subasta_info']->lote_actual->lin_hces1, array("conservation_1","conservation_2"));
-											 ?>
 									<div class="input-group direct-puja">
 										@if(strtotime("now") < strtotime($lote_actual->start_session))
 											<input id="bid_amount" class="form-control" type="hidden"
