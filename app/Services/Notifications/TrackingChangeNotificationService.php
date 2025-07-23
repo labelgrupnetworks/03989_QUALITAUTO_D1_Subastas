@@ -9,6 +9,8 @@ use App\Services\Payments\OrderService;
 
 class TrackingChangeNotificationService
 {
+	private ?string $file = null;
+
 	/**
 	 * @param string $codCli
 	 * @param string $codSeg
@@ -23,6 +25,18 @@ class TrackingChangeNotificationService
 		private readonly string $serie,
 		private readonly string $number,
 	) {}
+
+	public function addAttachment(string $filePath): void
+	{
+		if(empty($filePath)) {
+			return;
+		}
+
+		$nameExplode = explode('REPORTS', $filePath);
+		$fileName = 'reports' . $nameExplode[1];
+
+		$this->file = public_path($fileName);
+	}
 
 	public function send()
 	{
@@ -60,6 +74,10 @@ class TrackingChangeNotificationService
 		$email->setDate($auction->dfec_sub, null);
 
 		$email->setAtribute('DELIVERY_DATE', $deliveryDate);
+
+		if(!empty($this->file)) {
+            $email->attachments[] = $this->file;
+		}
 
 		$email->send_email();
 	}
