@@ -38,6 +38,7 @@ use App\Models\V5\Web_Cancel_Log;
 use App\Providers\ToolsServiceProvider as Tools;
 use App\Models\V5\FgSub;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Content\EnterpriseParamsService;
 use App\Services\User\UserService;
 
 class SubastaTiempoRealController extends Controller
@@ -376,9 +377,9 @@ class SubastaTiempoRealController extends Controller
         $subasta->page = 'all';
         $js_item['subasta']['last_item']    = $subasta_info->last_item = $session->end_lot;
         $js_item['subasta']['first_item']      = $subasta_info->first_item =  $session->init_lot;
-        $js_item['subasta']['currency']       = $subasta->getCurrency();
+        $js_item['subasta']['currency']       = (new EnterpriseParamsService())->getCurrency();
         $js_item['subasta']['cd_time']        =  Config::get('app.cd_time');
-    $js_item['subasta']['max_bids_shown'] =  Config::get('app.pujas_maximas_mostradas');
+    	$js_item['subasta']['max_bids_shown'] =  Config::get('app.pujas_maximas_mostradas');
 
 
         # Mensajes de chat cargados al item de js

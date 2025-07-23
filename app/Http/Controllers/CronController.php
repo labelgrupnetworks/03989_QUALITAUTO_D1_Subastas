@@ -14,6 +14,7 @@ use App\Models\V5\FsDiv;
 use App\Models\V5\FxCli;
 use App\Providers\RoutingServiceProvider;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Content\EnterpriseParamsService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -694,9 +695,8 @@ class CronController extends Controller
 			//    $money[$path->list->currency[$i]->attributes()->iso_code[0]] = $path->list->currency[$i]->attributes()->rate;
 		}
 
-		$subasta = new Subasta();
 		#Ver moneda principal
-		$currency = $subasta->getCurrency();
+		$currency = (new EnterpriseParamsService())->getCurrency();
 		# si la moneda es euro copiamos tal cual
 		if ($currency->name == "EUR") {
 			foreach ($divisa as $cod) {

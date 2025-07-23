@@ -31,6 +31,7 @@ use App\Providers\ToolsServiceProvider;
 use App\Services\Auction\LotCategoryService;
 use App\Services\Auction\LotDeliveryService;
 use App\Services\Content\BlockService;
+use App\Services\Content\EnterpriseParamsService;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\App;
@@ -1197,7 +1198,7 @@ class SubastaController extends Controller
 		$data['lot_other_sub'] = $other_sub;
 		$js_item['lote_actual']         = $subasta_info->lote_actual;
 
-		$js_item['subasta']['currency'] = $subasta->getCurrency();
+		$js_item['subasta']['currency'] = (new EnterpriseParamsService())->getCurrency();
 		//código de divisa del usuario, si no tiene le ponemos el dollar
 		$js_item['subasta']['cod_div_cli'] = !empty($js_item['user']) ? $js_item['user']['cod_div_cli'] : '';
 		$data['subasta_info']           = $subasta_info;

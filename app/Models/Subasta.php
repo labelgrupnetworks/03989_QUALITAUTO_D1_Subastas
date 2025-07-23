@@ -1859,25 +1859,6 @@ class Subasta extends Model
         return DB::select($sql, $bindings);
     }
 
-
-    public function getCurrency(){
-        $curr = DB::select("SELECT DIV_PARAMS FROM FSPARAMS
-                    WHERE EMP_PARAMS = :emp AND
-                    CLA_PARAMS = :cla
-                    ",
-                    array(
-                        'emp'   => Config::get('app.emp'),
-                        'cla'   => 1
-                        )
-                );
-
-        $currency = new \stdClass();
-        $currency->name = head($curr)->div_params;
-        $currency->symbol = ToolsServiceProvider::getCurrency($currency->name);
-
-        return $currency;
-    }
-
 	# Auto increment de los códigos de licitador en la tabla FGLICIT
     public function licitIncrement()
     {

@@ -16,6 +16,7 @@ use App\Models\V5\FxClid;
 use App\Models\V5\FxDvc0;
 use App\Models\V5\FxDvc0Seg;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Content\EnterpriseParamsService;
 use App\Services\User\UserAddressService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -179,7 +180,7 @@ class AllotmentsAndBillsController extends Controller
 			'address' => $address,
 			'adjudicaciones' => $adjudicaciones,
 			'adjudicaciones_transfer' => $adjudicaciones_transfer,
-			'currency'       => $sub->getCurrency(),
+			'currency'       => (new EnterpriseParamsService())->getCurrency(),
 			'envio'    => $envio,
 			'user'  => $user_cli,
 			'js_item' => $this->generatePreciosLotAdj($adjudicaciones),
@@ -934,7 +935,7 @@ class AllotmentsAndBillsController extends Controller
 
 		return [
 			'adjudicaciones' => $adjudicaciones,
-			'currency'       => $subasta->getCurrency(),
+			'currency'       => (new EnterpriseParamsService())->getCurrency(),
 			'envio'    => $envio,
 			'user'  => $user_cli,
 			'js_item' => $this->generatePreciosLotAdj($adjudicaciones),

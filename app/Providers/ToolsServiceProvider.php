@@ -100,38 +100,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return $format;
 	}
 
-	public static function getCurrency($str_currency)
-	{
-
-		if (empty($str_currency)) {
-			return FALSE;
-		}
-
-		switch ($str_currency) {
-			case 'EUR':
-				$curr = '€';
-				break;
-
-			case 'COP':
-				$curr = 'COP ';
-				break;
-
-			case 'US$':
-				$curr = 'US$';
-				break;
-
-			case 'PAB':
-				$curr = 'B/. ';
-				break;
-
-			default:
-				$curr = '€';
-				break;
-		}
-
-		return $curr;
-	}
-
 	public static function euroDate($fecha)
 	{
 		if (!$fecha) {

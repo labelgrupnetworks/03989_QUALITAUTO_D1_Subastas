@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\Subasta;
 use App\Models\User;
+use App\Services\Content\EnterpriseParamsService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Arr;
@@ -118,7 +119,7 @@ class OrdersController extends Controller
 
 		$data['values'] = $queryValues;
 		$data['paginator'] = $paginator;
-		$data['currency'] = $sub->getCurrency();
+		$data['currency'] = (new EnterpriseParamsService())->getCurrency();
 		$data['seo'] = new \stdClass();
 		$data['seo']->noindex_follow = true;
 
