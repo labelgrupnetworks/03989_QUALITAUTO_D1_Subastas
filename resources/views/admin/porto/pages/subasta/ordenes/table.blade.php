@@ -231,9 +231,8 @@
 				<td class="descweb_hces1"> {!! $order->descweb_hces1 !!}</td>
 				<td class="nom_cli">{{ $order->nom_cli }}</td>
 
-				<td class="fec_orlic">{{ \Tools::euroDate($order->fec_orlic) }}</td>
-				<td class="himp_orlic">
-					{{ \Tools::moneyFormat($order->himp_orlic, trans(\Config::get('app.theme') . '-app.subastas.euros'), 2) }} </td>
+				<td class="fec_orlic">{{ $order->fec_orlic_format }}</td>
+				<td class="himp_orlic">{{ $order->himp_orlic_format }} </td>
 				<td class="tel1_orlic">{{ $order->tel1_orlic }}</td>
 				<td class="idorigen_hces1">{{ $order->idorigen_hces1 }}</td>
 				<td class="cod2_cli">{{ $order->cod2_cli }}</td>

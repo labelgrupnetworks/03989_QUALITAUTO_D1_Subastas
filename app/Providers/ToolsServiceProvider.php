@@ -62,15 +62,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return $format;
 	}
 
-	public static function euroDate($fecha)
-	{
-		if (!$fecha) {
-			return "";
-		}
-		$t = strtotime($fecha);
-		return date("d/m/Y H:i:s", $t);
-	}
-
 	public static function getOffset($page, $itemsPerPage)
 	{
 		$result = FALSE;
@@ -95,19 +86,6 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 
 		return $result;
-	}
-
-	public static function formatDate($fecha, $hora)
-	{
-		$date = explode(' ', $fecha);
-
-		if (!empty($date[0]) && $hora != null) {
-			$date = $date[0] . ' ' . $hora;
-		} else {
-			$date = $fecha;
-		}
-
-		return self::euroDate($date);
 	}
 
 	public static function encodeStr($str)

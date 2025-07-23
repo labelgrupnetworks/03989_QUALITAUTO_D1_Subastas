@@ -293,33 +293,10 @@ class SubastaTiempoRealController extends Controller
         $subasta_info->status               = $status->estado;
         $subasta_info->reanudacion          = $status->reanudacion;
 
-
-
-        /* 2017_07_10 Ahora se calcula desde el cambio de estado, para evitar que al redireccionar a todo el mundo a la `´agina se ejecute en paralelo varias veces */
-        // Debe estar calculado antes de llegar aquí, ya que se calcula al cambiar de estado, por ejemplo al iniciar la subasta, pero por si acaso lo pongo
-        /* Lo Quito definitivamente 2020_02_10
-        if ($status->estado == 'in_progress' && Session::has('user') && $usuario->tipacceso_cliweb == 'S' )
-        {
-             \Log::info("dentro calculateStartbid");
-            $subasta_info->lote_actual = $subasta->calculateStartBid($subasta_info->lote_actual);
-        }
-        */
         # Información de la subasta
         $subasta_info->cod_sub = $subasta->cod;
         $subasta_info->start =  $session->start;
         $subasta_info->reference =  $session->reference;
-
-        /* 2017-07-05
-    $desde      = str_replace('00:00:00', '', trim($subasta_info->lote_actual->dfec_sub));
-        $desde      = str_replace('-', '/', $desde);
-        $fecha_in   = $desde.$subasta_info->lote_actual->dhora_sub;
-
-        $subasta_info->fecha_inicio_subasta = ToolsServiceProvider::euroDate($fecha_in);
-        * */
-        //a efectos practicos es más sencillo sustituir el valor del importe de salida por el del importe de reserva, así no hay que tratarlos por separado
-
-
-        //NO tengo claor que esto sirva para algo
 
         # Asignamos el escalado para el próximo.
         if(isset($subasta_info->lote_actual->max_puja->imp_asigl1) && is_numeric($subasta_info->lote_actual->max_puja->imp_asigl1)) {

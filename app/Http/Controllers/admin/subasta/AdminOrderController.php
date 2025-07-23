@@ -13,13 +13,13 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ExcelImport;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
-use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgOrlic;
 use App\Models\V5\SubAuchouse;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Str;
 use App\Exports\OrdersExport;
 use App\Models\V5\FgPrmSub;
+use App\Support\Date;
 
 class AdminOrderController extends Controller
 {
@@ -59,6 +59,11 @@ class AdminOrderController extends Controller
 			'cod2_cli' => FormLib::text('cod2_cli', 0, $request->cod2_cli),
 			'cod_licit' => FormLib::text('cod_licit', 0, $request->cod_licit),
 		];
+
+		$orders->each(function ($order) {
+			$order->fec_orlic_format = Date::toFormat($order->fec_orlic, 'd/m/Y H:i:s');
+			$order->himp_orlic_format = ToolsServiceProvider::moneyFormat($order->himp_orlic, trans('web.subastas.euros'), 2);
+		});
 
 		if($this->isRender){
 			return \View::make('admin::pages.subasta.ordenes.table', compact('filter', 'orders', 'cod_sub'))->render();

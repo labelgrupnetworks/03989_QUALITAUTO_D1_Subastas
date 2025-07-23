@@ -169,7 +169,7 @@
 																	@php
 																	$dates = $closeDates->where('ref_asigl0', $inf_lot->ref_asigl0)->first();
 																	@endphp
-                                                                    {{\Tools::formatDate($dates->ffin_asigl0, $dates->hfin_asigl0)}}
+                                                                    {{ \App\Support\Date::formatDateWithTime($dates->ffin_asigl0, $dates->hfin_asigl0)}}
                                                                 </div>
 															</div>
 

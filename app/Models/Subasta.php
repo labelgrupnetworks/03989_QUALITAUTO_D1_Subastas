@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use App\Models\V5\FgAsigl1;
-
 use App\libs\StrLib;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgAsigl1_Aux;
@@ -30,6 +29,7 @@ use App\Models\V5\FgLicitRepresentados;
 use App\Models\V5\FgPujaMax;
 use App\Models\V5\FgRepresentados;
 use App\Models\V5\FgSubInvites;
+use App\Support\Date;
 use Illuminate\Support\Facades\Session;
 
 class Subasta extends Model
@@ -1019,7 +1019,7 @@ class Subasta extends Model
         foreach ($pujas as $key => $value) {
             $pujas[$key]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($value->imp_asigl1);
             $pujas[$key]->imagen = $this->getLoteImg($value);
-            $pujas[$key]->date = ToolsServiceProvider::formatDate($value->fec_asigl1, $value->hora_asigl1);
+            $pujas[$key]->date = Date::formatDateWithTime($value->fec_asigl1, $value->hora_asigl1);
             $pujas[$key]->titulo_hces1 = $strLib->CleanStr($value->titulo_hces1);
             $pujas[$key]->rsoc_licit = $strLib->CleanStr($value->rsoc_licit);
         }
@@ -1210,9 +1210,9 @@ class Subasta extends Model
             $date = explode(' ', $value->fec);
             //al agrupar por pujas no es posible coger la hora real por que estamos cogiendo la maxima, por lo que voy a usar la fecha completa de todas las pujas que contengan la hora dentro de la fecha.
             if(!empty($date[1]) &&  $date[1] != "00:00:00"){
-                $ordenes[$key]->date = ToolsServiceProvider::formatDate($value->fec, null);
+                $ordenes[$key]->date = Date::formatDateWithTime($value->fec, null);
             }else{
-                $ordenes[$key]->date = ToolsServiceProvider::formatDate($value->fec, $value->hora);
+                $ordenes[$key]->date = Date::formatDateWithTime($value->fec, $value->hora);
             }
 
         }
@@ -1267,7 +1267,7 @@ class Subasta extends Model
         foreach ($ordenes as $key => $value) {
             $ordenes[$key]->formatted_himp_orlic = ToolsServiceProvider::moneyFormat($value->himp_orlic);
             $ordenes[$key]->imagen = $this->getLoteImg($value);
-            $ordenes[$key]->date = ToolsServiceProvider::formatDate($value->fec_orlic, $value->hora_orlic);
+            $ordenes[$key]->date = Date::formatDateWithTime($value->fec_orlic, $value->hora_orlic);
             /*$subasta = new Subasta($ordenes[$key]->SUB_LICIT);
             */
             $ref_prueba = isset($value->ref_hces1)?$value->ref_hces1:-1;

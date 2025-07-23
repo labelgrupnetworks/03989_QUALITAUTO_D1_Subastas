@@ -18,6 +18,7 @@ use App\Models\V5\FxDvc0Seg;
 use App\Providers\ToolsServiceProvider;
 use App\Services\Content\EnterpriseParamsService;
 use App\Services\User\UserAddressService;
+use App\Support\Date;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -75,7 +76,7 @@ class AllotmentsAndBillsController extends Controller
 		foreach ($adjudicaciones as $key => $adj) {
 			$adj->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($adj->himp_csub);
 			$adj->imagen = $subasta->getLoteImg($adj);
-			$adj->date = ToolsServiceProvider::euroDate($adj->fec_asigl1, $adj->hora_asigl1);
+			$adj->date = Date::toFormat($adj->fec_asigl1);
 			$adj->imp_asigl1 = $adj->himp_csub;
 
 			$adj->prefactura = $this->proformaInvoiceFile($adj->sub_csub, true);
@@ -140,7 +141,7 @@ class AllotmentsAndBillsController extends Controller
 
 			$adj->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($adj->himp_csub);
 			$adj->imagen = $sub->getLoteImg($adj);
-			$adj->date = ToolsServiceProvider::euroDate($adj->fec_asigl1, $adj->hora_asigl1);
+			$adj->date = Date::toFormat($adj->fec_asigl1);
 			$adj->imp_asigl1 = $adj->himp_csub;
 			#si no debe llevar iva la subasta online
 			if (Config::get("app.noIVAOnlineAuction") && $adj->tipo_sub == 'O') {
@@ -696,7 +697,7 @@ class AllotmentsAndBillsController extends Controller
 		$adjudicacionFormat = (object) array_merge(get_object_vars($adjudicacion), [
 			'formatted_imp_asigl1' => ToolsServiceProvider::moneyFormat($adjudicacion->himp_csub),
 			'imagen' => $subastaClass->getLoteImg($adjudicacion),
-			'date' => ToolsServiceProvider::euroDate($adjudicacion->fec_asigl1, $adjudicacion->hora_asigl1),
+			'date' => Date::toFormat($adjudicacion->fec_asigl1),
 			'imp_asigl1' => $adjudicacion->himp_csub,
 			'base_csub_iva' => $withNotIva ? 0 : $paymentController->calculate_iva($paymentController->tipo_iva->tipo, $paymentController->iva, $adjudicacion->base_csub),
 			//'extras' => (new Payments())->getGastosExtrasLot($adjudicacion->sub_csub,$adjudicacion->ref_csub, $tipo = null, 'C'),
@@ -905,7 +906,7 @@ class AllotmentsAndBillsController extends Controller
 		foreach ($adjudicaciones as $adj) {
 			$adj->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($adj->himp_csub);
 			$adj->imagen = $subasta->getLoteImg($adj);
-			$adj->date = ToolsServiceProvider::euroDate($adj->fec_asigl1, $adj->hora_asigl1);
+			$adj->date = Date::toFormat($adj->fec_asigl1);
 			$adj->imp_asigl1 = $adj->himp_csub;
 			$adj->base_csub_iva = $pago_controller->calculate_iva($tipo_iva->tipo, $iva, $adj->base_csub);
 			//Modificamos ref_asigl0 de . a _ porque si hay punto el js de calclulo de pagar no calcula bien

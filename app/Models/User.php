@@ -10,6 +10,7 @@ use App\Models\V5\FgLicit;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
 use App\Providers\ToolsServiceProvider;
+use App\Support\Date;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -703,7 +704,7 @@ class User
 
 			$adj[$key]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($value->himp_csub);
 			$adj[$key]->imagen = $sub->getLoteImg($value);
-			$adj[$key]->date = ToolsServiceProvider::euroDate($value->fec_asigl1, $value->hora_asigl1);
+			$adj[$key]->date = Date::toFormat($value->fec_asigl1);
 			$adj[$key]->imp_asigl1 = $value->himp_csub;
 		}
 
