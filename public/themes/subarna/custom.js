@@ -137,62 +137,6 @@ $(document).ready(function () {
 		});
 	});
 
-	$('#frmRegister-adv').validator().on('submit', async function (e) {
-		if (e.isDefaultPrevented()) {
-			// formulario incorrecto
-			var text = $(".error-form-validation").html();
-			$("#insert_msgweb").html('');
-			$("#insert_msgweb").html(text);
-			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-		} else {
-			e.preventDefault();
-			var $this = $(this);
-			verifyFormLoginContent();
-			if ($("#frmRegister-adv input#dni").parent().hasClass("has-error")) {
-				$("#insert_msgweb").html('');
-				$("#insert_msgweb").html(messages.error.dni_incorrect);
-				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-			} else {
-				$('button', $this).attr('disabled', 'disabled');
-
-				const captcha = await isValidCaptcha();
-				  if(!captcha){
-					  showMessage(messages.error.recaptcha_incorrect);
-					  return;
-				  }
-
-
-				// Datos correctos enviamos ajax
-				$.ajax({
-					type: "POST",
-					url: routing.registro,
-					data: $('#frmRegister-adv').serialize(),
-					beforeSend: function () {
-						$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
-					},
-					success: function (response) {
-						$('button', $this).attr('disabled', false);
-						res = jQuery.parseJSON(response);
-						if (res.err == 1) {
-							$("#insert_msgweb").html('');
-							$("#insert_msgweb").html(messages.error[res.msg]);
-							$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-						} else {
-							window.location.href = res.msg;
-						}
-
-					},
-					complete: function () {
-						$('button', $this).attr('disabled', false);
-					}
-				});
-			}
-
-
-		}
-
-	});
-
 	$('#newsletter-btn').on('click', newsletterSuscription);
 	$('#newsletterForm').on('submit', newsletterFormSuscription);
 

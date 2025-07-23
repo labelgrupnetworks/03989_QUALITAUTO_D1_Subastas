@@ -214,66 +214,6 @@ $(document).ready(function () {
 		});
 	});
 
-	$('#frmRegister-adv').validator().on('submit', function (e) {
-		if (e.isDefaultPrevented()) {
-			// formulario incorrecto
-			var text = $(".error-form-validation").html();
-			$("#insert_msgweb").html('');
-			$("#insert_msgweb").html(text);
-			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-		} else {
-
-			e.preventDefault();
-			var $this = $(this);
-			$(this).validator('validate');
-			has_errors = verifyFormLoginContent();
-
-			if (has_errors) {
-				$("#insert_msgweb").html('');
-				$("#insert_msgweb").html(messages.error.generic);
-				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-			}
-			else if ($("#frmRegister-adv input#dni").parent().hasClass("has-error")) {
-				$("#insert_msgweb").html('');
-				$("#insert_msgweb").html(messages.error.dni_incorrect);
-				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-			} else {
-				$('button', $this).attr('disabled', 'disabled');
-				// Datos correctos enviamos ajax
-				$.ajax({
-					type: "POST",
-					url: routing.registro,
-					data: $('#frmRegister-adv').serialize(),
-					beforeSend: function () {
-						$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
-					},
-					success: function (response) {
-						$('button', $this).attr('disabled', false);
-						res = jQuery.parseJSON(response);
-						if (res.err == 1) {
-							$("#insert_msgweb").html('');
-							$("#insert_msgweb").html(messages.error[res.msg]);
-							$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-						} else {
-							if (res.redirect != undefined) {
-								$("#info_sent").val(JSON.stringify(res.info));
-								$("#cod_auchouse_sent").val(res.cod_auchouse);
-								$("#redirect_sent").val(res.redirect);
-
-								document.getElementById("formToSubalia").submit();
-							} else {
-								window.location.href = res.msg;
-							}
-						}
-
-					}
-				});
-			}
-
-
-		}
-
-	});
 
 	$('#newsletter-btn').on('click', newsletterSuscription);
 	$('#newsletterForm').on('submit', newsletterFormSuscription);
@@ -612,69 +552,6 @@ $(document).ready(function () {
 	$('.seguro').on('change', function () {
 		reload_carrito();
 	});
-
-	/* function reload_facturas() {
-		var total = 0;
-		$.each(info_fact, function (index_anum, value_anum) {
-			$.each(value_anum, function (index_num, value_num) {
-				$.each(value_num, function (efect_num, value_efect) {
-					if ($("#checkFactura-" + index_anum + "-" + index_num + "-" + efect_num + "").is(":checked")) {
-						total = total + info_fact[index_anum][index_num][efect_num];
-					}
-				});
-			});
-		});
-		if (total > 0) {
-			$("#submit_fact").removeClass('hidden');
-		} else {
-			$("#submit_fact").addClass('hidden');
-		}
-		$("#total_bills").html(change_currency(total));
-	} */
-
-	/* $("#submit_fact").click(function () {
-		$("#submit_fact").addClass('hidden');
-		$("#submit_fact").siblings().removeClass('hidden');
-		var pay_fact = $('#pagar_fact').serializeArray();
-		var total = 0;
-		$.each(info_fact, function (index_anum, value_anum) {
-			$.each(value_anum, function (index_num, value_num) {
-				$.each(value_num, function (efect_num, value_efect) {
-					if ($("#checkFactura-" + index_anum + "-" + index_num + "-" + efect_num + "").is(":checked")) {
-						total = total + info_fact[index_anum][index_num][efect_num];
-					}
-				});
-			});
-		});
-		if (total > 0) {
-			$.ajax({
-				type: "POST",
-				url: '/gateway/pagarFacturasWeb',
-				data: pay_fact,
-				success: function (data) {
-					if (data.status == 'success') {
-						window.location.href = data.msg;
-					} else
-						if (data.status == 'error') {
-							$("#modalMensaje #insert_msg").html('');
-							$("#modalMensaje #insert_msg").html(messages.error.generic);
-							$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-							$("#submit_carrito").removeClass('hidden');
-							$("#submit_carrito").siblings().addClass('hidden');
-						}
-
-				},
-				error: function (response) {
-					$("#modalMensaje #insert_msg").html('');
-					$("#modalMensaje #insert_msg").html(messages.error.generic);
-					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-					$("#submit_fact").removeClass('hidden');
-					$("#submit_fact").siblings().addClass('hidden');
-				}
-			});
-		}
-
-	}); */
 
 	$("#save_change_orden").click(function () {
 

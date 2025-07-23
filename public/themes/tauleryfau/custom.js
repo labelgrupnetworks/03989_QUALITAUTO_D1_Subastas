@@ -277,27 +277,6 @@ $(function () {
 		}
 	}
 
-	//banner mobil sin padding
-	/*$('.banner_mobile > div').css('padding', '0px');
-	$('.banner_mobile > div > .row').css('margin', '0px');
-	$('.column_banner').css('padding', '0px');*/
-
-	/*$('.switcher').click(function () {
-		var $showTitle = $('.title-filt').eq(0);
-		var $hideTitle = $('.title-filt').eq(1);
-		console.log($hideTitle);
-		$(this).toggleClass('switcher-active');
-		if ($(this).parents('.switch-filt')) {
-			$('.filters').toggle();
-			$showTitle.hide();
-			$hideTitle.show();
-		} else {
-			$showTitle.show();
-			$hideTitle.hide();
-		}
-
-	});*/
-
 	$('.tabs-custom ul li').click(function (e) {
 
 		var elFather = $(this).parents('.tabs-custom');
@@ -455,60 +434,6 @@ $(function () {
 
 			}
 		});
-
-	});
-
-	$('#frmRegister-adv').validator().on('submit', function (e) {
-		if (e.isDefaultPrevented()) {
-			// formulario incorrecto
-			var text = $(".error-form-validation").html();
-			$("#insert_msgweb").html('');
-			$("#insert_msgweb").html(text);
-			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-		} else {
-			e.preventDefault();
-			var $this = $(this);
-			verifyFormLoginContent();
-			if ($("#frmRegister-adv input#dni").parent().hasClass("has-error")) {
-				$("#insert_msgweb").html('');
-				$("#insert_msgweb").html(messages.error.dni_incorrect);
-				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-			} else {
-				$('button', $this).attr('disabled', 'disabled');
-				// Datos correctos enviamos ajax
-				$.ajax({
-					type: "POST",
-					url: routing.registro,
-					data: $('#frmRegister-adv').serialize(),
-					beforeSend: function () {
-						$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
-					},
-					success: function (response) {
-
-						$('button', $this).attr('disabled', false);
-						res = jQuery.parseJSON(response);
-						if (res.err == 1) {
-							$("#insert_msgweb").html('');
-							$("#insert_msgweb").html(messages.error[res.msg]);
-							$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-						} else {
-							if (res.redirect != undefined) {
-								$("#info_sent").val(JSON.stringify(res.info));
-								$("#cod_auchouse_sent").val(res.cod_auchouse);
-								$("#redirect_sent").val(res.redirect);
-
-								document.getElementById("formToSubalia").submit();
-							} else {
-								window.location.href = res.msg;
-							}
-						}
-
-					}
-				});
-			}
-
-
-		}
 
 	});
 
