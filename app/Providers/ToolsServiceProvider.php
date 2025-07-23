@@ -36,31 +36,12 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public function register() {}
 
-	public static function friendlyDesc($str)
-	{
-
-		$str = preg_replace('/\\\b/', ' ', $str);
-		$str = preg_replace('/\\\n/', '<br >', $str);
-		$str = preg_replace('/\\\s/', ' ', $str);
-		$str = str_replace("
-", "<br>", $str);
-
-		return $str;
-	}
-
 	public static function moneyFormat($qtty, $currency = FALSE, $decimal = 0, $position = 'R', $decimalSeparator = ",", $thousandSeparator = ".")
 	{
-
 		if (!is_numeric($qtty)) {
-			return FALSE;
+			return false;
 		}
-		/*
-                if (strpos($currency, ',') === false) {
-                    $format = $qtty;
-                }else{
-                    $format = number_format($qtty, $decimal, ',', '.');
-                }
-                */
+
 		if (Config::get("app.decimalSeparator")) {
 			$decimalSeparator = Config::get("app.decimalSeparator");
 		}
@@ -69,7 +50,6 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 
 		$format = number_format($qtty, $decimal, $decimalSeparator, $thousandSeparator);
-
 
 		if (!empty($currency)) {
 			if ($position == 'R') {

@@ -3683,7 +3683,7 @@ class Subasta extends Model
             $lotes[$key]->compra_asigl0     = $value->compra_asigl0;
             $lotes[$key]->name              = $value->name;
             if(isset($value->descdet_hces1)){
-                $lotes[$key]->descdet_hces1     = ToolsServiceProvider::friendlyDesc($value->descdet_hces1);
+				$lotes[$key]->descdet_hces1     = $this->formatDescriptionForWeb($value->descdet_hces1);
             }else{
                 $lotes[$key]->descdet_hces1 = null;
             }
@@ -3700,7 +3700,7 @@ class Subasta extends Model
 			}
 
            if (isset($value->desc_hces1)){
-            $lotes[$key]->desc_hces1        = ToolsServiceProvider::friendlyDesc($value->desc_hces1);
+            $lotes[$key]->desc_hces1        = $this->formatDescriptionForWeb($value->desc_hces1);
            }else{
                $lotes[$key]->desc_hces1        = "";
            }
@@ -5340,5 +5340,22 @@ class Subasta extends Model
 
 		static::$allAuctions = $subastas;
 		return $subastas;
+	}
+
+	private function formatDescriptionForWeb(?string $str): string
+	{
+		if (empty($str)) {
+			return '';
+		}
+
+		// Convertir secuencias de escape y caracteres especiales a HTML
+		$replacements = [
+			'/\\\\b/' => ' ',      // \b -> espacio
+			'/\\\\n/' => '<br>',   // \n -> <br>
+			'/\\\\s/' => ' ',      // \s -> espacio
+			"/\r?\n/" => '<br>',   // saltos de línea reales -> <br>
+		];
+
+		return preg_replace(array_keys($replacements), array_values($replacements), $str);
 	}
 }
