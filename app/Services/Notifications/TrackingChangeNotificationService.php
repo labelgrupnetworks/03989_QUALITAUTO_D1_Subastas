@@ -4,8 +4,10 @@ namespace App\Services\Notifications;
 
 use App\libs\EmailLib;
 use App\Models\V5\FgSub;
+use App\Models\V5\FxDvc02;
 use App\Models\V5\FxDvc0Seg;
 use App\Services\Payments\OrderService;
+use Illuminate\Support\Facades\Config;
 
 class TrackingChangeNotificationService
 {
@@ -25,18 +27,6 @@ class TrackingChangeNotificationService
 		private readonly string $serie,
 		private readonly string $number,
 	) {}
-
-	public function addAttachment(string $filePath): void
-	{
-		if(empty($filePath)) {
-			return;
-		}
-
-		$nameExplode = explode('REPORTS', $filePath);
-		$fileName = 'reports' . $nameExplode[1];
-
-		$this->file = public_path($fileName);
-	}
 
 	public function send()
 	{
@@ -59,8 +49,9 @@ class TrackingChangeNotificationService
 
 		$email->setUserByCod($this->codCli, true);
 
-		if(!empty($this->number) && !empty($this->serie)) {
+		if (!empty($this->number) && !empty($this->serie)) {
 			$this->addOrderDetailsToEmail($email, $this->serie, $this->number);
+			$this->addBillFile($this->serie, $this->number);
 		}
 
 		$auction = FgSub::select('dfec_sub')
@@ -75,11 +66,28 @@ class TrackingChangeNotificationService
 
 		$email->setAtribute('DELIVERY_DATE', $deliveryDate);
 
-		if(!empty($this->file)) {
-            $email->attachments[] = $this->file;
+		if (!empty($this->file)) {
+			$email->attachments[] = $this->file;
 		}
 
 		$email->send_email();
+	}
+
+	private function addBillFile(string $serie, string $number): void
+	{
+		$billPath = FxDvc02::query()
+			->where([
+				'anum_dvc02' => $serie,
+				'num_dvc02' => $number
+			])
+			->value('fich_dvc02');
+
+		if (!$billPath) {
+			return;
+		}
+
+		$path = 'bills/' . Config::get('app.emp') . '/' . $billPath . '.PDF';
+		$this->file = public_path($path);
 	}
 
 	private function addOrderDetailsToEmail(EmailLib $email, string $serie, string $number): void

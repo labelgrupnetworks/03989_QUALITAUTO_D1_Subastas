@@ -101,12 +101,6 @@ class MailApiRestController extends ApiRestController {
 		$number = request('number', '');
 
 		$trackingNotification = new TrackingChangeNotificationService($codCli, $codSeg, $codSub, $serie, $number);
-
-		if(request()->has('path')) {
-			$path = request('path');
-			$trackingNotification->addAttachment($path);
-		}
-
 		$trackingNotification->send();
 
 		return $this->responder(true, "Email sent", "", 200);
