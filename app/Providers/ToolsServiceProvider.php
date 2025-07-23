@@ -36,24 +36,6 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public function register() {}
 
-	public static function linguisticSearch()
-	{
-		//permitir busqueda lingüistica,  que n otenga en cuenta acentos ni mayusculas
-		$sql = "alter session set nls_comp=linguistic";
-		DB::select($sql);
-		$sql = "alter session set nls_sort=binary_ai";
-		DB::select($sql);
-	}
-	public static function normalSearch()
-	{
-
-		//permitir busqueda lingüistica,  que n otenga en cuenta acentos ni mayusculas
-		$sql = "alter session set nls_comp=binary";
-		DB::select($sql);
-		$sql = "alter session set nls_sort=binary_ai";
-		DB::select($sql);
-	}
-
 	public static function friendlyDesc($str)
 	{
 

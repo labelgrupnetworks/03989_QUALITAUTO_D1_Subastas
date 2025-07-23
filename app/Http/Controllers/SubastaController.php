@@ -32,6 +32,7 @@ use App\Services\Auction\LotCategoryService;
 use App\Services\Auction\LotDeliveryService;
 use App\Services\Content\BlockService;
 use App\Services\Content\EnterpriseParamsService;
+use App\Support\Database\SessionOptions;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\App;
@@ -430,7 +431,7 @@ class SubastaController extends Controller
 		$paginator->appends(request()->except('page'));
 
 		//dejamos los parametros de busqueda a normal, por que estaban afectando a todas las queries de la página
-		ToolsServiceProvider::normalSearch();
+		SessionOptions::disableLinguisticSearch();
 
 		$get_ordenes = false;
 		//si es subasta abierta tipo o cargamos las ordenes para sabersi el usuario actual es el ganador
@@ -602,7 +603,7 @@ class SubastaController extends Controller
 		$valid_words = false;
 		$description = ToolsServiceProvider::replaceDangerqueryCharacter($description);
 		if (!empty($description)) {
-			ToolsServiceProvider::linguisticSearch();
+			SessionOptions::enableLinguisticSearch();
 
 			if (Config::get('app.search_multiple_words')) {
 

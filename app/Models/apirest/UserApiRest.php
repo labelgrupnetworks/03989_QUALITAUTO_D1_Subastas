@@ -3,11 +3,9 @@
 
 namespace App\Models\apirest;
 
-use App\Providers\ToolsServiceProvider;
-use Illuminate\Database\Eloquent\Model;
-use Config;
-
-use DB;
+use App\Support\Database\SessionOptions;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 
 class UserApiRest extends ApiRest{
@@ -28,19 +26,19 @@ class UserApiRest extends ApiRest{
                 ->first();
     }
 
-    public function getAllusers($like){
+    public function getAllusers($like)
+	{
+		return SessionOptions::withLinguistic(function () use ($like) {
+			$query = DB::table('FXCLI')
+				->select('NOM_CLI,COD_CLI,COD_C_CLI,RSOC_CLI,SG_CLI,DIR_CLI,CP_CLI,POB_CLI,PRO_CLI ,CIF_CLI,TEL1_CLI,TEL2_CLI,F_ALTA_CLI,COMI_CLI,EMAIL_CLI,IDIOMA_CLI,TIPO_CLI','PAIS_CLI')
+        		->where('GEMP_CLI',Config::get('app.gemp'));
 
-        ToolsServiceProvider::linguisticSearch();
+			$query = $this->generateFilter($query, $like)
+				->orderBy('nom_cli')
+				->paginate(15);
 
-        $sql = DB::table('FXCLI')
-        ->select('NOM_CLI,COD_CLI,COD_C_CLI,RSOC_CLI,SG_CLI,DIR_CLI,CP_CLI,POB_CLI,PRO_CLI ,CIF_CLI,TEL1_CLI,TEL2_CLI,F_ALTA_CLI,COMI_CLI,EMAIL_CLI,IDIOMA_CLI,TIPO_CLI','PAIS_CLI')
-        ->where('GEMP_CLI',Config::get('app.gemp'));
-        $sql = $this->generateFilter($sql,$like)
-        ->orderBy('nom_cli')
-        ->paginate(15);
-
-        ToolsServiceProvider::normalSearch();
-        return $sql;
+			return $query;
+		});
     }
 
     public function getUser($nif = null,$cod_cli = null ,$baja = array('N','S')){

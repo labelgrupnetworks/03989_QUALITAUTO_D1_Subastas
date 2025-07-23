@@ -6,6 +6,7 @@ use App\Models\Favorites;
 use App\Models\Subasta;
 use App\Providers\ToolsServiceProvider;
 use App\Services\Content\BlockService;
+use App\Support\Database\SessionOptions;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
@@ -21,7 +22,7 @@ class BusquedaController extends Controller
 {
 	public function index()
 	{
-		ToolsServiceProvider::linguisticSearch();
+		SessionOptions::enableLinguisticSearch();
 
 		if (Config::get('app.group_auction_in_search')) {
 			return $this->auction_search();
@@ -136,7 +137,7 @@ class BusquedaController extends Controller
 			$resultado = (new BlockService)->getResultBlockByKeyname('search', $replace);
 
 			//dejamos los parametros de busqueda a normal, por que estaban afectando a todas las queries de la página
-			ToolsServiceProvider::normalSearch();
+			SessionOptions::disableLinguisticSearch();
 			# Paginador
 			$path = request()->fullUrlWithoutQuery(['page']);
 			$paginator = new Paginator($resultado, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
@@ -232,7 +233,7 @@ class BusquedaController extends Controller
 
 				$resultado = (new BlockService)->getResultBlockByKeyname('search_auction', $replace);
 				//dejamos los parametros de busqueda a normal, por que estaban afectando a todas las queries de la página
-				ToolsServiceProvider::normalSearch();
+				SessionOptions::disableLinguisticSearch();
 				if (empty($resultado)) {
 					$resultado = array();
 				}

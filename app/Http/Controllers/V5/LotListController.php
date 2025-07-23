@@ -13,6 +13,7 @@ use App\Models\V5\FgSub;
 use App\Models\V5\FxSec;
 use App\Models\V5\FxSubSec;
 use App\Providers\ToolsServiceProvider;
+use App\Support\Database\SessionOptions;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -1015,7 +1016,7 @@ class LotListController extends Controller
 				}
 			} else {
 				$words = explode(" ", $description);
-				ToolsServiceProvider::linguisticSearch();
+				SessionOptions::enableLinguisticSearch();
 				$fgasigl0 = $fgasigl0->JoinFgOrtsecAsigl0();
 
 				foreach ($words as $word) {

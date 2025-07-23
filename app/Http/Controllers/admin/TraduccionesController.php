@@ -5,8 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\libs\TradLib;
 use App\Models\V5\WebTranslateHeaders;
-use App\Providers\ToolsServiceProvider;
 use App\Services\admin\Content\TranslateService;
+use App\Support\Database\SessionOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
@@ -194,15 +194,16 @@ class TraduccionesController extends Controller
 
 		$translates = TradLib::getTranslations($lang);
 
-		ToolsServiceProvider::linguisticSearch();
+		$trad = SessionOptions::withLinguistic(function () use ($webTranslation, $lang, $translates) {
+			return $this->searchTranslate($webTranslation, $translates, $lang);
+		});
 
 		$data = [
 			'lang' => $lang,
 			'web_translation' => $webTranslation,
-			'trad' => $this->searchTranslate($webTranslation, $translates, $lang)
+			'trad' => $trad
 		];
 
-		ToolsServiceProvider::normalSearch();
 
 		return View::make('admin::pages.traducciones_search', array('data' => $data));
 	}
