@@ -172,8 +172,9 @@ class CustomControllers extends Controller
 					$query->where([
 						'emp_sub' => Config::get('app.emp'),
 						'agrsub_sub' => Config::get('app.agrsub')
-					]);
-				})->orWhere('emp_sub', Config::get('app.main_emp'));
+					])
+					->orWhere('emp_sub', Config::get('app.main_emp'));
+				});
 			})
 			//orden ascendente solo para probar subasta, dejar en desc cuando este en producción
 			//->orderby("session_start", "asc")
