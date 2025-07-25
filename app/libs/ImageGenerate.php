@@ -550,6 +550,54 @@ class ImageGenerate
 		}
 	}
 
+	/**
+	 * Genera las miniaturas de las imágenes de subastas
+	 * @param string $codSub Código de la subasta
+	 * @param int|null $imageSize Tamaño de la imagen, si es null se obtienen todos los tamaños configurados
+	 * @return bool
+	 */
+	public function generateAuctionThumbs($codSub, $imageSize = null)
+	{
+		$emp = Config::get('app.emp');
+		$auctionImage = "img/AUCTION_{$emp}_{$codSub}.JPEG";
+
+		$sizes = $imageSize
+			? [$imageSize]
+			: CacheLib::rememberCache('image_sizes', 1200, function () {
+				return Web_Images_Size::query()
+					->where('name_web_images_size', 'like', '%subasta%')
+					->pluck('size_web_images_size');
+			});
+
+		$imageFile = public_path($auctionImage);
+		if (!file_exists($imageFile)) {
+			return false;
+		}
+
+		[$imageName, $extension] = explode(".", basename($imageFile));
+
+		foreach ($sizes as $size) {
+			set_time_limit(60);
+			$directoryThumb = "img/thumbs/$size";
+			if (!is_dir(public_path($directoryThumb))) {
+				mkdir(public_path($directoryThumb), 0775, true);
+				chmod(public_path($directoryThumb), 0775);
+			}
+
+			$imageThumb = public_path("$directoryThumb/{$imageName}.jpg");
+
+			$imageMake = Image::make($imageFile);
+
+			$imageMake->resize($size, null, function ($constraint) {
+				$constraint->aspectRatio();
+				$constraint->upsize();
+			});
+
+			$imageMake->save($imageThumb, 75, 'jpg');
+		}
+		return true;
+	}
+
 	public function imageLot($numHces, $linHces = null, $imagePosition = null, $imageSize = null)
 	{
 		$emp = Config::get('app.emp');

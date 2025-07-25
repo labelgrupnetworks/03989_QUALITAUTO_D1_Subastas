@@ -26,6 +26,7 @@ use App\Models\V5\FgSub_lang;
 use App\Models\V5\FxPro;
 use App\Models\V5\Web_Artist;
 use App\Http\Controllers\externalAggregator\Invaluable\House;
+use App\libs\ImageGenerate;
 use App\Models\V5\SubAuchouse;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Session;
@@ -348,11 +349,11 @@ class AdminSubastaGenericController extends Controller
 
 		//Si no existe imagen de sesion la guardamos. valorar implementar que pregunte si queremos o no machacar
 		if($storeInAuction && !file_exists(str_replace("\\", "/", getcwd() . "/img/SESSION_$emp" . "_$cod_sub" . "_001.JPEG")) || $forceOverwritte){
-
 			$destinationPath = public_path("img/SESSION_$emp" . "_$cod_sub" . "_001.JPEG");
 			$img->save($destinationPath);
-
 		}
+
+		(new ImageGenerate)->generateAuctionThumbs($cod_sub);
 
 		return ToolsServiceProvider::url_img_auction('subasta_large', $cod_sub);
 	}
