@@ -1,6 +1,6 @@
 @font-face {
 	font-family: "Poppins";
-	src: url("/default/assets/fonts/Poppins/Poppins-Regular.woff2")
+	src: url("/default/assets/fonts/poppins/Poppins-Regular.woff2")
 		format("woff2");
 	font-weight: 400;
 	font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
 	font-family: "Poppins";
-	src: url("/default/assets/fonts/Poppins/Poppins-RegularItalic.woff2")
+	src: url("/default/assets/fonts/poppins/Poppins-RegularItalic.woff2")
 		format("woff2");
 	font-style: italic;
 	font-weight: 400;
@@ -17,7 +17,7 @@
 
 @font-face {
 	font-family: "Poppins";
-	src: url("/default/assets/fonts/Poppins/Poppins-Medium.woff2")
+	src: url("/default/assets/fonts/poppins/Poppins-Medium.woff2")
 		format("woff2");
 	font-weight: 500;
 	font-display: swap;
@@ -25,7 +25,7 @@
 
 @font-face {
 	font-family: "Poppins";
-	src: url("/default/assets/fonts/Poppins/Poppins-MediumItalic.woff2")
+	src: url("/default/assets/fonts/poppins/Poppins-MediumItalic.woff2")
 		format("woff2");
 	font-style: italic;
 	font-weight: 500;
@@ -34,7 +34,7 @@
 
 @font-face {
 	font-family: "Poppins";
-	src: url("/default/assets/fonts/Poppins/Poppins-SemiBold.woff2")
+	src: url("/default/assets/fonts/poppins/Poppins-SemiBold.woff2")
 		format("woff2");
 	font-weight: 600;
 	font-display: swap;
@@ -42,7 +42,7 @@
 
 @font-face {
 	font-family: "Poppins";
-	src: url("/default/assets/fonts/Poppins/Poppins-Bold.woff2") format("woff2");
+	src: url("/default/assets/fonts/poppins/Poppins-Bold.woff2") format("woff2");
 	font-weight: 700;
 	font-display: swap;
 }
