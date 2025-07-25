@@ -323,12 +323,17 @@ class AdminSubastaGenericController extends Controller
 		return $this->saveFgSubImage($request->file('imagen_sub'), $request->cod_sub, true, $request->force_overwritte);
 	}
 
-	public function saveFgSubImage(UploadedFile $image, string $cod_sub, bool $storeInAuction, bool $forceOverwritte = false){
-
-		//$input['imagename'] = time().'.'.$image->extension();
+	public function saveFgSubImage(UploadedFile $image, string $cod_sub, bool $storeInAuction, bool $forceOverwritte = false)
+	{
 		$emp = Config::get('app.emp', '001');
 
-		$destinationPath = public_path("img/AUCTION_$emp" . "_$cod_sub.JPEG");
+		//Para evitar errores por tener imagenes en otros formatos, borramos las que existan
+		$files = glob(public_path("img/AUCTION_{$emp}_{$cod_sub}.*"));
+		foreach($files as $file) {
+			unlink($file);
+		}
+
+		$destinationPath = public_path("img/AUCTION_{$emp}_{$cod_sub}.JPEG");
 
 		$img = Image::make($image->path());
 		clearstatcache();
