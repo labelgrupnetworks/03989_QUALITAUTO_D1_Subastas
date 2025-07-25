@@ -386,4 +386,12 @@ class FgSub extends Model
 	{
 		return $this->changeToExhibitionFormat($this);
 	}
+
+	static function firstActiveAuction($select)
+	{
+		return FgSub::activeSub()
+			->when($select, fn($query) => $query->select($select))
+			->orderBy('dfec_sub', 'asc')
+			->first();
+	}
 }

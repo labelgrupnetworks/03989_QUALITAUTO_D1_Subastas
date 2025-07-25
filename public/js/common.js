@@ -36,14 +36,14 @@ $(document).ready(function () {
 		}
 	});
 
-    /*
-     |--------------------------------------------------------------------------
-     | Autocompletar de pujas
-     |--------------------------------------------------------------------------
-     */
+	/*
+	 |--------------------------------------------------------------------------
+	 | Autocompletar de pujas
+	 |--------------------------------------------------------------------------
+	 */
 
 	if ($('#bid_amount').length) {
-		if($('#bid_amount').hasClass("NoAutoComplete_JS") == false){
+		if ($('#bid_amount').hasClass("NoAutoComplete_JS") == false) {
 
 
 			$('#bid_amount').autoComplete({
@@ -55,7 +55,7 @@ $(document).ready(function () {
 						xhr.abort();
 					} catch (e) {
 					}
-					$.getJSON('/api-ajax/calculate_bids/' + auction_info.lote_actual.importe_escalado_siguiente + '/' + term + '?cod_sub=' + auction_info.subasta.cod_sub , function (data) {
+					$.getJSON('/api-ajax/calculate_bids/' + auction_info.lote_actual.importe_escalado_siguiente + '/' + term + '?cod_sub=' + auction_info.subasta.cod_sub, function (data) {
 						var matches = [];
 						for (i = 0; i < data.length; i++) {
 							matches.push(data[i].toString());
@@ -71,11 +71,11 @@ $(document).ready(function () {
 
 
 
-    /*
-     |--------------------------------------------------------------------------
-     | Auto completar
-     |--------------------------------------------------------------------------
-     */
+	/*
+	 |--------------------------------------------------------------------------
+	 | Auto completar
+	 |--------------------------------------------------------------------------
+	 */
 
 
 
@@ -104,11 +104,11 @@ $(document).ready(function () {
 	//solamente se utiliza en la página del tiempo real
 	$().timeago && $("time.timeago").timeago();
 
-    /*
-     |--------------------------------------------------------------------------
-     | Selectmenu de selector de idioma ubicado en languages
-     |--------------------------------------------------------------------------
-     */
+	/*
+	 |--------------------------------------------------------------------------
+	 | Selectmenu de selector de idioma ubicado en languages
+	 |--------------------------------------------------------------------------
+	 */
 	// Seleccion del idioma por defecto en el desplegable
 	$('#selectorIdioma option').each(function () {
 		if ('/' + $(this).val() + '/' == $('#selectorIdioma').attr('actualLang')) {
@@ -120,36 +120,36 @@ $(document).ready(function () {
 
 
 		var seleccionado = $(this).val();
-        /*
-         var url 			= $(location).attr('href');		// Url actual total
-         old 				= $(this).attr('actualLang');	// Idioma actual
-         nuevo 				= '/' + seleccionado + '/';		// Idioma nuevo
-         lastChar 			= url.substr(url.length - 1);	// Obtenemos el último carácter
-         sessionVar 			= '?setlng='+seleccionado;
+		/*
+		 var url 			= $(location).attr('href');		// Url actual total
+		 old 				= $(this).attr('actualLang');	// Idioma actual
+		 nuevo 				= '/' + seleccionado + '/';		// Idioma nuevo
+		 lastChar 			= url.substr(url.length - 1);	// Obtenemos el último carácter
+		 sessionVar 			= '?setlng='+seleccionado;
 
-         // Detectamos si hay la barra al final
-         if(lastChar != '/') {
-         url += '/';
-         }
+		 // Detectamos si hay la barra al final
+		 if(lastChar != '/') {
+		 url += '/';
+		 }
 
-         if(url.indexOf(old) == -1) {
-         url += seleccionado;
-         } else {
-         // Reemplazamos el valor viejo por el nuevo idioma
-         url = url.replace(old,nuevo);
-         }
+		 if(url.indexOf(old) == -1) {
+		 url += seleccionado;
+		 } else {
+		 // Reemplazamos el valor viejo por el nuevo idioma
+		 url = url.replace(old,nuevo);
+		 }
 
-         //document.location.href=url+sessionVar;
-         document.location.href=url;
-         */
+		 //document.location.href=url+sessionVar;
+		 document.location.href=url;
+		 */
 		document.location.href = '/' + seleccionado;
 	});
 
-    /*
-     |--------------------------------------------------------------------------
-     | Filter Order By en la ficha de subasta, responsive options
-     |--------------------------------------------------------------------------
-     */
+	/*
+	 |--------------------------------------------------------------------------
+	 | Filter Order By en la ficha de subasta, responsive options
+	 |--------------------------------------------------------------------------
+	 */
 	if ($(window).width() <= '992') {
 		$('#filter_order_by').css('margin-top', '20px');
 	} else {
@@ -238,11 +238,11 @@ $(document).ready(function () {
 	});
 
 
-    /*
-     |--------------------------------------------------------------------------
-     | Boxes / header
-     |--------------------------------------------------------------------------
-     */
+	/*
+	 |--------------------------------------------------------------------------
+	 | Boxes / header
+	 |--------------------------------------------------------------------------
+	 */
 
 	//Abre una box con contenido.
 	$('.open_own_box').on('click', function (e) {
@@ -303,11 +303,11 @@ $(document).ready(function () {
 
 	//$('.frmLogin').validator();
 
-    /*
-     |--------------------------------------------------------------------------
-     | Registro de usuarios / login.blade / Login
-     |--------------------------------------------------------------------------
-     */
+	/*
+	 |--------------------------------------------------------------------------
+	 | Registro de usuarios / login.blade / Login
+	 |--------------------------------------------------------------------------
+	 */
 	$("#regCallback").hide();
 
 
@@ -442,11 +442,11 @@ $(document).ready(function () {
 		}
 	});
 
-    /*
-     |--------------------------------------------------------------------------
-     | Botones grandes de la home / bigButtons
-     |--------------------------------------------------------------------------
-     */
+	/*
+	 |--------------------------------------------------------------------------
+	 | Botones grandes de la home / bigButtons
+	 |--------------------------------------------------------------------------
+	 */
 
 	// Default
 	$('.col2').addClass('stage2');
@@ -461,11 +461,11 @@ $(document).ready(function () {
 		$('.col1').removeClass('stage2');
 	});
 
-    /*
-     |--------------------------------------------------------------------------
-     | Controles de pujar o guardar en subastas permanentes / permanentAuctions
-     |--------------------------------------------------------------------------
-     */
+	/*
+	 |--------------------------------------------------------------------------
+	 | Controles de pujar o guardar en subastas permanentes / permanentAuctions
+	 |--------------------------------------------------------------------------
+	 */
 
 	// Mostramos el overlay de opciones con los controles de la subastas
 	$('.permanentAuctions #subastas').on('mouseenter', '#content .item .img', function () {
@@ -477,11 +477,11 @@ $(document).ready(function () {
 	});
 
 
-    /*
-     |--------------------------------------------------------------------------
-     | Subastas de la Home / permanentAuctions.blade
-     |--------------------------------------------------------------------------
-     */
+	/*
+	 |--------------------------------------------------------------------------
+	 | Subastas de la Home / permanentAuctions.blade
+	 |--------------------------------------------------------------------------
+	 */
 	page = 1;
 	var is_home = 1;
 
@@ -597,9 +597,9 @@ $(document).ready(function () {
 
 
 	//Bloquea los elementos del form mientras carga la página para evitar posibles errores.
-    /*$('.permanentAuctions form').submit(function(){
-     $('select, input', $(this)).prop( "disabled", true );
-     });*/
+	/*$('.permanentAuctions form').submit(function(){
+	 $('select, input', $(this)).prop( "disabled", true );
+	 });*/
 
 
 	//eliminamos todos los filtros para que el goto busque en toda la web
@@ -680,18 +680,18 @@ $(document).ready(function () {
 
 
 	$('.seoAction_JS').click(function (event) {
-		seoEvent= $(this).data("event");
+		seoEvent = $(this).data("event");
 		registerSeoEvent(seoEvent);
 	})
 });
 //SE PUEDE AÑADIR LA CLASE seoAction_JS Y UN CAMPO DATA-EVENT CON EL NOMBRE DEL EVENTO PARA QUE LO REGISTRE GRACIAS A UNA FUNCION CREADA
-function registerSeoEvent(seoEvent){
+function registerSeoEvent(seoEvent) {
 	console.log(seoEvent);
-		$.ajax({
-			type: "GET",
+	$.ajax({
+		type: "GET",
 
-			url: '/seo_event/'+seoEvent,
-		});
+		url: '/seo_event/' + seoEvent,
+	});
 }
 
 function emailSobrePuja(cod, licit, lote) {
@@ -783,29 +783,29 @@ function toggleFullScreen() {
  */
 
 function seleccionar_idioma(actualLang, seleccionado) {
-    /*
-     var url 			= $(location).attr ('href');		// Url actual total
-     old 					= '/' + actualLang;										// Idioma actual
-     nuevo 				= '/' + seleccionado + '/';			// Idioma nuevo
-     lastChar 			= url.substr (url.length - 1);	// Obtenemos el último carácter
-     sessionVar 		= '?setlng=' + seleccionado;
+	/*
+	 var url 			= $(location).attr ('href');		// Url actual total
+	 old 					= '/' + actualLang;										// Idioma actual
+	 nuevo 				= '/' + seleccionado + '/';			// Idioma nuevo
+	 lastChar 			= url.substr (url.length - 1);	// Obtenemos el último carácter
+	 sessionVar 		= '?setlng=' + seleccionado;
 
-     // Detectamos si hay la barra al final
-     if (lastChar != '/')
-     {
-     url += '/';
-     }
+	 // Detectamos si hay la barra al final
+	 if (lastChar != '/')
+	 {
+	 url += '/';
+	 }
 
-     if (url.indexOf (old) == -1)
-     {
-     url += seleccionado;
-     }
-     else
-     {
-     // Reemplazamos el valor viejo por el nuevo idioma
-     url = url.replace (old, nuevo);
-     }
-     */
+	 if (url.indexOf (old) == -1)
+	 {
+	 url += seleccionado;
+	 }
+	 else
+	 {
+	 // Reemplazamos el valor viejo por el nuevo idioma
+	 url = url.replace (old, nuevo);
+	 }
+	 */
 	document.location.href = '/' + seleccionado;// url;
 }
 
@@ -853,9 +853,9 @@ function playAlert(arr_items) {
 }
 
 
-function activedAudio(actived){
+function activedAudio(actived) {
 
-	if(!actived){
+	if (!actived) {
 		audioIsActived = false;
 		return;
 	}
@@ -865,15 +865,15 @@ function activedAudio(actived){
 }
 
 
-function playAudio(selector, volume = 0.5){
+function playAudio(selector, volume = 0.5) {
 
-	if (!audioIsActived){
+	if (!audioIsActived) {
 		return;
 	}
 
 	var sound = document.querySelector(selector); //.play();
 
-	if(sound == null){
+	if (sound == null) {
 		return;
 	}
 
@@ -956,7 +956,7 @@ function format_money(money) {
 	return formatPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 }
 
-function formatMoney({money = 0, decimals = 2, symbol = '€'}){
+function formatMoney({ money = 0, decimals = 2, symbol = '€' }) {
 
 	money = money.toFixed(decimals);
 	money = money.replace('.', ',');
@@ -1592,16 +1592,16 @@ function ajax_shipping(cod_ship, lang) {
 			$("#ajax_shipping_add").html(response);
 		}
 	})
-	.then((response) => {
-		return response;
-	});
+		.then((response) => {
+			return response;
+		});
 }
 
 function changeCurrency(price, exchange, object) {
 	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
-	if(typeof sindecimales  != 'undefined' && sindecimales==true){
+	if (typeof sindecimales != 'undefined' && sindecimales == true) {
 		newPrice = numeral(price).format('0,0');
-	}else{
+	} else {
 		newPrice = numeral(price).format('0,0.00');
 	}
 	if (currency[exchange].pos_div == 'R') {
@@ -1632,7 +1632,7 @@ function changeCurrencyWithElement(price, exchange, element) {
 	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
 
 	let newPrice = numeral(price).format('0,0.00');
-	if(typeof sindecimales  != 'undefined' && sindecimales == true){
+	if (typeof sindecimales != 'undefined' && sindecimales == true) {
 		newPrice = numeral(price).format('0,0');
 	}
 
@@ -1751,7 +1751,7 @@ function savePreferencesCookies() {
 
 	const isAnalysisActive = $("[name='permission_analysis']").is(":checked");
 	const isAdvertisingActive = $("[name='permission_advertising']").is(":checked");
-	if(isAnalysisActive){
+	if (isAnalysisActive) {
 		updateConsent();
 	}
 	const data = {
@@ -1765,7 +1765,7 @@ function savePreferencesCookies() {
 			'Content-Type': 'application/json',
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		},
-		body: JSON.stringify({preferences: data})
+		body: JSON.stringify({ preferences: data })
 	}).then(function (response) {
 		if (response.ok) {
 			$(".modal-cookies").modal('hide');
@@ -1780,13 +1780,13 @@ function saveConfigurationCookies(data) {
 			'Content-Type': 'application/json',
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		},
-		body: JSON.stringify({configurations: data})
+		body: JSON.stringify({ configurations: data })
 	}).catch(function (error) {
 		console.log(error);
 	});
 }
 
-function updateConsent(){
+function updateConsent() {
 	if (typeof gtag === 'function') {
 		gtag('consent', 'update', {
 			'ad_storage': 'granted',
@@ -1927,17 +1927,17 @@ $(document).ready(function () {
 });
 
 
-function trans(key = null, replace = {}, locale = null){
+function trans(key = null, replace = {}, locale = null) {
 
 	const keys = key.split('.');
 	const existTranslate = typeof translates != 'undefined' && typeof translates[keys[0]] != 'undefined' && typeof translates[keys[0]][keys[1]] != 'undefined';
 
-	if(!existTranslate){
+	if (!existTranslate) {
 		return key;
 	}
 
 	let string = translates[keys[0]][keys[1]];
-	Object.keys(replace).map(function(value) {
+	Object.keys(replace).map(function (value) {
 
 		let str1 = `:${value}`;
 		let re = new RegExp(str1, "i");
@@ -1949,7 +1949,7 @@ function trans(key = null, replace = {}, locale = null){
 	return string;
 }
 
-function openLogin(){
+function openLogin() {
 	//por si venimos de un moda, no afecta a nada mas
 	$.magnificPopup.close();
 	$('.login_desktop').fadeToggle("fast");
@@ -1957,26 +1957,26 @@ function openLogin(){
 }
 
 
-function markCurrentPageHeader(exceptions){
+function markCurrentPageHeader(exceptions) {
 
 	const urlArray = window.location.pathname.split('/');
-    const section = urlArray[2];
-    var menuItems = $('.menu-principal-content').find('li');
+	const section = urlArray[2];
+	var menuItems = $('.menu-principal-content').find('li');
 
 	for (const value of exceptions) {
-		if(section == value){
+		if (section == value) {
 			return;
 		}
 	}
 
-    menuItems.each(function () {
+	menuItems.each(function () {
 
-        $(this).find('a').attr('href')
-        var link = $(this).find('a').attr('href').includes(section)
-        if (link) {
-            $(this).find('a').addClass('color-brand')
-        }
-    });
+		$(this).find('a').attr('href')
+		var link = $(this).find('a').attr('href').includes(section)
+		if (link) {
+			$(this).find('a').addClass('color-brand')
+		}
+	});
 }
 
 function sharePage({ text, title, url }) {
@@ -2000,16 +2000,16 @@ function debounce(func, delay) {
 	debounceTimeoutId = setTimeout(func, delay);
 }
 
- /* inputElement.addEventListener('input', function() {
-	debounce(function() {
-		// Aquí puedes agregar el código para enviar el formulario
-		console.log('Enviar formulario');
-	}, 500); // 500 milisegundos (0.5 segundos) de pausa
+/* inputElement.addEventListener('input', function() {
+   debounce(function() {
+	   // Aquí puedes agregar el código para enviar el formulario
+	   console.log('Enviar formulario');
+   }, 500); // 500 milisegundos (0.5 segundos) de pausa
 }); */
 
 function validateCaptchaMiddleware(callback, arg) {
 	isValidCaptcha().then((result) => {
-		if(result){
+		if (result) {
 			callback(arg);
 			return;
 		}
@@ -2029,7 +2029,7 @@ async function isValidCaptcha() {
 	// Si es un captcha v2
 	$(".g-recaptcha").find("iframe").removeClass("has-error");
 	const resutl = Boolean($("#g-recaptcha-response").val());
-	if(!resutl){
+	if (!resutl) {
 		$(".g-recaptcha").find("iframe").addClass("has-error");
 	}
 
@@ -2050,41 +2050,41 @@ async function checkCaptchaV3() {
 async function executeCaptchaV3() {
 	const captchaElemenent = document.querySelector('[name="captcha_token"]');
 
-	if(!captchaElemenent) return;
+	if (!captchaElemenent) return;
 
 	const key = captchaElemenent.getAttribute('data-sitekey');
 
 	return new Promise((resolve, reject) => {
 
-		grecaptcha.ready(function() {
-			grecaptcha.execute(key, {action: 'submit'})
-			.then(function(token) {
+		grecaptcha.ready(function () {
+			grecaptcha.execute(key, { action: 'submit' })
+				.then(function (token) {
 
-				if(!token) reject('No token found');
+					if (!token) reject('No token found');
 
-				//recorrecmos todos para que en paginas con varios formularios se rellenen todos
-				document.querySelectorAll('[name="captcha_token"]')
-					.forEach(captchaElemenent => {
-						captchaElemenent.value = token;
-					});
+					//recorrecmos todos para que en paginas con varios formularios se rellenen todos
+					document.querySelectorAll('[name="captcha_token"]')
+						.forEach(captchaElemenent => {
+							captchaElemenent.value = token;
+						});
 
-				resolve();
-			});
+					resolve();
+				});
 		});
 	});
 }
 
 function cleanUrl() {
-    // Obtén la URL actual
-    const url = new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
+	// Obtén la URL actual
+	const url = new URL(window.location.href);
+	const params = new URLSearchParams(url.search);
 
 	const paramsObject = Object.fromEntries(params);
 	const emptyKeys = Object.entries(paramsObject).filter(([_, value]) => value === '');
 
 	emptyKeys.forEach(([key]) => params.delete(key));
 
-    // Actualiza la URL sin recargar la página
-    url.search = params.toString();
-    window.history.replaceState({}, '', url.toString());
+	// Actualiza la URL sin recargar la página
+	url.search = params.toString();
+	window.history.replaceState({}, '', url.toString());
 }

@@ -1,128 +1,115 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans($theme.'-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('content')
-<?php
 
-$bread[] = array("name" =>$data['title']  );
-?>
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 text-center color-letter">
-            <h1 class="titlePage"> {{ trans($theme.'-app.home.free-valuations') }}</h1>
-                @include('includes.breadcrumb')
-            </div>
-        </div>
-    </div>
-    <div id="" class="free-valuations color-letter">
-	    <div class="container" id="return-valoracion">
-            <div class="row">
-                <div class="col-xs-12 text-center">
-                    <h1 class="titleSingle_corp">{{ trans($theme.'-app.valoracion_gratuita.solicitud_valoracion') }}</h1>
-                </div>
-                <div class="col-xs-12 info">
-                    <?=  trans($theme.'-app.valoracion_gratuita.desc_assessment')  ?>
-                </div>
-                <form id="form-valoracion-adv" class="form">
-                    <div class=" col-xs-12 col-lg-8 col-lg-offset-2">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
-                        value="">
+    @php
+        $bread[] = ['name' => $data['title']];
+    @endphp
 
-                    <div class=" col-xs-12 content-form-valuations no-padding">
-                        <p class="text-danger valoracion-h4 hidden msg_valoracion">{{ trans($theme.'-app.valoracion_gratuita.error') }}</p>
-                        <div class="col-xs-12 col-lg-6  no-padding d-flex flex-direction-column inputs-custom-group">
-                            <div class="form-group form-group-custom col-xs-12 col-xs-12">
-                                <label class="" for="name"><?=  trans($theme.'-app.valoracion_gratuita.name')  ?></label>
-                                <input
-                                    class="form-control"
-                                    id="name"
-                                    name="name"
-                                    placeholder="<?=  trans($theme.'-app.valoracion_gratuita.name')  ?>"
-                                    required=""
-                                    type="text"
-                                />
-                            </div>
+    <main class="valoracion-page">
 
-                            <div class="form-group form-group-custom col-xs-12 col-xs-12">
-                                <label class="" for="name"><?=  trans($theme.'-app.valoracion_gratuita.email')  ?></label>
-                                <input
-                                    class="form-control"
-                                    id="email"
-                                    name="email"
-                                    placeholder="<?=  trans($theme.'-app.valoracion_gratuita.email')  ?>"
-                                    required=""
-                                    type="email"
-                                />
-                            </div>
+        {!! BannerLib::bannerWithView('valoracion-page', 'hero', [
+            'title' => trans("$theme-app.valoracion_gratuita.solicitud_valoracion"),
+            'breadcrumb' => view('includes.breadcrumb', ['bread' => $bread])->render(),
+        ]) !!}
 
-                            <div class="form-group form-group-custom col-xs-12 col-xs-12">
-                                <label class="" for="telf"><?=  trans($theme.'-app.valoracion_gratuita.telf')  ?></label>
-                                <input
-                                    class="form-control"
-                                    id="telf"
-                                    name="telf"
-                                    placeholder="<?=  trans($theme.'-app.valoracion_gratuita.telf')  ?>"
-                                    required=""
-                                    type="phone"
-                                />
-                            </div>
+        <div class="container mt-5">
 
+            <p class="optimal-text-lenght m-auto text-center mb-3">
+                {!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}
+            </p>
 
+            <form class="mt-5" id="form-valoracion-adv" action="">
+                @csrf
+                <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden" value="">
 
+                <p class="text-danger h4 hidden msg_valoracion">
+                    {{ trans($theme . '-app.valoracion_gratuita.error') }}</p>
 
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <div class="mb-3 pb-3">
+                            <label class="form-label"
+                                for="name">{{ trans("$theme-app.valoracion_gratuita.name") }}</label>
+                            <input class="form-control form-control-p-lg" id="name" name="name" type="text"
+                                placeholder="{{ trans("$theme-app.valoracion_gratuita.name") }}" required>
                         </div>
-                        <div class="col-lg-6 col-xs-12 no-padding inputs-custom-group d-flex flex-column">
-                                <label class="" style="color: lightgray; font-size: 10px; font-weight: 100"><?=  trans($theme.'-app.user_panel.description')  ?></label>
-
-                            <textarea class="form-control" id="exampleTextarea" rows="10" name="descripcion" required placeholder="{{ trans($theme.'-app.valoracion_gratuita.description') }}"></textarea>
+                        <div class="mb-3 pb-3">
+                            <label class="form-label"
+                                for="email">{{ trans("$theme-app.valoracion_gratuita.email") }}</label>
+                            <input class="form-control form-control-p-lg" id="email" name="email" type="email"
+                                placeholder="{{ trans("$theme-app.valoracion_gratuita.email") }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"
+                                for="telf">{{ trans("$theme-app.valoracion_gratuita.telf") }}</label>
+                            <input class="form-control form-control-p-lg" id="telf" name="telf" type="phone"
+                                placeholder="{{ trans("$theme-app.valoracion_gratuita.telf") }}" required>
                         </div>
                     </div>
-					<div class="col-xs-12">
-						<p class="captcha-terms">
-							{!! trans("$theme-app.global.captcha-terms") !!}
-						</p>
-					</div>
-                    <div class="form-group form-group-custom col-xs-12">
 
-                            <div id="dropzone">
-                                <small class="text-danger error-dropzone" style="display:none">{{ trans($theme.'-app.msg_error.max_size') }}</small>
-                                <div class="color-letter text-dropzone"><?=  trans($theme.'-app.valoracion_gratuita.adj_IMG')  ?></div>
-                                <div class="mini-file-content d-flex align-items-center" style="position:relative"></div>
-
-                                    <input id="images" type="file" name="imagen[]" />
-                                  </div>
+                    <div class="col-md-6">
+                        <div class="mb-3 pb-3 h-100 d-flex flex-column">
+                            <label class="form-label"
+                                for="descripcion">{{ trans("$theme-app.user_panel.description") }}</label>
+                            <textarea class="form-control form-control-p-lg flex-grow-1" name="descripcion" rows="10" required
+                                placeholder="{{ trans("$theme-app.valoracion_gratuita.description") }}"></textarea>
+                        </div>
                     </div>
-
-                            <div class="col-xs-12 text-right no-padding">
-                                <button type="submit" id="valoracion-adv" class="btn btn-static-page">{{ trans($theme.'-app.valoracion_gratuita.send') }}</button>
-                            </div>
                 </div>
 
-                <div class="col-xs-12 info">
+                <div class="row justify-content-center my-3 pb-3">
+                    <div class="col-md-10">
+                        <div class="position-relative mb-3 pb-3" id="dropzone">
+                            <p class="text-danger error-dropzone" style="display:none">
+                                <small>{{ trans("$theme-app.msg_error.max_size") }}</small>
+                            </p>
+                            <p class="text-dropzone">{!! trans("$theme-app.valoracion_gratuita.adj_IMG") !!}</p>
+                            <div class="mini-file-content d-flex align-items-center position-relative gap-2 mt-1"></div>
+                            <input id="images" name="imagen[]" type="file" multiple />
+                        </div>
+
+						<label for="specialist">
+							{{ trans('web.valoracion_gratuita.select_department') }}
+						</label>
+						<select class="form-select mb-3" name="to_specialist"
+							id="specialist">
+							@foreach ($data['especialistas'] as $especialista)
+								<option value="{{ $especialista->per_especial1 }}">{{ $especialista->specialty->title }} - {{ $especialista->description }}</option>
+							@endforeach
+						</select>
+
+                        <p class="captcha-terms mb-3 pb-3">
+                            {!! trans("$theme-app.global.captcha-terms") !!}
+                        </p>
+
+
+                        <button class="button-send-valorate btn btn-lb-primary" id="valoracion-adv"
+                            type="submit">{{ trans("$theme-app.valoracion_gratuita.send") }}</button>
+                    </div>
                 </div>
+
             </form>
         </div>
-    </div>
-</div>
+    </main>
+
+    <script>
+        var imagesarr = [];
+
+        function myFunction(el) {
+            $(el).remove()
+        }
+        $(function() {
+
+            $('.mini-upload-image').click(function() {
+                alert()
+            })
 
 
-<script>
-      var imagesarr = [];
-      function myFunction( el ) {
-        $(el).remove()
-    }
-$(function() {
-
-$('.mini-upload-image').click(function (){
-    alert()
-})
-
-
- });
-
-</script>
+        });
+    </script>
 @stop

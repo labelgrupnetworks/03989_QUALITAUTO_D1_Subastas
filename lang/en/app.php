@@ -588,6 +588,9 @@ return [
 		'pay_deposit' => 'MAKE A DEPOSIT',
 		'accept_conditions' => 'I have read and accept the <a href=":url" target="_blank">General Rules</a>',
 		'accept_conditions_auction' => 'I accept the general rules of the auction',
+		'request_information' => 'Request information about lot :ref from auction :sub',
+		'request_information_text' => 'I want to request information about lot :ref from auction :sub',
+		'request_information_button' => 'Request information',
 		'add_representative' => 'Add representative',
 	),
 	'lot_list' =>
@@ -990,6 +993,7 @@ return [
 		'search-results' => 'Search results',
 		'see-all' => 'See all',
 		'see_lotes' => 'View lots',
+		'see_all_lots' => 'See all lots',
 		'see_subasta' => 'Auction information',
 		'shared_auctions' => 'Share this auction',
 		'proximas_subastas' => 'Recent auction',
@@ -1170,6 +1174,7 @@ return [
 		'text_no_loged' => '<p>In order to start the online assessment form, you must log in or Sign up.</p> If you need help or want to know more about us, our <a href="/es/preguntas-frecuentes"><u>FAQs</u></a> can be a good starting point. Alternatively, you can <a href="/es/pagina/contacta">contact</a> us.',
 		'contact_us' => 'Contact us',
 		'our_experts' => 'Our experts',
+		'select_department' => 'Select the department you want to contact',
 	),
 	'reports' =>
 	array(

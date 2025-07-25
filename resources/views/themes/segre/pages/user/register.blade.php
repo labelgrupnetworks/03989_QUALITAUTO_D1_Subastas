@@ -1,336 +1,343 @@
 @extends('layouts.default')
 
+@push('scripts')
+    <script defer src="{{ Tools::urlAssetsCache(public_default_path('js/register.js')) }}"></script>
+    <script defer src="{{ Tools::urlAssetsCache("/themes/$theme/js/register.js") }}"></script>
+@endpush
+
 @section('title')
-	{{ trans($theme . '-app.head.title_app') }}
+    {{ trans("$theme-app.head.title_app") }}
 @stop
+
 
 @section('content')
 
-	<div class="create-account color-letter">
-		<div class="container register pb-5">
-			<div class="row d-flex align-items-center justify-content-center">
-				<div class="col-xs-12 general-container">
-					<center>
-						<h3>{{ trans($theme . '-app.login_register.crear_cuenta') }}</h3>
-						<p>{{ trans($theme . '-app.login_register.all_fields_are_required') }}</p>
-					</center>
-
-					<form method="post" id="registerForm" action="javascript:submit_register_form()">
-
-						<input class="form-control" type="hidden" name="_token" value="{{ csrf_token() }}">
-						<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
-
-						<input class="form-control" type="hidden" name="sexo" id="sexo" value="H">
-						<input class="form-control" type="hidden" name="pri_emp" id="pri_emp" value="F">
-						<input type="hidden" name="language" id="select__0__language"
-							value="{{ strtoupper(\Config::get('app.locale')) }}">
-
-						<div class="tipo_usuario">
-							<div class="particular selected" onclick="javascript:particular();">
-								{{ trans($theme . '-app.login_register.particular') }}
-							</div>
-							<div class="empresa" onclick="javascript:empresa();">
-								{{ trans($theme . '-app.login_register.empresa') }}
-							</div>
-						</div>
-
-
-
-
-
-						<div class="well">
-
-							<div class="tit">
-								{{ trans($theme . '-app.login_register.personal_information') }}
-							</div>
-
-
-							{{-- <div class="tipo_sexo">
-							<div class="hombre selected" onclick="javascript:hombre();">
-								{{ trans($theme.'-app.login_register.hombre') }}
-							</div>
-							<div class="mujer" onclick="javascript:mujer();">
-								{{ trans($theme.'-app.login_register.mujer') }}
-							</div>
-						</div> --}}
-
-							<div class="clearfix"></div>
-							<br>
-
-
-
-
-
-							<div class="registerParticular datos_left">
-								<label>{{ trans($theme . '-app.login_register.nombre') }}</label>
-								{!! $formulario->usuario !!}
-							</div>
-							<div class="registerParticular apellidos datos_right">
-								<label>{{ trans($theme . '-app.login_register.apellidos') }}</label>
-								{!! $formulario->last_name !!}
-							</div>
-							<div class="registerEnterprise datos_left">
-								<label>{{ trans($theme . '-app.login_register.company') }}</label>
-								{!! $formulario->rsoc_cli !!}
-							</div>
-							<div class="registerEnterprise datos_right">
-								<label>{{ trans($theme . '-app.login_register.contact') }}</label>
-								{!! $formulario->contact !!}
-							</div>
-							<div class="datos_left">
-								<label>{{ trans($theme . '-app.login_register.phone') }}</label>
-								{!! $formulario->telefono !!}
-							</div>
-							<div class="movil">
-								<label>{{ trans($theme . '-app.login_register.mobile') }}</label>
-								{!! $formulario->movil !!}
-							</div>
-							<div class="datos_right">
-								<label class="nif">{{ trans($theme . '-app.login_register.dni') }}</label>
-								<label class="cif" style="display:none">{{ trans($theme . '-app.login_register.cif') }}</label>
-								{!! $formulario->cif !!}
-							</div>
-							<div class="observaciones">
-								<label class="pt-3">{{ trans($theme . '-app.login_register.observacion') }}</label>
-								{!! $formulario->obscli !!}
-							</div>
-							<br>
-							<div class="checkbox-container condiciones2">
-								{!! $formulario->condiciones2 !!}
-								<label for="bool__0__condiciones2">{!! trans($theme . '-app.login_register.read_conditions2') !!}
-								</label>
-							</div>
-							<div class="moneda">
-								<label>{{ trans($theme . '-app.login_register.currency') }}</label>
-								{!! $formulario->divisa !!}
-							</div>
-							<br>
-							<div class="datos_left">
-								<labeL>{{ trans($theme . '-app.login_register.pais') }}</label>
-								{!! $formulario->pais !!}
-							</div>
-
-							<div class="datos_right">
-								<label>{{ trans($theme . '-app.login_register.cod_postal') }}</label>
-								{!! $formulario->cpostal !!}
-							</div>
-
-
-							<div class="datos_left">
-								<label>{{ trans($theme . '-app.login_register.via') }}</label>
-								{!! $formulario->vias !!}
-							</div>
-							<div class="datos_right">
-								<label>{{ trans($theme . '-app.login_register.direccion') }}</label>
-								{!! $formulario->direccion !!}
-							</div>
-
-
-							<div class="datos_left">
-								<label>{{ trans($theme . '-app.login_register.ciudad') }}</label>
-								{!! $formulario->poblacion !!}
-							</div>
-							<div class="datos_right">
-								<label>{{ trans($theme . '-app.login_register.provincia') }}</label>
-								{!! $formulario->provincia !!}
-							</div>
-
-							{{-- <div class="datos_left">
-								<label>{{ trans($theme.'-app.user_panel.date_birthday') }}</label>
-								{!!$formulario->fecha_nacimiento!!}
-							</div> --}}
-
-							{{-- <div class="idioma datos_right">
-								<label>{{ trans($theme.'-app.login_register.language') }}</label>
-								{!!$formulario->language!!}
-							</div> --}}
-
-
-							<div class="clearfix"></div>
-						</div>
-
-
-
-						<!-- Bloque para dirección de envio -->
-
-						@if (empty(\Config::get('app.delivery_address')) || !\Config::get('app.delivery_address'))
-							{!! $formulario->clid !!}
-							{!! $formulario->clid_pais !!}
-							{!! $formulario->clid_cpostal !!}
-							{!! $formulario->clid_provincia !!}
-							{!! $formulario->clid_codigoVia !!}
-							{!! $formulario->clid_direccion !!}
-						@else
-							<div class="well">
-								<div class="tit">
-									{{ trans($theme . '-app.login_register.title_direccion_envio') }}
-								</div>
-
-								<div>
-									<input id="shipping_address" class="form-contro" name="shipping_address" type="checkbox" checked="true" />
-									<label
-										for="shipping_address">{{ trans($theme . '-app.login_register.utilizar_direcc_direccenv') }}</label>
-								</div>
-
-								<div class="clearfix"></div>
-
-
-								<div class="form-group collapse" id="collapse_direccion" aria-expanded="true">
-
-									{!! $formulario->clid !!}
-									<div>
-										<label>{{ trans($theme . '-app.login_register.pais') }}</label>
-										{!! $formulario->clid_pais !!}
-									</div>
-
-									<div>
-										<label for="cpostal">{{ trans($theme . '-app.login_register.cod_postal') }}</label>
-										{!! $formulario->clid_cpostal !!}
-									</div>
-
-									<div>
-										<label for="provincia">{{ trans($theme . '-app.login_register.provincia') }}</label>
-										{!! $formulario->clid_provincia !!}
-									</div>
-
-									<div>
-										<label for="poblacion">{{ trans($theme . '-app.login_register.ciudad') }}</label>
-										{!! $formulario->clid_poblacion !!}
-									</div>
-
-									<div>
-										<label for="provincia">{{ trans($theme . '-app.login_register.via') }}</label>
-										{!! $formulario->clid_codigoVia !!}
-									</div>
-									<div>
-										<label for="direccion">{{ trans($theme . '-app.login_register.direccion') }}</label>
-										{!! $formulario->clid_direccion !!}
-									</div>
-
-
-								</div>
-								<div class="clearfix"></div>
-
-							</div>
-						@endif
-
-
-
-
-						<div class="well">
-							<div class="tit">{{ trans($theme . '-app.login_register.cuenta') }}</div>
-
-							<div class="datos_cuenta">
-
-								<div>
-									<label for="email">{{ trans($theme . '-app.login_register.email') }}</label>
-									{!! $formulario->email !!}
-								</div>
-								<div>
-									<label for="email">{{ trans($theme . '-app.login_register.email_confirm') }}</label>
-									{!! $formulario->confirm_email !!}
-								</div>
-
-								<input style="display:none" type="password">
-
-								<div>
-									<label for="contrasena">{{ trans($theme . '-app.login_register.password') }}</label>
-									{!! $formulario->password !!}
-								</div>
-
-								<div>
-									<label
-										for="confirmcontrasena">{{ trans($theme . '-app.login_register.confirm_password') }}</label>
-									{!! $formulario->confirm_password !!}
-								</div>
-
-								<div class="clearfix"></div>
-							</div>
-
-							<div class="clearfix"></div>
-							@if (!empty($formulario->newsletter))
-								<div class="datos_newsletter">
-
-									@if (!empty($families) && count($families) > 0)
-
-										<!-- con categorias newsletter -->
-										<big>{{ trans($theme . '-app.login_register.recibir_newsletter') }}</big>
-										<br>
-
-										@foreach ($families as $t => $item)
-											<div>
-												<input type="checkbox" name="families[{{ $t }}]" value="1" id="{{ $t }}">
-												<label for="{{ $t }}">{{ $item }}</label>
-											</div>
-										@endforeach
-									@else
-										<!-- sin categorias newsletter -->
-
-										<div class="checkbox-container col-xs-12">
-											{!! $formulario->newsletter !!}
-											<label for="bool__1__condiciones">
-												{{ trans($theme . '-app.login_register.recibir_newsletter') }}
-											</label>
-										</div>
-
-									@endif
-								</div>
-							@endif
-							<p class="clearfix"></p>
-
-
-
-
-
-							<div class="datos_condiciones">
-
-								<div class="checkbox-container condiciones col-xs-12">
-									{!! $formulario->condiciones !!}
-									<label for="bool__1__condiciones">{!! trans($theme . '-app.login_register.read_conditions') !!} (<a href="<?php echo Routing::translateSeo('pagina') . trans($theme . '-app.links.term_condition'); ?>"
-											target="_blank">{{ trans($theme . '-app.login_register.more_info') }}</a>)
-									</label>
-								</div>
-								<div class="col-xs-12 mt-1">
-									<p class="captcha-terms">
-										{!! trans("$theme-app.global.captcha-terms") !!}
-									</p>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-
-						</div>
-
-
-
-						<div class="col-xs-12 text-center">
-							<button type="submit" class="submitButton button-principal">
-								{{ trans($theme . '-app.login_register.register') }}
-							</button>
-						</div>
-
-						@if (!empty($formulario->subalia))
-							{!! $formulario->subalia !!}
-							{!! $formulario->info !!}
-						@endif
-
-						<div class="clearfix"></div>
-
-					</form>
-					@if (!empty($formulario->subalia))
-						@if (\Config::get('app.locale') == 'en')
-							<form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
-							@else
-								<form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
-						@endif
-						<input type="hidden" name="info" id="info_sent" value="">
-						<input type="hidden" name="cod_auchouse" id="cod_auchouse_sent" value="">
-						<input type="hidden" name="redirect" id="redirect_sent" value="">
-						</form>
-					@endif
-					<br><br><br><br><br><br><br><br>
-				</div>
-			</div>
-		</div>
-	</div>
-
+    @php
+        $bread[] = ['name' => 'Registro'];
+        $newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
+    @endphp
+
+    <main class="register-page">
+
+        {!! BannerLib::bannerWithView('contact-page', 'hero', [
+            'title' => 'Registro',
+            'breadcrumb' => view('includes.breadcrumb', ['bread' => $bread])->render(),
+        ]) !!}
+
+        <section class="container create-account">
+
+            <div class="my-5 py-md-5 text-center">
+                <h1 class="register-title">{{ trans("$theme-app.login_register.crear_cuenta") }}</h1>
+                <p class="register-subtitle">{{ trans("$theme-app.login_register.all_fields_are_required") }}</p>
+            </div>
+
+            <div class="row justify-content-around">
+                <div class="col-lg-3 order-2 order-lg-1">
+                    <div class="d-flex flex-lg-column flex-wrap gap-3">
+                        <div class="flex-grow-1 d-flex gap-3 mb-3 mb-md-5">
+                            <h4>
+                                <x-icon.boostrap icon="geo-alt-fill" />
+                            </h4>
+                            <div>
+                                <h4 class="fw-500">{{ trans("web.login_register.direccion") }}</h4>
+                                <p class="opacity-50">
+                                    Segre, 18,<br>
+                                    28002 Madrid
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow-1 d-flex gap-3 mb-3 mb-md-5">
+                            <h4>
+                                <x-icon.boostrap icon="telephone-fill" />
+                            </h4>
+                            <div>
+                                <h4 class="fw-500">Telf.</h4>
+                                <a class="opacity-50" href="tel:+34915159584">91 515 95 84</a>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow-1 d-flex gap-3 mb-3 mb-md-5">
+                            <h4>
+                                <x-icon.boostrap icon="envelope-fill" />
+                            </h4>
+
+                            <div>
+                                <h4 class="fw-500">Email</h4>
+                                <a class="opacity-50" href="mailto:info@subastassegre.es">
+                                    info@subastassegre.es
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow-1 d-flex gap-3 mb-3 mb-md-5">
+                            <h4>
+                                <x-icon.boostrap icon="clock-fill" />
+                            </h4>
+                            <div>
+                                <h4 class="fw-500">{{ trans("web.login_register.schedule") }}</h4>
+                                <p class="opacity-50">
+									{!! trans("web.login_register.working_hours") !!}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 order-1 order-lg-2">
+
+                    <form id="registerForm" action="{{ route('send_register') }}">
+                        @csrf
+
+                        <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
+                            value="">
+                        <input class="form-control" id="sexo" name="sexo" type="hidden" value="H">
+                        <input id="select__0__language" name="language" type="hidden"
+                            value="{{ strtoupper(\Config::get('app.locale')) }}">
+
+
+                        <div class="row gy-1">
+                            <div class="col-12 mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.particular") }}
+                                    <select class="form-select" name="pri_emp" onchange="changeRegisterType(this)">
+                                        <option value="F" selected>
+                                            {{ trans("$theme-app.login_register.particular") }}
+                                        </option>
+                                        <option value="J">{{ trans("$theme-app.login_register.empresa") }}
+                                        </option>
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="col-12 mb-3 pb-md-3">
+                                <label class="form-label register-particular">
+                                    {{ trans("$theme-app.login_register.nombre") }}
+                                    {!! $formulario->usuario !!}
+                                </label>
+                                <label class="form-label register-empresa d-none">
+                                    {{ trans("$theme-app.login_register.contact") }}
+                                    {!! $formulario->contact !!}
+                                </label>
+                            </div>
+
+                            <div class="col-12 mb-3 pb-md-3">
+                                <label class="form-label register-particular">
+                                    {{ trans("$theme-app.login_register.apellidos") }}
+                                    {!! $formulario->last_name !!}
+                                </label>
+                                <label class="form-label register-empresa d-none">
+                                    {{ trans("$theme-app.login_register.company") }}
+                                    {!! $formulario->rsoc_cli !!}
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <div class="row gy-1">
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    <span class="register-particular">{{ trans("$theme-app.login_register.dni") }}</span>
+                                    <span
+                                        class="register-empresa d-none">{{ trans("$theme-app.login_register.cif") }}</span>
+                                    {!! $formulario->cif !!}
+                                </label>
+                            </div>
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.phone") }}
+                                    {!! $formulario->telefono !!}
+                                </label>
+                            </div>
+
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.pais") }}
+                                    {!! $formulario->pais !!}
+                                </label>
+                            </div>
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.cod_postal") }}
+                                    {!! $formulario->cpostal !!}
+                                </label>
+                            </div>
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.provincia") }}
+                                    {!! $formulario->provincia !!}
+                                </label>
+                            </div>
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.ciudad") }}
+                                    {!! $formulario->poblacion !!}
+                                </label>
+                            </div>
+                            <div class="col-md-3 mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.via") }}
+                                    {!! $formulario->vias !!}
+                                </label>
+                            </div>
+                            <div class="col-md-9 mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.direccion") }}
+                                    {!! $formulario->direccion !!}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div @class([
+                            'row mb-5',
+                            'd-none' => !config('app.delivery_address', false),
+                        ])>
+                            <div>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" name="shipping_address" type="checkbox"
+                                        onchange="handleCheckedAddressShipping(this)" checked />
+                                    {{ trans("$theme-app.login_register.utilizar_direcc_direccenv") }}
+                                </label>
+                                <div class="row mt-2 gy-1" id="js-shipping_address">
+                                    {!! $formulario->clid !!}
+
+                                    <div class="mb-3 pb-md-3">
+                                        <label class="form-label">
+                                            {{ trans("$theme-app.login_register.pais") }}
+                                            {!! $formulario->clid_pais !!}
+                                        </label>
+                                    </div>
+                                    <div class="mb-3 pb-md-3">
+                                        <label class="form-label">
+                                            {{ trans("$theme-app.login_register.cod_postal") }}
+                                            {!! $formulario->clid_cpostal !!}
+                                        </label>
+                                    </div>
+                                    <div class="mb-3 pb-md-3">
+                                        <label class="form-label">
+                                            {{ trans("$theme-app.login_register.provincia") }}
+                                            {!! $formulario->clid_provincia !!}
+                                        </label>
+                                    </div>
+                                    <div class="mb-3 pb-md-3">
+                                        <label class="form-label">
+                                            {{ trans("$theme-app.login_register.ciudad") }}
+                                            {!! $formulario->clid_poblacion !!}
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3 mb-3 pb-md-3">
+                                        <label class="form-label">
+                                            {{ trans("$theme-app.login_register.via") }}
+                                            {!! $formulario->clid_codigoVia !!}
+                                        </label>
+                                    </div>
+                                    <div class="col-md-9 mb-3 pb-md-3">
+                                        <label class="form-label">
+                                            {{ trans("$theme-app.login_register.direccion") }}
+                                            {!! $formulario->clid_direccion !!}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row gy-1">
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.email") }}
+                                    {!! $formulario->email !!}
+                                </label>
+                            </div>
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.email_confirm") }}
+                                    {!! $formulario->confirm_email !!}
+                                </label>
+                            </div>
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.password") }}
+                                    {!! $formulario->password !!}
+                                </label>
+                            </div>
+                            <div class="mb-3 pb-md-3">
+                                <label class="form-label">
+                                    {{ trans("$theme-app.login_register.confirm_password") }}
+                                    {!! $formulario->confirm_password !!}
+                                </label>
+                            </div>
+                        </div>
+
+                        @if (count($newsletters) > 0)
+                            <div class="row gy-1">
+                                @foreach ($newsletters as $id_newsletters => $name_newsletters)
+                                    <div class="mb-3 pb-md-3">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input"
+                                                id="register_newsletter_{{ $id_newsletters }}"
+                                                name="families[{{ $id_newsletters }}]" type="checkbox"
+                                                value="{{ $id_newsletters }}">
+                                            {{ $name_newsletters }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        <div class="row gy-1">
+                            <div class="mb-3">
+                                <label class="form-check-label">
+                                    {!! $formulario->newsletter !!}
+                                    {{ trans("$theme-app.login_register.recibir_newsletter") }}
+                                </label>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-check-label">
+                                    {!! $formulario->condiciones !!}
+                                    <span class="fw-bold text-danger">*</span>
+                                    <span>
+                                        {!! trans("$theme-app.login_register.read_conditions") !!}
+                                        (<a href='{{ Routing::translateSeo('pagina') . trans("$theme-app.links.term_condition") }}'
+                                            target="_blank">{{ trans("$theme-app.login_register.more_info") }}
+                                        </a>)
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="mb-3 pb-md-3">
+                                <p class="captcha-terms">
+                                    {!! trans("$theme-app.global.captcha-terms") !!}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <button class="btn btn-lb-primary px-md-5 submitButton" type="submit">
+                                <span class="text">{{ trans("$theme-app.login_register.register") }}</span>
+                                <div class="spinner spinner-1 m-auto"></div>
+                            </button>
+                        </div>
+
+                        @if (!empty($formulario->subalia))
+                            {!! $formulario->subalia !!}
+                            {!! $formulario->info !!}
+                        @endif
+                    </form>
+
+                </div>
+            </div>
+
+        </section>
+
+
+        @if (!empty($formulario->subalia))
+            <form id="formToSubalia" method="post"
+                action="{{ Config::get('app.subalia_URL', 'https://subalia.es') }}/registerclicli">
+                <input id="info_sent" name="info" type="hidden" value="">
+                <input id="cod_auchouse_sent" name="cod_auchouse" type="hidden" value="">
+                <input id="redirect_sent" name="redirect" type="hidden" value="">
+            </form>
+        @endif
+
+    </main>
 @stop

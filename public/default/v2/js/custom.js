@@ -1,5 +1,12 @@
 $(function () {
 
+	$('.view_password_floating').on('mousedown', function () {
+		//input inside .floating-input
+		$(this).siblings('.form-floating').find('input').attr('type', 'text');
+	}).on('mouseup', function () {
+		$(this).siblings('.form-floating').find('input').attr('type', 'password');
+	});
+
 	/**Funcion a lanzar cuando se inizializa el carousel de movil en la ficha del lote*/
 	$("#owl-carousel-responsive").on('initialized.owl.carousel', function (event) {
 		if (typeof initOwlResponsive !== 'undefined') {
@@ -164,7 +171,7 @@ $(function () {
 		}
 
 		const captcha = await isValidCaptcha();
-		if(!captcha) {
+		if (!captcha) {
 			$(".loader").addClass("hidden");
 			$("#valoracion-adv").removeClass("hidden");
 			$("#insert_msg").html(messages.error.generic);
@@ -265,17 +272,17 @@ $(function () {
 	});
 
 	$('#admin_settings_box').on('click', '.desplegable', function () {
-        if ($('#admin_settings_box').hasClass('opened_box')) {
-            $('#admin_settings_box').removeClass('opened_box');
-            $('[data-id="left"]', this).addClass('hidden');
-            $('[data-id="right"]', this).removeClass('hidden');
-        } else {
+		if ($('#admin_settings_box').hasClass('opened_box')) {
+			$('#admin_settings_box').removeClass('opened_box');
+			$('[data-id="left"]', this).addClass('hidden');
+			$('[data-id="right"]', this).removeClass('hidden');
+		} else {
 			$('#admin_settings_box').addClass('opened_box');
-            $('[data-id="right"]', this).addClass('hidden');
-            $('[data-id="left"]', this).removeClass('hidden');
+			$('[data-id="right"]', this).addClass('hidden');
+			$('[data-id="left"]', this).removeClass('hidden');
 
-        }
-    });
+		}
+	});
 });
 
 
@@ -296,6 +303,7 @@ function ajax_newcarousel(key, replace, lang, options) {
 				if (container) {
 					//change visibility of the container
 					$(`#${container}`).css('visibility', 'hidden');
+					$(`#${container}`).addClass('empty-container');
 				}
 
 			}
@@ -357,7 +365,7 @@ const defaultCarouselOptions = {
 	]
 };
 
-function ajaxStaticCarousel(key, {path, options}) {
+function ajaxStaticCarousel(key, { path, options }) {
 	const $carrouselElement = $(`#${key}`);
 
 	$.ajax({
@@ -1112,7 +1120,7 @@ async function sendContactForm(event) {
 	}
 
 	const captcha = await isValidCaptcha();
-	if(!captcha) {
+	if (!captcha) {
 		showMessage(messages.error.hasErrors);
 		return false;
 	}
@@ -1218,14 +1226,14 @@ async function handleSubmitNewsletterForm(event) {
 	var entrar = parent.find('.condiciones-newsletter-js').prop("checked");
 	const families = {};
 
-	parent.find("[name^=families]").each(function(index) {
-		if($(this).prop("checked")|| $(this).is(":hidden")) {
+	parent.find("[name^=families]").each(function (index) {
+		if ($(this).prop("checked") || $(this).is(":hidden")) {
 			families[$(this).val()] = 1;
 		}
 	});
 
 	const captcha = await isValidCaptcha();
-	if(!captcha) {
+	if (!captcha) {
 		$("#insert_msgweb").html(messages.error.code_500);
 		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 	}
@@ -1378,11 +1386,11 @@ function cerrarLogin() {
 }
 
 // En la version dos este metodo no aplica, y se llama desde common.js
-ajax_shipping = function(cod_ship, lang) {
+ajax_shipping = function (cod_ship, lang) {
 	return true;
 }
 
-function executeOnceToDay(storageName, callback){
+function executeOnceToDay(storageName, callback) {
 	if (!window.localStorage) {
 		return;
 	}
@@ -1391,7 +1399,7 @@ function executeOnceToDay(storageName, callback){
 	const today = new Date().toDateString();
 	const executed = storage.getItem(storageName);
 
-	if(executed !== today) {
+	if (executed !== today) {
 		callback();
 		storage.setItem(storageName, today);
 	}

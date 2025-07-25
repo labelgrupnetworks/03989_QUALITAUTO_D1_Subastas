@@ -1,116 +1,55 @@
-<?php
-
-$name="";
-$phone="";
-$email="";
-if(!empty($data['usuario'])){
-	$name=$data['usuario']->nom_cliweb;
-	$phone=$data['usuario']->tel1_cli;
-	$email=$data['usuario']->email_cliweb;
-
+@php
+$importe = \Tools::moneyFormat($lote_actual->actual_bid);
+$importeExchange = $lote_actual->actual_bid;
+if(!empty($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 >  $lote_actual->impsalhces_asigl0){
+	$importe =  \Tools::moneyFormat($lote_actual->impres_asigl0);
+	$importeExchange = $lote_actual->impres_asigl0;
 }
-$importe = $lote_actual->impsalhces_asigl0;
+@endphp
 
-if(!empty($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 >  $lote_actual->impsalhces_asigl0 ){
-	$importe =  $lote_actual->impres_asigl0;
+<div class="ficha-pujas ficha-venta">
 
-}
-
-#indicamos el importe + comision + iva
-#no quieren poner la comisión ya que no es la misma siempre yel iva depende del uaurio
-/*
-$comision =$importe * $lote_actual->comlhces_asigl0/100;
-$ivaComision =  $comision * 0.21;
-$importe = $importe + $comision +  $ivaComision;
-*/
-$importeExchange =\Tools::moneyFormat( $importe);
-$importe =  \Tools::moneyFormat($importe,false,2);
-?>
-<div class="col-xs-12 no-padding ">
+	{{-- Precio venta --}}
+	<h4 class="price sold-price">
+		<span>{{ trans("$theme-app.subastas.price_sale") }}</span>
+		<span>
+			{{ $importe }} {{ trans("$theme-app.subastas.euros") }}
+			@if(\Config::get("app.exchange"))
+				|   <span id="directSaleExchange_JS" class="exchange"> </span>
+				<input id="startPriceDirectSale" type="hidden" value="{{$importeExchange}}">
+			@endif
+		</span>
+	</h4>
+	<p class="small opacity-75 mb-4">{{ trans("web.lot.commission_vat") }}</p>
 
 
-    <div class="info_single ficha_V col-xs-12 no-padding mb-2">
+	@if (!$retirado && empty($lote_actual->himp_csub))
+		{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
+		@if ($lote_actual->es_nft_asigl0 == "S" &&  !empty($data["usuario"])  && empty($data["usuario"]->wallet_cli) )
+			<p class="require-wallet">{!! trans("$theme-app.lot.require_wallet") !!}</p>
+		@else
+			<button class="btn btn-lb-primary lot-action_comprar_lot" type="button" data-from="modal"
+				ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">
+				{{ trans("$theme-app.subastas.buy_lot") }}
+			</button>
+		@endif
+	@endif
 
-        <div class="col-xs-12 no-padding ficha-info-items-buy">
-			<div class="col-xs-6 ">
-            	<div class="pre">
-                    <p class="pre-title-principal">{{ trans($theme.'-app.subastas.price_sale') }}</p>
-                    <p class="pre-price">{{$importe}} {{ trans($theme.'-app.subastas.euros') }}
-						@if(\Config::get("app.exchange"))
-						|   <span id="directSaleExchange_JS" class="exchange"> </span>
-							<input id="startPriceDirectSale" type="hidden" value="{{$importeExchange}}">
-						@endif
+	{{-- Packengers --}}
+	@if (config('app.urlToPackengers'))
+	@php
+	$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
+	$urlCompletePackengers = \Config::get('app.urlToPackengers') . $lotFotURL;
+	@endphp
 
-					</p>
-					<p>+  comisión (18%) e IVA</p>
-                </div>
-			</div>
-			<div class="col-xs-6 ">
-                <div class="info_single_content info_single_button ficha-button-buy">
-                    @if (!$retirado && empty($lote_actual->himp_csub))
-						{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
-						@if ($lote_actual->es_nft_asigl0 == "S" &&  !empty($data["usuario"])  && empty($data["usuario"]->wallet_cli) )
-							<div class="require-wallet">{!! trans($theme.'-app.lot.require_wallet') !!}</div>
-						@else
-                        	<button data-from="modal" class="button-principal lot-action_comprar_lot" type="button" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans($theme.'-app.subastas.buy_lot') }}</button>
-						@endif
-					@endif
-                </div>
-			</div>
+	<div>
+		<a class="d-block btn btn-outline-lb-secondary" href="{{ $urlCompletePackengers }}" target="_blank">
+			<svg class="bi" width="16" height="16" fill="currentColor">
+				<use xlink:href="/bootstrap-icons.svg#truck"></use>
+			</svg>
+			{{ trans("$theme-app.lot.packengers_ficha") }}
+		</a>
+	</div>
+	@endif
 
-
-        </div>
-		<div class="col-xs-12">
-			<p class="pre-title-principal adj-text">	{{ trans(\Config::get('app.theme').'-app.galery.request_information') }} </p>
-					<form name="infoLotForm" id="infoLotForm" method="post" action="javascript:sendInfoLot()">
-						<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
-						<input type="hidden" name="auction" value="{{ $lote_actual->cod_sub}} - {{ $lote_actual->des_sub}}">
-						<input name="lot" type="hidden" value="{{ $lote_actual->ref_asigl0 }}">
-                		<input name="lot_name" type="hidden" value="{{ $lote_actual->descweb_hces1 }}">
-
-						<div class="form-group">
-							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.login_register.contact') }} *</label>
-								<input type="text" class="form-control  " name="nombre" id="texto__1__nombre" value="{{$name}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
-
-							</div>
-
-							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.foot.newsletter_text_input') }} *</label>
-								<input type="text" class="form-control  " name="email" id="email__1__email" value="{{$email}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
-
-							</div>
-
-							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.user_panel.phone') }} *</label>
-								<input type="text" class="form-control  " name="telefono" id="texto__1__telefono" value="{{$phone}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
-
-							</div>
-
-							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.global.coment') }} *</label>
-								<textarea  class="form-control  " name="comentario"  id="textogrande__1__comentario"   rows="10">  </textarea>
-
-							</div>
-							<div class="col-xs-12">
-								<p>Los campos con * son obligatorios </p>
-							</div>
-							<div class="col-xs-12 mt">
-								<p class="captcha-terms">
-									{!! trans("$theme-app.global.captcha-terms") !!}
-								</p>
-							</div>
-
-							<div class="col-xs-12 mt-3 mb-3">
-								<div class="row">
-									<div class="col-xs-6">
-										<a onclick="javascript:submit_form(document.getElementById('infoLotForm'),0);" class="btn button-principal submitButton">Enviar</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</form>
-			</div>
-
-    </div>
 </div>

@@ -80,7 +80,7 @@ if ($data['user']->fisjur_cli == 'F' || $data['user']->fisjur_cli == null) {
 								</label>
 							</div>
 
-							<div class="col-md-4">
+							<div class="col-md-4" data-element="divisa">
 								<label class="form-label">
 									{{ trans("web.login_register.currency") }}
 									<select name="divisa" class="form-select" required>

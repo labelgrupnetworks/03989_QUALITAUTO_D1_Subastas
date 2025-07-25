@@ -1,118 +1,137 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans($theme . '-app.foot.faq') }}
+    {{ trans($theme . '-app.foot.faq') }}
 @stop
 
 @section('content')
 
-	<div class="container">
+    @php
+        $bread[] = ['name' => trans($theme . '-app.foot.contact')];
+    @endphp
 
-		<h1 class="text-center">{{ trans($theme . '-app.foot.contact') }}</h1>
+    <main class="contact-page">
 
-		<div class="text-center">
-			<p class="paragraph-96ch margin-auto">{{ trans("$theme-app.foot.subtitle_contact_page") }}</p>
-		</div>
+        {!! BannerLib::bannerWithView('contact-page', 'hero', [
+            'title' => trans("$theme-app.foot.contact"),
+            'breadcrumb' => view('includes.breadcrumb', ['bread' => $bread])->render(),
+        ]) !!}
 
-		<div class="row">
-			<div class="col-xs-12 col-md-7 contact-page-form">
-				<form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()">
+        <div class="container mt-5">
 
-					{!! $data['formulario']['_token'] !!}
-					<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+            <div class="text-center m-auto" style="max-width: 800px;">
+                <h2 class="mt-5 mb-5">
+                    {{ trans("web.pages.contact_over_20_years") }}
+                </h2>
+                <p class="opacity-75">
+					{{ trans("web.pages.address_contact") }}
+                </p>
+            </div>
 
-					<div class="form-group row">
-						<div class="input-effect col-xs-12">
-							{!! $data['formulario']['nombre'] !!}
-							<label>{{ trans($theme . '-app.login_register.contact') }}</label>
-						</div>
+            <div class="row mt-3 mt-lg-5 pt-lg-5 gy-5">
+                <div class="col-md-6">
 
-						<div class="input-effect col-xs-12">
-							{!! $data['formulario']['email'] !!}
-							<label>{{ trans($theme . '-app.foot.newsletter_text_input') }}</label>
-						</div>
+                    <div class="d-flex gap-3 mb-3 mb-md-5">
+                        <h4>
+                            <x-icon.boostrap icon="geo-alt-fill" />
+                        </h4>
+                        <div>
+                            <h4 class="fw-500">{{ trans("web.login_register.direccion") }}</h4>
+                            <p class="opacity-50">
+                                Segre, 18,<br>
+                                28002 Madrid
+                            </p>
+                        </div>
+                    </div>
 
-						<div class="input-effect col-xs-12">
-							{!! $data['formulario']['telefono'] !!}
-							<label>{{ trans($theme . '-app.user_panel.phone') }}</label>
-						</div>
+                    <div class="d-flex gap-3 mb-3 mb-md-5">
+                        <h4>
+                            <x-icon.boostrap icon="telephone-fill" />
+                        </h4>
+                        <div>
+                            <h4 class="fw-500">Telf.</h4>
+                            <a class="opacity-50" href="tel:+34915159584">91 515 95 84</a>
+                        </div>
+                    </div>
 
-						<div class="input-effect col-xs-12">
-							{!! $data['formulario']['comentario'] !!}
-							<label>{{ trans($theme . '-app.global.coment') }}</label>
-						</div>
+                    <div class="d-flex gap-3 mb-3 mb-md-5">
+                        <h4>
+                            <x-icon.boostrap icon="envelope-fill" />
+                        </h4>
 
-						<div class="check_term col-xs-12">
-							<div class="row">
-								<div class="col-xs-2 col-md-1">
-									<input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones"
-										autocomplete="off">
-								</div>
-								<div class="col-xs-10 col-md-11">
-									<label for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
-								</div>
-							</div>
-						</div>
+                        <div>
+                            <h4 class="fw-500">Email</h4>
+                            <a class="opacity-50" href="mailto:info@subastassegre.es">
+                                info@subastassegre.es
+                            </a>
+                        </div>
+                    </div>
 
-						<div class="col-xs-12">
-							<p class="captcha-terms">
-								{!! trans("$theme-app.global.captcha-terms") !!}
-							</p>
-						</div>
+                    <div class="d-flex gap-3 mb-3 mb-md-5">
+                        <h4>
+                            <x-icon.boostrap icon="clock-fill" />
+                        </h4>
+                        <div>
+                            <h4 class="fw-500">{{ trans("web.login_register.schedule") }}</h4>
+                            <p class="opacity-50">
+								{!! trans("web.login_register.working_hours") !!}
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col-md-6 contact-page-form">
 
-						<div class="col-xs-12 mt-3">
-							<div class="row">
-								<div class="col-xs-6">
-									{!! $data['formulario']['SUBMIT'] !!}
-								</div>
-							</div>
-						</div>
+                    <form id="contactForm" name="contactForm" novalidate>
+                        @csrf
 
+                        <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
+                            value="">
 
+                        <div class="mb-3 pb-3">
+                            <label class="form-label fw-500" for="texto__1__nombre">
+                                {{ trans("$theme-app.login_register.contact") }}</label>
+                            {!! $data['formulario']['nombre'] !!}
+                        </div>
+                        <div class="mb-3 pb-3">
+                            <label class="form-label fw-500"
+                                for="email__1__email">{{ trans("$theme-app.foot.newsletter_text_input") }}</label>
+                            {!! $data['formulario']['email'] !!}
+                        </div>
+                        <div class="mb-3 pb-3">
+                            <label class="form-label fw-500"
+                                for="texto__1__telefono">{{ trans("$theme-app.user_panel.phone") }}</label>
+                            {!! $data['formulario']['telefono'] !!}
+                        </div>
+                        <div class="mb-3 pb-3">
+                            <label class="form-label fw-500"
+                                for="textogrande__1__comentario">{{ trans("$theme-app.global.coment") }}</label>
+                            {!! $data['formulario']['comentario'] !!}
+                        </div>
 
+                        <div class="form-check mb-3 pb-3">
+                            <input class="form-check-input" id="bool__1__condiciones" name="condiciones" type="checkbox"
+                                value="" value="on" autocomplete="off" required>
+                            <label class="form-check-label" for="bool__1__condiciones">
+                                {!! trans("$theme-app.emails.privacy_conditions") !!}
+                            </label>
 
-					</div>
-					<div class="clearfix"></div>
+                        </div>
 
+                        <p class="captcha-terms">
+                            {!! trans("$theme-app.global.captcha-terms") !!}
+                        </p>
 
+                        <button class="btn btn-lb-primary px-md-5 mt-3" type="submit">
+							{{ trans("web.global.enviar") }}
+						</button>
 
-				</form>
+                    </form>
+                </div>
 
-				<br><br><br><br><br><br>
+            </div>
 
-			</div>
-
-			<div class="col-xs-12 col-md-5">
-
-				{!! $data['content'] !!}
-
-			</div>
-		</div>
-
-	</div>
-	</div>
-
-	<script>
-	 $('#button-map').click(function() {
-
-	  if ($(this).hasClass('active')) {
-	   $('.maps-house-auction').animate({
-	    left: '100%'
-	   }, 300)
-	   $(this)
-	    .removeClass('active')
-	    .find('i').addClass('fa-map-marker-alt').removeClass('fa-times')
-	  } else {
-	   $('.maps-house-auction').animate({
-	    left: 0
-	   }, 300)
-	   $(this)
-	    .addClass('active')
-	    .find('i').removeClass('fa-map-marker-alt').addClass('fa-times')
-	  }
-
-	 })
-	</script>
+        </div>
+    </main>
 
 @stop

@@ -328,11 +328,9 @@ nav[aria-label="breadcrumb"] {
  */
 .card-custom-large {
 	box-shadow: var(--lb-box-shadow);
+	--bs-card-cap-bg: #fff;
 }
 
-.card-custom-large .card-footer {
-	background-color: #fff;
-}
 
 .card-custom-large img {
 	object-fit: cover;

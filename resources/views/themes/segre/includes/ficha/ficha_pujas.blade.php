@@ -1,0 +1,37 @@
+
+
+<div class="ficha-info-content">
+
+    @if (!$retirado && !$devuelto && !$fact_devuelta)
+        <div class="ficha-info-items h-100">
+
+			{{-- quieren que se pueda comprar en históricas --}}
+            @if ($sub_cerrada && !$sub_historica && !$isLastHistoryAuction)
+                @include('includes.ficha.pujas_ficha_cerrada')
+            @elseif($subasta_venta && !$cerrado && !$end_session)
+                @if (\Config::get('app.shoppingCart'))
+                    @include('includes.ficha.pujas_ficha_ShoppingCart')
+                @else
+                    @include('includes.ficha.pujas_ficha_V')
+                @endif
+
+            {{-- si un lote cerrado no se ha vendido se podra comprar --}}
+            @elseif(($subasta_web || $subasta_online || $subasta_inversa) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
+                @include('includes.ficha.pujas_ficha_V')
+			@elseif($subasta_inversa  && !$cerrado)
+                @include('includes.ficha.pujas_ficha_I')
+
+            {{-- si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta --}}
+            @elseif(($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado)
+                @include('includes.ficha.pujas_ficha_O')
+            @elseif($subasta_web && !$cerrado)
+                @include('includes.ficha.pujas_ficha_W')
+            @elseif($subasta_make_offer && !$cerrado)
+                @include('includes.ficha.pujas_ficha_M')
+            @else
+                @include('includes.ficha.pujas_ficha_cerrada')
+            @endif
+
+        </div>
+    @endif
+</div>

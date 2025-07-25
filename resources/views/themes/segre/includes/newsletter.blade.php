@@ -1,36 +1,26 @@
-<div class="newsletter js-newletter-block">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
-                <div class="newsletter-tittle newsletter-title-color">{{ trans($theme.'-app.foot.newsletter_title') }}</div>
-                {{-- <p class="newsletter-subtittle">{{ trans($theme.'-app.foot.newsletter_description') }}</p> --}}
-            </div>
-            <div class="col-xs-12 col-sm-6  col-md-5 col-md-offset-1 col-lg-6 col-lg-offset-1 col-xs-offset-0 newsletter-control-input">
-                <div class="newsletter-placeholder">
-                    {{ trans($theme.'-app.foot.newsletter_text_input') }}
-                </div>
-                <input class="form-control input-lg newsletter-input" type="text" placeholder="">
-				<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
-                <input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>" >
-                <input type="hidden" class="newsletter" id="newsletter-input" name="families[]" value="1" >
-                <button id="newsletter-btn" type="button" class="button-principal button-newsletter">{{trans($theme.'-app.foot.newsletter_button')}}</button>
-			</div>
-			<div class="check_term box col-xs-12 col-sm-6  col-md-5 col-md-offset-1 col-lg-6 col-lg-offset-1 col-xs-offset-0">
-				<div class="form-check">
-					<input
-						name="condiciones"
-						type="checkbox"
-						id="condiciones"
-						type="checkbox" class="form-check-input">
-					<label class="form-check-label" for="condiciones">{!! trans($theme.'-app.login_register.read_conditions_politic') !!}</label>
-				</div>
-			</div>
-			<div class="col-xs-12">
-				<h6 class="text-center">
-					{{ trans($theme.'-app.foot.newslatter_lopd') }}
-					<p>{!! trans("$theme-app.global.captcha-terms") !!}</p>
-				</h6>
-			</div>
-        </div>
+<div class="newsletter newsletter-js">
+
+    <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden" value="">
+    <input id="lang-newsletter" class="lang-newsletter-js" type="hidden" value="<?= \App::getLocale() ?>">
+    <input class="newsletter" id="newsletter-input" name="families[]" type="hidden" value="1">
+
+    <div class="input-group py-2">
+        <input class="form-control form-control-sm newsletter-input newsletter-input-email-js" name="email-newsletter" type="email" aria-label="Email"
+            placeholder="Email">
+
+        <button class="input-group-text button-newsletter newsletter-btn-js" id="newsletter-btn" type="button">
+            {{ trans($theme . '-app.foot.newsletter_button') }}
+        </button>
     </div>
+
+    <div class="form-check">
+        <input class="form-check-input condiciones-newsletter-js" id="condiciones" name="condiciones" type="checkbox">
+        <label class="form-check-label" for="condiciones">{!! trans($theme . '-app.login_register.read_conditions_politic') !!}</label>
+    </div>
+
+	<div class="newsletter-terms">
+		<p>{{ trans($theme . '-app.foot.newslatter_lopd') }}</p>
+		<p>{!! trans("$theme-app.global.captcha-terms") !!}</p>
+	</div>
+
 </div>

@@ -34,6 +34,8 @@ return [
 	'queue_env'   => env('QUEUE_ENV'),
 	'force_https' => env('FORCE_HTTPS', false),
 
+	//Eliminar al acabar el desarrollo.
+	'gridAllSessions' => filter_var(env('GRID_ALL_SESSIONS', false), FILTER_VALIDATE_BOOLEAN),
 
 	/**
 	 * Agrupar subastas por variable de entorno

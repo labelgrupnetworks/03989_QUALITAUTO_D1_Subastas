@@ -143,7 +143,18 @@ class ValoracionController extends Controller
 			}
 
 			$htmlFields = false;
-			$prohibidos = array('_token', 'imagen', 'email_category', 'name', 'email', 'telf', 'post', 'g-recaptcha-response', 'captcha_token');
+			$prohibidos = [
+				'_token',
+				'imagen',
+				'email_category',
+				'name',
+				'email',
+				'telf',
+				'post',
+				'g-recaptcha-response',
+				'captcha_token',
+				'to_specialist'
+			];
 			$htmlFieldsArray = array_diff_key(request()->all(), array_flip($prohibidos));
 
 			foreach ($_POST as $key => $value) {
@@ -189,18 +200,23 @@ class ValoracionController extends Controller
 				$emailOptions['user'] = $request->input('name', '');
 			}
 
+			$send_email = Config::get('app.admin_email');
+
 			if (!empty($request->input('email_category'))) {
 				$send_email = $request->input('email_category');
-			} else {
-				$send_email = Config::get('app.admin_email');
+			} elseif (!empty($request->input('to_specialist'))) {
+				$specialistEmail = FgEspecial1::where('per_especial1', $request->input('to_specialist'))->value('email_especial1');
+				if($specialistEmail) {
+					$send_email = $specialistEmail;
+				}
 			}
 
 			$utm_email = '';
 			if (!empty(Config::get('app.utm_email'))) {
 				$utm_email = Config::get('app.utm_email') . '&utm_campaign=valoracion';
 			}
-			$emailOptions['UTM'] = $utm_email;
 
+			$emailOptions['UTM'] = $utm_email;
 			$emailOptions['to'] = $send_email;
 			$emailOptions['subject'] = trans(Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name');
 			if (ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions)) {
@@ -292,5 +308,4 @@ class ValoracionController extends Controller
 
 		return View::make('pages.valoracion.valoracion_articulos_success', array('data' => $data));
 	}
-
 }

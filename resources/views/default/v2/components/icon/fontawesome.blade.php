@@ -8,9 +8,14 @@
         '5' => '5.15.14',
         '6' => '6.5.2',
     ];
+
+    $class = 'lb-icon';
+    if ($attributes->get('class')) {
+        $class .= ' ' . $attributes->get('class');
+    }
 @endphp
 
-<svg class="lb-icon" width="{{ $sizeX }}" height="{{ $sizeY }}" fill="{{ $color }}">
+<svg class="{{ $class }}" width="{{ $sizeX }}" height="{{ $sizeY }}" fill="{{ $color }}">
     <use href="/vendor/font-awesome/{{ $versions[$version] }}/sprites/{{ $type }}.svg#{{ $icon }}"
         xlink:href="/vendor/font-awesome/{{ $versions[$version] }}/sprites/{{ $type }}.svg#{{ $icon }}">
     </use>

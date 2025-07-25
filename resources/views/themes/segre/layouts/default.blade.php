@@ -1,12 +1,15 @@
 <!doctype html>
-<html>
+<html lang="{{ config('app.language_complete')[config('app.locale')] }}">
+
 <head>
+    @includeIf('includes.google_head')
 	@include('includes.head')
+		@yield('assets_components')
 </head>
 
 <body>
 
-    <?php \Tools::personalJsCss();?>
+    {{-- {{ \Tools::personalJsCss(); }} --}}
 
     @if(!env('APP_DEBUG') && !empty(\Config::get('app.login_acces_web')) && !Session::has('user') )
         @include('includes.loggin_web')
@@ -22,7 +25,14 @@
     <i class="fa fa-chevron-up" aria-hidden="true"></i>
 
 </div>
- <?php //Tools::querylog(); ?>
+
+ <?php #Tools::querylog(); ?>
+ @if(request("openLogin")=="S" && !Session::has('user') )
+	<script>
+		openLogin();
+	</script>
+
+ @endif
 </body>
 
 </html>
