@@ -62,7 +62,7 @@ class TrackingChangeNotificationService
 		$deliveryDate = FxDvc0Seg::getEstimatedDeliveryDate($auction->dfec_sub);
 
 		$email->setAtribute('AUCTION_NAME', $auction->des_sub);
-		$email->setDate($auction->dfec_sub, null);
+		$email->setDate($auction->dfec_sub);
 
 		$email->setAtribute('DELIVERY_DATE', $deliveryDate);
 

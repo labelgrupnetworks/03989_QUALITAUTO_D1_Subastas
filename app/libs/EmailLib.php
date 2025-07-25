@@ -500,7 +500,7 @@ class EmailLib
 			$this->atributes['ANCHO'] = $lot->ancho_hces1 ?? '';
 
 			$this->setLotOpen($lot->open_at ?? '');
-			$this->setDate($lot->start_session, 'j \d\e F \d\e Y');
+			$this->setDate($lot->start_session);
 			$this->setCloseDate($lot->close_at);
 
 			if (config('app.featuresSimilarLots', '')) {
@@ -1297,20 +1297,24 @@ class EmailLib
 		}
 	}
 
-	public function setDate($date, $format)
+	/**
+	 * Establece la fecha de la sesión
+	 * @param string $date
+	 * @return void
+	 */
+	public function setDate($date)
 	{
-
-		$dateBuff = new \DateTime($date);
-		setlocale(LC_TIME, ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')) . ".UTF-8");
-		if (Config::get('app.locale') == 'es') {
-			$this->atributes["SESSION_START"] = strftime("%d de %B de %Y", $dateBuff->getTimestamp());
-		} else {
-			$this->atributes["SESSION_START"] = strftime("%B %dth, %Y", $dateBuff->getTimestamp());
+		$carbonDate = '';
+		try {
+			$carbonDate = Carbon::parse($date);
+		} catch (\Exception $e) {
+			$this->atributes["SESSION_START"] = $date;
+			return;
 		}
 
-
-		//$this->atributes["SESSION_START"] = $dateBuff->format($format);
-		//j \d\e F \d\e Y -> (01 de Enero de 2001);
+		$this->atributes["SESSION_START"] = (Config::get('app.locale') == 'es')
+			? $carbonDate->locale('es')->isoFormat('D [de] MMMM [de] YYYY')
+			: $carbonDate->isoFormat('MMMM D[th], YYYY');
 	}
 
 	public function setAtribute($atribute, $value)
