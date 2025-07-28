@@ -63,6 +63,12 @@
 						</a>
 						@endif
 
+						@if ($aucSession->tipo_sub == App\Models\V5\FgSub::TIPO_SUB_PRESENCIAL)
+							<a href="{{ Tools::url_real_time_auction($aucSession->auction, $aucSession->name, $aucSession->id_auc_sessions) }}"
+								title="{{ trans("admin-app.button.view") }}" class="btn btn-info btn-sm">
+							<i class="fa fa-eye" aria-hidden="true"></i>
+						</a>
+						@endif
 					</td>
 				</tr>
 

@@ -30,13 +30,20 @@ class AdminAucSessionsController extends Controller
         $this->isRender = $render;
     }
 
+	private function getAucSession($cod_sub)
+	{
+		return AucSessions::select('"id_auc_sessions"', '"reference"', '"auction"', '"name"', '"init_lot"', '"end_lot"', '"start"', '"end"', 'tipo_sub')
+			->joinFgSub()
+			->where('"auction"', $cod_sub)
+			->get();
+	}
+
 	/**
 	 * Mostrar página incial
 	 * */
 	function index($cod_sub)
 	{
-		$aucSessions = AucSessions::select('"id_auc_sessions"', '"reference"', '"auction"', '"name"', '"init_lot"', '"end_lot"', '"start"', '"end"')->where('"auction"', $cod_sub)->get();
-		return $aucSessions;
+		return $this->getAucSession($cod_sub);
 	}
 
 	function create($cod_sub)
@@ -118,7 +125,7 @@ class AdminAucSessionsController extends Controller
 
 			DB::commit();
 
-			$aucSessions = AucSessions::select('"id_auc_sessions"', '"reference"', '"auction"', '"name"', '"init_lot"', '"end_lot"', '"start"', '"end"')->where('"auction"', $cod_sub)->get();
+			$aucSessions = $this->getAucSession($cod_sub);
 			return response(view('admin::pages.subasta.sesiones._table', ['aucSessions' => $aucSessions, 'cod_sub' => $cod_sub])->render());
 
 		} catch (\Throwable $th) {
@@ -135,7 +142,7 @@ class AdminAucSessionsController extends Controller
 
 		$auc_info = AucSessions::where('"auction"', $cod_sub)->where('"reference"', $reference)->firstOrFail();
 
-		$aucSession =  AucSessions::where('"auction"', $cod_sub)->where('"reference"', $reference)
+		AucSessions::where('"auction"', $cod_sub)->where('"reference"', $reference)
 			->update([
 				'"start"' => $request->start,
 				'"end"' => $request->end,
@@ -157,7 +164,8 @@ class AdminAucSessionsController extends Controller
 			$this->createOrSaveAucSession_lang($request, $auc_info, $languages);
 		}
 
-		$aucSessions = AucSessions::select('"id_auc_sessions"', '"reference"', '"auction"', '"name"', '"init_lot"', '"end_lot"', '"start"', '"end"')->where('"auction"', $cod_sub)->get();
+		$aucSessions = $this->getAucSession($cod_sub);
+
 		return response(view('admin::pages.subasta.sesiones._table', ['aucSessions' => $aucSessions, 'cod_sub' => $cod_sub])->render());
 	}
 
@@ -177,7 +185,7 @@ class AdminAucSessionsController extends Controller
 		//Tenemos que eliminar la foto de la sesion
 
 
-		$aucSessions = AucSessions::select('"id_auc_sessions"', '"reference"', '"auction"', '"name"', '"init_lot"', '"end_lot"', '"start"', '"end"')->where('"auction"', $cod_sub)->get();
+		$aucSessions = $this->getAucSession($cod_sub);
 
 		return response(view('admin::pages.subasta.sesiones._table', ['aucSessions' => $aucSessions, 'cod_sub' => $cod_sub])->render());
 	}
