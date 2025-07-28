@@ -84,7 +84,8 @@ class Web_Blog extends Model
 			->whereHas('localeLang', function (Builder $query) {
 				return $query->where('enabled_web_blog_lang', 1);
 			})
-			->orderBy('publication_date_web_blog', 'desc');
+			->orderBy('publication_date_web_blog', 'desc')
+			->orderBy('id_web_blog', 'asc');
 	}
 
 	public static function getAllNoticiesWithRelations()

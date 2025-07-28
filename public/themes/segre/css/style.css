@@ -1482,7 +1482,7 @@ a.share-link span {
 .card.card-blog .card-img-top {
 	display: block;
 	aspect-ratio: 817/500;
-	object-fit: cover;
+	object-fit: contain;
 }
 
 .card.card-blog .card-title {
