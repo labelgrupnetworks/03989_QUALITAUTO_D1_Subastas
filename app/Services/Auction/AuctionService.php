@@ -6,6 +6,7 @@ use App\Models\V5\AucSessions;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgSub;
 use App\Models\V5\FgSubInd;
+use App\Providers\ToolsServiceProvider;
 use App\Support\Localization;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -52,6 +53,43 @@ class AuctionService
 			->whereAuction($codSub)
 			->orderBy('"reference"')
 			->first();
+	}
+
+	public function getNextLiveSessionByAuction($codSub)
+	{
+		$lang = Localization::getLocaleComplete();
+		return AucSessions::select([
+			'"id_auc_sessions"',
+			'"auction"',
+			'"reference"',
+			DB::raw('COALESCE("name_lang", "name") as name'),
+			'"start"',
+			'"end"',
+			'"init_lot"',
+			'"end_lot"',
+		])
+			->leftJoin('"auc_sessions_lang"', function ($join) use ($lang) {
+				$join->on('"id_auc_session_lang"', '=', '"id_auc_sessions"')
+					->where('"auc_sessions_lang"."lang_auc_sessions_lang"', $lang);
+			})
+			->where('"auction"', $codSub)
+			->where('"end"', '>', now())
+			->orderBy('"reference"')
+			->first();
+	}
+
+	public function getNextLiveSessionUrlByAuction($codSub)
+	{
+		$session = $this->getNextLiveSessionByAuction($codSub);
+		if (!$session) {
+			return null;
+		}
+
+		return ToolsServiceProvider::url_real_time_auction(
+				$session->auction,
+				$session->name,
+				$session->id_auc_sessions
+			);
 	}
 
 	protected function baseActiveSubsQuery(string $type)

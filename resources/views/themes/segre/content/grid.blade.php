@@ -9,11 +9,19 @@
 <div class="info-auction-tab-contet">
     <div class="container" data-container-style>
 
+        @if ($auction->tipo_sub == App\Models\V5\FgSub::TIPO_SUB_PRESENCIAL)
+            <div class="row">
+                <div class="col-12 col-lg-9 ms-auto">
+					<x-button.next_live_session :codSub="$auction->cod_sub" />
+                </div>
+            </div>
+        @endif
+
         <div class="row grid-row">
             <div class="col-lg-3 offcanvas-lg offcanvas-start" id="js-filters-col">
-				<div class="offcanvas-header">
-					<button type="button" class="btn-close" onclick="toggleOffCanvasFilters()"></button>
-				</div>
+                <div class="offcanvas-header">
+                    <button class="btn-close" type="button" onclick="toggleOffCanvasFilters()"></button>
+                </div>
                 <aside class="section-grid-filters sticky-lg-top">
                     @include('includes.grid.leftFilters')
                 </aside>
