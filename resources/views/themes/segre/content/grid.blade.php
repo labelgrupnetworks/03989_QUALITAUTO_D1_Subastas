@@ -9,7 +9,7 @@
 <div class="info-auction-tab-contet">
     <div class="container" data-container-style>
 
-        @if ($auction->tipo_sub == App\Models\V5\FgSub::TIPO_SUB_PRESENCIAL)
+        @if (!empty($auction) && $auction->tipo_sub == App\Models\V5\FgSub::TIPO_SUB_PRESENCIAL)
             <div class="row">
                 <div class="col-12 col-lg-9 ms-auto">
 					<x-button.next_live_session :codSub="$auction->cod_sub" />
