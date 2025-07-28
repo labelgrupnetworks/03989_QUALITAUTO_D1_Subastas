@@ -13,7 +13,7 @@ class BlogService
 {
 	public function getAllNoticiasLang($slugCategory = null)
 	{
-		$lang = Localization::getDefaultUpperLocale();
+		$lang = Localization::getUpperLocale();
 
 		return Web_Blog::query()
 			->select('ID_WEB_BLOG,IMG_WEB_BLOG,LOT_CATEGORIES_WEB_BLOG,LOT_SUB_CATEGORIES_WEB_BLOG,PUBLICATION_DATE_WEB_BLOG,primary_category_web_blog,author_web_blog')
@@ -48,6 +48,7 @@ class BlogService
 			->whereNotNull('URL_WEB_BLOG_LANG')
 			->whereNotNull('primary_category_web_blog')
 			->orderBy('WEB_BLOG.PUBLICATION_DATE_WEB_BLOG', 'desc')
+			->orderBy('WEB_BLOG.ID_WEB_BLOG', 'asc')
 			->when(Config::get('app.paginate_blog'), function ($query) {
 				return $query->paginate(Config::get('app.paginate_blog'));
 			}, function ($query) {
@@ -57,7 +58,7 @@ class BlogService
 
 	public function getNoticia($slugCategory, $slugBlog)
 	{
-		$lang = Localization::getDefaultUpperLocale();
+		$lang = Localization::getUpperLocale();
 
 		return Web_Blog::query()
 			->joinWebBlogLang()
@@ -74,7 +75,7 @@ class BlogService
 
 	public function getAllNoticiasRelacionadas($relation_new)
 	{
-		$lang = Localization::getDefaultUpperLocale();
+		$lang = Localization::getUpperLocale();
 
 		$categ_rel = Web_Blog_Rel_Category::getRelationsByIdQuery($relation_new)
 			->where('enable_category_blog', 1)

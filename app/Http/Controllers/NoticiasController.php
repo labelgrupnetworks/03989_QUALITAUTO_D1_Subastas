@@ -51,6 +51,14 @@ class NoticiasController extends Controller
 		return View::make('front::pages.noticias.noticias', ['data' => $data]);
 	}
 
+	/**
+	 * Muestra una noticia en concreto
+	 * @todo Revisar el contenido recibido cuando no se esta en el idioma por defecto
+	 * @param $lang
+	 * @param $key_categ
+	 * @param $key_news
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function news($lang, $key_categ, $key_news)
 	{
 		$blogService = new BlogService();

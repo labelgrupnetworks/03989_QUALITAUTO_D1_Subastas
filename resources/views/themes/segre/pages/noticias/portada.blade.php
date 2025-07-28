@@ -15,7 +15,7 @@
 <main class="blog-page">
 
     {!! BannerLib::bannerWithView('blog-page', 'hero', [
-        'title' => trans("$theme-app.foot.blog"),
+        'title' => trans('web.blog.name'),
         'breadcrumb' => view('includes.breadcrumb', ['bread' => $bread])->render(),
     ]) !!}
 
