@@ -1,6 +1,6 @@
 <main class="main-page">
 	<div class="home-slider">
-		{!! BannerLib::bannersPorKey('home-top-banner', 'home-top-banner', ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false], null, false, '') !!}
+		{!! BannerLib::bannersPorKey('home-top-banner', 'home-top-banner', ['dots' => true, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false], null, false, '') !!}
 	</div>
 
     <section class="section-sessions">
