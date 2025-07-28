@@ -9,9 +9,13 @@
                     <p class="mb-3">28002 Madrid</p>
 
                     <p><a class="text-decoration-none" href="tel:+34915159584">T 915 159 584</a></p>
-                    <p>
+                    <p class="mb-3">
                         <a class="text-decoration-none" href="mailto:info@subastassegre.es">info@subastassegre.es</a>
                     </p>
+
+					<p class="small">
+						{!! trans('web.foot.segre_schedule') !!}
+					</p>
                 </div>
             </div>
 

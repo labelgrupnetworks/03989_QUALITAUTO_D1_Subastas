@@ -532,9 +532,11 @@ function action_fav_modal(action) {
 	$('.lds-ellipsis').show()
 	$('.ficha-info-fav-ico a').addClass('hidden')
 
+	const messageSpan = $("#modalMensaje #insert_msg");
+
 	$.magnificPopup.close();
 	if (typeof cod_licit == 'undefined' || cod_licit == null) {
-		$("#insert_msg").html(messages.error.mustLogin);
+		messageSpan.html(messages.error.mustLogin);
 		$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 		return;
 	} else {
@@ -547,12 +549,12 @@ function action_fav_modal(action) {
 
 
 				if (data.status == 'error') {
-					$("#insert_msg").html("");
-					$("#insert_msg").html(messages.error[data.msg]);
+					messageSpan.html("");
+					messageSpan.html(messages.error[data.msg]);
 					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 				} else if (data.status == 'success') {
-					$("#insert_msg").html("");
-					$("#insert_msg").html(messages.success[data.msg]);
+					messageSpan.html("");
+					messageSpan.html(messages.success[data.msg]);
 					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 
 					const isAdding = action == 'add';

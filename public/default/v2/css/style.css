@@ -361,6 +361,7 @@ nav[aria-label="breadcrumb"] {
 .badge-custom-primary {
 	display: inline-flex;
 	gap: 5px;
+	margin-bottom: 5px;
 	color: var(--lb-color-primary-contrast);
 	background-color: var(--lb-color-primary);
 	cursor: pointer;

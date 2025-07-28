@@ -108,7 +108,7 @@
 
 				<div class="pujas-w-inputs-wrapp mt-4">
 					@php
-						$to = Config::get('app.admin_email');
+						$to = 'info@subastassegre.es';
 						$dataToEmail = [
 							'ref' => $lote_actual->ref_asigl0,
 							'sub' => $lote_actual->cod_sub,

@@ -1,0 +1,21 @@
+@import url('global.css');
+
+.auction_title {
+	font-size: 2rem;
+}
+
+.nav-pills .nav-link {
+	border-radius: 0;
+}
+
+.header_aucions_lots {
+	padding-left: 5px;
+}
+
+.actual_titulo {
+	line-height: 1;
+}
+
+#actual_descripcion * {
+	font-weight: 400;
+}
