@@ -2539,13 +2539,6 @@ td span input.form-control{
     display:none;
 }
 
-
-#text_actual_max_bid{
-    font-size: 18px;
-}
-
-
-
 .insert_bid{
     margin-top: 20px;
 }
@@ -5819,6 +5812,7 @@ h1.user-dashboard-title {
     font-weight: 600;
     border-bottom: 1px solid var(--gray-color-1);
     padding-bottom: 5px;
+	padding-top: 5px;
 }
 
 .ficha_prices > p {
@@ -5826,8 +5820,8 @@ h1.user-dashboard-title {
 }
 
 .ficha_actions {
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 	border-bottom: 1px solid var(--gray-color-1);
 }
 
@@ -5848,6 +5842,7 @@ h1.user-dashboard-title {
 	list-style: none;
 	gap: 1rem;
 	margin-bottom: 0;
+	float: inline-end;
 }
 
 .ficha_shares ul li a {
@@ -5885,3 +5880,16 @@ h1.user-dashboard-title {
 #js-toolbar a:hover {
 	color: rgba(0, 0, 0, 0.8);
 }
+
+.ficha_W .timer {
+	font-variant-numeric: tabular-nums;
+}
+
+#actual_max_bid[data-winner="true"], #actual_max_bid[data-winner="true"] + span {
+	color: #00870D;
+}
+
+#actual_max_bid[data-winner="false"], #actual_max_bid[data-winner="false"] + span {
+	color: #E74C3C;
+}
+

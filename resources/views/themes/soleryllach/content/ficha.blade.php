@@ -181,7 +181,7 @@
                                 </div>
                             </div>
 
-                            <div class="toolbar" id="js-toolbar" style="position: absolute; z-index: 999">
+                            <div class="toolbar" id="js-toolbar" style="position: absolute; z-index: 1">
                                 <a id="zoom-in" href="#zoom-in" title="Zoom in">
                                     <svg class="bi" width="24" height="24" fill="currentColor">
                                         <use xlink:href="/bootstrap-icons.svg#plus-circle"></use>
