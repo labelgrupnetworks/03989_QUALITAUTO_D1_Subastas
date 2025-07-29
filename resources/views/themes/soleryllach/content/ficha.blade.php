@@ -78,17 +78,6 @@
                         @endforeach
                     </div>
 
-                    @if (Session::has('user') && $lote_actual->retirado_asigl0 == 'N')
-                        <a class="btn <?= $data['subasta_info']->lote_actual->favorito ? 'hidden' : '' ?>"
-                            id="add_fav" href="javascript:action_fav_modal('add')">
-                            <i class="fa fa-star-o" aria-hidden="true"></i>
-                        </a>
-                        <a class="btn <?= $data['subasta_info']->lote_actual->favorito ? '' : 'hidden' ?>"
-                            id="del_fav" href="javascript:action_fav_modal('remove')">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        </a>
-                    @endif
-
                 </div>
 
                 <!-- Inicio Galeria Desktop -->
@@ -290,29 +279,24 @@
                     </div>
                 @endif
                 <div class="desc">
-                    <div class="desc_tit">
-                        {{ trans(\Config::get('app.theme') . '-app.lot.description') }}
+                    <div class="desc_tit position-relative">
+						<span>
+                        	{{ trans('web.lot.description') }}
+						</span>
 
-                        <div class="button-follow" style="display:none;">
-                            <div class="spinner">
-                                <div class="double-bounce1"></div>
-                                <div class="double-bounce2"></div>
+                        @if (Session::has('user') &&  $lote_actual->retirado_asigl0 == 'N')
+                            <div class="favoritos">
+                                <button id="del_fav" @class(['btn btn-link', 'hidden' => !$lote_actual->favorito])
+                                    onclick="action_fav_modal('remove')">
+                                    <x-icon.boostrap icon="heart-fill" size="24" />
+                                </button>
+                                <button id="add_fav" @class(['btn btn-link', 'hidden' => $lote_actual->favorito]) onclick="action_fav_modal('add')">
+                                    <x-icon.boostrap icon="heart" size="24" />
+                                </button>
                             </div>
-
-                        </div>
-                        @if (Session::has('user') && $lote_actual->retirado_asigl0 == 'N')
-                            <a class="btn <?= $data['subasta_info']->lote_actual->favorito ? 'hidden' : '' ?>"
-                                id="add_fav" href="javascript:action_fav_modal('add')">
-                                <p>{{ trans(\Config::get('app.theme') . '-app.lot.add_to_fav') }} </p><i
-                                    class="fa fa-star-o" aria-hidden="true"></i>
-                            </a>
-                            <a class="btn <?= $data['subasta_info']->lote_actual->favorito ? '' : 'hidden' ?>"
-                                id="del_fav" href="javascript:action_fav_modal('remove')">
-                                <p>{{ trans(\Config::get('app.theme') . '-app.lot.del_from_fav') }} </p><i
-                                    class="fa fa-star" aria-hidden="true"></i>
-                            </a>
                         @endif
                     </div>
+
                     <div class="desc_content">
                         @if (\Config::get('app.descweb_hces1'))
                             <p><?= $lote_actual->descweb_hces1 ?></p>

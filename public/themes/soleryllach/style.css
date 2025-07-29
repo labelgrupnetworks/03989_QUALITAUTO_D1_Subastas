@@ -1649,14 +1649,16 @@ div.info_single_content button.btn-custom {
 	text-align: center;
 	width: 100%;
 }
+
 div.desc div.desc_tit {
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid var(--gray-color-2);
 	padding: 4px 10px;
 	font-size: 20px;
 	padding-bottom: 15px;
 	margin-bottom: 20px;
 	padding-left: 0;
 }
+
 div.title_single {
 	font-size: 20px;
 	border-bottom: 1px solid #ccc;
@@ -2289,22 +2291,15 @@ tbody tr{
         opacity: 0;
     }
 
+	.desc_tit .favoritos {
+		float: right;
+	}
+
     #add_fav,
-    #del_fav{
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        z-index: 2;
-        background-color: #cccccc;
-        color: #000;
-        font-size: 16px;
-        text-align: center;
-
-    }
-
-    #add_fav p,
-    #del_fav p{
-        display: inline;
+    #del_fav {
+		line-height: 1;
+        color: var(--gray-color-2);
+		padding: 0;
     }
 
     .hei{
