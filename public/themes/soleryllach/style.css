@@ -191,6 +191,22 @@ button.btn-registro-soler:hover {
 	padding: 10px 60px;
 }
 
+.btn-chevron {
+	color: #000;
+	background-color: transparent;
+	width: 72px;
+	height: 72px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-chevron:hover {
+	color: #000;
+	background-color: hsla(0,0%,100%,.48);
+}
+
 /*******------------------------------********
                 STANDARES
 /*******------------------------------********/
@@ -1488,9 +1504,7 @@ div.list_lot div.item_lot div.img_lot img, .item_subasta a .img-lot img{
 }
 
 div.single div.img_single_border {
-	border: 1px solid #ccc;
 	min-height: 485px;
-	/* margin-bottom: 20px; */
     position: relative;
 }
 
@@ -1527,9 +1541,9 @@ div.img_single.fullpage{
 }
 
 div.info_single {
-	border: 1px solid #ccc;
 	margin-bottom: 20px;
 }
+
 div.info_single_title {
 	padding: 8px 0px;
 	border-bottom: 1px solid #ccc;
@@ -1545,13 +1559,7 @@ div.info_single_title span.clock {
 	float: right;
 
 }
-ficha_V div.info_single_content {
-	padding: 20px 16px;
-}
-.ficha_V .info_single_title{
-    padding-left: 15px;
-    padding-right: 15px;
-}
+
 .info_single_button:hover{
 	/* #bf9814 */
     color: var(--primary-color-hover);
@@ -1868,6 +1876,8 @@ header ul.items_top a.dropdown-menu {
 
 .slider-thumnail-container{
     position: relative;
+	padding-right: .5rem;
+	border-right: 1px solid var(--gray-color-1);
 }
 
 .slider-thumnail{
@@ -4341,7 +4351,7 @@ tbody tr input[type="checkbox"]{
  .chevron-right-button, .chevron-left-button{
     position: absolute;
     top: 0;
-    height: 46vh;
+    height: 476px;
     width: 70px;
     display: flex;
     align-items: center;
@@ -5858,4 +5868,25 @@ h1.user-dashboard-title {
 
 .ficha_shares ul li a:hover {
 	background-color: var(--primary-color-hover);
+}
+
+#js-toolbar {
+	position: absolute !important;
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	padding: 3px;
+}
+
+#js-toolbar.fullpage {
+	background-color: #ffffffea;
+	padding: 5px;
+}
+
+#js-toolbar a {
+	color: rgba(0, 0, 0, 0.6);
+}
+
+#js-toolbar a:hover {
+	color: rgba(0, 0, 0, 0.8);
 }
