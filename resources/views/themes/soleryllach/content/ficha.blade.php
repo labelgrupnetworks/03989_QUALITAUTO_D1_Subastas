@@ -52,29 +52,39 @@
 
                 <!-- Inicio Galeria Responsive -->
                 <div class="visible-xs">
-                    <div class="owl-theme owl-carousel" id="owl-carousel-responsive">
-
+                    <div class="slider-for">
                         @foreach ($lote_actual->imagenes as $key => $imagen)
-                            <div
-                                class="item_content_img_single"style="position: relative; height: 290px; overflow: hidden;">
-                                <img class="img-responsive" data-pos="{{ $key }}"
-                                    src="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
-                                    alt="{{ $lote_actual->titulo_hces1 }}"
-                                    style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;">
-                            </div>
+                            <img class="img-responsive" data-pos="{{ $key }}"
+                                src="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
+                                alt="{{ $lote_actual->titulo_hces1 }}" height="290">
                         @endforeach
                         @foreach ($resourcesList as $resource)
-                            <div class="item_content_img_single" style="position: relative;">
-                                @if ($resource['format'] == 'GIF')
-                                    <img class="img-responsive" src="{{ $resource['src'] }}"
-                                        alt="{{ $lote_actual->titulo_hces1 }}"
-                                        style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;">
-                                @elseif($resource['format'] == 'VIDEO')
-                                    <video width="100%" controls>
-                                        <source src="{{ $resource['src'] }}" type="video/mp4">
-                                    </video>
-                                @endif
-                            </div>
+                            @if ($resource['format'] == 'GIF')
+                                <img class="img-responsive" src="{{ $resource['src'] }}"
+                                    alt="{{ $lote_actual->titulo_hces1 }}">
+                            @elseif($resource['format'] == 'VIDEO')
+                                <video width="100%" controls>
+                                    <source src="{{ $resource['src'] }}" type="video/mp4">
+                                </video>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="slider-nav">
+
+                        @foreach ($lote_actual->imagenes as $key => $imagen)
+                            <img class="img-responsive" data-pos="{{ $key }}"
+                                src="{{ Tools::url_img('lote_small', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
+                                alt="{{ $lote_actual->titulo_hces1 }}">
+                        @endforeach
+                        @foreach ($resourcesList as $resource)
+                            @if ($resource['format'] == 'GIF')
+                                <img class="img-responsive" src="{{ $resource['src'] }}"
+                                    alt="{{ $lote_actual->titulo_hces1 }}">
+                            @elseif($resource['format'] == 'VIDEO')
+                                <video width="100%" controls>
+                                    <source src="{{ $resource['src'] }}" type="video/mp4">
+                                </video>
+                            @endif
                         @endforeach
                     </div>
 
@@ -280,11 +290,11 @@
                 @endif
                 <div class="desc">
                     <div class="desc_tit position-relative">
-						<span>
-                        	{{ trans('web.lot.description') }}
-						</span>
+                        <span>
+                            {{ trans('web.lot.description') }}
+                        </span>
 
-                        @if (Session::has('user') &&  $lote_actual->retirado_asigl0 == 'N')
+                        @if (Session::has('user') && $lote_actual->retirado_asigl0 == 'N')
                             <div class="favoritos">
                                 <button id="del_fav" @class(['btn btn-link', 'hidden' => !$lote_actual->favorito])
                                     onclick="action_fav_modal('remove')">
@@ -345,6 +355,13 @@
             nextButton: "chevron-right",
             previousButton: "chevron-left",
             toolbar: "toolbarDiv",
+
+            maxZoomPixelRatio: 4, //relacion entre el zoom y la imagen
+            minZoomImageRatio: 0.9,
+            zoomPerScroll: 1.25,
+            visibilityRatio: 1.0, //relacion entre el zoom y la imagen
+            constrainDuringPan: true, //no permitir salirse del cuadro
+            preserveImageSizeOnResize: false, //mantener zoom al ampliar a pantalla completa
         });
     }
 
@@ -378,6 +395,23 @@
 
     $(document).ready(function() {
         showOrHideControls();
+
+
+        $('.slider-for').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            asNavFor: '.slider-nav'
+        });
+        $('.slider-nav').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            asNavFor: '.slider-for',
+            dots: false,
+            centerMode: false,
+            focusOnSelect: true
+        });
     });
 </script>
 

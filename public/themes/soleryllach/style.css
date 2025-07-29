@@ -196,8 +196,10 @@ button.btn-registro-soler:hover {
 	background-color: transparent;
 	width: 72px;
 	height: 72px;
-	border-radius: 50%;
-	display: flex;
+	aspect-ratio: 1;
+	padding: 0;
+	border-radius: 9999px;
+	display: flex !important;
 	align-items: center;
 	justify-content: center;
 }
@@ -5893,3 +5895,10 @@ h1.user-dashboard-title {
 	color: #E74C3C;
 }
 
+.slider-for {
+	margin-bottom: 1rem;
+}
+
+.slider-nav .slick-track {
+	min-width: 100%;
+}
