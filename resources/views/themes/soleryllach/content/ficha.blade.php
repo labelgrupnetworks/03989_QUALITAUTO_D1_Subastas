@@ -181,19 +181,18 @@
 
                             <div id="toolbarDiv">
                                 <div class="chevron-left-button" role="">
-									<button class="btn btn-link btn-chevron" id="chevron-left">
-										<x-icon.boostrap icon="chevron-left" size="32"/>
-									</button>
+                                    <button class="btn btn-link btn-chevron" id="chevron-left">
+                                        <x-icon.boostrap icon="chevron-left" size="32" />
+                                    </button>
                                 </div>
                                 <div class="chevron-right-button" role="">
-									<button class="btn btn-link btn-chevron" id="chevron-right">
-										<x-icon.boostrap icon="chevron-right" size="32"/>
-									</button>
+                                    <button class="btn btn-link btn-chevron" id="chevron-right">
+                                        <x-icon.boostrap icon="chevron-right" size="32" />
+                                    </button>
                                 </div>
                             </div>
 
-                            <div class="toolbar" id="js-toolbar"
-                                style="position: absolute; z-index: 999">
+                            <div class="toolbar" id="js-toolbar" style="position: absolute; z-index: 999">
                                 <a id="zoom-in" href="#zoom-in" title="Zoom in">
                                     <svg class="bi" width="24" height="24" fill="currentColor">
                                         <use xlink:href="/bootstrap-icons.svg#plus-circle"></use>
@@ -355,10 +354,10 @@
             ],
             showNavigator: false,
             sequenceMode: true,
-			toolbar: "js-toolbar",
-			zoomInButton: "zoom-in",
-			zoomOutButton: "zoom-out",
-			fullPageButton: "full-page",
+            toolbar: "js-toolbar",
+            zoomInButton: "zoom-in",
+            zoomOutButton: "zoom-out",
+            fullPageButton: "full-page",
             nextButton: "chevron-right",
             previousButton: "chevron-left",
             toolbar: "toolbarDiv",
