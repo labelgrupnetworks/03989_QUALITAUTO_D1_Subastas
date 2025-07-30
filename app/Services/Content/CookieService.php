@@ -101,7 +101,7 @@ class CookieService
 			return false;
 		}
 
-		return $this->preferences['permissions']['analysis'];
+		return data_get($this->preferences, 'permissions.analysis', false);
 	}
 
 	public function isAdvertisingAllowed()
@@ -110,7 +110,7 @@ class CookieService
 			return false;
 		}
 
-		return $this->preferences['permissions']['advertising'];
+		return data_get($this->preferences, 'permissions.advertising', false);
 	}
 
 	public function getConfigurationCookies()
