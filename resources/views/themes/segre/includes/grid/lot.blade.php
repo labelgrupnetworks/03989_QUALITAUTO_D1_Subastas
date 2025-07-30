@@ -78,7 +78,7 @@
                 @endif
             @endif
 
-            @if ($cerrado && empty($precio_venta) && $compra)
+            @if ($cerrado && empty($precio_venta) && $compra && (!$sub_historica || $sub_historica && $isLastHistoryAuction))
                 <a class="lot-btn lot-btn_buy" {!! $url !!}>
                     {{ trans($theme . '-app.subastas.buy_lot') }}
                 </a>
