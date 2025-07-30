@@ -259,7 +259,19 @@ p .novelty {
 }
 
 .nav-tabs {
-	font-size: var(--fs-large);
+	font-size: 20px;
+}
+
+@media (min-width: 1200px) {
+	.tr_user_info_auction .nav-tabs {
+		font-size: 20px;
+	}
+}
+
+@media (min-width: 1500px) {
+	.tr_user_info_auction .nav-tabs {
+		font-size: var(--fs-large);
+	}
 }
 
 .desc-search .desc-title,
@@ -290,7 +302,7 @@ p .novelty {
 
 @media (min-width: 1200px) {
 	.tr_user_info_auction .aside.buscador {
-		grid-template-columns: 1fr 3fr 5fr 2fr 2fr 1fr;
+		grid-template-columns: 1fr 3fr 3fr 2fr 2fr 1fr;
 		grid-template-areas:
 			". . . . search-lot search-lot"
 			"btn-previous num-lot-search num-lot-search num-lot-search num-lot-search btn-next"
@@ -312,4 +324,55 @@ p .novelty {
 
 .checkbox-favorite {
 	display: none;
+}
+
+button.btn-custom-search {
+	border-radius: 50%;
+	height: 24px;
+	width: 24px;
+	background: #0C2340;
+	color: white;
+	padding: 0;
+	text-align: center;
+}
+
+.search-lot {
+	display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-lot > div {
+	flex: 1;
+}
+
+@media (max-width: 768px) {
+	.tr_user_info_auction .tab-content {
+		height: 100%;
+	}
+
+	.tr_user_info_auction > div {
+		height: initial;
+	}
+
+	.ficha_tr {
+		grid-template-rows: auto 300px 400px auto 100px;
+	}
+
+	.tr_user_info_auction .aside.buscador {
+		grid-template-rows: auto;
+	}
+
+	.tr_user_info_auction span {
+		font-size: inherit;
+	}
+
+	.button-search {
+		grid-column: 2/-2;
+		margin-bottom: 10px;
+	}
+
+	.pujar {
+		background-color: var(--primary-color);
+	}
 }
