@@ -47,7 +47,7 @@ class CookieService
 
 	public function getLotConfiguration()
 	{
-		return $this->preferences['configuration']['lot'];
+		return data_get($this->preferences, 'configuration.lot', 'img');
 	}
 
 	public function setAllPermissions()
@@ -91,7 +91,7 @@ class CookieService
 
 	public function addConfigurations($configurations)
 	{
-		$this->preferences['configuration'] = array_merge($this->preferences['configuration'], $configurations);
+		$this->preferences['configuration'] = array_merge($this->preferences['configuration'] ?? [], $configurations);
 		$this->savePreferences();
 	}
 

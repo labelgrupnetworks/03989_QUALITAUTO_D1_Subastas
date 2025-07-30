@@ -173,11 +173,12 @@
 @include('includes.cookies_personalize')
 
 @php
-	$showWarningModal = Config::get('app.show_warning_modal', false) && Session::has('user');
-	$untilDate = Carbon\Carbon::create(2024, 7, 31, 0, 0, 0);
+	$showWarningModal = Config::get('app.show_warning_modal', false);
+	// $untilDate = Carbon\Carbon::create(2024, 7, 31, 0, 0, 0);
+	// $isLessThan =  Carbon\Carbon::now()->lessThan($untilDate);
 @endphp
 
-@if ($showWarningModal && Carbon\Carbon::now()->lessThan($untilDate))
+@if ($showWarningModal)
 <div class="message_modal " data-style="popover" data-position="right">
     <p class="message_modal__title">{{ trans("$theme-app.foot.alert_modal_title") }}</p>
 
@@ -207,7 +208,6 @@
 	else{
 		$('.message_modal')[0].style.display = 'none';
 	}
-
 
 	function closeMessageModal() {
 		$('.message_modal')[0].style.display = 'none';
