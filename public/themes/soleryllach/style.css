@@ -6257,3 +6257,36 @@ h1.user-dashboard-title {
 .slider-nav .slick-track {
 	min-width: 100%;
 }
+
+.module_header {
+	color: var(--primary-color);
+	padding: 5px 0;
+	border-bottom: 1px solid var(--gray-color-2);
+	cursor: pointer;
+	margin-bottom: 5px;
+}
+
+.module_header .glyphicon {
+	transition: transform 0.3s ease;
+	color: #fff;
+}
+
+/* gira el chevron cuando esté abierto */
+.module_header[aria-expanded="true"] .glyphicon {
+	transform: rotate(180deg);
+}
+
+@media (min-width: 768px) {
+  .module_wrapper.collapse {
+    display: block !important;
+    height: auto !important;
+    visibility: visible !important;
+  }
+  /* Opcional: quitar transiciones si interfiere */
+  .module_wrapper.collapse {
+    -webkit-transition: none !important;
+       -moz-transition: none !important;
+         -o-transition: none !important;
+            transition: none !important;
+  }
+}

@@ -33,7 +33,14 @@
                         src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo_blanc.png?a=1"
                         alt="{{ trans(\Config::get('app.theme') . '-app.home.name') }}" style="height:auto;"
                         height="60" />
-                    <ul class="module_wrapper">
+
+
+					<div class="module_header module_title secondary-color visible-xs text-left" data-toggle="collapse" href="#collapse-contact">
+						{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}
+						<span class="glyphicon glyphicon-chevron-down pull-right"></span>
+					</div>
+
+                    <ul id="collapse-contact" class="module_wrapper collapse">
                         <li class="module_title secondary-color">
                             <span>{{ trans("$theme-app.foot.in_madrid") }}</span>
                             <address class="mt-0">
@@ -55,19 +62,26 @@
                 </div>
 
                 <div class="col-xs-12 col-md-3">
-                    <ul class="module_wrapper">
-                        <li class="module_title secondary-color">
+					<div class="module_header module_title secondary-color visible-xs" data-toggle="collapse" href="#collapse-schedule">
+						{{ trans(\Config::get('app.theme') . '-app.foot.schedule_title') }}
+						<span class="glyphicon glyphicon-chevron-down pull-right"></span>
+					</div>
+
+                    <ul id="collapse-schedule" class="module_wrapper collapse">
+						<li class="module_title secondary-color hidden-xs">
                             {{ trans(\Config::get('app.theme') . '-app.foot.schedule_title') }}
                         <li>
                         <li class="li-color" style="color: white; font-size: 12px;">{!! trans(\Config::get('app.theme') . '-app.foot.schedule_content') !!}</li>
                     </ul>
-
-
                 </div>
 
                 <div class="col-xs-12 col-md-2">
-                    <ul class="module_wrapper">
-                        <li class="module_title secondary-color">
+					<div class="module_header module_title secondary-color visible-xs" data-toggle="collapse" href="#collapse-enterprise">
+						{{ trans(\Config::get('app.theme') . '-app.foot.enterprise') }}
+						<span class="glyphicon glyphicon-chevron-down pull-right"></span>
+					</div>
+                    <ul id="collapse-enterprise" class="module_wrapper collapse">
+                        <li class="module_title secondary-color hidden-xs">
                             {{ trans(\Config::get('app.theme') . '-app.foot.enterprise') }}
                         <li>
                         <li><a
@@ -96,8 +110,12 @@
 
                 </div>
                 <div class="col-xs-12 col-md-3">
-                    <ul class="module_wrapper">
-                        <li class="module_title secondary-color">
+					<div class="module_header module_title secondary-color visible-xs" data-toggle="collapse" href="#collapse-term_condition">
+						{{ trans(\Config::get('app.theme') . '-app.foot.term_condition') }}
+						<span class="glyphicon glyphicon-chevron-down pull-right"></span>
+					</div>
+                    <ul id="collapse-term_condition" class="module_wrapper collapse">
+                        <li class="module_title secondary-color hidden-xs">
                             {{ trans(\Config::get('app.theme') . '-app.foot.term_condition') }}
                         <li>
                         <li><a
@@ -106,11 +124,6 @@
                         <li><a href="<?php echo Routing::translateSeo('pagina') . trans(\Config::get('app.theme') . '-app.links.privacy'); ?>"
                                 title="{{ trans(\Config::get('app.theme') . '-app.foot.privacy') }}">{{ trans(\Config::get('app.theme') . '-app.foot.privacy') }}</a>
                         </li>
-                        <?php
-                        /*<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.cookies')?>
-                        ?>
-                        ?>">{{ trans(\Config::get('app.theme') . '-app.foot.cookies') }}</a></li>
-                        */?>
                         <li><a href="<?php echo Routing::translateSeo('pagina') . trans(\Config::get('app.theme') . '-app.links.term_condition'); ?>"
                                 title="{{ trans(\Config::get('app.theme') . '-app.foot.term_condition') }}">{{ trans(\Config::get('app.theme') . '-app.foot.term_condition') }}</a>
                         </li>
@@ -130,6 +143,7 @@
     </div>
 
 </footer>
+
 <div class="copy">
     <div class="container">
         <div class="row">
@@ -146,7 +160,7 @@
     </div>
 </div>
 
-@if (!Cookie::get(new App\Services\Content\CookieService()->getCookieName()))
+@if (!Cookie::get((new App\Services\Content\CookieService())->getCookieName()))
     @include('includes.cookie', ['style' => 'popover'])
 @endif
 
