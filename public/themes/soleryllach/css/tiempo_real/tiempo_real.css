@@ -7,6 +7,11 @@
 
 	--color-gold: #c8ad89;
 
+	--btn-primary-background: var(--color-gold);
+	--btn-primary-background-hover: #555;
+	--btn-primary-text: white;
+	--btn-primary-text-hover: white;
+
 	--fs-large: 24px;
 	--fs-medium: 14px;
 	--fs-small: 12px;
@@ -55,10 +60,14 @@ p .novelty {
 .button,
 .btn-custom-save {
 	font-size: var(--fs-medium);
+    font-weight: 500;
+    border: 1px solid transparent;
+    padding: 10px 25px;
+    border-radius: 5px;
 }
 
 .button:hover {
-	background-color: var(--secondary-color-hover);
+	background-color: var(--btn-primary-background-hover);
 	color: #fff;
 }
 
@@ -263,13 +272,42 @@ p .novelty {
 	font-size: var(--fs-medium);
 }
 
-.tr_user_info_auction .aside.buscador {
-    grid-template-columns: 1fr 3fr 5fr 2fr 2fr 1fr;
-    grid-template-areas:
-        ". . . search-lot search-lot search-lot"
-        "btn-previous num-lot-search num-lot-search num-lot-search num-lot-search btn-next"
-        "img2 img2 desc-search desc-search desc-search ."
-        "img2 img2 price-search button-search . .";
+.pujar {
+	column-gap: 0;
+}
+
+.pujar .form-control {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.pujar .btn {
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+@media (min-width: 1200px) {
+	.tr_user_info_auction .aside.buscador {
+		grid-template-columns: 1fr 3fr 5fr 2fr 2fr 1fr;
+		grid-template-areas:
+			". . . . search-lot search-lot"
+			"btn-previous num-lot-search num-lot-search num-lot-search num-lot-search btn-next"
+			". img2 desc-search desc-search desc-search ."
+			". img2 price-search button-search button-search .";
+	}
+
+	.price-search {
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid #ddd;
+		padding-bottom: 5px;
+		align-self: flex-start;
+		height: 34px;
+		align-items: center;
+		margin-right: 10px;
+	}
 }
 
 .checkbox-favorite {

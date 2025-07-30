@@ -47,8 +47,14 @@
         </div>
 
         <div class="price-search">
-            {{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}: <span class="precio">{{ \Tools::moneyFormat($data['subasta_info']->lote_siguiente->impsalhces_asigl0) }}</span>
-            <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span>
+			<span class="price-search-label">
+				{{ trans('web.sheet_tr.start_price') }}
+			</span>
+			<span class="price-search-value">
+				<span class="precio">{{ \Tools::moneyFormat($data['subasta_info']->lote_siguiente->impsalhces_asigl0) }}</span>
+            	<span>{{ $data['js_item']['subasta']['currency']->symbol }}</span>
+			</span>
+
         </div>
 
         <div class="checkbox checkbox-favorite">
