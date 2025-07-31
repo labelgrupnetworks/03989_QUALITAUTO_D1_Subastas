@@ -6,6 +6,12 @@
 	--danger-hover-color: #65110d;
 
 	--color-gold: #c8ad89;
+	--gray-color-2: #9EA4A0;
+
+	--btn-primary-background: var(--color-gold);
+	--btn-primary-background-hover: #555;
+	--btn-primary-text: white;
+	--btn-primary-text-hover: white;
 
 	--fs-large: 24px;
 	--fs-medium: 14px;
@@ -21,6 +27,10 @@ body {
 	font-family: var(--ff-body);
 	font-size: var(--fs-medium);
 	text-transform: initial;
+}
+
+h4 {
+	font-size: var(--fs-medium);
 }
 
 .nav_tr {
@@ -55,10 +65,14 @@ p .novelty {
 .button,
 .btn-custom-save {
 	font-size: var(--fs-medium);
+    font-weight: 500;
+    border: 1px solid transparent;
+    padding: 10px 25px;
+    border-radius: 5px;
 }
 
 .button:hover {
-	background-color: var(--secondary-color-hover);
+	background-color: var(--btn-primary-background-hover);
 	color: #fff;
 }
 
@@ -151,6 +165,22 @@ p .novelty {
 
 #ficha #clock {
 	z-index: 100;
+}
+
+.user_info_items {
+	height: auto;
+	grid-template-rows: auto;
+	align-items: flex-start;
+    padding-top: 15px;
+}
+
+.user_info_items > div {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.user_info_items > div:empty {
+	display: none;
 }
 
 @media (max-width:1200px) {
@@ -250,7 +280,19 @@ p .novelty {
 }
 
 .nav-tabs {
-	font-size: var(--fs-large);
+	font-size: 20px;
+}
+
+@media (min-width: 1200px) {
+	.tr_user_info_auction .nav-tabs {
+		font-size: 20px;
+	}
+}
+
+@media (min-width: 1500px) {
+	.tr_user_info_auction .nav-tabs {
+		font-size: var(--fs-large);
+	}
 }
 
 .desc-search .desc-title,
@@ -263,15 +305,129 @@ p .novelty {
 	font-size: var(--fs-medium);
 }
 
-.tr_user_info_auction .aside.buscador {
-    grid-template-columns: 1fr 3fr 5fr 2fr 2fr 1fr;
-    grid-template-areas:
-        ". . . search-lot search-lot search-lot"
-        "btn-previous num-lot-search num-lot-search num-lot-search num-lot-search btn-next"
-        "img2 img2 desc-search desc-search desc-search ."
-        "img2 img2 price-search button-search . .";
+.pujar {
+	column-gap: 0;
+}
+
+.pujar .form-control {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.pujar .btn {
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+@media (min-width: 1200px) {
+	.tr_user_info_auction .aside.buscador {
+		grid-template-columns: 1fr 3fr 3fr 2fr 2fr 1fr;
+		grid-template-areas:
+			". . . . search-lot search-lot"
+			"btn-previous num-lot-search num-lot-search num-lot-search num-lot-search btn-next"
+			". img2 desc-search desc-search desc-search ."
+			". img2 price-search button-search button-search .";
+	}
+
+	.price-search {
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid #ddd;
+		padding-bottom: 5px;
+		align-self: flex-start;
+		height: 34px;
+		align-items: center;
+		margin-right: 10px;
+	}
 }
 
 .checkbox-favorite {
+	float: right;
+}
+
+.checkbox-favorite input[type="checkbox"] {
 	display: none;
+}
+
+.checkbox-favorite .favorite-icon {
+	cursor: pointer;
+	color: var(--gray-color-2);
+}
+
+.checkbox-favorite input[type="checkbox"]:checked + .favorite-icon.icon-remove {
+	display:  inline-block;
+}
+
+.checkbox-favorite input[type="checkbox"]:checked + .favorite-icon + .favorite-icon.icon-add {
+	display: none;
+}
+
+.checkbox-favorite input[type="checkbox"] + .favorite-icon + .favorite-icon.icon-add {
+	display:  inline-block;
+}
+
+.checkbox-favorite input[type="checkbox"] + .favorite-icon.icon-remove {
+	display: none;
+}
+
+button.btn-custom-search {
+	border-radius: 50%;
+	height: 24px;
+	width: 24px;
+	background: #0C2340;
+	color: white;
+	padding: 0;
+	text-align: center;
+}
+
+.search-lot {
+	display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-lot > div {
+	flex: 1;
+}
+
+.btn-previous,
+.btn-next {
+	align-self: center;
+}
+
+@media (max-width: 768px) {
+	.tr_user_info_auction .tab-content {
+		height: 100%;
+	}
+
+	.tr_user_info_auction > div {
+		height: initial;
+	}
+
+	.ficha_tr {
+		grid-template-rows: auto auto 400px auto 100px;
+	}
+
+	.tr_user_info_auction .aside.buscador {
+		grid-template-rows: auto;
+	}
+
+	.tr_user_info_auction span {
+		font-size: inherit;
+	}
+
+	.button-search {
+		grid-column: 2/-2;
+		margin-bottom: 10px;
+	}
+
+	.pujar {
+		background-color: var(--primary-color);
+	}
+
+	.num-lot-search h2 {
+		padding-top: 10px;
+	}
 }

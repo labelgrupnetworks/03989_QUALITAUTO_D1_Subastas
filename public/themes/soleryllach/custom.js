@@ -431,9 +431,11 @@
                         $(".hist_new").removeClass("hidden");
                         $(".custom").removeClass("hidden");
                         $("#bid_modal_pujar").val(data.imp_actual);
-                        if(data.winner){
+						$("#actual_max_bid").attr("data-winner", data.winner);
+						if(data.winner){
                             $(".no_winner").addClass("hidden");
                             $(".winner").removeClass("hidden");
+
                         }else{
                             $(".no_winner").removeClass("hidden");
                             $(".winner").addClass("hidden");

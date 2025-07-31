@@ -52,7 +52,7 @@
 	   if (typeof auction_info != 'undefined' && typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
 
 		   reloadAdminCredit();
-		   setInterval('reloadAdminCredit()', 5000);
+		   setInterval('reloadAdminCredit()', 10000);
 
 		   $("#clients_credit").on('click', function () {
 			   var direccion = ' ';
