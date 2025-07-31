@@ -402,6 +402,7 @@ $(document).ready(function () {
 					$("#insert_msg").html(data.msg);
 					$(".hist_new").removeClass("hidden");
 					$(".custom").removeClass("hidden");
+					$("#actual_max_bid").attr("data-winner", data.winner);
 					$("#bid_modal_pujar").val(data.imp_actual);
 					if (data.winner) {
 						$(".no_winner").addClass("hidden");
