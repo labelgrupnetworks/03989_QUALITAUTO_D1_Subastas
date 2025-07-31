@@ -1,7 +1,7 @@
 @php
     $showActualBid = ($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas;
     $showResult = $awarded && Session::has('user');
-	$showClosedAndNotBuyed = ($cerrado && empty($precio_venta) && !$compra) || ($isLastHistoryAuction && $cerrado && empty($precio_venta) && $compra);
+	$showClosedAndNotBuyed = ($cerrado && empty($precio_venta) && !$compra) || (!empty($isLastHistoryAuction) && $isLastHistoryAuction && $cerrado && empty($precio_venta) && $compra);
 @endphp
 
 <div class="col">
