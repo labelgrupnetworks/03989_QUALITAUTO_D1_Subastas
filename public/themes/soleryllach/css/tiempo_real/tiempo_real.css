@@ -6,6 +6,7 @@
 	--danger-hover-color: #65110d;
 
 	--color-gold: #c8ad89;
+	--gray-color-2: #9EA4A0;
 
 	--btn-primary-background: var(--color-gold);
 	--btn-primary-background-hover: #555;
@@ -26,6 +27,10 @@ body {
 	font-family: var(--ff-body);
 	font-size: var(--fs-medium);
 	text-transform: initial;
+}
+
+h4 {
+	font-size: var(--fs-medium);
 }
 
 .nav_tr {
@@ -160,6 +165,22 @@ p .novelty {
 
 #ficha #clock {
 	z-index: 100;
+}
+
+.user_info_items {
+	height: auto;
+	grid-template-rows: auto;
+	align-items: flex-start;
+    padding-top: 15px;
+}
+
+.user_info_items > div {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.user_info_items > div:empty {
+	display: none;
 }
 
 @media (max-width:1200px) {
@@ -323,6 +344,31 @@ p .novelty {
 }
 
 .checkbox-favorite {
+	float: right;
+}
+
+.checkbox-favorite input[type="checkbox"] {
+	display: none;
+}
+
+.checkbox-favorite .favorite-icon {
+	cursor: pointer;
+	color: var(--gray-color-2);
+}
+
+.checkbox-favorite input[type="checkbox"]:checked + .favorite-icon.icon-remove {
+	display:  inline-block;
+}
+
+.checkbox-favorite input[type="checkbox"]:checked + .favorite-icon + .favorite-icon.icon-add {
+	display: none;
+}
+
+.checkbox-favorite input[type="checkbox"] + .favorite-icon + .favorite-icon.icon-add {
+	display:  inline-block;
+}
+
+.checkbox-favorite input[type="checkbox"] + .favorite-icon.icon-remove {
 	display: none;
 }
 
@@ -346,6 +392,11 @@ button.btn-custom-search {
 	flex: 1;
 }
 
+.btn-previous,
+.btn-next {
+	align-self: center;
+}
+
 @media (max-width: 768px) {
 	.tr_user_info_auction .tab-content {
 		height: 100%;
@@ -356,7 +407,7 @@ button.btn-custom-search {
 	}
 
 	.ficha_tr {
-		grid-template-rows: auto 300px 400px auto 100px;
+		grid-template-rows: auto auto 400px auto 100px;
 	}
 
 	.tr_user_info_auction .aside.buscador {
@@ -374,5 +425,9 @@ button.btn-custom-search {
 
 	.pujar {
 		background-color: var(--primary-color);
+	}
+
+	.num-lot-search h2 {
+		padding-top: 10px;
 	}
 }

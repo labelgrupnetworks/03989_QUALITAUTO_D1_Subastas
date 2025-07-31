@@ -5,7 +5,7 @@
 
             <div>
                 <input class="form-control input-sm" id="search_item_field" type="text"
-                   placeholder="{{ trans('web.sheet_tr.insert_item') }}">
+                    placeholder="{{ trans('web.sheet_tr.insert_item') }}">
             </div>
 
             <button class="btn btn-custom-search" id="search_item" type="button">
@@ -27,12 +27,29 @@
         </div>
 
         <div class="num-lot-search">
-            <h2 class="">
+            <h2 class="lot-search-title">
                 {{ trans(\Config::get('app.theme') . '-app.sheet_tr.lot') }}
                 <span id="slote_title">
                     {{ str_replace(['.1', '.2', '.3', '.4', '.5'], ['-A', '-B', '-C', '-D', '-E'], $data['subasta_info']->lote_siguiente->ref_asigl0) }}
                 </span>
                 <span class="lot-itp-mark {{ $isITP ? '' : 'hidden' }}">*</span>
+
+
+                <div class="checkbox-favorite">
+                    <label>
+                        @if (Session::has('user'))
+                            <input class="add_to_fav" data-from="buscador" type="checkbox">
+                        @else
+                            <input data-from="buscador" type="checkbox" onclick="initSesion();">
+                        @endif
+						<div class="favorite-icon icon-remove">
+							<x-icon.boostrap icon="heart-fill" size="24" />
+						</div>
+						<div class="favorite-icon icon-add">
+							<x-icon.boostrap icon="heart" size="24" />
+						</div>
+                    </label>
+                </div>
             </h2>
         </div>
 
@@ -66,18 +83,6 @@
                 <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span>
             </span>
 
-        </div>
-
-        <div class="checkbox checkbox-favorite">
-            <label>
-                @if (Session::has('user'))
-                    <input class="" data-from="buscador" type="checkbox">
-                    {{ trans(\Config::get('app.theme') . '-app.sheet_tr.add_to_fav') }}
-                @else
-                    <input class="" data-from="buscador" type="checkbox" onclick="initSesion();">
-                    {{ trans(\Config::get('app.theme') . '-app.sheet_tr.add_to_fav') }}
-                @endif
-            </label>
         </div>
 
         <div class="button-search">
