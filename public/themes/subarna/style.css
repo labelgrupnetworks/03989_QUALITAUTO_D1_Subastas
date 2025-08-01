@@ -5129,10 +5129,10 @@ div.item_subasta img {
 
 .summer-text {
 	position: absolute;
-    bottom: 50px;
+    bottom: 100px;
     left: 50%;
 	transform: translateX(-50%);
-    width: 525px;
+    width: 600px;
 	max-width: 85%;
     background-color: #856363;
     padding: 10px 20px;
@@ -5140,6 +5140,13 @@ div.item_subasta img {
     text-align: center;
 	font-weight: 400;
 	line-height: 1.2;
+	font-size: .9em;
+}
+
+@media(min-width: 576px) {
+	.summer-text {
+		bottom: 50px;
+	}
 }
 
 @media(min-width: 768px) {
