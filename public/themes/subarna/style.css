@@ -5127,6 +5127,21 @@ div.item_subasta img {
 	aspect-ratio: 5/4;
 }
 
+.summer-text {
+	position: absolute;
+    bottom: 50px;
+    left: 50%;
+	transform: translateX(-50%);
+    width: 525px;
+	max-width: 85%;
+    background-color: #856363;
+    padding: 10px 20px;
+    color: #fff;
+    text-align: center;
+	font-weight: 400;
+	line-height: 1.2;
+}
+
 @media(min-width: 768px) {
 	.slider-nav-control>* {
 		min-width: 0;
