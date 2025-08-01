@@ -6161,6 +6161,12 @@ h1.user-dashboard-title {
 	margin-top: 0;
 }
 
+@media(min-width: 992px) {
+	.ficha_W, .ficha_C, .ficha_V {
+		padding-left: 15px;
+	}
+}
+
 .ficha_prices {
 	display: flex;
 	justify-content: space-between;
