@@ -9,14 +9,18 @@
             Imprimir paletas
         </button>
 
-        <button class="btn btn-success btn-sm" onclick="printBidPaddlesByOperator('{{ $fgSub->cod_sub }}')">
-            Imprimir Lista de Operadores
-        </button>
+		<button class="btn btn-success btn-sm" onclick="printBidPaddlesByReference('{{ $fgSub->cod_sub }}')">
+			Imprimir listado Órdenes Telefónicas
+		</button>
 
-        <button class="btn btn-success btn-sm" onclick="printBidPaddlesByReference('{{ $fgSub->cod_sub }}')">
-            Imprimir Lista Ordenes Telefónicas
+        <button class="btn btn-success btn-sm" onclick="printBidPaddlesByOperator('{{ $fgSub->cod_sub }}')">
+            Imprimir listado por operadores
         </button>
     @endif
+
+	<button class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#modalOperadoresList">
+		Gestión de Operadores
+    </button>
 
 </div>
 
@@ -108,10 +112,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formAddOperador" method="POST" action="{{ route('orders.add_bidding_agent') }}">
+                <form id="formAddOperador" method="POST" action="{{ route('subastas.phone_orders.store', $fgSub->cod_sub) }}">
                     @csrf
 
-                    <input name="cod_sub" type="hidden" value="{{ $fgSub->cod_sub }}">
                     <input name="ref_orlic" type="hidden" value="">
                     <input name="lin_orlic" type="hidden" value="">
 
@@ -119,10 +122,6 @@
                     <div class="input-group">
 
                         <select class="form-control" name="phoneBiddingAgent">
-                            <option value="">Selecciona un operador</option>
-                            @foreach ($phoneBiddingAgents as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
                         </select>
 
                         <span class="input-group-btn">
@@ -144,10 +143,31 @@
     </div>
 </div>
 
+{{-- Modal Para gestionar los operados: listar, editar, crear, eliminar --}}
+<div class="modal fade" id="modalOperadoresList" role="dialog" aria-labelledby="modalOperadoresListLabel"
+	aria-hidden="true" tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalOperadoresListLabel">
+					Lista de Operadores
+				</h5>
+				<button class="close" data-dismiss="modal" type="button" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body"></div>
+			<div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
+            </div>
+		</div>
+	</div>
+</div>
+
 {{-- Modal para crear un nuevo operador: solo necesito el nombre --}}
 <div class="modal fade" id="modalCrearOperador" role="dialog" aria-labelledby="modalCrearOperadorLabel"
     aria-hidden="true" tabindex="-1">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalCrearOperadorLabel">
@@ -176,6 +196,28 @@
 </div>
 
 <script>
+
+	$('#formCrearOperador').on('submit', function(e) {
+		e.preventDefault();
+
+
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
+			success: function(response) {
+				refreshOperadoresList();
+				refreshOperadoresSelect();
+				saved(response.message || 'Operador creado correctamente');
+				$('#modalCrearOperador').modal('hide');
+			},
+			error: function(xhr) {
+				error('Error al crear el operador: ' + xhr.responseText);
+			}
+		});
+
+	});
+
     $('.phoneBiddingAgent\\.nom_operadores button').on('click', function() {
         // Aquí puedes manejar el evento de clic
         const parentRow = $(this).closest('tr');
@@ -191,13 +233,54 @@
         $('#modalOperadores').modal('show');
     });
 
+	$('#modalOperadores').on('show.bs.modal', function() {
+		refreshOperadoresSelect();
+	});
+
+	$('#modalOperadoresList').on('show.bs.modal', function() {
+		refreshOperadoresList();
+	});
+
+	function refreshOperadoresList() {
+		$.ajax({
+			url: "{{ route('subastas.operadores.index') }}",
+			type: "GET",
+			success: function(data) {
+				$('#modalOperadoresList .modal-body').html(data);
+			},
+			error: function(xhr) {
+				console.error("Error al refrescar la lista de operadores:", xhr);
+				$('#modalOperadoresList .modal-body').html('<p>Error al refrescar la lista de operadores.</p>');
+			}
+		});
+	}
+
+	function refreshOperadoresSelect() {
+		$.ajax({
+			url: "{{ route('subastas.operadores.select') }}",
+			type: "GET",
+			success: function(data) {
+				$('select[name="phoneBiddingAgent"]').html(data);
+			},
+			error: function(xhr) {
+				console.error("Error al refrescar el select de operadores:", xhr);
+				$('select[name="phoneBiddingAgent"]').html('<option value="">Error al cargar</option>');
+			}
+		});
+	}
+
+	//borrar contenido del modal al cerrarlo
+	$('#modalOperadoresList').on('hidden.bs.modal', function() {
+		$(this).find('.modal-body').empty();
+	});
+
     //abrir un segundo modal para crear un nuevo operador
     $('#createAgent').on('click', function() {
         $('#modalCrearOperador').modal('show');
     });
 
     function printBidPaddles(id) {
-        const url = `{{ route('subastas.operadores.print_bid_paddles', ':id') }}`.replace(':id', id);
+        const url = `{{ route('subastas.phone_orders.print_bid_paddles', ':id') }}`.replace(':id', id);
         // Ajusta width/height según necesites
         window.open(
             url,
@@ -207,7 +290,7 @@
     }
 
     function printBidPaddlesByOperator(id) {
-        const url = `{{ route('subastas.operadores.print_bid_paddles_by_operator', ':id') }}`.replace(':id', id);
+        const url = `{{ route('subastas.phone_orders.print_bid_paddles_by_operator', ':id') }}`.replace(':id', id);
         // Ajusta width/height según necesites
         window.open(
             url,
@@ -217,7 +300,7 @@
     }
 
     function printBidPaddlesByReference(id) {
-        const url = `{{ route('subastas.operadores.print_bid_paddles_by_reference', ':id') }}`.replace(':id', id);
+        const url = `{{ route('subastas.phone_orders.print_bid_paddles_by_reference', ':id') }}`.replace(':id', id);
         // Ajusta width/height según necesites
         window.open(
             url,

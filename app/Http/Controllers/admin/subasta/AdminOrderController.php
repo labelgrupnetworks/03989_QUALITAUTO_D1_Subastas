@@ -18,7 +18,6 @@ use App\Models\V5\SubAuchouse;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Str;
 use App\Exports\OrdersExport;
-use App\Models\V5\FgPrmSub;
 use App\Support\Date;
 
 class AdminOrderController extends Controller
@@ -578,52 +577,4 @@ class AdminOrderController extends Controller
 	}
 
 	#endregion
-
-	public function addBiddingAgent(Request $request)
-	{
-		$validated = $request->validate([
-			'phoneBiddingAgent' => 'required|string',
-			'cod_sub' => 'required|string',
-			'ref_orlic' => 'required|string',
-			'lin_orlic' => 'required|string',
-		]);
-
-		$order = FgOrlic::query()
-			->where([
-				'sub_orlic' => $validated['cod_sub'],
-				'ref_orlic' => $validated['ref_orlic'],
-				'lin_orlic' => $validated['lin_orlic'],
-			])->first();
-
-		if(!$order){
-			return back()->withErrors(['error' => 'Orden no encontrada']);
-		}
-
-		$separationBetweenLots = FgPrmSub::getIntervalPhoneBiddingAgents();
-		$existingOperators = FgOrlic::query()
-				->joinAsigl0()
-				->where([
-					'sub_orlic' => $validated['cod_sub'],
-					'operador_orlic' => $validated['phoneBiddingAgent'],
-				])
-				->where('licit_orlic', '!=', $order->licit_orlic)
-				->whereBetween('ref_asigl0', [$validated['ref_orlic'] - $separationBetweenLots, $validated['ref_orlic'] - 1])
-				->exists();
-
-		if ($existingOperators) {
-			return back()->withErrors(['error' => 'Ya existe un operador asignado en este rango de lotes']);
-		}
-
-		FgOrlic::query()
-			->where([
-				'sub_orlic' => $validated['cod_sub'],
-				'ref_orlic' => $validated['ref_orlic'],
-				'lin_orlic' => $validated['lin_orlic'],
-			])
-			->update(['operador_orlic' => $validated['phoneBiddingAgent']]);
-
-		return back()->with(['success' => 'Agente de pujas telefónicas agregado correctamente']);
-	}
-
-
 }

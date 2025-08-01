@@ -33,7 +33,7 @@
 
 	@if (Config::get('app.show_operadores', false))
 	<li class="nav-item">
-		<a class="nav-link" id="operadores-tab" href="{{ route('subastas.operadores.index', $cod_sub) }}" role="tab"
+		<a class="nav-link" id="operadores-tab" href="{{ route('subastas.phone_orders.index', $cod_sub) }}" role="tab"
 			aria-controls="operadores" aria-selected="false">Operadores</a>
 	</li>
 	@endif

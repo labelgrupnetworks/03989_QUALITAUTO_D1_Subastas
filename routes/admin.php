@@ -21,7 +21,7 @@ use App\Http\Controllers\admin\EmailController;
 use App\Http\Controllers\admin\subasta\AdminBidsController;
 use App\Http\Controllers\admin\subasta\AdminLicitController;
 use App\Http\Controllers\admin\subasta\AdminOperadoresController;
-use App\Http\Controllers\admin\subasta\AdminOrderController;
+use App\Http\Controllers\admin\subasta\AdminPhoneOrderController;
 use App\Http\Controllers\admin\TraduccionesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
@@ -223,8 +223,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/send_ws', 'subasta\AdminOrderController@send_ws');
 			Route::post('/delete-with-filters', 'subasta\AdminOrderController@destroyWithFilters')->name('orders.destroy_with_filters');
 			Route::post('/delete-selection', 'subasta\AdminOrderController@destroySelections')->name('orders.destroy_selections');
-			Route::post('/add-bidding-agent', [AdminOrderController::class, 'addBiddingAgent'])->name('orders.add_bidding_agent');
 		});
+
 		Route::resource('orders', 'subasta\AdminOrderController')->except(['show'])->parameters(['orders' => 'idAuction']);
 
 		Route::group(['prefix' => 'bids'], function () {
@@ -389,11 +389,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			'lotes_concursales' => 'lote'
 		]);
 
+		Route::get('operadores', [AdminOperadoresController::class, 'index'])->name('subastas.operadores.index');
+		Route::get('operadores/select', [AdminOperadoresController::class, 'toSelect'])->name('subastas.operadores.select');
 		Route::post('operadores', [AdminOperadoresController::class, 'store'])->name('subastas.operadores.store');
-		Route::get('subastas/{cod_sub}/operadores/print-bid-paddles', [AdminOperadoresController::class, 'printBidPaddles'])->name('subastas.operadores.print_bid_paddles');
-		Route::get('subastas/{cod_sub}/operadores/print-bid-paddles-by-reference', [AdminOperadoresController::class, 'printBidPaddlesByReference'])->name('subastas.operadores.print_bid_paddles_by_reference');
-		Route::get('subastas/{cod_sub}/operadores/print-bid-paddles-by-operator', [AdminOperadoresController::class, 'printBidPaddlesByOperator'])->name('subastas.operadores.print_bid_paddles_by_operator');
-		Route::get('subastas/{cod_sub}/operadores', [AdminOperadoresController::class, 'index'])->name('subastas.operadores.index');
+		Route::put('operadores/{id}', [AdminOperadoresController::class, 'update'])->name('subastas.operadores.update');
+		Route::delete('operadores/{id}', [AdminOperadoresController::class, 'destroy'])->name('subastas.operadores.destroy');
+
+		Route::get('subastas/{cod_sub}/phone-orders/print-bid-paddles', [AdminPhoneOrderController::class, 'printBidPaddles'])->name('subastas.phone_orders.print_bid_paddles');
+		Route::get('subastas/{cod_sub}/phone-orders/print-bid-paddles-by-reference', [AdminPhoneOrderController::class, 'printBidPaddlesByReference'])->name('subastas.phone_orders.print_bid_paddles_by_reference');
+		Route::get('subastas/{cod_sub}/phone-orders/print-bid-paddles-by-operator', [AdminPhoneOrderController::class, 'printBidPaddlesByOperator'])->name('subastas.phone_orders.print_bid_paddles_by_operator');
+		Route::get('subastas/{cod_sub}/phone-orders', [AdminPhoneOrderController::class, 'index'])->name('subastas.phone_orders.index');
+		Route::post('subastas/{cod_sub}/phone-orders', [AdminPhoneOrderController::class, 'store'])->name('subastas.phone_orders.store');
 
 		Route::get('subastas/{num_hces1}/{lin_hces1}/files/create', 'subasta\AdminLotFilesController@create')->name('subastas.lotes.files.create');
 		Route::post('subastas/{num_hces1}/{lin_hces1}/files', 'subasta\AdminLotFilesController@store')->name('subastas.lotes.files.store');
