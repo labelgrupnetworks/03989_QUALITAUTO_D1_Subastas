@@ -79,6 +79,10 @@
 						@elseif(!empty($bannerItem->url))
 						<a class="stretched-link" href="{{ $bannerItem->url }}"></a>
 						@endif
+
+						<div class="summer-text">
+							{!! trans('web.home.info') !!}
+						</div>
 					</div>
 				@endif
             @endforeach
