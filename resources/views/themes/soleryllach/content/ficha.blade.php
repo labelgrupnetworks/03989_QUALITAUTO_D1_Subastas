@@ -313,10 +313,10 @@
                         @elseif (\Config::get('app.desc_hces1'))
                             <p><?= $lote_actual->desc_hces1 ?></p>
                         @endif
-
-						<span class="see-more hidden">{{ trans('web.global.see_more') }}</span>
-						<span class="hide-more hidden">{{ trans('web.global.hide_more') }}</span>
                     </div>
+
+					<span class="see-more hidden">{{ trans('web.global.see_more') }}</span>
+					<span class="hide-more hidden">{{ trans('web.global.hide_more') }}</span>
                 </div>
             </div>
 
