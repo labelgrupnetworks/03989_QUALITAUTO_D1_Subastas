@@ -303,6 +303,7 @@ return [
 		'totals' => 'Totals',
 		'back' => 'Return',
 		'see_more' => 'See more',
+		'hide_more' => 'Hide',
 		'sort' => 'Sort',
 		'all' => 'Todas',
 		'cancel' => 'Cancel',

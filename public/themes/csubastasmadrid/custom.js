@@ -1743,3 +1743,32 @@ function sendContactForm(event) {
 	const form = event.currentTarget;
 	validateCaptchaMiddleware(() => form.submit())
 }
+
+function readMoreDescription($element, lineNum) {
+	const $readMore = $('.see-more');
+	const $hideMore = $('.hide-more');
+
+	const lines = lineNum || 3;
+	const textMinHeight = "" + (parseInt($element.css("line-height"), 19) * lines) + "px";
+	const textMaxHeight = "" + $element.css("height");
+
+	if (parseInt($element.css("height")) > 52 && $(document).width() > 768) {
+		$element.css("height", "" + textMaxHeight);
+		$element.css("transition", "height .5s");
+		$element.css("height", "" + textMinHeight);
+
+		$readMore.removeClass('hidden');
+
+		$readMore.on('click', function () {
+			$element.css("height", "" + textMaxHeight);
+			$readMore.addClass('hidden');
+			$hideMore.removeClass('hidden');
+		});
+
+		$hideMore.on('click', function () {
+			$element.css("height", "" + textMinHeight);
+			$readMore.removeClass('hidden');
+			$hideMore.addClass('hidden');
+		});
+	}
+}

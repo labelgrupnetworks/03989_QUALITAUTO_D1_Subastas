@@ -6468,3 +6468,22 @@ reinicializo estilo para no afectar al resto de páginas
             transition: none !important;
   }
 }
+
+.desc_content {
+	overflow: hidden;
+    margin-bottom: 0;
+    line-height: 1.2;
+    font-style: normal;
+}
+
+.desc_content p:empty {
+	display: none;
+}
+
+.desc .see-more, .desc .hide-more {
+	color: #283747;
+	font-weight: bold;
+	cursor: pointer;
+	margin: 0;
+	height: auto;
+}

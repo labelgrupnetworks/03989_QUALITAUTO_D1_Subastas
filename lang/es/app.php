@@ -305,6 +305,7 @@ return [
 		'totals' => 'Totales',
 		'back' => 'Volver',
 		'see_more' => 'Ver más',
+		'hide_more' => 'Ocultar',
 		'sort' => 'Ordenar',
 		'all' => 'All',
 		'cancel' => 'Cancelar',
