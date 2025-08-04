@@ -155,15 +155,11 @@
 				<div class="input-group">
 					<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}"
 						class="form-control input-lg control-number" type="text" value="{{ $data['precio_salida'] }}">
-					<div class="input-group-btn" style="vertical-align: top;">
-							<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}"
-								class="form-control input-lg control-number" type="text" value="{{ $data['precio_salida'] }}">
-							<div class="input-group-btn" style="vertical-align: top;">
-								<button type="button" data-from="modal"
-									class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
-									type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
-									codsub="{{ $lote_actual->cod_sub }}">{{ trans($theme . '-app.lot.pujar') }}</button>
-							</div>
+						<div class="input-group-btn" style="vertical-align: top;">
+							<button type="button" data-from="modal"
+								class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
+								type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
+								codsub="{{ $lote_actual->cod_sub }}">{{ trans($theme . '-app.lot.pujar') }}</button>
 						</div>
 					<br>
 				</div>
