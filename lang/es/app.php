@@ -499,7 +499,8 @@ return [
 		'company_rule_5' => 'N.I.F. de la empresa',
 		'reg_error_live_auction' => 'No se ha podido completar el registro. La subasta en vivo ya ha comenzado.',
 		'reg_error_live_auction_info' => 'Si desea mayor información, diríjase por correo electrónico al Departamento de Atención al cliente al siguiente email: info@tauleryfau.com',
-		'read_conditions2' => 'Autorizo a :name a efectuar esta consulta a las empresas citadas en esta categoría (RGPD 2016/679)'
+		'read_conditions2' => 'Autorizo a :name a efectuar esta consulta a las empresas citadas en esta categoría (RGPD 2016/679)',
+		'register_yourself' => 'Regístrate',
 	),
 	'lot' =>
 	array(

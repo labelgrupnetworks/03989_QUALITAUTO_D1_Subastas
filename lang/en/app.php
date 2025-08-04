@@ -491,6 +491,7 @@ return [
 		'company_rule_5' => 'N.I.F. of the company',
 		'reg_error_live_auction' => 'The registration could not be completed. The live auction has already started.',
 		'reg_error_live_auction_info' => 'If you want more information, please contact the Customer Service Department at the following email: info@tauleryfau.com',
+		'register_yourself' => 'Register',
 	),
 	'lot' =>
 	array(

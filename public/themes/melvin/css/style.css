@@ -1,5 +1,27 @@
 @import url("global.css");
 
+.navbar-nav {
+	--bs-nav-link-font-weight: 300;
+}
+
+.logo-company {
+	max-width: 150px;
+}
+
+@media(min-width: 992px) {
+	.logo-company {
+		max-width: 200px;
+	}
+}
+
+.register-buttons {
+	font-size: 12px;
+}
+
+.register-buttons .btn {
+	--bs-btn-font-size: 1em;
+}
+
 .home-slider .column_banner {
 	padding: 0;
 }
@@ -238,4 +260,8 @@ section.ficha-previous-next {
 		grid-column: 1 / 3;
 		grid-row-start: 5;
 	}
+}
+
+.user-panel-page {
+	padding-top: 2rem;
 }
