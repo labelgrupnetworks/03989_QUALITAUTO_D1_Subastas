@@ -218,6 +218,8 @@ return [
 		'how_to_buy' => 'How to buy',
 		'how_to_sell' => 'How to sell',
 		'how_to_bid' => 'How to bid',
+		'legal' => 'Legal',
+		'legal_notice' => 'Legal Notice',
 		'map' => 'Site Map',
 		'newsletter_button' => 'SEND',
 		'newsletter_description' => 'To stay up to date with the latest news about auctions and much more.',

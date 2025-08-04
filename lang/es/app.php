@@ -221,6 +221,8 @@ return [
 		'how_to_buy' => 'Cómo comprar',
 		'how_to_sell' => 'Cómo vender',
 		'how_to_bid' => 'Cómo pujar',
+		'legal' => 'Legal',
+		'legal_notice' => 'Aviso Legal',
 		'map' => 'Mapa del sitio',
 		'newsletter_button' => 'ENVIAR',
 		'newsletter_description' => 'Para estar al día de las últimas noticias sobre subastas y mucho más.',

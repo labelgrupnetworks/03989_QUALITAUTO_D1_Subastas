@@ -46,16 +46,14 @@
 
     <nav class="navbar navbar-expand-xl">
         <div class="container">
-            {{-- <a class="navbar-brand" href="/{{$lang}}" title="{{(\Config::get( 'app.name' ))}}">
-				<img width="150" class="img-responsive" src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
-			</a> --}}
+
             <button class="navbar-toggler m-auto collapsed" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
                 type="button" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="navbar-collapse collapse" id="navbarHeader" style="">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
+                <ul class="navbar-nav navbar-header-links me-auto mb-2 mb-lg-0 gap-lg-3">
 
                     @if ($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
                         <li class="nav-item">

@@ -22,6 +22,14 @@
 	--bs-btn-font-size: 1em;
 }
 
+.navbar-header-links .nav-item:hover {
+	box-shadow: 0 2px 0 black;
+}
+
+.navbar-header-links .nav-link:hover {
+	text-decoration: none;
+}
+
 .home-slider .column_banner {
 	padding: 0;
 }
@@ -264,4 +272,14 @@ section.ficha-previous-next {
 
 .user-panel-page {
 	padding-top: 2rem;
+}
+
+body>footer h5 {
+	font-size: 30px;
+	font-weight: 700;
+	margin-bottom: 1rem;
+}
+
+body>footer .nav {
+	font-size: 18px;
 }
