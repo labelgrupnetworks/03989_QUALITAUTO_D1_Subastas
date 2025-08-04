@@ -6,12 +6,16 @@
 	--danger-hover-color: #65110d;
 
 	--color-gold: #c8ad89;
+	--gray-color-1: #CACFCB;
 	--gray-color-2: #9EA4A0;
+    --gray-color-3: #303030;
+    --gray-color-5: #7D7D7D;
+
 
 	--btn-primary-background: var(--color-gold);
-	--btn-primary-background-hover: #555;
+	--btn-primary-background-hover: var(--gray-color-1);
 	--btn-primary-text: white;
-	--btn-primary-text-hover: white;
+	--btn-primary-text-hover: var(--gray-color-3);
 
 	--fs-xlarge: 20px;
 	--fs-large: 18px;
@@ -70,7 +74,7 @@ p .novelty {
 
 .button:hover {
 	background-color: var(--btn-primary-background-hover);
-	color: #fff;
+	color: var(--btn-primary-text-hover);
 }
 
 .btn-danger {
@@ -264,10 +268,21 @@ Quitar cuando streaming en js
 	font-family: var(--ff-highlight);
 	font-size: var(--fs-xlarge);
 	color: #292929;
-	padding-bottom: 5px;
 	font-weight: 600;
-	border-bottom: 1px solid var(--color-gold);
 	margin-top: 0;
+	position: relative;
+    padding-bottom: 10px;
+}
+
+.product_lot::before,
+.num-lot-search h2::before {
+	content: '';
+    height: 2px;
+    width: 100px;
+	background-color: var(--gray-color-5);
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
 }
 
 .actual_descripcion {
