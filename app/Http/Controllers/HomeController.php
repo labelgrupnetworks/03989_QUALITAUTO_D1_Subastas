@@ -7,6 +7,10 @@ class HomeController extends Controller
 {
     public function index()
     {
+		if(Config::get('app.redirecto_home_to', '')) {
+			return redirect()->to(route(Config::get('app.redirecto_home_to')));
+		}
+
 		$data['restricti_css_js'] = true;
 
 		if(Config::get('app.seo_in_home', 0)){
