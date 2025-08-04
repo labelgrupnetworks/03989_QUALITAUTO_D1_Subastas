@@ -427,21 +427,7 @@
         margin-top: 10px;
         font-size: 30px;
     }
-    #add_fav.btn,
-    #del_fav.btn {
-        position: absolute;
-        font-size: 12px;
-        left: 45px;
-        z-index: 2;
-        height: 36px;
-        width: 200px;
-    }
-    #add_fav.btn p,
-    #del_fav.btn p,
-    #add_fav.btn i,
-    #del_fav.btn i {
-        font-size: 13px;
-    }
+
     .it_ro h1.titleSingle {
         font-size: 25px;
     }
@@ -619,15 +605,7 @@
         margin-bottom: 15px;
         flex-basis: 100%;
     }
-    #add_fav.btn,
-    #del_fav.btn {
-        top: 10px;
-        left: 45px;
-        z-index: 2;
-        font-size: 5px;
-        height: 35px;
-        width: 44px;
-    }
+
     .button-follow-responsive {
         opacity: 1;
         background: transparent;
@@ -637,10 +615,7 @@
         top: -20px;
         left: -3px;
     }
-    #add_fav.btn i,
-    #del_fav.btn i {
-        font-size: 20px;
-    }
+
     div.module_footer {
         text-align: center;
     }

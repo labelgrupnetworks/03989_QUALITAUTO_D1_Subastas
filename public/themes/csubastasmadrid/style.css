@@ -192,6 +192,11 @@ button.btn-registro-soler {
     cursor: pointer;
 }
 
+.btn-bold {
+	font-weight: 600;
+	padding: 10px 60px;
+}
+
 .prefooter {
     padding: 10px 0;
     margin-top: 80px;
@@ -268,6 +273,23 @@ button.btn-registro-soler:hover {
     transition: 0.5s;
 }
 
+.btn-chevron {
+	color: #000;
+	background-color: transparent;
+	width: 72px;
+	height: 72px;
+	aspect-ratio: 1;
+	padding: 0;
+	border-radius: 9999px;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-chevron:hover {
+	color: #000;
+	background-color: hsla(0,0%,100%,.48);
+}
 
 /*******------------------------------********
                 STANDARES
@@ -1813,14 +1835,12 @@ div.list_lot div.item_lot div.img_lot img {
 }
 
 div.single div.img_single_border {
-    border: 1px solid #ccc;
 	min-height: 485px;
-	margin-bottom: 20px;
     position: relative;
 }
 
 div.col-sm-3-custom {
-    width: 70%;
+    width: 100%;
     display: inline-block;
     border: 1px solid #ccc;
     margin-bottom: 10px;
@@ -1853,7 +1873,6 @@ div.img_single.fullpage {
 }
 
 div.info_single {
-    border: 1px solid #ccc;
     margin-bottom: 20px;
 }
 
@@ -1871,15 +1890,6 @@ div.info_single_title span {
 
 div.info_single_title span.clock {
     float: right;
-}
-
-ficha_V div.info_single_content {
-    padding: 20px 16px;
-}
-
-.ficha_V .info_single_title {
-    padding-left: 15px;
-    padding-right: 15px;
 }
 
 .info_single_button:hover {
@@ -1982,7 +1992,7 @@ div.info_single_content button.btn-custom {
 }
 
 div.desc div.desc_tit {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--gray-color-2);
     padding: 4px 10px;
     font-size: 20px;
     padding-bottom: 15px;
@@ -2236,6 +2246,8 @@ header ul.items_top a.dropdown-menu {
 
 .slider-thumnail-container {
     position: relative;
+	padding-right: .5rem;
+	border-right: 1px solid var(--gray-color-1);
 }
 
 .slider-thumnail {
@@ -2638,21 +2650,15 @@ tbody tr {
     opacity: 0;
 }
 
-#add_fav,
-#del_fav {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    z-index: 2;
-    background-color: #cccccc;
-    color: #000;
-    font-size: 16px;
-    text-align: center;
+.desc_tit .favoritos {
+	float: right;
 }
 
-#add_fav p,
-#del_fav p {
-    display: inline;
+#add_fav,
+#del_fav {
+	line-height: 1;
+	color: var(--gray-color-2);
+	padding: 0;
 }
 
 .hei {
@@ -2944,10 +2950,6 @@ td span input.form-control {
     text-align: center;
     height: 100%;
     display: none;
-}
-
-#text_actual_max_bid {
-    font-size: 18px;
 }
 
 .insert_bid {
@@ -4903,7 +4905,7 @@ tbody tr input[type="checkbox"] {
 .chevron-left-button {
     position: absolute;
     top: 0;
-    height: 46vh;
+    height: 476px;
     width: 70px;
     display: flex;
     align-items: center;
@@ -6331,4 +6333,138 @@ reinicializo estilo para no afectar al resto de páginas
 	font-size: 12px;
 	line-height: 1;
 	margin-bottom: .5rem;
+}
+
+@media(min-width: 992px) {
+	.ficha_W, .ficha_C, .ficha_V {
+		padding-left: 15px;
+	}
+}
+
+.ficha_prices {
+	display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    border-bottom: 1px solid var(--gray-color-1);
+    padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+.ficha_prices > p {
+	margin: 0;
+}
+
+.ficha_actions {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid var(--gray-color-1);
+}
+
+.ficha_shares {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.ficha_shares > p {
+	margin-bottom: 0;
+}
+
+.ficha_shares ul {
+	display: inline-flex;
+	list-style: none;
+	gap: 1rem;
+	margin-bottom: 0;
+	float: inline-end;
+}
+
+.ficha_shares ul li a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    width: 30px;
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.ficha_shares ul li a:hover {
+	background-color: var(--primary-color-hover);
+}
+
+#js-toolbar {
+	position: absolute !important;
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	padding: 3px;
+}
+
+#js-toolbar.fullpage {
+	background-color: #ffffffea;
+	padding: 5px;
+}
+
+#js-toolbar a {
+	color: rgba(0, 0, 0, 0.6);
+}
+
+#js-toolbar a:hover {
+	color: rgba(0, 0, 0, 0.8);
+}
+
+.ficha_W .timer {
+	font-variant-numeric: tabular-nums;
+}
+
+#actual_max_bid[data-winner="true"], #actual_max_bid[data-winner="true"] + span {
+	color: #00870D;
+}
+
+#actual_max_bid[data-winner="false"], #actual_max_bid[data-winner="false"] + span {
+	color: #E74C3C;
+}
+
+.slider-for {
+	margin-bottom: 1rem;
+}
+
+.slider-nav .slick-track {
+	min-width: 100%;
+}
+
+.module_header {
+	color: var(--gray-color-5);
+	padding: 5px 0;
+	border-bottom: 1px solid var(--gray-color-2);
+	cursor: pointer;
+	margin-bottom: 5px;
+}
+
+.module_header .glyphicon {
+	transition: transform 0.3s ease;
+	color: var(--gray-color-5);
+}
+
+/* gira el chevron cuando esté abierto */
+.module_header[aria-expanded="true"] .glyphicon {
+	transform: rotate(180deg);
+}
+
+@media (min-width: 768px) {
+  .module_wrapper.collapse {
+    display: block !important;
+    height: auto !important;
+    visibility: visible !important;
+  }
+  /* Opcional: quitar transiciones si interfiere */
+  .module_wrapper.collapse {
+    -webkit-transition: none !important;
+       -moz-transition: none !important;
+         -o-transition: none !important;
+            transition: none !important;
+  }
 }
