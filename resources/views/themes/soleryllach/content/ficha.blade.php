@@ -307,12 +307,15 @@
                         @endif
                     </div>
 
-                    <div class="desc_content">
+                    <div class="desc_content" id="box">
                         @if (\Config::get('app.descweb_hces1'))
                             <p><?= $lote_actual->descweb_hces1 ?></p>
                         @elseif (\Config::get('app.desc_hces1'))
                             <p><?= $lote_actual->desc_hces1 ?></p>
                         @endif
+
+						<span class="see-more hidden">{{ trans('web.global.see_more') }}</span>
+						<span class="hide-more hidden">{{ trans('web.global.hide_more') }}</span>
                     </div>
                 </div>
             </div>
@@ -412,6 +415,8 @@
             centerMode: false,
             focusOnSelect: true
         });
+
+		readMoreDescription($("#box"), 2);
     });
 </script>
 
