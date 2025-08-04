@@ -2,6 +2,9 @@
 
 namespace App\Support;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
+
 class Date
 {
 	/**
@@ -16,6 +19,7 @@ class Date
 		if (!$date) {
 			return '';
 		}
+
 		return date($format, strtotime($date));
 	}
 
@@ -48,5 +52,14 @@ class Date
 		}
 
 		return date('d/m/Y H:i:s', $timestamp);
+	}
+
+	public static function toISOFormat(string $date, string $isoFormat = 'DD/MM/YYYY HH:mm:ss'): string
+	{
+		if (!$date) {
+			return '';
+		}
+		$carbonDate = Carbon::parse($date);
+		return $carbonDate->locale(Config::get('app.locale'))->isoFormat($isoFormat);
 	}
 }

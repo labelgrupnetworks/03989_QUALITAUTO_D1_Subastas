@@ -52,112 +52,49 @@
 
                 <!-- Inicio Galeria Responsive -->
                 <div class="visible-xs">
-                    <div class="owl-theme owl-carousel" id="owl-carousel-responsive">
-
+                    <div class="slider-for">
                         @foreach ($lote_actual->imagenes as $key => $imagen)
-                            <div
-                                class="item_content_img_single"style="position: relative; height: 290px; overflow: hidden;">
-                                <img class="img-responsive" data-pos="{{ $key }}"
-                                    src="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
-                                    alt="{{ $lote_actual->titulo_hces1 }}"
-                                    style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;">
-                            </div>
+                            <img class="img-responsive" data-pos="{{ $key }}"
+                                src="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
+                                alt="{{ $lote_actual->titulo_hces1 }}" height="290">
                         @endforeach
                         @foreach ($resourcesList as $resource)
-                            <div class="item_content_img_single" style="position: relative;">
-                                @if ($resource['format'] == 'GIF')
-                                    <img class="img-responsive" src="{{ $resource['src'] }}"
-                                        alt="{{ $lote_actual->titulo_hces1 }}"
-                                        style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;">
-                                @elseif($resource['format'] == 'VIDEO')
-                                    <video width="100%" controls>
-                                        <source src="{{ $resource['src'] }}" type="video/mp4">
-                                    </video>
-                                @endif
-                            </div>
+                            @if ($resource['format'] == 'GIF')
+                                <img class="img-responsive" src="{{ $resource['src'] }}"
+                                    alt="{{ $lote_actual->titulo_hces1 }}">
+                            @elseif($resource['format'] == 'VIDEO')
+                                <video width="100%" controls>
+                                    <source src="{{ $resource['src'] }}" type="video/mp4">
+                                </video>
+                            @endif
                         @endforeach
                     </div>
+                    <div class="slider-nav">
 
-                    @if (Session::has('user') && $lote_actual->retirado_asigl0 == 'N')
-                        <a class="btn <?= $data['subasta_info']->lote_actual->favorito ? 'hidden' : '' ?>"
-                            id="add_fav" href="javascript:action_fav_modal('add')">
-                            <i class="fa fa-star-o" aria-hidden="true"></i>
-                        </a>
-                        <a class="btn <?= $data['subasta_info']->lote_actual->favorito ? '' : 'hidden' ?>"
-                            id="del_fav" href="javascript:action_fav_modal('remove')">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        </a>
-                    @endif
+                        @foreach ($lote_actual->imagenes as $key => $imagen)
+                            <img class="img-responsive" data-pos="{{ $key }}"
+                                src="{{ Tools::url_img('lote_small', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
+                                alt="{{ $lote_actual->titulo_hces1 }}">
+                        @endforeach
+                        @foreach ($resourcesList as $resource)
+                            @if ($resource['format'] == 'GIF')
+                                <img class="img-responsive" src="{{ $resource['src'] }}"
+                                    alt="{{ $lote_actual->titulo_hces1 }}">
+                            @elseif($resource['format'] == 'VIDEO')
+                                <video width="100%" controls>
+                                    <source src="{{ $resource['src'] }}" type="video/mp4">
+                                </video>
+                            @endif
+                        @endforeach
+                    </div>
 
                 </div>
 
                 <!-- Inicio Galeria Desktop -->
-                <div class="hidden-xs d-flex" style="gap: 1rem">
-
-                    <div class="" style="flex: 1;">
-                        <div class="img_single_border">
-
-                            <div class="button-follow" style="display:none;">
-                                <div class="spinner">
-                                    <div class="double-bounce1"></div>
-                                    <div class="double-bounce2"></div>
-                                </div>
-
-                            </div>
-                            @if (Session::has('user') && $lote_actual->retirado_asigl0 == 'N')
-                                <a class="btn <?= $data['subasta_info']->lote_actual->favorito ? 'hidden' : '' ?>"
-                                    id="add_fav" href="javascript:action_fav_modal('add')">
-                                    <p>{{ trans(\Config::get('app.theme') . '-app.lot.add_to_fav') }} </p><i
-                                        class="fa fa-star-o" aria-hidden="true"></i>
-                                </a>
-                                <a class="btn <?= $data['subasta_info']->lote_actual->favorito ? '' : 'hidden' ?>"
-                                    id="del_fav" href="javascript:action_fav_modal('remove')">
-                                    <p>{{ trans(\Config::get('app.theme') . '-app.lot.del_from_fav') }} </p><i
-                                        class="fa fa-star" aria-hidden="true"></i>
-                                </a>
-                            @endif
-
-                            @if ($lote_actual->retirado_asigl0 != 'N')
-                                <div class="retired-border">
-                                    <div class="retired">
-                                        <span class="retired-text lang-{{ \Config::get('app.locale') }}">
-                                            {{ trans(\Config::get('app.theme') . '-app.lot.retired') }}
-                                        </span>
-                                    </div>
-                                </div>
-                            @elseif(
-                                $lote_actual->cerrado_asigl0 == 'S' &&
-                                    (!empty($lote_actual->himp_csub) ||
-                                        $lote_actual->desadju_asigl0 == 'S' ||
-                                        ($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0))))
-                                <div class="retired-border">
-                                    <div class="retired selled">
-                                        <span class="retired-text lang-{{ \Config::get('app.locale') }}">
-                                            {{ trans(\Config::get('app.theme') . '-app.subastas.buy') }}
-                                        </span>
-                                    </div>
-                                </div>
-                            @endif
-
-                            <div id="toolbarDiv">
-                                <div class="chevron-left-button" role="">
-                                    <i class="fa fa-2x fa-chevron-left" id="chevron-left"></i>
-                                </div>
-                                <div class="chevron-right-button" role="">
-                                    <i class="fa fa-2x fa-chevron-right" id="chevron-right"></i>
-                                </div>
-                            </div>
-
-                            <div class="text-center" id="resource_main_wrapper" style="display:none"></div>
-                            <div class="img-global-content position-relative">
-                                <div class="img_single" id="img_main"></div>
-                            </div>
-
-                        </div>
-                    </div>
+                <div class="hidden-xs d-flex" style="gap: .5rem">
 
                     {{-- Miniaturas imagenes --}}
-                    <div class="slider-thumnail-container slider-thumnail-container-images" style="width: 75px">
+                    <div class="slider-thumnail-container slider-thumnail-container-images" style="width: 95px">
 
                         <div class="row-up control" onClick="clickControl(this)">
                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
@@ -181,11 +118,10 @@
                     </div>
 
                     {{-- Miniaturas recursos --}}
-                    <div style="width: 75px"
-                        @class([
-                            'slider-thumnail-container slider-thumnail-container-resources',
-                            'd-none' => empty($resourcesList),
-                        ])>
+                    <div style="width: 95px" @class([
+                        'slider-thumnail-container slider-thumnail-container-resources',
+                        'd-none' => empty($resourcesList),
+                    ])>
 
                         <div class="row-up control" onClick="clickControl(this)">
                             <i class="fa fa-chevron-up" aria-hidden="true"></i>
@@ -214,6 +150,76 @@
                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
                         </div>
                     </div>
+
+                    <div class="" style="flex: 1;">
+                        <div class="img_single_border">
+
+
+
+                            @if ($lote_actual->retirado_asigl0 != 'N')
+                                <div class="retired-border">
+                                    <div class="retired">
+                                        <span class="retired-text lang-{{ \Config::get('app.locale') }}">
+                                            {{ trans(\Config::get('app.theme') . '-app.lot.retired') }}
+                                        </span>
+                                    </div>
+                                </div>
+                            @elseif(
+                                $lote_actual->cerrado_asigl0 == 'S' &&
+                                    (!empty($lote_actual->himp_csub) ||
+                                        $lote_actual->desadju_asigl0 == 'S' ||
+                                        ($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0))))
+                                <div class="retired-border">
+                                    <div class="retired selled">
+                                        <span class="retired-text lang-{{ \Config::get('app.locale') }}">
+                                            {{ trans(\Config::get('app.theme') . '-app.subastas.buy') }}
+                                        </span>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div id="toolbarDiv">
+                                <div class="chevron-left-button" role="">
+                                    <button class="btn btn-link btn-chevron" id="chevron-left">
+                                        <x-icon.boostrap icon="chevron-left" size="32" />
+                                    </button>
+                                </div>
+                                <div class="chevron-right-button" role="">
+                                    <button class="btn btn-link btn-chevron" id="chevron-right">
+                                        <x-icon.boostrap icon="chevron-right" size="32" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="toolbar" id="js-toolbar" style="position: absolute; z-index: 1">
+                                <a id="zoom-in" href="#zoom-in" title="Zoom in">
+                                    <svg class="bi" width="24" height="24" fill="currentColor">
+                                        <use xlink:href="/bootstrap-icons.svg#plus-circle"></use>
+                                    </svg>
+                                </a>
+
+                                <a id="zoom-out" href="#zoom-out" title="Zoom out">
+                                    <svg class="bi" width="24" height="24" fill="currentColor">
+                                        <use xlink:href="/bootstrap-icons.svg#dash-circle"></use>
+                                    </svg>
+                                </a>
+
+                                <a id="full-page" href="#full-page" title="Toggle full page">
+                                    <svg class="bi" width="24" height="24" fill="currentColor">
+                                        <use xlink:href="/bootstrap-icons.svg#arrows-fullscreen"></use>
+                                    </svg>
+                                </a>
+                            </div>
+
+                            <div class="text-center" id="resource_main_wrapper" style="display:none"></div>
+                            <div class="img-global-content position-relative">
+                                <div class="img_single" id="img_main"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
                 </div>
 
 
@@ -283,9 +289,24 @@
                     </div>
                 @endif
                 <div class="desc">
-                    <div class="desc_tit">
-                        {{ trans(\Config::get('app.theme') . '-app.lot.description') }}
+                    <div class="desc_tit position-relative">
+                        <span>
+                            {{ trans('web.lot.description') }}
+                        </span>
+
+                        @if (Session::has('user') && $lote_actual->retirado_asigl0 == 'N')
+                            <div class="favoritos">
+                                <button id="del_fav" @class(['btn btn-link', 'hidden' => !$lote_actual->favorito])
+                                    onclick="action_fav_modal('remove')">
+                                    <x-icon.boostrap icon="heart-fill" size="24" />
+                                </button>
+                                <button id="add_fav" @class(['btn btn-link', 'hidden' => $lote_actual->favorito]) onclick="action_fav_modal('add')">
+                                    <x-icon.boostrap icon="heart" size="24" />
+                                </button>
+                            </div>
+                        @endif
                     </div>
+
                     <div class="desc_content">
                         @if (\Config::get('app.descweb_hces1'))
                             <p><?= $lote_actual->descweb_hces1 ?></p>
@@ -295,36 +316,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-            {{-- Eloy: 23/07/2021 Han pedido quitarlo --}}
-            {{-- <div class="col-xs-12 col-sm-12 lotes_destacados">
-                <div class="title_single">
-                    {{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}
-                </div>
-
-				@php
-					$key = "lotes_recomendados";
-					$replace = array(
-						'emp' => Config::get('app.emp') ,
-						'sec_hces1' => $lote_actual->sec_hces1,
-						'id_hces1' => $lote_actual->id_hces1,
-						'lang' => Config::get('app.language_complete')[''.Config::get('app.locale').''] ,
-					);
-				@endphp
-
-                <script>
-
-                    var replace = @json($replace);
-                    var key ="{{ $key }}";
-                    $( document ).ready(function() {
-                            ajax_carousel(key,replace);
-                     });
-                </script>
-                <div class='loader hidden'></div>
-                <div id="lotes_recomendados" class="owl-theme owl-carousel"></div>
-            </div> --}}
 
         </div>
     </div>
@@ -357,9 +348,20 @@
             ],
             showNavigator: false,
             sequenceMode: true,
+            toolbar: "js-toolbar",
+            zoomInButton: "zoom-in",
+            zoomOutButton: "zoom-out",
+            fullPageButton: "full-page",
             nextButton: "chevron-right",
             previousButton: "chevron-left",
             toolbar: "toolbarDiv",
+
+            maxZoomPixelRatio: 4, //relacion entre el zoom y la imagen
+            minZoomImageRatio: 0.9,
+            zoomPerScroll: 1.25,
+            visibilityRatio: 1.0, //relacion entre el zoom y la imagen
+            constrainDuringPan: true, //no permitir salirse del cuadro
+            preserveImageSizeOnResize: false, //mantener zoom al ampliar a pantalla completa
         });
     }
 
@@ -378,21 +380,38 @@
         }
     }
 
-	function showOrHideControls() {
-		const $imagesSlider = $('.js-slider-thumnail-images');
-		const $resourcesSlider = $('.js-slider-thumnail-resources');
-		const $imagesControl = $('.slider-thumnail-container-images .control');
-		const $resourcesControl = $('.slider-thumnail-container-resources .control');
-		const $imagesSliderHeight = $imagesSlider[0] ? $imagesSlider[0].scrollHeight : 0;
-		const $resourcesSliderHeight = $resourcesSlider[0] ? $resourcesSlider[0].scrollHeight : 0;
-		const maxImagesHeight = 486;
+    function showOrHideControls() {
+        const $imagesSlider = $('.js-slider-thumnail-images');
+        const $resourcesSlider = $('.js-slider-thumnail-resources');
+        const $imagesControl = $('.slider-thumnail-container-images .control');
+        const $resourcesControl = $('.slider-thumnail-container-resources .control');
+        const $imagesSliderHeight = $imagesSlider[0] ? $imagesSlider[0].scrollHeight : 0;
+        const $resourcesSliderHeight = $resourcesSlider[0] ? $resourcesSlider[0].scrollHeight : 0;
+        const maxImagesHeight = 486;
 
-		$imagesSliderHeight > maxImagesHeight ? $imagesControl.show() : $imagesControl.hide();
-		$resourcesSliderHeight > maxImagesHeight ? $resourcesControl.show() : $resourcesControl.hide();
-	}
+        $imagesSliderHeight > maxImagesHeight ? $imagesControl.show() : $imagesControl.hide();
+        $resourcesSliderHeight > maxImagesHeight ? $resourcesControl.show() : $resourcesControl.hide();
+    }
 
     $(document).ready(function() {
-		showOrHideControls();
+        showOrHideControls();
+
+
+        $('.slider-for').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            asNavFor: '.slider-nav'
+        });
+        $('.slider-nav').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            asNavFor: '.slider-for',
+            dots: false,
+            centerMode: false,
+            focusOnSelect: true
+        });
     });
 </script>
 
