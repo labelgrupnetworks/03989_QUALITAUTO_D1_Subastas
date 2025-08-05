@@ -1,47 +1,89 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
 <html>
     <head>
-        <title>Be right back.</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>En construccion</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+   </head>
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+   <style>
+       body{
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            height: 95vh;
+            font-family: 'Montserrat', sans-serif;
+       }
+       .img-bk img{
+           max-width: 100%;
+       }
+       .img-bk{
+           position: absolute;
+           -ms-flex-item-align: center;
+               -ms-grid-row-align: center;
+               align-self: center;
+       }
+       .text{
+           position: relative;
+           z-index: 1;
+           text-align: center;
+       }
+       .text h2{
+           text-transform: uppercase;
+           font-size: 9vmin;
+           color: gray;
+           margin-bottom: 0;
 
-        <style>
-            html, body {
-                height: 100%;
-            }
+       }
+        .text p{
+           text-transform: uppercase;
+           font-size: 24px;
+           font-weight: 900;
+           color: rosybrown;
 
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                color: #B0BEC5;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
 
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
+       }
+       h3{
+           margin: 0;
+           font-size: 6vmin;
+           line-height: 1;
+           text-transform: uppercase;
+           color: gray;
+       }
+       .text{
+               display: -webkit-box;
+               display: -ms-flexbox;
+               display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+       }
 
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
 
-            .title {
-                font-size: 72px;
-                margin-bottom: 40px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">Be right back.</div>
-            </div>
-        </div>
-    </body>
+   </style>
+
+   <body>
+       <div class="text">
+           <div>
+           <h2>Web en mantenimiento</h2>
+           <h3>Web in maintenance</h3>
+           </div>
+           <div>
+           <p>Volvemos en unos minutos</p>
+           <p>we come back in a few minutes</p>
+           </div>
+       </div>
+       <div class="img-bk">
+           <img src="/default/img/mantenimiento.png" />
+       </div>
+   </body>
+
 </html>
