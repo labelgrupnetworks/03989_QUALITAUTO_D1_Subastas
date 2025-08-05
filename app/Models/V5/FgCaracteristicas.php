@@ -3,10 +3,10 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
-use App\Providers\ToolsServiceProvider;
+use App\Support\Localization;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Config;
+use Illuminate\Support\Facades\Config;
 class FgCaracteristicas extends Model
 {
     protected $table = 'fgcaracteristicas';
@@ -52,25 +52,26 @@ class FgCaracteristicas extends Model
 		return $features;
 	}
 
-	static function getAllFeatures(){
-		$featuresBBDD = self::select("NAME_CARACTERISTICAS, ID_CARACTERISTICAS, FILTRO_CARACTERISTICAS, VALUE_CARACTERISTICAS")
-					->orderBy("ORDEN_CARACTERISTICAS");
+	static function getAllFeatures()
+	{
+		$features = self::query()
+					->select("id_caracteristicas, filtro_caracteristicas, value_caracteristicas")
+					->JoinLang()
+					->orderBy("orden_caracteristicas")
+					->get();
 
-		$features = Array();
-		foreach($featuresBBDD->get() as $feature){
-			$features[$feature->id_caracteristicas] = $feature;
-		}
-		return $features;
+		return $features->keyBy('id_caracteristicas')->all();
 	}
 
-	public function scopeJoinLang($query){
-		$lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
-		return $query->leftjoin("FGCARACTERISTICAS_LANG","EMP_CARACTERISTICAS_LANG = EMP_CARACTERISTICAS AND ID_CARACTERISTICAS_LANG = ID_CARACTERISTICAS AND LANG_CARACTERISTICAS_LANG= '". $lang . "'")
-						->addSelect("NVL(NAME_CARACTERISTICAS_LANG, NAME_CARACTERISTICAS) NAME_CARACTERISTICAS");
-
-
-
+	public function scopeJoinLang($query)
+	{
+		$lang = Localization::getLocaleComplete();
+		return $query->leftJoin('fgcaracteristicas_lang', function ($join) use ($lang) {
+			$join->on('emp_caracteristicas_lang', '=', 'emp_caracteristicas')
+				->on('id_caracteristicas_lang', '=', 'id_caracteristicas')
+				->where('lang_caracteristicas_lang', $lang);
+		})
+		->addSelect("coalesce(name_caracteristicas_lang, name_caracteristicas) as name_caracteristicas");
 	}
-
 
 }
