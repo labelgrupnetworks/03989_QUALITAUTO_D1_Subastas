@@ -16,7 +16,57 @@
         <div class="row row-cols-1 row-cols-lg-3">
 
             <div class="col mb-3">
-				{{-- añadir formulario de contacto --}}
+                <form id="contactForm" name="contactForm" novalidate>
+                    @csrf
+
+                    <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
+                        value="">
+
+                    <div class="row gx-2">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"
+                                for="texto__1__nombre">{{ trans('web.login_register.contact') }}</label>
+
+                            <input class="form-control effect-16" id="texto__1__nombre" name="nombre" type="text"
+                                value="" onblur="comprueba_campo(this)" required="" autocomplete="off">
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"
+                                for="email__1__email">{{ trans('web.foot.newsletter_text_input') }}</label>
+                            <input class="form-control effect-16" id="email__1__email" name="email" type="email"
+                                value="" onblur="comprueba_campo(this)" required="" autocomplete="off">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label"
+                                for="textogrande__1__comentario">{{ trans('web.global.coment') }}</label>
+
+                            <textarea class="form-control effect-16" id="textogrande__1__comentario" name="comentario" rows="10"
+                                onblur="comprueba_campo(this)" autocomplete="off"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" id="bool__1__condiciones" name="condiciones"
+                                    type="checkbox" value="" value="on" autocomplete="off" required>
+                                <label class="form-check-label" for="bool__1__condiciones">
+                                    {!! trans('web.emails.privacy_conditions') !!}
+                                </label>
+
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <p class="captcha-terms">
+                                {!! trans('web.global.captcha-terms') !!}
+                            </p>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-lb-contact w-100" type="submit">
+								{{ trans('web.global.enviar') }}
+							</button>
+                        </div>
+                    </div>
+
+                </form>
 
             </div>
 
@@ -52,7 +102,8 @@
                 <ul class="nav flex-column">
                     @foreach ($documents as $document)
                         <li class="nav-item mb-2">
-                            <a class="nav-link p-0" href="{{ trans("web.links.$document") }}" title="{{ trans("web.foot.$document") }}"
+                            <a class="nav-link p-0" href="{{ trans("web.links.$document") }}"
+                                title="{{ trans("web.foot.$document") }}"
                                 target="_blank">{{ trans("web.foot.$document") }}</a>
                         </li>
                     @endforeach

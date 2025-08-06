@@ -274,6 +274,22 @@ section.ficha-previous-next {
 	padding-top: 2rem;
 }
 
+form[name="contactForm"] label {
+	margin-bottom: .25rem;
+}
+
+form[name="contactForm"] .form-check-label {
+	font-size: .9em;
+}
+
+form[name="contactForm"] .form-check-input {
+	accent-color: #F8B90C;
+}
+
+form[name="contactForm"] textarea {
+	height: 90px;
+}
+
 body>footer h5 {
 	font-size: 30px;
 	font-weight: 700;

@@ -44,3 +44,19 @@
 h1, .h1 {
 	font-family: var(--highlight-font-family);
 }
+
+.form-control {
+	border-radius: .275rem;
+}
+
+.btn-lb-contact {
+	--bs-btn-color: #000;
+	--bs-btn-border-color: #F8B90C;
+	--bs-btn-bg: #F8B90C;
+	--bs-btn-active-color: #000;
+	--bs-btn-active-border-color: #fff;
+	--bs-btn-active-bg: #fff;
+	--bs-btn-hover-color: #000;
+	--bs-btn-hover-border-color: #fff;
+	--bs-btn-hover-bg: #fff;
+}
