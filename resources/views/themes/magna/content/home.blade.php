@@ -20,7 +20,7 @@
             null,
             false,
             ''
-s        ) !!}
+        ) !!}
     </section>
 @endif
 
