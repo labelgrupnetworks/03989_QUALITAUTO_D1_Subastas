@@ -56,6 +56,10 @@ class ContactController extends Controller
 	 */
 	public function contactSendmail(Request $request)
 	{
+		$this->validate($request, [
+			'email' => 'required|email',
+		]);
+
 		// Recogemos la info
 		$data = $request->all();
 

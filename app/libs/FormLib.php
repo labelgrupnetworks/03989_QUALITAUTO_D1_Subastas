@@ -18,7 +18,7 @@ class FormLib
 	static function Text($strNombre, $boolObligatorio = 0, $strValue = '', $strExtra = "", $placeholder = "")
 	{
 
-		$aux = '<input type="text" class="form-control effect-16" name="' . $strNombre . '" id="texto__' . $boolObligatorio . '__' . $strNombre . '" value="' . $strValue . '" onblur="comprueba_campo(this)" ' . $strExtra . 'data-placement="right" placeholder="' . $placeholder . '" autocomplete="off">';
+		$aux = '<input type="text" class="form-control effect-16" name="' . $strNombre . '" id="texto__' . $boolObligatorio . '__' . $strNombre . '" value="' . $strValue . '" onblur="comprueba_campo(this)" ' . $strExtra . ' data-placement="right" placeholder="' . $placeholder . '" autocomplete="off">';
 
 		return $aux;
 	}
