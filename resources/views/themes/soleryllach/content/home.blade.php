@@ -49,7 +49,7 @@
 					$data = (new App\Services\Content\PageService())->getPage('subastas-programadas');
 				@endphp
 
-				{!! $data->content_web_page !!}
+				{!! $data?->content_web_page !!}
             </div>
         </div>
     </div>
