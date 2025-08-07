@@ -24,6 +24,7 @@ use App\Models\V5\FxClid;
 use App\Models\V5\FxParam1;
 use App\Providers\RoutingServiceProvider;
 use App\Providers\ToolsServiceProvider;
+use App\Support\Localization;
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -280,7 +281,7 @@ class PaymentsController extends Controller
 						$lic_exportacion = $this->licenciaDeExportacion($ref, $sub);
 						$tasa_exportacion = $this->tasasExportacion($ref, $sub);
 
-						if (($paise_exportacion != 'ES' && $lic_exportacion == 1) || ($lic_exportacion == 2 && !in_array($paise_exportacion, ToolsServiceProvider::PaisesEUR()))) {
+						if (($paise_exportacion != 'ES' && $lic_exportacion == 1) || ($lic_exportacion == 2 && !in_array($paise_exportacion, Localization::europeanUnionCountriesCodes()))) {
 							$price_exportacion = floatval($parametrosSub->licexp_prmsub);
 							$iva_exportacion = $this->calculate_iva($tipo_iva->tipo, $iva, $price_exportacion);
 							$precio = $precio + $price_exportacion;
@@ -294,7 +295,7 @@ class PaymentsController extends Controller
 							}
 						}
 
-						if (($paise_exportacion != 'ES' && $tasa_exportacion == 1) || ($tasa_exportacion == 2 && !in_array($paise_exportacion, ToolsServiceProvider::PaisesEUR()))) {
+						if (($paise_exportacion != 'ES' && $tasa_exportacion == 1) || ($tasa_exportacion == 2 && !in_array($paise_exportacion, Localization::europeanUnionCountriesCodes()))) {
 							$inf_env_lic->tasas  = 'S';
 						}
 					}
@@ -1636,7 +1637,7 @@ class PaymentsController extends Controller
 			if ($direccionEnvio->codpais_clid == 'ES') {
 				$smallPrices = $smallPackages * 5.50;
 				$bigPrices = $bigPackages * 7.50;
-			} elseif (in_array($direccionEnvio->codpais_clid, ToolsServiceProvider::PaisesEUR())) {
+			} elseif (in_array($direccionEnvio->codpais_clid, Localization::europeanUnionCountriesCodes())) {
 				$smallPrices = $smallPackages * 8.50;
 				$bigPrices = $bigPackages * 11;
 			} else {

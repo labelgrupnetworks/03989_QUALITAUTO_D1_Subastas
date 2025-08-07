@@ -32,6 +32,7 @@ use App\Providers\ToolsServiceProvider;
 use App\Services\Auction\AuctionService;
 use App\Services\User\UserAddressService;
 use App\Services\User\UserRegisterService;
+use App\Support\Localization;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\App;
@@ -2517,7 +2518,7 @@ class UserController extends Controller
 		}
 
 		//paises europeos
-		$paises = ToolsServiceProvider::PaisesEUR();
+		$paises = Localization::europeanUnionCountriesCodes();
 
 		$canarias = array('38', '35');
 		$mel_ceu = array('51', '52');

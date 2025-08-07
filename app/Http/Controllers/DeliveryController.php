@@ -7,6 +7,7 @@ use App\Models\delivery\Delivery_default;
 use App\Models\delivery\Delivery;
 use App\Providers\ToolsServiceProvider;
 use App\Services\User\UserAddressService;
+use App\Support\Localization;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request as Input;
@@ -57,7 +58,7 @@ class DeliveryController  extends Controller
 				$lic_exp = true;
 			} else {
 
-				$countries = ToolsServiceProvider::PaisesEUR();
+				$countries = Localization::europeanUnionCountriesCodes();
 				//si el código es 2 y el pais no es de la union europea
 				if ($cod_lic_exp == 2 && !in_array($destinationCountryCode, $countries)) {
 					$lic_exp = true;

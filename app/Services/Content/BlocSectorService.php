@@ -2,9 +2,11 @@
 
 namespace App\Services\Content;
 
+use App\Services\User\UserAddressService;
 use App\Support\Localization;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * @todo
@@ -116,7 +118,12 @@ class BlocSectorService
 		$auctions = DB::select($sql, $bindings);
 		$blocs_auctions = array();
 
+		$countries = (new UserAddressService)->getCountries();
+
 		foreach ($auctions as $auction) {
+
+			$auction->country_name = Str::title($countries->where('cod_paises', $auction->pais_sub)->first()->des_paises ?? null);
+
 			if (empty($blocs_auctions[$auction->cod_subbloc])) {
 				$blocs_auctions[$auction->cod_subbloc] = array();
 			}

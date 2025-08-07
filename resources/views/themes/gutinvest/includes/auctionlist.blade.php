@@ -50,7 +50,7 @@
                         </small>
                 </div>
             </div>
-             @if(!empty(\Tools::NamePais($subasta->pais_sub)))
+            @if(!empty($subasta->country_name))
             <div class="col-xs-6 col-sm-2 no-padding hidden-xs hidden-sm">
                 <div class="item-subasta-data-title" style="text-align: right;">
                     <span>{{ trans(\Config::get('app.theme').'-app.subastas.country') }}</span>
@@ -59,9 +59,7 @@
                     <div class="item-subasta-data-text" style="text-align: right;">
                     <small style="text-align: right;">
                        <img style="width: 15px;border-radius: 50%;height: 15px;" src="/img/icons/flags_png/{{ mb_strtolower($subasta->pais_sub) }}.png"></span>
-                    @if(!empty(\Tools::NamePais($subasta->pais_sub)))
-                   <span>{{ \Tools::NamePais($subasta->pais_sub) }}</span>
-                   @endif
+                   		<span>{{ $subasta->country_name }}</span>
 
                         </small>
                         <div style="width: 15px; display: inline-block;"></div>
@@ -76,23 +74,20 @@
             {{ $subasta->des_sub }}
         </div>
 
-                     @if(!empty(\Tools::NamePais($subasta->pais_sub)))
-            <div class="col-xs-6 col-sm-2 hidden-md hidden-lg">
-                <div class="item-subasta-data-title" style="text-align: left;">
-                    <span>{{ trans(\Config::get('app.theme').'-app.subastas.country') }}</span>
-                    <div style="width: 15px; display: inline-block;"></div>
-                </div>
-                    <div class="item-subasta-data-text" style="text-align: left;">
-                        <small style="text-align: left;">
-						   <img style="width: 15px;border-radius: 50%;height: 15px;" src="/img/icons/flags/{{ mb_strtolower($subasta->pais_sub) }}.svg"></span>
-                    @if(!empty(\Tools::NamePais($subasta->pais_sub)))
-                   <span>{{ \Tools::NamePais($subasta->pais_sub) }}</span>
-                   @endif
-
-                        </small>
-                        <div style="width: 15px; display: inline-block;"></div>
-                </div>
-            </div>
+            @if(!empty($subasta->country_name))
+				<div class="col-xs-6 col-sm-2 hidden-md hidden-lg">
+					<div class="item-subasta-data-title" style="text-align: left;">
+						<span>{{ trans(\Config::get('app.theme').'-app.subastas.country') }}</span>
+						<div style="width: 15px; display: inline-block;"></div>
+					</div>
+					<div class="item-subasta-data-text" style="text-align: left;">
+						<small style="text-align: left;">
+							<img style="width: 15px;border-radius: 50%;height: 15px;" src="/img/icons/flags/{{ mb_strtolower($subasta->pais_sub) }}.svg"></span>
+							<span>{{ $subasta->country_name }}</span>
+						</small>
+						<div style="width: 15px; display: inline-block;"></div>
+					</div>
+				</div>
             @endif
         <div class="col-xs-12 item-subasta-data-location no-padding">
             <div class="col-xs-12 col-sm-7 col-xs-12">

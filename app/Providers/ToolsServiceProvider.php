@@ -9,7 +9,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Category_Blog_Lang;
 use App\Providers\RoutingServiceProvider as Routing;
-use App\Services\User\UserAddressService;
+use App\Support\Localization;
 use DOMDocument;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -250,40 +250,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return '';
 	}
 
-	public static function PaisesEUR()
-	{
-
-		return array(
-			'DE',
-			'AT',
-			'BE',
-			'BG',
-			'CY',
-			'HR',
-			'DK',
-			'SK',
-			'SI',
-			'ES',
-			'EE',
-			'FI',
-			'FR',
-			'GR',
-			'IE',
-			'IT',
-			'LV',
-			'HU',
-			'LT',
-			'LU',
-			'MT',
-			'NL',
-			'PL',
-			'PT',
-			'CZ',
-			'RO',
-			'SE'
-		);
-	}
-
 	#importe con iva para comunitarios, los precios en base de datos ya incluyen el iva
 	public static function PriceWithTaxForEuropean($imp, $codCli)
 	{
@@ -303,7 +269,7 @@ class ToolsServiceProvider extends ServiceProvider
 		$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
 
 		# si no encontramos usuario , o si lo encontramos y es Europeo devolvemos el precio de base de datos que lleva el iva
-		if (empty($user) ||  in_array($user->codpais_cli, ToolsServiceProvider::PaisesEUR())) {
+		if (empty($user) ||  in_array($user->codpais_cli, Localization::europeanUnionCountriesCodes())) {
 			return  $imp;
 		} else {
 			#si es usuario extracomunitario se le descuenta el iva, es necesario redondearlo para no arrastrar decimales
@@ -327,37 +293,11 @@ class ToolsServiceProvider extends ServiceProvider
 			return $tax;
 		} else {
 			$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
-			if (empty($user) ||  in_array($user->codpais_cli, ToolsServiceProvider::PaisesEUR())) {
+			if (empty($user) ||  in_array($user->codpais_cli, Localization::europeanUnionCountriesCodes())) {
 				return   $tax;
 			} else {
 				return 0;
 			}
-		}
-	}
-
-	/**
-	 * @todo 27/03/2025
-	 * Utilizado por Gutinvest en las vistas.
-	 * Seguramente se pueda eliminar utilizando directamente el servicio.
-	 */
-	public static function NamePais($countri)
-	{
-		$keyname_cache = "get_countries" . Config::get('app.theme') . "_" . Config::get('app.emp');
-
-		$paises = CacheLib::getCache($keyname_cache);
-		if ($paises === false) {
-			$paises = (new UserAddressService())->getCountries();
-			CacheLib::putCache($keyname_cache, $paises);
-		}
-
-		$countries = array();
-		foreach ($paises ?? [] as $pais) {
-			$countries[$pais->cod_paises] = mb_convert_encoding(mb_convert_case($pais->des_paises, MB_CASE_TITLE), "UTF-8");
-		}
-		if (!empty($countries[$countri])) {
-			return $countries[$countri];
-		} else {
-			return;
 		}
 	}
 

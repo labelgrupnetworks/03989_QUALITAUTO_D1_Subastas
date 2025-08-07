@@ -9,6 +9,7 @@ use App\Models\apirest\UserApiRest;
 use App\Models\apirest\ContractApiRest;
 use App\Models\apirest\EnterpriseApiRest;
 use App\Providers\ToolsServiceProvider;
+use App\Support\Localization;
 
 class UserApiRestController extends ApiRestController
 {
@@ -191,7 +192,7 @@ try {
            return Config::get('app.all_tax_clients');
        }
 
-       $paises = ToolsServiceProvider::PaisesEUR();
+       $paises = Localization::europeanUnionCountriesCodes();
 
        $canarias = array('38','35');
        $mel_ceu = array('51','52');
