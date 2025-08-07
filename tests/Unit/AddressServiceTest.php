@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit;
 
 use App\DataTransferObjects\User\AddressData;
 use App\Services\User\UserAddressService;

@@ -1,7 +1,7 @@
 <?php
 
 # Ubicacion del modelo
-namespace App\Models\V5\Log;
+namespace App\Models\V5\log;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;

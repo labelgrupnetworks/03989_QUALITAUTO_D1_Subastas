@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\externalws\Segre;
+namespace App\Http\Controllers\externalws\segre;
 
 use Exception;
 use App\libs\EmailLib;
