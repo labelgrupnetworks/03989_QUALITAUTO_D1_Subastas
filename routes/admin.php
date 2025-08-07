@@ -19,6 +19,7 @@ use App\Http\Controllers\admin\contenido\AdminEmailsController;
 use App\Http\Controllers\admin\contenido\BannerController as ContenidoBannerController;
 use App\Http\Controllers\admin\EmailController;
 use App\Http\Controllers\admin\subasta\AdminBidsController;
+use App\Http\Controllers\admin\subasta\AdminFeaturesController;
 use App\Http\Controllers\admin\subasta\AdminLicitController;
 use App\Http\Controllers\admin\subasta\AdminOperadoresController;
 use App\Http\Controllers\admin\subasta\AdminPhoneOrderController;
@@ -341,6 +342,15 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('subastas/{cod_sub}/lotes/select2list/', 'subasta\AdminLotController@getSelect2List')->name('subastas.lotes.select2');
 		Route::post('subastas/lote/addFeature', 'subasta\AdminLotController@addFeature');
+
+		Route::get('features/{id}/values', [AdminFeaturesController::class, 'getFeatureValues'])->name('admin.features.values.index');
+
+		Route::get('features', [AdminFeaturesController::class, 'index'])->name('admin.features.index');
+		Route::get('features/create', [AdminFeaturesController::class, 'create'])->name('admin.features.create');
+		Route::get('features/{id}', [AdminFeaturesController::class, 'edit'])->name('admin.features.edit');
+		Route::post('principal-features', [AdminFeaturesController::class, 'store'])->name('admin.features.store');
+		Route::put('features/{id}', [AdminFeaturesController::class, 'update'])->name('admin.features.update');
+
 
 		Route::get('features/{idFeature}/{idFeatureValue}', 'subasta\AdminLotController@createOrEditMultilanguageFeature')->name('multilanguage_features');
 		Route::post('features', 'subasta\AdminLotController@storeMultilanguageFeature')->name('multilanguage_features.post');

@@ -963,7 +963,14 @@ return [
 		'visible' => 'Visible',
 		'select_initial_template' => 'Seleccionar la plantilla inicial',
 		'notification_is_sent' => 'Notificación enviada',
-		'representado_deposito' => 'Representando a'
+		'representado_deposito' => 'Representando a',
+		'id_caracteristicas' => 'Id',
+		'name_caracteristicas' => 'Clave',
+		'orden_caracteristicas' => 'Orden',
+		'filtro_caracteristicas' => 'Es Filtrable',
+		'value_caracteristicas' => 'Valores fijos',
+		'feature_name_es' => 'Nombre en español',
+		'feature_name_en' => 'Nombre en inglés',
 	],
 	'help_fields' => [
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',

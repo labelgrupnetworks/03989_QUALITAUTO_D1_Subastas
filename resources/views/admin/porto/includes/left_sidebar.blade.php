@@ -219,6 +219,15 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
                                     </li>
                                 </ul>
                             @endif
+
+							<ul class="nav nav-children">
+								<li>
+									<a href="{{ route('admin.features.index') }}">
+										<span>Características</span>
+									</a>
+								</li>
+							</ul>
+
                             @if (!in_array('noEscalados', $config_menu_admin))
                                 <ul class="nav nav-children">
                                     <li>

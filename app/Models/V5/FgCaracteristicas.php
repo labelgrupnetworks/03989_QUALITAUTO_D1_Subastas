@@ -74,4 +74,9 @@ class FgCaracteristicas extends Model
 		->addSelect("coalesce(name_caracteristicas_lang, name_caracteristicas) as name_caracteristicas");
 	}
 
+	public function allLanguages()
+	{
+		return $this->hasMany(FgCaracteristicasLang::class, 'id_caracteristicas_lang', 'id_caracteristicas');
+	}
+
 }
