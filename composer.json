@@ -18,15 +18,15 @@
         "mobiledetect/mobiledetectlib": "4.8.09",
         "neitanod/forceutf8": "v2.0.4",
         "opcodesio/log-viewer": "v3.15.5",
-        "setasign/fpdf": "1.8.4",
-        "setasign/fpdi": "v2.3.6",
+        "setasign/fpdf": "1.8.6",
+        "setasign/fpdi": "v2.6.4",
         "simplesoftwareio/simple-qrcode": "4.2.0",
         "spatie/ssl-certificate": "2.6.5",
         "wisembly/elephant.io": "^3.3",
         "yajra/laravel-oci8": "v9.0.3"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "v3.7.0",
+        "barryvdh/laravel-debugbar": "v3.16.0",
         "fakerphp/faker": "v1.19.0",
         "larastan/larastan": "v2.9.14",
         "laravel/pint": "^1.20",
