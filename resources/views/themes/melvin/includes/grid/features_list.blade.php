@@ -4,13 +4,16 @@
     $radioIds = array_map('trim', explode(',', config('app.typeSelectorRadio', '')));
     $pillsIds = array_map('trim', explode(',', config('app.typeSelectorPills', '')));
 
-    $minMaxRanges = \App\Models\V5\FgCaracteristicas_Value::selectRaw('max(cast(value_caracteristicas_value as int)) as max, min(cast(value_caracteristicas_value as int)) as min')
-        ->addSelect('idcar_caracteristicas_value')
-        ->whereRaw("TRANSLATE(value_caracteristicas_value, 'T 0123456789', 'T') IS NULL")
-        ->whereIn('idcar_caracteristicas_value', $rangesIds)
-        ->groupBy('idcar_caracteristicas_value')
-        ->get()
-        ->keyBy('idcar_caracteristicas_value');
+	$minMaxRanges = [];
+	if(!empty($rangesIds)) {
+		$minMaxRanges = \App\Models\V5\FgCaracteristicas_Value::selectRaw('max(cast(value_caracteristicas_value as int)) as max, min(cast(value_caracteristicas_value as int)) as min')
+			->addSelect('idcar_caracteristicas_value')
+			->whereRaw("TRANSLATE(value_caracteristicas_value, 'T 0123456789', 'T') IS NULL")
+			->whereIn('idcar_caracteristicas_value', $rangesIds)
+			->groupBy('idcar_caracteristicas_value')
+			->get()
+			->keyBy('idcar_caracteristicas_value');
+	}
 
 	$featuresRequest = array_filter($featuresRequest, function($value) {
 		if(is_array($value)) {

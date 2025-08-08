@@ -403,6 +403,11 @@ nav[aria-label="breadcrumb"] {
     background: var(--lb-color-primary);
 }
 
+.filters-types {
+	padding-left: .25rem;
+	padding-right: .25rem;
+}
+
 .filters-types> :is(div, section) {
 	padding: 1rem 0;
 	border-bottom: 1px solid var(--bs-border-color);
