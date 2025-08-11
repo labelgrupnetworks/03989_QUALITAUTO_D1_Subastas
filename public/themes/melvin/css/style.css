@@ -322,3 +322,12 @@ body>footer h5 {
 body>footer .nav {
 	font-size: 18px;
 }
+
+.user-panel-page {
+	padding-bottom: 3rem;
+}
+
+.user-panel-page h1 {
+	font-size: 2rem;
+	margin-bottom: 2rem;
+}
