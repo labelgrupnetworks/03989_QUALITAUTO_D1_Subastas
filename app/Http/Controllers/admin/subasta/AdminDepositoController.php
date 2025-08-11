@@ -26,7 +26,10 @@ class AdminDepositoController extends Controller
 	{
 		$fgDepositos = FgDeposito::query();
 		$fgDepositos = self::filtersDepositos($fgDepositos, $request);
-		$fgDepositos = $fgDepositos->select('cod_deposito', 'rsoc_cli', 'nom_cli', 'sub_deposito', 'ref_deposito', 'estado_deposito', 'importe_deposito', 'fecha_deposito', 'cli_deposito')
+		$fgDepositos = $fgDepositos->select('cod_deposito', 'rsoc_cli', 'nom_cli', 'sub_deposito', 'ref_deposito', 'estado_deposito', 'importe_deposito', 'fecha_deposito', 'cli_deposito', 'representado_deposito')
+			->when(Config::get('app.withDepositNotification', false), function ($query) {
+				$query->selectBankReference();
+			})
 			->when(Config::get('app.withRepresented', false), function ($query) {
 				$query->with('represented');
 			})
@@ -50,8 +53,13 @@ class AdminDepositoController extends Controller
 			'estado_deposito' => FormLib::Select('estado_deposito', 0, $request->estado_deposito, $fgDeposito->getEstados(), '', ''),
 			'importe_deposito' => FormLib::Text('importe_deposito', 0, $request->importe_deposito, '', 'Importe'),
 			'fecha_deposito' => FormLib::Date('fecha_deposito', 0, $request->fecha_deposito),
-			'cli_deposito' => FormLib::Text('cli_deposito', 0, $request->cli_deposito, '', 'Cliente'),
+			'cli_deposito' => FormLib::Text('cli_deposito', 0, $request->cli_deposito, '', 'Cliente')
 		];
+
+		if(Config::get('app.withDepositNotification', false)) {
+			$formulario->bank_reference = FormLib::Text('bank_reference', 0, $request->bank_reference, '', 'Ref. bancaria');
+		}
+
 
 		return view('admin::pages.subasta.depositos.index', compact('fgDepositos', 'formulario'));
 	}
@@ -205,6 +213,9 @@ class AdminDepositoController extends Controller
 		}
 		if ($request->cli_deposito) {
 			$fgDepositos->where('cli_deposito', 'like', "%" . mb_strtoupper($request->cli_deposito) . "%");
+		}
+		if ($request->bank_reference) {
+			$fgDepositos->whereBankReference($request->bank_reference);
 		}
 
 		return $fgDepositos;

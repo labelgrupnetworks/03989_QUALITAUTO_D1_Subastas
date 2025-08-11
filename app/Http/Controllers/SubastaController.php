@@ -32,6 +32,8 @@ use App\Services\Auction\LotCategoryService;
 use App\Services\Auction\LotDeliveryService;
 use App\Services\Content\BlockService;
 use App\Services\Content\EnterpriseParamsService;
+use App\Services\Notifications\RequestBiddingPermissionAdminNotificationService;
+use App\Services\Notifications\RequestBiddingPermissionNotificationService;
 use App\Support\Database\SessionOptions;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -2159,13 +2161,13 @@ class SubastaController extends Controller
 		return view('front::includes.ficha.formulario_deposito', $data)->render();
 	}
 
-	public function sendFormularioPujar()
+	public function sendFormularioPujar(HttpRequest $request)
 	{
 		if(!Session::has('user')){
-			return response(trans(Config::get('app.theme') . '-app.msg_error.mustLogin'), 404);
+			return response(trans('web.msg_error.mustLogin'), 404);
 		}
 
-		$files = request()->file('file') ?? [];
+		$files = $request->file('file', []);
 
 		foreach ($files as $file) {
 			if($file->getError() == 1){
@@ -2176,14 +2178,9 @@ class SubastaController extends Controller
 		}
 
 		$cod_cli = Session::get('user.cod');
-		$represented = request('represented', 'N');
-
-		$cod_sub = request('cod_sub', '');
-		$ref = request('ref', '');
-
-		$user = new User();
-		$mailController = new MailController();
-
+		$represented = $request->input('represented', 'N');
+		$cod_sub = $request->input('cod_sub', '');
+		$ref = $request->input('ref', '');
 		$fxCli = FxCli::select('cod_cli', 'nom_cli', 'rsoc_cli', 'fisjur_cli', 'email_cli', 'cif_cli')->where('COD_CLI', $cod_cli)->first();
 
 		$representedTo = null;
@@ -2191,12 +2188,41 @@ class SubastaController extends Controller
 			$representedTo = FgRepresentados::find($represented);
 		}
 
-		//Envio de email
-		if($mailController->sendFormAuthorizeBid($fxCli, $cod_sub, $ref, $files, $representedTo)){
-			return response(trans(Config::get('app.theme') . '-app.msg_success.mensaje_enviado'), 200);
+
+		if(Config::get('app.withDepositNotification', false)) {
+			$depositExists = FgDeposito::query()
+				->where([
+					'cli_deposito' => $cod_cli,
+					'sub_deposito' => $cod_sub,
+					'ref_deposito' => $ref
+				])
+				->when($representedTo, function ($query) use ($representedTo) {
+					$query->where('representado_deposito', $representedTo->id);
+				})
+				->exists();
+
+			if ($depositExists) {
+				Log::info("El depósito ya existe para el usuario: $cod_cli, subasta: $cod_sub, referencia: $ref");
+				return response(trans('web.msg_error.deposit_exists', ['contact' => route('contact_page')]), 404);
+			}
+
+			$deposit = FgDeposito::create([
+				'cli_deposito' => $cod_cli,
+				'sub_deposito' => $cod_sub,
+				'ref_deposito' => $ref,
+				'estado_deposito' => FgDeposito::ESTADO_PENDIENTE,
+				'representado_deposito' => $representedTo ? $representedTo->id : null,
+			]);
+
+			(new RequestBiddingPermissionNotificationService($deposit, $representedTo))->send();
 		}
 
-		return response(trans(Config::get('app.theme') . '-app.msg_error.generic'), 404);
+		$isSend = (new RequestBiddingPermissionAdminNotificationService($fxCli, $cod_sub, $ref, $files, $representedTo))->send();
+		if($isSend){
+			return response(trans('web.msg_success.mensaje_enviado'), 200);
+		}
+
+		return response(trans('web.msg_error.generic'), 404);
 	}
 
 	public function acceptAuctionConditions(HttpRequest $request)

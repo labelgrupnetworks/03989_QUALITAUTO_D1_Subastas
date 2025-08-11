@@ -1649,42 +1649,6 @@ class MailController extends Controller
 		}
 	}
 
-	public function sendFormAuthorizeBid($fxCli, $cod_sub, $ref, $files, $represtedTo)
-	{
-		//$email = new EmailLib('AUTHORIZE_BID');
-		$email = new EmailLib('AUTHORIZE_BID_TEMP');
-
-		if(empty($email->email)){
-			return false;
-		}
-
-		$email->setClient_code($fxCli->cod_cli);
-		$email->setName($fxCli->nom_cli);
-		$email->setAtribute("RSOC_CLI", $fxCli->rsoc_cli);
-		$email->setEmail($fxCli->email_cli);
-		$email->setCif($fxCli->cif_cli);
-
-		$isRepresenting = !empty($represtedTo);
-
-		$email->setAtribute("REPRESENTING", $isRepresenting ? 'Si' : 'No');
-
-		$representedToSting = '';
-		if($isRepresenting){
-			$representedToSting = $represtedTo->toEmailString();
-		}
-		$email->setAtribute("REPRESENTED_TO", $representedToSting);
-
-		$email->setLot($cod_sub, $ref);
-		$email->attachmentsFiles = $files;
-		$email->setTo(Config::get('app.admin_email'));
-
-
-		if($email->send_email()){
-			return true;
-		}
-		return false;
-	}
-
 	public function sendCounterofferRejected($cod_licit, $cod_sub, $ref, $imp)
 	{
 		$email = new EmailLib('COUNTEROFFER_REJECTED');

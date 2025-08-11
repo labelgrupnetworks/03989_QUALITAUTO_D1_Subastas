@@ -64,8 +64,11 @@
                             <th>{{ trans('admin-app.fields.importe_deposito') }}</th>
                             <th>{{ trans('admin-app.fields.fecha_deposito') }}</th>
                             <th>{{ trans('admin-app.fields.cli_deposito') }}</th>
-                            @if (Config::get('withRepresented', false))
-                                <th>Representando a</th>
+							@if(Config::get('app.withDepositNotification', false))
+                            	<th>{{ 'Asunto Bancario' }}</th>
+							@endif
+                            @if (Config::get('app.withRepresented', false))
+                                <th>Repre</th>
                             @endif
                             <th>{{ trans('admin-app.fields.actions') }}</th>
                         </tr>
@@ -84,7 +87,10 @@
                                 <td>{!! $formulario->importe_deposito !!}</td>
                                 <td>{!! $formulario->fecha_deposito !!}</td>
                                 <td>{!! $formulario->cli_deposito !!}</td>
-                                @if (Config::get('withRepresented', false))
+								@if(Config::get('app.withDepositNotification', false))
+                                <td>{!! $formulario->bank_reference !!}</td>
+								@endif
+                                @if (Config::get('app.withRepresented', false))
                                     <td></td>
                                 @endif
 
@@ -112,7 +118,10 @@
                                 <td>{{ $deposito->importe_deposito }}</td>
                                 <td>{{ $deposito->fecha_deposito }}</td>
                                 <td>{{ $deposito->cli_deposito }}</td>
-                                @if (Config::get('withRepresented', false))
+								@if(Config::get('app.withDepositNotification', false))
+									<td>{{ $deposito->bank_reference }}</td>
+								@endif
+                                @if (Config::get('app.withRepresented', false))
                                     <td>{{ optional($deposito->represented)->nom_representados }}</td>
                                 @endif
 

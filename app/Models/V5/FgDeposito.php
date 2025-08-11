@@ -7,9 +7,25 @@ use App\Http\Controllers\MailController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use phpDocumentor\Reflection\Types\Boolean;
 
+/**
+ * Modelo para la tabla FgDeposito
+ * @property int $cod_deposito
+ * @property string $emp_deposito
+ * @property string $sub_deposito
+ * @property float $ref_deposito
+ * @property string $estado_deposito
+ * @property float $importe_deposito
+ * @property string $fecha_deposito
+ * @property string $cli_deposito
+ * @property string $enviado_deposito
+ * @property string $fechaenvio_deposito
+ * @property string $usuarioenvio_deposito
+ * @property int $representado_deposito
+ */
 class FgDeposito extends Model
 {
 
@@ -145,6 +161,26 @@ class FgDeposito extends Model
 			->whereIn('SUB_DEPOSITO', $auctions)
 			->where('ESTADO_DEPOSITO', self::ESTADO_VALIDO)
 			->get();
+	}
+
+	public function getBankReferenceAttribute()
+	{
+		return 'DEP-' . $this->cod_deposito . '-' . $this->sub_deposito . '-' . $this->cli_deposito;
+	}
+
+	private function bankReferenceFields()
+	{
+		return '\'DEP-\' || cod_deposito || \'-\' || sub_deposito || \'-\' || cli_deposito';
+	}
+
+	public function scopeSelectBankReference($query)
+	{
+		return $query->addSelect(DB::raw($this->bankReferenceFields() . ' as bank_reference'));
+	}
+
+	public function scopeWhereBankReference($query, $bank_reference)
+	{
+		return $query->whereRaw($this->bankReferenceFields() . ' like ?', ["%$bank_reference%"]);
 	}
 
 	public function scopeJoinCli($query)

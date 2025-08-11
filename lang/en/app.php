@@ -780,7 +780,7 @@ return [
 		'login_too_many_attempts' => 'Too many login attempts.<br>Please try again in 5 minutes.',
 		'invalid_strict_password' => 'The password must meet the following criteria:<br>More than :min characters, at least one uppercase letter, one lowercase, one symbol and one number.',
 		'err-families_newsletter' => 'No newsletter has been selected<br><br>If you want to unsubscribe, please contact us.',
-
+		'deposit_exists' => 'A deposit has already been requested by this user. If you need more information, please <a href=":contact">contact</a> us.'
 	),
 	'msg_neutral' =>
 	array(
