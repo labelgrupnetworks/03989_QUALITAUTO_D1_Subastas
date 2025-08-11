@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Auction\DepositAlreadyExistsException;
 use  App\libs\SeoLib;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\V5\LotListController;
@@ -28,12 +29,11 @@ use App\Models\V5\WebCalendar;
 use App\Models\V5\WebCalendarEvent;
 use App\Providers\RoutingServiceProvider as Routing;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Auction\AuctionDepositService;
 use App\Services\Auction\LotCategoryService;
 use App\Services\Auction\LotDeliveryService;
 use App\Services\Content\BlockService;
 use App\Services\Content\EnterpriseParamsService;
-use App\Services\Notifications\RequestBiddingPermissionAdminNotificationService;
-use App\Services\Notifications\RequestBiddingPermissionNotificationService;
 use App\Support\Database\SessionOptions;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -2161,68 +2161,35 @@ class SubastaController extends Controller
 		return view('front::includes.ficha.formulario_deposito', $data)->render();
 	}
 
-	public function sendFormularioPujar(HttpRequest $request)
+	public function sendFormularioPujar(HttpRequest $request, AuctionDepositService $auctionDepositService)
 	{
-		if(!Session::has('user')){
+		if (!Session::has('user')) {
 			return response(trans('web.msg_error.mustLogin'), 404);
 		}
 
-		$files = $request->file('file', []);
+		$validated = $request->validate([
+			'cod_sub' => 'required',
+			'ref' => 'required',
+			'file.*' => 'file|max:10240', // Max 10MB per file
+			'represented' => 'string',
+		]);
 
-		foreach ($files as $file) {
-			if($file->getError() == 1){
-				$max_size = $file->getMaxFileSize() / 1024 / 1024;  // Get size in Mb
-				$error = 'El tamaño del documento debe ser menor a ' . $max_size . 'Mb.';
-        		return response($error, 404);
-			}
-		}
+		try {
+			$auctionDepositService->processBiddingRequest(
+				Session::get('user.cod'),
+				$validated,
+				$request->file('file', [])
+			);
 
-		$cod_cli = Session::get('user.cod');
-		$represented = $request->input('represented', 'N');
-		$cod_sub = $request->input('cod_sub', '');
-		$ref = $request->input('ref', '');
-		$fxCli = FxCli::select('cod_cli', 'nom_cli', 'rsoc_cli', 'fisjur_cli', 'email_cli', 'cif_cli')->where('COD_CLI', $cod_cli)->first();
-
-		$representedTo = null;
-		if($represented != 'N') {
-			$representedTo = FgRepresentados::find($represented);
-		}
-
-
-		if(Config::get('app.withDepositNotification', false)) {
-			$depositExists = FgDeposito::query()
-				->where([
-					'cli_deposito' => $cod_cli,
-					'sub_deposito' => $cod_sub,
-					'ref_deposito' => $ref
-				])
-				->when($representedTo, function ($query) use ($representedTo) {
-					$query->where('representado_deposito', $representedTo->id);
-				})
-				->exists();
-
-			if ($depositExists) {
-				Log::info("El depósito ya existe para el usuario: $cod_cli, subasta: $cod_sub, referencia: $ref");
-				return response(trans('web.msg_error.deposit_exists', ['contact' => route('contact_page')]), 404);
-			}
-
-			$deposit = FgDeposito::create([
-				'cli_deposito' => $cod_cli,
-				'sub_deposito' => $cod_sub,
-				'ref_deposito' => $ref,
-				'estado_deposito' => FgDeposito::ESTADO_PENDIENTE,
-				'representado_deposito' => $representedTo ? $representedTo->id : null,
-			]);
-
-			(new RequestBiddingPermissionNotificationService($deposit, $representedTo))->send();
-		}
-
-		$isSend = (new RequestBiddingPermissionAdminNotificationService($fxCli, $cod_sub, $ref, $files, $representedTo))->send();
-		if($isSend){
 			return response(trans('web.msg_success.mensaje_enviado'), 200);
+		} catch (DepositAlreadyExistsException $e) {
+			return response()->json(['message' => $e->getMessage()], 404);
+		} catch (\Throwable $e) {
+			Log::error("Error al procesar la solicitud de puja", [
+				'error' => $e->getMessage(),
+			]);
+			return response()->json(['message' => trans('web.msg_error.generic')], 404);
 		}
-
-		return response(trans('web.msg_error.generic'), 404);
 	}
 
 	public function acceptAuctionConditions(HttpRequest $request)

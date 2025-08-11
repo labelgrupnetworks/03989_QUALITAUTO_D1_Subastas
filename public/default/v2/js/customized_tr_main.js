@@ -781,9 +781,7 @@ function sendDepositForm(e) {
 	formData.append('represented', $('[name="representado"]').val());
 
 	$.ajax({
-		async: true,
 		type: "POST",
-		dataType: "html",
 		contentType: false,
 		processData: false,
 		url: "/api-ajax/enviar-formulario-pujar",
@@ -797,7 +795,8 @@ function sendDepositForm(e) {
 		error: function (error) {
 			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 			$("#insert_msg_title").html("");
-			$("#insert_msg").html(error.responseText);
+			let message = error.responseJSON ? error.responseJSON.message : error.responseText;
+			$("#insert_msg").html(message);
 		},
 	});
 
