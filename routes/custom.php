@@ -84,14 +84,4 @@ Route::post('/api-ajax/lots-destacados-grid', [ContentController::class, 'getAja
 // No tenemos a Carlandia
 // Route::get('/loadCarsMotorflash', [CronController::class, 'loadCarsMotorflash']);
 // Route::get('/dynamicAds', [CronController::class, 'dynamicAds']);
-// # TPV
-// Route::get('/carlandia/generatePayment/{payLink}', 'V5\CarlandiaPayController@generatePay')->name('carlandiaGeneratePay');
-// #recibimos la confirmación de redsys
-// Route::post('/carlandia/confirmPayment', 'V5\CarlandiaPayController@confirmPayment');
 
-// Route::get(Routing::slugSeo('coches-contraoferta'), 'V5\LotListController@getLotsListAllCategories');
-// Route::get(Routing::slugSeo('coches-subasta'), 'V5\LotListController@getLotsListAllCategories');
-
-// #aceptar contraofertas por el concesionario
-// Route::get('aceptacion-contraoferta', 'V5\CarlandiaPayController@aceptarContraoferta')->name('aceptacion-contraoferta');
-// Route::post('contraoferta-aceptada', 'V5\CarlandiaPayController@contraofertaAceptada');

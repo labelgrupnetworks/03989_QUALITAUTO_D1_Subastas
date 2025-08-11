@@ -193,9 +193,7 @@ Route::get('sendemailsobrepuja/{cod}/{licit}/{ref}/{orden_o_puja}', [SubastaTiem
 Route::post('api/action/subasta-{cod}', [SubastaTiempoRealController::class, 'action'])->where(array('cod' => '[0-9a-zA-Z]+'))->middleware('measure.query.time')->name('api.action.subasta');
 Route::post(Routing::slug('api') . '/comprar/subasta-{cod}', [SubastaTiempoRealController::class, 'comprar'])->where(array('cod' => '[0-9a-zA-Z]+'));
 Route::post(Routing::slug('api') . '/ol/subasta-{cod}', [SubastaTiempoRealController::class, 'ordenLicitacion'])->where(array('cod' => '[0-9a-zA-Z]+'));
-Route::post(Routing::slug('api') . '/contraofertar/subasta-{cod}', [SubastaTiempoRealController::class, 'contraOfertar'])->where(array('cod' => '[0-9a-zA-Z]+'));
-Route::post(Routing::slug('api') . '/check-contraofertar/subasta-{cod}', [SubastaTiempoRealController::class, 'preContraOfertar'])->where(array('cod' => '[0-9a-zA-Z]+'));
-Route::post(Routing::slug('api') . '/comprar-aux/subasta-{cod}', [SubastaTiempoRealController::class, 'comprarAux'])->where(array('cod' => '[0-9a-zA-Z]+'));
+
 Route::post('api-ajax/makeOffer', [SubastaTiempoRealController::class, 'makeOffer']);
 
 Route::get('api-ajax' . Routing::slug('subasta') . '-{cod}/p-{page}', [SubastaController::class, 'subastaAjax'])->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));

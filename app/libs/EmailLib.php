@@ -9,7 +9,6 @@
 namespace App\libs;
 
 use App\Http\Controllers\PaymentsController;
-use App\Http\Controllers\V5\CarlandiaPayController;
 use App\Jobs\MailJob;
 use App\Models\MailQueries;
 use App\Models\Subasta;
@@ -833,8 +832,7 @@ class EmailLib
 					['REF_ASIGL1', $ref],
 					['LICIT_ASIGL1', $this->atributes['LICIT_CODE']],
 				])->max('lin_asigl1');
-				$link = (new CarlandiaPayController())->getPayLink($cod_sub, $ref, $adjudicado->licit_csub, $linAsigl1, 'B');
-				$this->setAtribute('PAY_LINK', $link);
+
 			}
 
 			$this->setAtribute("IMPORTESINIVA", ToolsServiceProvider::moneyFormat($precioSinIva, false, 2));

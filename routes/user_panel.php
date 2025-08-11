@@ -40,15 +40,6 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::get('{lang}/user/panel/sales/finish', [SalesController::class, 'invoiceSalesOfFinishAuctions'])->name('panel.sales.finish');
 	Route::get('{lang}/user/panel/sales/pending-assign', [SalesController::class, 'getLotsSalesPendingToBeAssign'])->name('panel.sales.pending-assign');
 
-	#CARLANDIA
-	// Metodos de Carlandia, No se estan utilizando (14/08/2024)
-	// Route::get('{lang}/user/panel/my-active-sales', [CarlandiaSalesController::class, 'getActiveSales'])->name('panel.active-sales');
-	// Route::get('{lang}/user/panel/my-sales', [CarlandiaSalesController::class, 'getAwardSales'])->name('panel.award-sales');
-	// Route::get('{lang}/user/panel/my-sales-download', [CarlandiaSalesController::class, 'getDownloadSales'])->name('panel.download-sales');
-	// Route::get('{lang}/user/panel/pre-awards', [CarlandiaPayController::class, 'preAwards'])->name('panel.pre_awards');
-	// Route::get('{lang}/user/panel/counteroffers', [CarlandiaPayController::class, 'getCounterOffers'])->name('panel.counteroffers');
-
-
 	# Informacion de usuario
 	Route::get('{lang}/user/panel/addresses/{cod_sub?}', [AddressController::class, 'index'])->name('panel.addresses');
 	Route::post('api-ajax/client/update', [UserController::class, 'updateClientInfo']);
