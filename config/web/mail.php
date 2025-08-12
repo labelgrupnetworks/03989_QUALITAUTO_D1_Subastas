@@ -12,4 +12,6 @@ return [
 	'enable_email_buy_user' => false, //Habilita que el usuario reciba un correo de confirmación al comprar un lote
 	'enable_emails' => true, //Habilita el envío de correos electrónicos.
 	'from_email' => '', //From email @todo - Limpiar y dejar solamente el del env y mail.php principal (mail.from.address)
+	'max_email_cron' => 100, //Número máximo de correos electrónicos a enviar por cron
+	'utm_email' => '', // Codigo UTM para los emails. @todo - No lo tiene nadie.
 ];
