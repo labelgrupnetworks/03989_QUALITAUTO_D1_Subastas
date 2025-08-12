@@ -4,53 +4,52 @@
 namespace App\Models\V5;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
 
 class Web_Config extends Model
 {
-    protected $table = 'Web_Config';
-    protected $primaryKey = 'ID_WEB_CONFIG';
-    public $timestamps = false;
-    public $incrementing = false;
- //   public  $keyType = string;
-    //permitimos crear un elemento apartir de todos los campos
-    protected $guarded = [];
-   
-    
+	protected $table = 'web_config';
+	protected $primaryKey = 'id_web_config';
+	public $timestamps = false;
+	public $incrementing = false;
+	protected $guarded = [];
 
+	public function __construct(array $vars = [])
+	{
+		$this->attributes = [
+			'emp' => Config::get("app.emp")
+		];
 
+		parent::__construct($vars);
+	}
 
-	//
-    //   password_encrypt - Función encargada de codificar/encriptar un password 
-    //
-    //   @password - Password del usuario
-    //   @emp - Empresa 
-    //   
-    //   Devuelve el user encontrado. Se pasa la empresa porque esta función se utiliza para validar en casas de subastas
-    //
+	protected static function boot()
+	{
+		parent::boot();
 
+		static::addGlobalScope('emp', function (Builder $builder) {
+			$builder->where('emp', Config::get("app.emp"));
+		});
+	}
 
-    static function password_encrypt($password, $emp) {
-
-
+	/**
+	 * Función encargada de codificar/encriptar un password
+	 *
+	 * @var string $password - Password del usuario
+	 * @var string $emp - Empresa
+	 * @return string|false - Devuelve el password encriptado o false si no se encuentra la configuración
+	 */
+	static function password_encrypt($password, $emp)
+	{
 		$res = 	WEB_CONFIG::select("VALUE")
-				->where("KEY","password_MD5")
-				->where("EMP",$emp)->first();
+			->where("KEY", "password_MD5")
+			->where("EMP", $emp)->first();
 		if (empty($res)) {
 			return false;
 		}
-		$v = trim(md5($res->value.$password));
+		$v = trim(md5($res->value . $password));
 
 		return $v;
-
-    }
-
-
-
-
-
-
-
-
-
+	}
 }

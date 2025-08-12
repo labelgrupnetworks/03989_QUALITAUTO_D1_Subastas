@@ -504,77 +504,7 @@ class Subasta extends Model
              return $lotes;
 
         }
-        /*
-        $lotes = DB::select($sql, $params);
-
-        return $lotes;
-         */
     }
-
-
-	#03-02-2021 comento código por que parece que no se usa, si al fina lse usa pasar la variable $this->estado_lotes por bindings
-	/*
-     public function getSubasta_filters($included_id_auc_session = true)
-        {
-
-        $params = array(
-                'emp'       =>  Config::get('app.emp'),
-                'cod_sub'   =>  $this->cod
-                );
-
-
-        $estado_lotes="";
-        //si tiene la config de cerrar lote
-        if (Config::get('app.hide_sold_lot')){
-            $estado_lotes.= "p.CERRADO_ASIGL0 = 'N' AND ";
-
-        }
-
-        # Filtrado por estado de lote CERRADO_ASIGL0
-        if(!empty($this->estado_lotes)) {
-            $estado_lotes .= "p.CERRADO_ASIGL0 = '".$this->estado_lotes."' AND ";
-        }
-
-
-        //no hacemos caso a los where por que entocnes n ocontaria todos los elementos
-        $where_filter = "";
-        if($included_id_auc_session)
-        {
-            $where_filter=" AND auc.\"id_auc_sessions\" = ".$this->id_auc_sessions;
-        }
-
-         $select = "p.ref_asigl0,lotes.REF_HCES1, lotes.num_hces1, lotes.titulo_hces1";
-         $select .= " ,t_values.\"period\", t_values.\"subperiod_1\"  ";
-        $sql="SELECT  " .$select."
-
-        FROM FGASIGL0 p
-        INNER JOIN FGHCES1 lotes ON   (lotes.EMP_HCES1 = :emp AND lotes.NUM_HCES1 = p.NUMHCES_ASIGL0  AND lotes.LIN_HCES1 = p.LINHCES_ASIGL0)
-        INNER JOIN FGSUB subastas ON (subastas.COD_SUB = p.SUB_ASIGL0 AND subastas.EMP_SUB = :emp)
-        JOIN \"auc_sessions\" auc ON (auc.\"auction\" = :cod_sub)
-        LEFT JOIN FGORTSEC1 cat
-                        ON (cat.SEC_ORTSEC1 = lotes.SEC_HCES1 AND cat.SUB_ORTSEC1 = :cod_sub AND cat.EMP_ORTSEC1 = :emp)
-
-        left JOIN \"object_types_values\" t_values on t_values.\"transfer_sheet_number\"  = lotes.num_hces1  and t_values.\"transfer_sheet_line\" = lotes.lin_hces1
-        left join \"auc_custom_fields_values\" f_values on f_values.\"field\" = 'period' and f_values.\"value\" =  t_values.\"period\"
-        left join \"auc_custom_fields_values\" f_values_sub on f_values_sub.\"field\" = 'subperiod' and f_values_sub.\"value\" =  t_values.\"subperiod_1\"
-
-
-        WHERE ".$estado_lotes." p.EMP_ASIGL0 = :emp AND subastas.COD_SUB = :cod_sub " . $where_filter."
-
-
-        AND lotes.REF_HCES1 >= auc.\"init_lot\" AND lotes.REF_HCES1 <= auc.\"end_lot\"
-        AND subastas.TIPO_SUB IN (".$this->tipo.") AND subastas.SUBC_SUB IN ('S', 'H','A')
-
-        AND (subastas.tipo_sub not in ('O','P') or   TRUNC(p.fini_asigl0 ) < TRUNC(SYSDATE) or (TRUNC(p.fini_asigl0 ) = TRUNC(SYSDATE) AND  p.hini_asigl0 <= to_char(sysdate, 'HH24:MI:SS')) )
-        order by f_values.\"order\",f_values_sub.\"order\", t_values.\"period\", t_values.\"subperiod_1\"
-         " ;
-
-        $subasta = DB::select($sql, $params);
-
-        return $subasta;
-
-    }
-*/
 
 	public function getInfSubasta()
 	{

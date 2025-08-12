@@ -8,7 +8,6 @@ use App\libs\Currency;
 use App\Models\User;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgAsigl1;
-use App\Models\V5\FgDvc1l;
 use App\Models\V5\FgHces1;
 use App\Models\V5\FxCliWeb;
 use App\Models\V5\FxDvc0;
@@ -60,74 +59,6 @@ class SalesController extends Controller
 
 		return view('front::pages.panel.sales', $data);
 	}
-
-	/**
-	 * @deprecated Diseño de panel de Tauler antiguo, No se esta utilizando (14/08/2024)
-	 * @todo Al eliminar, revisar si se pueden eliminar metodos relacionados
-	 */
-	public function getInfoSales()
-	{
-		$period = null;
-		$cod_subs = null;
-
-		if (request('selections') && request('type') == 'time') {
-			$period = request('selections');
-		} else {
-			$cod_subs = request('selections');
-		}
-
-		$cod_cli = Session::get('user.cod');
-		$fgAsigl0 = new FgAsigl0();
-		$fgDvc1l = new FgDvc1l();
-
-		if (request('type') == 'time') {
-			$subastasActivas = $fgAsigl0->getActiveAuctionsWithPropietary($cod_cli, Session::get('user.admin'), $period[0]);
-			$cod_subs = $subastasActivas->pluck('sub_asigl0')->toArray();
-		}
-
-		if (empty($cod_subs)) {
-			return response('Not auctions', 404);
-		}
-
-		$infoSales = $fgAsigl0->getLotsInfoSales($cod_subs, $cod_cli);
-
-		$facturasCabeceras = (new FxDvc0())->getFacturasCabecerasPropietario($cod_cli, $period[0] ?? null);
-
-		foreach ($facturasCabeceras as $key => $cabecera) {
-			$facturasCabeceras[$key]['linea'] = $fgDvc1l->getPrimeraLinea($cabecera->anum_dvc0, $cabecera->num_dvc0, $cod_subs);
-		}
-
-		$facturas = $facturasCabeceras->filter(function ($value, $key) {
-			return !empty($value['linea']);
-		})->keyBy('linea.sub_hces1');
-
-		$infoSales['factura'] = view('pages.panel.sales.invoice_assignor_cabecera', ['subastas' => $facturas])->render();
-
-		//$lots = FgAsigl0::getLotsInfoSales($cod_sub);
-		//$infoSales = $this->infoWithSales(Session::get('user.cod'), $lots);
-
-		return response($infoSales);
-	}
-
-	/**
-	 * @deprecated Diseño de panel de Tauler antiguo, No se esta utilizando (14/08/2024)
-	 * @todo Al eliminar, revisar si se pueden eliminar metodos relacionados
-	 */
-	public function getFacturasPropietarioLineas()
-	{
-		$anum = request('anum');
-
-		$num = request('num');
-
-		$cod_cli = Session::get('user.cod');
-
-		$lineas = (new FgDvc1l())->getFacturasLineasPropietario($anum, $num, $cod_cli);
-
-		$facturaPdf = (new AllotmentsAndBillsController)->bills($anum, $num, true);
-
-		return view('front::pages.panel.sales.invoice_assignor_linea', ['lots' => $lineas, 'facturaPdf' => $facturaPdf])->render();
-	}
-
 
 	public function getSalesToActiveAuctions(Request $request)
 	{
