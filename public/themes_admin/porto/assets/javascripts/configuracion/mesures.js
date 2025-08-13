@@ -65,8 +65,12 @@ const printar = (data) => {
 	console.log("Desviación Estándar:", data.desviacionEstandar.toFixed(2));
 };
 
-const closeLotsData = calcularTiempos(closeLots ?? []);
-const pujasData = calcularTiempos(pujas ?? []);
+if(typeof closeLots != 'undefined') {
+	const closeLotsData = calcularTiempos(closeLots);
+	printar(closeLotsData);
+}
 
-printar(pujasData);
-printar(closeLotsData);
+if(typeof pujas != 'undefined') {
+	const pujasData = calcularTiempos(pujas);
+	printar(pujasData);
+}
