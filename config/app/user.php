@@ -30,4 +30,10 @@ return [
 	'ps_activate' => false, //@todo Revisar su uso.
 	'name_without_coma' => false,
 	'strtodefault_register' => false,
+	'ries_cli' => 0, //@todo - Se utilizaba para el riesgo al registrarse, pero ya se puede eliminar
+	'registro_user_w' => false, //Un usuario se registra en el codigo del cliente pone W delante ejemplo: W00001
+	'no_user_change_info' => false, //No permite al usuario modificar sus datos
+	'paymentRedsys' => null, //Habilitar pagos por redsys
+
+
 ];

@@ -18,6 +18,7 @@ return [
 	'deliverea_sandbox' => null,
 	'fb_app_id' => '', //@todo - Eliminar.
 	'google_analytics' => null, //@todo, modificar las vistas para utilizar el config.
+	'google_conversion_id' => '', //Código remarketing google
 	'invaluable_API_password' => '',
 	'invaluable_API_URL' => '',
 	'invaluable_API_user' => '',
@@ -44,4 +45,10 @@ return [
 	'ps_sb_auth_key' => null,
 	'ps_shop_path' => null,
 	'ps_ws_auth_key' => null,
+	'KeyRedsys' => null, //Clave de firma en redsys de redsys
+	'MerchandCodeRedsys' => null, //Codigo de comercio en redsys
+	'PaymentUrlKO' => null, //Return payment en caso de error
+	'PaymentUrlOK' => null, //Return payment
+	'UrlRedsys' => null, //Url de redsys
+	'TerminalRedsys' => null, //numero de terminal en redsys
 ];

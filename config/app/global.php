@@ -18,6 +18,6 @@ return [
 	'strict_password_in_api' => false,
 	'time_cache' => 5,
 	'twitter' => '',
-	'youtube' => ''
-
+	'youtube' => '',
+	'compresion_img' => 0.35, //si el indice de compresion de la imagen esta por encima de este valor se generará la imagen "real"
 ];

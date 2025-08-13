@@ -14,4 +14,5 @@ return [
 	'from_email' => '', //@todo - Limpiar y dejar solamente el del env y mail.php principal (mail.from.address)
 	'max_email_cron' => 100,
 	'utm_email' => '', //@todo - No lo tiene nadie.
+	'accounting_email_admin' => '', //Email admin que un lote se ha comprado
 ];

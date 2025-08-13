@@ -37,6 +37,10 @@ return [
 	'send_email_lot_increment_bid_to_all_users_with_deposit' => false,
 	'send_valid_deposit_notification' => false,
 	'default_minuts_pause' => 5,
+	'search_fields' => '', //Utilizado por Alcala para campos a buscar. @todo grid antiguo
+	'search_fields_no_lang' => '', //Utilizado por Alcala para campos a buscar. @todo grid antiguo
+	'notifyIfYouNotWinner' => false, //Notificar si la orden no supera la maxima
+
 
 	/*
     |--------------------------------------------------------------------------
@@ -54,4 +58,5 @@ return [
 	'keywords_search' => 0, //@todo - No se utiliza, eliminar de las db.
 	'search_lots_cerrados' => false, //@todo - No he encontrado referencias en el códgio.
 	'force_language_redirect' => false, //@todo - Mirar alcala/duran/gutinves y ves si se puede eliminar.
+	'email_bid_confirmed' => '', //Antiguo email de confirmacion de puja
 ];
