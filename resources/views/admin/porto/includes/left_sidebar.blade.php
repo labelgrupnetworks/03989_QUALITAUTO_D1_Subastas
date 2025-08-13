@@ -589,6 +589,14 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
                                 <span>{{ trans('admin-app.nav_menu.internal_config') }}</span>
                             </a>
 
+							<ul class="nav nav-children">
+                                <li>
+                                    <a href="{{ route('admin.configurations.index') }}">
+                                        <span>Configuración</span>
+                                    </a>
+                                </li>
+                            </ul>
+
                             <ul class="nav nav-children">
                                 <li>
                                     <a href="{{ route('admin.thumbs.index') }}">

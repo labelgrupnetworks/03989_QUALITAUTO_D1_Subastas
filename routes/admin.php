@@ -482,7 +482,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('configurations', [AdminConfigurationController::class, 'index'])->name('admin.configurations.index');
 		Route::get('configurations/{section}', [AdminConfigurationController::class, 'show'])->name('admin.configurations.show');
-
+		Route::post('configurations/{section}', [AdminConfigurationController::class, 'update'])->name('admin.configurations.update');
 
 		Route::group(['prefix' => 'test-auction'], function () {
 			Route::get('/', 'configuracion\AdminTestAuctions@index')->name('admin.test-auctions.index');
