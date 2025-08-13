@@ -1,0 +1,17 @@
+<?php
+
+return [
+	'admin_email' => 'admin@example.com',
+	'admin_email_administracion' => '',
+	'copies_emails' => false,
+	'copies_emails_mailbox' => '',
+	'debug_to_email' => '',
+	'emailApiError' => '',
+	'emailsCopyApiError' => '',
+	'email_tasacion_client' => false,
+	'enable_email_buy_user' => false,
+	'enable_emails' => true,
+	'from_email' => '', //@todo - Limpiar y dejar solamente el del env y mail.php principal (mail.from.address)
+	'max_email_cron' => 100,
+	'utm_email' => '', //@todo - No lo tiene nadie.
+];
