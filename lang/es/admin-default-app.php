@@ -3,6 +3,14 @@
 return [
 
 	'config' => [
+		'admin' => 'Secciones habilitadas o no en panel de administración',
+		'behavior' => 'Comportamiento de la web en el funcionamiento de las subastas',
+		'display' => 'Visualización de la web y su contenido',
+		'features' => 'Características de la web',
+		'global' => 'Configuración global de la web',
+		'mail' => 'Configuración del correo electrónico',
+		'services' => 'Servicios externos de la web',
+		'user' => 'Configuración relazionada al usuario, el registro, el panel y sus secciones activadas',
 		'no_activada'                 => 'Esta opción no la tienes activada, contacte con su proveedor.',
 		'title_no_activada'                 => 'Deshabilitado',
 		'auto_licit'                 => 'Asignar un licitador',

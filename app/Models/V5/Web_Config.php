@@ -11,8 +11,12 @@ class Web_Config extends Model
 {
 	protected $table = 'web_config';
 	protected $primaryKey = 'id_web_config';
-	public $timestamps = false;
+
+	public $timestamps = true;
 	public $incrementing = false;
+
+	const CREATED_AT = null;
+
 	protected $guarded = [];
 
 	public function __construct(array $vars = [])
@@ -51,5 +55,24 @@ class Web_Config extends Model
 		$v = trim(md5($res->value . $password));
 
 		return $v;
+	}
+
+	public static function getSections(): array
+	{
+		return [
+			'admin',
+			'behavior',
+			'display',
+			'features',
+			'global',
+			'mail',
+			'services',
+			'user'
+		];
+	}
+
+	public function getMetaAttribute()
+	{
+		return Config::get("metas.{$this->category}.{$this->key}", []);
 	}
 }

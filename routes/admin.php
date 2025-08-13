@@ -14,6 +14,7 @@ use App\Http\Controllers\admin\b2b\{
 };
 use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\BloqueConfigController;
+use App\Http\Controllers\admin\configuracion\AdminConfigurationController;
 use App\Http\Controllers\admin\configuracion\AdminMesuresController;
 use App\Http\Controllers\admin\contenido\AdminEmailsController;
 use App\Http\Controllers\admin\contenido\BannerController as ContenidoBannerController;
@@ -478,6 +479,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('mesures', [AdminMesuresController::class, 'index'])->name('admin.mesures.index');
 		Route::get('mesures-json', [AdminMesuresController::class, 'analizeLogFile'])->name('admin.mesures.index-json');
+
+		Route::get('configurations', [AdminConfigurationController::class, 'index'])->name('admin.configurations.index');
+		Route::get('configurations/{section}', [AdminConfigurationController::class, 'show'])->name('admin.configurations.show');
 
 
 		Route::group(['prefix' => 'test-auction'], function () {
