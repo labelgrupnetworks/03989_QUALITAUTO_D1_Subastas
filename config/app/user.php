@@ -33,7 +33,8 @@ return [
 	'ries_cli' => 0, //@todo - Se utilizaba para el riesgo al registrarse, pero ya se puede eliminar
 	'registro_user_w' => false, //Un usuario se registra en el codigo del cliente pone W delante ejemplo: W00001
 	'no_user_change_info' => false, //No permite al usuario modificar sus datos
-	'paymentRedsys' => null, //Habilitar pagos por redsys
-
-
+	'paymentRedsys' => false, //Habilitar pagos por redsys
+	'multi_key_pass' => false, //EL password se encripta con una key para cada usuario
+	'allotments_shopping_cart' => null, //Separar adjudicaciones por venta directa y resto
+	'multiPasarela' => null, //Multiples pasarelas
 ];

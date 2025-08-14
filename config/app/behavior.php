@@ -40,7 +40,8 @@ return [
 	'search_fields' => '', //Utilizado por Alcala para campos a buscar. @todo grid antiguo
 	'search_fields_no_lang' => '', //Utilizado por Alcala para campos a buscar. @todo grid antiguo
 	'notifyIfYouNotWinner' => false, //Notificar si la orden no supera la maxima
-
+	'shoppingCart' => null, //Carrito de la compra en las subastas V
+	'date_regenerate_image' => null, //fecha en formato Y-m-d, Si una imagen es anterior a esta fecha se regenerara
 
 	/*
     |--------------------------------------------------------------------------

@@ -51,4 +51,16 @@ return [
 	'PaymentUrlOK' => null, //Return payment
 	'UrlRedsys' => null, //Url de redsys
 	'TerminalRedsys' => null, //numero de terminal en redsys
+	'APP_SUBALIA_GEMP' => null, //grupo de empresa asociada a subalia
+	'APP_SUBALIA_EMP' => null, //empresa de subalia asociada
+	'subalia_URL' => null, //url de subalia
+	'passwordUP2_Tienda1' => null, //password numismatica
+	'brandIdUP2_Tienda1' => null, //Brand Numismatica
+	'merchantIdUP2_Tienda1' => null, //Merchand Numismatica
+	'passwordUP2_Tienda2' => null, //password Arqueologia
+	'brandIdUP2_Tienda2' => null, //Brand Arqueologia
+	'merchantIdUP2_Tienda2' => null, //Merchand Arqueologia
+	'multiPasarela' => null, //Multiples pasarelas
+	'streaming_id' => null, //Id de websocket de streaming,
+	'streaming_name' => null, //Nombre de ruta del streaming.
 ];

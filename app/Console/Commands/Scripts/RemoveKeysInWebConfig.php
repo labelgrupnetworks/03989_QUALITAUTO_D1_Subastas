@@ -52,7 +52,9 @@ class RemoveKeysInWebConfig extends Command
 			'universalpay_lang',
 			'universalpay_moneda',
 			'universalpay_token',
-
+			'linkTiempoRealHome',
+			'mosaic_blog_category',
+			'test-admin'
 		];
 	}
 

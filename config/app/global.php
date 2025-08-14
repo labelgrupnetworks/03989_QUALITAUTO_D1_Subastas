@@ -20,4 +20,6 @@ return [
 	'twitter' => '',
 	'youtube' => '',
 	'compresion_img' => 0.35, //si el indice de compresion de la imagen esta por encima de este valor se generará la imagen "real"
+	'img_quality' => 75, // Marcará la calidad de la imagen jpg al generar las imagenes en la libreria image_generate. Calidad de la imagen (1-100)
+	'config_cookies' => '{}', // Cookies de los clientes, @todo - Sistema antiguo, mirar de eliminar referencias a este.
 ];

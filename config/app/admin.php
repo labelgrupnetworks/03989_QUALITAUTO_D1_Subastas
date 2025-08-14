@@ -11,4 +11,6 @@ return [
 	'useProviders' => false,
 	'increment_endlot_online' => 60,
 	'is_concursal' => false, //@todo Eliminar
+	'admin_default_auction_state' => null, //Tipo de subasta a filtrar por defecto
+	'restrictAccessIfNotAdmin' => null, //Bloquer acceso a listado y ficha de subastas administrador sin ser usuario admin
 ];
