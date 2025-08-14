@@ -1354,7 +1354,7 @@ class PaymentsController extends Controller
 				$factura = $fact->apre_csub0ext . '/' . $fact->npre_csub0ext;
 				//Correo admin del pago
 				$this->correo_payment($factura, $amount, $merchantID, $inf_client[0]->nom_cli);
-				//   if(!empty($inf_client) &&( Config::get('app.email_pagado_logistica') || Config::get('app.email_comprador'))){
+
 				if (!empty($inf_client)) {
 					//Enviar email al cliente confirmando pago y a logistica
 					$this->email_inf_purchase($inf_client, $lots);

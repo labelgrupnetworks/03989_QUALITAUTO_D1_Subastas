@@ -98,9 +98,6 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
                                     <li>
                                         <a href="{{ route('subastas.index') }}">
                                             <span>{{ trans('admin-app.nav_menu.auctions') }}</span>
-                                            @if (config('app.test-admin', false))
-                                                <sup> {{ trans('admin-app.information.version2') }}</sup>
-                                            @endif
                                         </a>
                                     </li>
                                 </ul>
