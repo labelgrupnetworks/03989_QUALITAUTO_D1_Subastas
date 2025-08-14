@@ -599,7 +599,7 @@ class ToolsServiceProvider extends ServiceProvider
 	public static function replaceDangerqueryCharacter($text)
 	{
 		// ()|='"#&<>~/\!, [] {}
-		$signos = array('(', ')', '|', '=', "'", '"', '#', '&', '<', '>', '~', '/', '\\', '!', ',', "[", "]", "}", "{");
+		$signos = array('(', ')', '|', '=', "'", '"', '#', '&', '<', '>', '~', '/', '\\', '!', ',', "[", "]", "}", "{", ";");
 		return str_replace($signos, "", $text);
 	}
 

@@ -40,7 +40,7 @@ class BlockService
 				? CacheLib::useCache($key_cache, $sql)
 				: DB::select($sql);
 		} catch (\Exception $e) {
-			Log::emergency('Error blockByKeyname: $keyname' . $e);
+			Log::emergency("Error blockByKeyname: $keyname" . $e);
 			return null;
 		}
 	}
@@ -55,7 +55,7 @@ class BlockService
 
 	private function sqldanger($sql)
 	{
-		$dangerous =  ['delete', 'insert', 'created', 'drop', 'alter', 'update'];
+		$dangerous =  ['delete', 'insert', 'created', 'drop', 'alter', 'update', 'script', 'truncate', 'declare', 'exec', 'execute', 'grant', 'revoke', 'create', 'rename'];
 		$sql = strtolower($sql);
 
 		foreach ($dangerous as $danger) {

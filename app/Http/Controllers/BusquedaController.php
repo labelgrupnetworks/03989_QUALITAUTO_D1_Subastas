@@ -106,6 +106,8 @@ class BusquedaController extends Controller
 			if ($valid_words) {
 				$orden = $this->orden(Request::input('order'), $history);
 
+				$history = ToolsServiceProvider::replaceDangerqueryCharacter($history);
+				$orden = ToolsServiceProvider::replaceDangerqueryCharacter($orden);
 
 				$replace = array(
 					'text' =>  $search,
