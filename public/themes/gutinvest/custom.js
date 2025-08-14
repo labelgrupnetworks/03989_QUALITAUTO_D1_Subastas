@@ -1178,3 +1178,9 @@ function see_img() {
 function see_img_samll() {
 	$(".small_square").removeClass("hidden");
 }
+
+function sendContactForm(event) {
+	event.preventDefault();
+	const form = event.currentTarget;
+	validateCaptchaMiddleware(() => form.submit())
+}
