@@ -481,6 +481,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('mesures-json', [AdminMesuresController::class, 'analizeLogFile'])->name('admin.mesures.index-json');
 
 		Route::get('configurations', [AdminConfigurationController::class, 'index'])->name('admin.configurations.index');
+		Route::get('configurations/resume', [AdminConfigurationController::class, 'resume'])->name('admin.configurations.resume');
 		Route::get('configurations/{section}', [AdminConfigurationController::class, 'show'])->name('admin.configurations.show');
 		Route::post('configurations/{section}', [AdminConfigurationController::class, 'update'])->name('admin.configurations.update');
 
