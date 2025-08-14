@@ -31,6 +31,8 @@
 
 <form method="post" class="frmLogin" id="frmRegister-adv" data-toggle="validator">
     <input class="form-control" type="hidden" name="_token" value="{{ csrf_token() }}">
+	<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12">
@@ -418,6 +420,10 @@
                     {{ trans(\Config::get('app.theme').'-app.login_register.read_conditions') }} (<a href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition') ?>" target="_blank">{{ trans(\Config::get('app.theme').'-app.login_register.more_info') }}</a>)
                 </label>
             </div>
+
+			<p class="captcha-terms">
+					{!! trans("$theme-app.global.captcha-terms") !!}
+			</p>
         </div>
 
 

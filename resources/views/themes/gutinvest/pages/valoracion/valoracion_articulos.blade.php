@@ -9,7 +9,6 @@
 
 $bread[] = array("name" =>$data['title']  );
 ?>
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 <section class="bread-new">
     <div class="container">
         <div class="row">
@@ -35,6 +34,7 @@ $bread[] = array("name" =>$data['title']  );
             <div class="col-xs-12">
                 <form class="form" id="form-valoracion-adv">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden" value="">
                         <div class="col-xs-12 no-padding">
                             <div class="col-md-4 no-padding form-group">
                                 <small><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.name')  ?></small>
@@ -178,9 +178,9 @@ $bread[] = array("name" =>$data['title']  );
                                     </div>
 								</div>
 								<div class="col-xs-12 mt-3 mb-3" style="margin: 10px 0px">
-									<div class="row">
-										<div class="g-recaptcha" data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"  id="html_element" data-callback="recaptcha_callback" ></div>
-									</div>
+									<p class="captcha-terms">
+										{!! trans("$theme-app.global.captcha-terms") !!}
+									</p>
 								</div>
                             </div>
                             <div class="col-xs-12 no-padding mt-3">
@@ -205,8 +205,6 @@ $('#files').change(function(e){
 
 })
 
-$('#valoracion-adv').attr('disabled', true);
-
 $('input[name=Tasacion_tipo]').click(function() {
     if($(this).attr('id')=== 'inmobiliaria'){
         $('.solo-maquinaria').addClass('hidden')
@@ -222,9 +220,6 @@ $('input[name=Tasacion_tipo]').click(function() {
     }
 })
 
-var recaptcha_callback = function(response) {
-    $('#valoracion-adv').attr('disabled', false)
-};
 
 
 </script>

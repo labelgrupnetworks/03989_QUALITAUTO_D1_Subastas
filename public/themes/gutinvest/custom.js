@@ -211,7 +211,7 @@
             }
         });
 
-        $('#frmRegister-adv').validator().on('submit', function (e) {
+        $('#frmRegister-adv').validator().on('submit', async function (e) {
             if (e.isDefaultPrevented()) {
                 // formulario incorrecto
                 var text = $(".error-form-validation").html();
@@ -228,6 +228,12 @@
                     $.magnificPopup.open({items: {src: '#modalMensajeWeb'}, type: 'inline'}, 0);
                 }else{
                     $('button', $this).attr('disabled', 'disabled');
+
+					const captcha = await isValidCaptcha();
+					if(!captcha){
+						showMessage(messages.error.recaptcha_incorrect);
+						return;
+					}
                   // Datos correctos enviamos ajax
                   $.ajax({
                           type: "POST",
@@ -632,31 +638,20 @@
             $.magnificPopup.open({items: {src: '#modalMensajeDelete'}, type: 'inline'}, 0);
         });
 
-        $( "#form-valoracion-adv" ).submit(function(event) {
+        $( "#form-valoracion-adv" ).submit(async function(event) {
 
 			event.preventDefault();
 
-			response = $("#g-recaptcha-response").val();
+			var max_size = 20;
+			var size = 0;
+			$(event.target.files.files).each(function (index, element) {
+				size = parseInt((element.size / 1024 / 1024).toFixed(2)) + parseInt(size);
+			});
 
-			if (!response) {
-            	$(".g-recaptcha iframe").addClass("has-error");
-            	$("#insert_msg").html(messages.error.recaptcha_incorrect);
-				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-				return;
-        	}
-        	else {
-				$(".g-recaptcha iframe").removeClass("has-error");
-			}
+			const captcha = await isValidCaptcha();
+			formData = new FormData(this);
 
-            formData = new FormData(this);
-            var max_size = 20;
-            var size = 0;
-            $( event.target.files.files ).each(function( index, element ) {
-console.log((element.size/1024/1024).toFixed(2))
-               size = parseInt((element.size/1024/1024).toFixed(2)) + parseInt(size);
-               console.log(size);
-           });
-           if(size < max_size){
+           if ((size < max_size) && captcha) {
                $.ajax({
                 type: "POST",
                 url:  "valoracion-articulos-adv",
