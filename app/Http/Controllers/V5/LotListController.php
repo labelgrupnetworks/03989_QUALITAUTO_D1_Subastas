@@ -988,6 +988,8 @@ class LotListController extends Controller
 
 					#quitamos los corchetes que puedan venir
 					$word = str_replace(array("[", "]"), "", $word);
+					//quitamos simbolos especiales
+					$word = preg_replace('/[^A-Za-zÀ-ÿ0-9_\-]/u', '', $word);
 
 					#que no sea una palabra escluida por Catsearctch
 					if (!in_array($word, $excludedWords)) {
