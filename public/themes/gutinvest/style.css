@@ -4841,3 +4841,13 @@ a.inherit_design {
 .home_sell img {
 	max-width: 90%;
 }
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 12px;
+	line-height: 1;
+	margin-bottom: .5rem;
+}
