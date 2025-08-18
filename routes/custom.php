@@ -67,12 +67,6 @@ Route::post('/' . Config::get('app.locale') . '/private-chanel/form', [CustomCon
 #SALARETIRO
 Route::get('/exportar-a-excel-lotes/{codSub}', [CustomControllers::class, 'exportarLotes']);
 
-#SEGRE
-/* Hacer una ruta que llegue a la blade pages.newsletter */
-Route::get('/' . Config::get('app.locale') . '/catalog-newsleter', function () {
-	return view('front::pages.catalog_newsletter');
-})->name('catalogos_newsletter');
-
 #Bogota
 Route::get('/auth/zoho', [ZohoController::class, 'getTokensWithGrantCode'])->name('auth.zoho');
 
