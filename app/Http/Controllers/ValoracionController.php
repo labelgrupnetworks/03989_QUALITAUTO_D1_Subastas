@@ -225,8 +225,7 @@ class ValoracionController extends Controller
 			if(!$isSended) {
 				$this->removeFiles(Input::file('imagen', []));
 				return [
-					'status'  => 'correct',
-					'url' => URL::asset($url),
+					'status'  => 'error',
 				];
 			}
 
