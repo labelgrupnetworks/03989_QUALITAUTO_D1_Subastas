@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use App\Providers\ToolsServiceProvider;
+use App\Support\Localization;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -315,8 +316,20 @@ class FgAsigl0 extends Model
         return $query->leftjoin("FGORTSEC1" , "FGORTSEC1.EMP_ORTSEC1 = FGASIGL0.EMP_ASIGL0 AND FGORTSEC1.SUB_ORTSEC1 ='0' AND FGORTSEC1.SEC_ORTSEC1 =  FGHCES1.SEC_HCES1");
 	}
 
-	public function scopeJoinSecAsigl0($query){
+	public function scopeJoinSecAsigl0($query)
+	{
         return $query->leftjoin("FXSEC" , "FXSEC.GEMP_SEC = '".Config::get("app.gemp")."' AND FXSEC.COD_SEC =FGHCES1.SEC_HCES1");
+	}
+
+	public function scopeJoinSecAndTsec($query)
+	{
+		return $query->join('fxsec', function($join) {
+			$join->on('cod_sec', '=', 'sec_hces1')
+				->where('gemp_sec', Config::get("app.gemp"));
+		})->join('fxtsec', function($join) {
+			$join->on('cod_tsec', '=', 'tsec_sec')
+				->where('gemp_tsec', Config::get("app.gemp"));
+		});
 	}
 
 	public function scopejoinFgCaracteristicasAsigl0($query){
@@ -552,6 +565,20 @@ class FgAsigl0 extends Model
 			->leftJoin('"object_types_values_lang" otv_lang',
 				'otv_lang."company_lang" = emp_asigl0 and otv_lang."transfer_sheet_number_lang" = numhces_asigl0 AND otv_lang."transfer_sheet_line_lang" = linhces_asigl0 AND otv_lang."lang_object_types_values_lang" = \'' . $locale . '\'');
 	}
+
+	public function scopeJoinOTV($query)
+	{
+		return $query->join('"object_types_values" otv', 'otv."company" = emp_asigl0 and otv."transfer_sheet_number" = numhces_asigl0 AND otv."transfer_sheet_line" = linhces_asigl0');
+	}
+
+	public function scopeLeftJoinOTVLang($query)
+	{
+		$locale = Localization::getLocaleComplete();
+		return $query->leftJoin('"object_types_values_lang" otv_lang',
+				'otv_lang."company_lang" = emp_asigl0 and otv_lang."transfer_sheet_number_lang" = numhces_asigl0 AND otv_lang."transfer_sheet_line_lang" = linhces_asigl0 AND otv_lang."lang_object_types_values_lang" = \'' . $locale . '\'');
+	}
+
+
 
 	#listado de Carcateristicas
    public function scopeGetFeaturesAsigl0($query,   $codSub,  $refSession){

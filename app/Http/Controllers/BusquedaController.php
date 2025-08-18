@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Favorites;
 use App\Models\Subasta;
+use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgSub;
 use App\Providers\ToolsServiceProvider;
 use App\Services\Content\BlockService;
 use App\Support\Database\SessionOptions;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -103,6 +106,7 @@ class BusquedaController extends Controller
 					}
 				}
 			}
+
 			if ($valid_words) {
 				$orden = $this->orden(Request::input('order'), $history);
 
@@ -118,17 +122,15 @@ class BusquedaController extends Controller
 					'orden' => $orden
 				);
 
-				//Utilizamos bloc para buscar los lotes
-				$resultado = (new BlockService)->getResultBlockByKeyname('count_search', $replace);
+				$whereType = Request::input('history') === 'H' ? FgSub::SUBC_SUB_HISTORICO : FgSub::SUBC_SUB_ACTIVO;
 
+				$totalItems = $this->getCountSearchResults($replace, $texto, $whereType);
 
-				if (!empty($resultado) && !empty($resultado[0]->num_lots)) {
-					$totalItems = $resultado[0]->num_lots;
-				}
 			} else {
 				$texto = "";
 			}
 		}
+
 		# Siempre que haya resultados de la busqueda activa
 		if ($totalItems > 0) {
 			# Pagina de paginador
@@ -172,6 +174,39 @@ class BusquedaController extends Controller
 		}
 
 		return View::make('front::pages.busqueda', array('data' => $data));
+	}
+
+	private function getCountSearchResults($replace, $texto, $whereType)
+	{
+		if(Config::get('app.features.disabled_query_blocks', false)){
+				return FgAsigl0::query()
+					->select('count(*) as num_lots')
+					->joinFghces1Asigl0()
+					->joinFghces1LangAsigl0()
+					->joinSubastaAsigl0()
+					->joinSessionAsigl0()
+					->joinSecAndTsec()
+					->joinOTV()
+					->leftJoinOTVLang()
+					->where([
+						'oculto_asigl0' => 'N',
+						'subc_sub' => $whereType
+					])
+					->where(function($query) use ($texto) {
+						$query->whereRaw(DB::raw('regexp_like(coalesce(descweb_hces1_lang, descweb_hces1), ?)'), ["$texto"])
+							->orWhereRaw(DB::raw('regexp_like(coalesce(desc_hces1_lang, desc_hces1), ?)'), ["$texto"]);
+					})
+					->when(Config::get('app.search_multiple_words') && Config::get('app.search_fields'), function($query) use ($texto) {
+						$fields = explode(",", Config::get('app.search_fields'));
+						foreach ($fields as $field) {
+							$query->orWhereRaw(DB::raw("regexp_like(coalesce({$field}_lang, {$field}), ?)"), [$texto]);
+						}
+					})
+					->value('num_lots');
+		}
+
+		$result = (new BlockService)->getResultBlockByKeyname('count_search', $replace);
+		return $result[0]->num_lots ?? 0;
 	}
 
 
