@@ -272,6 +272,8 @@ class ContentController extends Controller
 
 	public function rematesDestacados($codSub)
 	{
+		abort_if(!View::exists('pages.remates_destacados'), 404);
+
 		$lots = FgAsigl0::activeLotAsigl0()
 			->select('REF_ASIGL0, NUM_HCES1, LIN_HCES1, DESCWEB_HCES1, DESC_HCES1, IMPSALHCES_ASIGL0, IMPLIC_HCES1, COD_SUB, "id_auc_sessions", "name", WEBFRIEND_HCES1, DES_SUB ')
 			->where("SUB_ASIGL0", $codSub)

@@ -6,7 +6,7 @@
     <h2 class="mt-5">{{ trans('web.lot_list.no_results') }}</h2>
 @else
     @php
-        $isLastHistoryAuction = (new AuctionService())->isLastHistoryAuction($auction->cod_sub);
+        $isLastHistoryAuction = !empty($auction) && (new AuctionService())->isLastHistoryAuction($auction->cod_sub);
     @endphp
     @foreach ($lots as $item)
         @php

@@ -45,7 +45,7 @@ class FgEspecial0 extends Model
 	public function title(): Attribute
 	{
 		return Attribute::make(
-			get: fn () => $this->relationLoaded('specialtyLang') ? $this->specialtyLang->titulo_especial0_lang : $this->titulo_especial0
+			get: fn () => $this->specialtyLang?->titulo_especial0_lang ?? $this->titulo_especial0
 		);
 	}
 }
