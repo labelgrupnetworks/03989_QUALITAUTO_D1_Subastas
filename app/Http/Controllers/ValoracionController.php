@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 
 class ValoracionController extends Controller
 {
@@ -119,19 +120,19 @@ class ValoracionController extends Controller
 			$max_size = 20000000;
 			//debes poner imagen
 			if (empty(Input::file('imagen')) && Config::get('app.imageRequiredInValoraciones', 1)) {
-				return $result = array(
+				return [
 					'status'  => 'error_no_image',
 					'msg' => 'error_no_image',
-				);
+				];
 			}
 
 			foreach (Input::file('imagen') ?? [] as $val_img) {
 				$file = $val_img;
 				if (!empty($file)) {
 					if (filesize($file) < $max_size) {
-						$filename = $file->getClientOriginalName();
-						$file->move($destination_path, $filename);
-						$emailOptions['img']['imagen' . $i] = Config::get('app.url') . $relative . '/' . str_replace(" ", "%20", $filename);
+						$fileName = $this->cleanNameFile($file->getClientOriginalName());
+						$file->move($destination_path, $fileName);
+						$emailOptions['img']['imagen' . $i] = Config::get('app.url') . $relative . '/' . $fileName;
 						$i++;
 					} else {
 						return [
@@ -219,51 +220,33 @@ class ValoracionController extends Controller
 			$emailOptions['UTM'] = $utm_email;
 			$emailOptions['to'] = $send_email;
 			$emailOptions['subject'] = trans(Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name');
-			if (ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions)) {
 
-				if (Config::get('app.cc_email_valoracion')) {
-
-					$emailOptions['to'] =  Config::get('app.cc_email_valoracion');
-					ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions);
-				}
-
-				if (Config::get('app.email_tasacion_client')) {
-
-					$emailOptions['to'] =  $emailOptions['content']['email'];
-					ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions);
-				}
-
-
-
-				foreach (Input::file('imagen') ?? [] as $val_img) {
-					$file = $val_img;
-					if (!empty($file)) {
-						$filename = $file->getClientOriginalName();
-						if (file_exists($relative_dest_path . "/" . $filename)) {
-							unlink($relative_dest_path . "/" . $filename); //acá le damos la direccion exacta del archivo
-						}
-					}
-				}
-
-				return array(
+			$isSended = ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions);
+			if(!$isSended) {
+				$this->removeFiles(Input::file('imagen', []));
+				return [
 					'status'  => 'correct',
 					'url' => URL::asset($url),
-
-				);
-			} else {
-
-				foreach (Input::file('imagen') ?? [] as $val_img) {
-					$file = $val_img;
-					$filename = $file->getClientOriginalName();
-					if (file_exists($relative_dest_path . "/" . $filename)) {
-						unlink($relative_dest_path . "/" . $filename); //acá le damos la direccion exacta del archivo
-					}
-				}
-
-				return array(
-					'status'  => 'error',
-				);
+				];
 			}
+
+			if (Config::get('app.cc_email_valoracion')) {
+				$emailOptions['to'] =  Config::get('app.cc_email_valoracion');
+				ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions);
+			}
+
+			if (Config::get('app.email_tasacion_client')) {
+				$emailOptions['to'] =  $emailOptions['content']['email'];
+				ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions);
+			}
+
+			$this->removeFiles(Input::file('imagen', []));
+
+			return [
+				'status'  => 'correct',
+				'url' => URL::asset($url),
+			];
+
 		} catch (\Exception $e) {
 
 			Log::error("Error en Valoración" . print_r($_POST, true));
@@ -271,6 +254,24 @@ class ValoracionController extends Controller
 			return array(
 				'status'  => 'error',
 			);
+		}
+	}
+
+	private function cleanNameFile($filename)
+	{
+		$slugName = Str::slug(pathinfo($filename, PATHINFO_FILENAME));
+		$extension = pathinfo($filename, PATHINFO_EXTENSION);
+		return $slugName . '.' . $extension;
+	}
+
+	private function removeFiles($files = [])
+	{
+		$relative_dest_path = 'img/valoracion';
+		foreach ($files as $file) {
+			$fileName = $this->cleanNameFile($file->getClientOriginalName());
+			if (file_exists($relative_dest_path . "/" . $fileName)) {
+				unlink($relative_dest_path . "/" . $fileName);
+			}
 		}
 	}
 
