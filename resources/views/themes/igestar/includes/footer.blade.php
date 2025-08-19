@@ -35,9 +35,14 @@
 				<h5>{{ trans('web.foot.term_condition')}}</h5>
 				<ul class="nav flex-column">
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo('pagina').trans('web.links.term_condition') }}"
-							title="{{ trans('web.foot.term_condition') }}" class="nav-link p-0">{{
-							trans('web.foot.term_condition') }}</a>
+						<a href="{{ Routing::translateSeo('pagina').trans('web.links.legal_notice') }}"
+							title="{{ trans('web.foot.legal_notice') }}" class="nav-link p-0">{{
+							trans('web.foot.legal_notice') }}</a>
+					</li>
+					<li class="nav-item mb-2">
+						<a href="{{ Routing::translateSeo('pagina').trans('web.links.general_conditions') }}"
+							title="{{ trans('web.foot.general_conditions') }}" class="nav-link p-0">{{
+							trans('web.foot.general_conditions') }}</a>
 					</li>
 					<li class="nav-item mb-2">
 						<a href="{{ Routing::translateSeo('pagina').trans('web.links.privacy') }}"
@@ -80,7 +85,7 @@
 			</div>
 
 
-			<ul class="list-unstyled d-flex">
+			{{-- <ul class="list-unstyled d-flex">
 				<li class="ms-3">
 					<a class="lb-text-primary" href="{{ Config::get('app.twitter') }}" target="_blank">
 						<x-icon.boostrap size=24 icon=twitter></x-icon.boostrap>
@@ -103,7 +108,7 @@
 						<x-icon.boostrap size=24 icon=pinterest></x-icon.boostrap>
 					</a>
 				</li>
-			</ul>
+			</ul> --}}
 		</div>
 	</div>
 </footer>
