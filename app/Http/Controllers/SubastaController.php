@@ -537,15 +537,6 @@ class SubastaController extends Controller
 		}
 	}
 
-	//devuelve los lotes no vendidos de las subastas tipo Venta
-	private function getWhereDontSoldV($subastaObj)
-	{
-		if (!empty(Config::get("app.hide_sold_lots_V"))) {
-			//un lote no esta adjudicado si no tiene linea en CSUB
-			$subastaObj->where_filter .= " AND (SUB.TIPO_SUB != 'V' OR  (CERRADO_ASIGL0 = 'N' AND CSUB.REF_CSUB IS NULL) )";
-		}
-	}
-
 	private function getWhereOpen($open, $subastaObj)
 	{
 		if (!empty($open)) {
@@ -1236,7 +1227,7 @@ class SubastaController extends Controller
 
 		// (!empty($data['js_item']['lote_actual']->max_puja)  && !empty($data['js_item']->user) &&  $data['js_item']['lote_actual']->max_puja->cod_licit == $data['js_item']->user->cod_licit)? 'mine':'other';  >
 		$SEO_metas = new \stdClass();
-		if (strtotime(Config::get('app.fecha_noindex_follow')) > strtotime($subasta_info->lote_actual->end_session) || $subasta_info->lote_actual->subc_sub == 'A') {
+		if (strtotime(Config::get('app.behavior.fecha_noindex_follow')) > strtotime($subasta_info->lote_actual->end_session) || $subasta_info->lote_actual->subc_sub == 'A') {
 			$SEO_metas->noindex_follow = true;
 		} else {
 			$SEO_metas->noindex_follow = false;
@@ -1690,7 +1681,6 @@ class SubastaController extends Controller
 		$this->getWhereDescription(Request::input('description'), $subastaObj);
 		$this->getWhereExactDescription(Request::input('description_exact'), $subastaObj);
 		$this->getWhereNoAward(Request::input('no_award'), $subastaObj);
-		$this->getWhereDontSoldV($subastaObj);
 		$this->getWhereReference(Request::input('reference'), $subastaObj);
 		$this->getWhereLin_ortsec(Request::input('lin_ortsec'), $subastaObj);
 		$this->getWhereCat_pers(Request::input('catpers'), $subastaObj);

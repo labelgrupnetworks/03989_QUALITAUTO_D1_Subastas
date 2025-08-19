@@ -4,7 +4,6 @@ return [
 	'add_calendar_feature' => 0,
 	'awarded' => 1,
 	'default_theme' => '',
-	'default_lang' => 'en', //@todo - Eliminar
 	'deleteBids' => 1,
 	'exchange' => 1,
 	'gridLots' => false,
@@ -37,9 +36,19 @@ return [
 	'seo_in_home' => null, //Seo en home
 	'seo_in_contact' => null, //Seo en contacto
 	'seo_in_register' => null, //Seo en registro
+	'seo_in_valoracion' => null, //Seo en página de valoracion
 	'videoEnGrid' => null, //Obtener y mostrar videos de lote en grid
 	'hideCloseLots' => null, //Ocultar lotes de venta directa despues de fin fecha
 	'hideRetiredLots' => null, //Ocultar retirados del grid
 	'gridAllSessions' => null, //Todos los lotes en una sesion
-
+	'tr_priority_to_title' => true, // Dar prioridad a titulo_hces1 sobre descweb_hces1 en tr admin
+	'valoracion_index_follow' => false, //Indexar pagina de valoracion articulos
+	'articles_per_page' => 12, // Número de artículos a mostrar en listado
+	'show_warning_modal' => false, //Mostrar modal de aviso en la web [ansorena]
+	'whatsapp_num_button' => null, //En caso de que haya número de teléfono se mostrará el botón que te lleva abrir un chat de whatsapp [ansorena]
+	'contat_with_placeholders' => false,// placeholders en inputs de contacto
+	'tr_cost_price' => false, // Mostrar precio de coste en el tiempo real.
+	'tr_hidden_description' => false, // Ocultar descripción en tiempo real. @todo - No lo esta usando nadie, pero borrar con cuidado ya que afecta el tiempo real.
+	'tr_hidden_title' => false, // Ocultar título del lote en el tiempo real.
+	'PropietarioTR' => false, // Que aparezca el propietario de los lotes en el tiempo real del administrador
 ];

@@ -328,11 +328,7 @@ class PayArticleCartController extends Controller
 
 			$email = new EmailLib('ARTICLES_PAY_ADMIN');
 			if (!empty($email->email)) {
-				$setTo = Config::get('app.admin_email_venta_articulo') ??  Config::get('app.admin_email');
-				Log::info($setTo);
-				#definimos el usuario para mostrar datos, pero el email no va para el
 				$email->setUserByCod($pedido[0]->cod_pedc0, false);
-				$email->setTo($setTo);
 				$email->setPrice(ToolsServiceProvider::moneyFormat($pedido[0]->total_pedc0, trans(Config::get('app.theme') . '-app.lot.eur'), 2));
 				$email->setHtml($articulosBody);
 				$email->setAtribute("COMMENT", nl2br($pedido[0]->obs_pedc0));

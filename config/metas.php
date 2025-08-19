@@ -23,10 +23,6 @@ return [
 			'description' => 'Para ver los nuevos campos de artista. Ejemplo: phone|email|idexternal. Lo usa Duran.',
 			'type' => 'string'
 		],
-		'is_concursal' => [
-			'description' => 'Eliminar',
-			'type' => 'boolean'
-		],
 		'newsletterFamilies' => [
 			'description' => 'Familias de newsletter en admin. Ejemplo: "2,3,4,5,6,7"',
 			'type' => 'string'
@@ -193,45 +189,9 @@ return [
 			'description' => 'Minutos que apareceran por defecto en los clientes cuando quieran pausar una subasta',
 			'type' => 'integer'
 		],
-		'assessment_registered' => [
-			'description' => 'Permitir o no acceder a tasaciones sin estar registrado',
-			'type' => 'boolean'
-		],
-		'auction_in_categories' => [
-			'description' => 'Agrupa las subastas tipo O y tipo P en categorias, no se puede acceder a ellas mediante la subasta, solo por categorias',
-			'type' => 'string'
-		],
-		'enable_general_auctions' => [
-			'description' => 'Habilita las subastas generales',
-			'type' => 'boolean'
-		],
-		'enable_historic_auctions' => [
-			'description' => 'Habilita las subastas históricas',
-			'type' => 'boolean'
-		],
-		'enable_tr_auctions' => [
-			'description' => 'Habilita las subastas tr',
-			'type' => 'boolean'
-		],
 		'fecha_noindex_follow' => [
 			'description' => 'Fecha de lotes de subastas más antiguas que no se van a noindex follow',
 			'type' => 'string'
-		],
-		'hide_sold_lot' => [
-			'description' => 'Oculta los lotes vendidos, se tiene en cuenta en las queries',
-			'type' => 'boolean'
-		],
-		'hide_sold_lots_V' => [
-			'description' => 'Ocultar lotes vendidos de las subastas tipo venta',
-			'type' => 'boolean'
-		],
-		'keywords_search' => [
-			'description' => 'Búsqueda por palabras clave',
-			'type' => 'integer'
-		],
-		'search_lots_cerrados' => [
-			'description' => 'Buscar por lotes abiertos y cerrados',
-			'type' => 'boolean'
 		],
 		'force_language_redirect' => [
 			'description' => 'Forzamos a que las redirecciones que hacemos para mantener las url de la web antigua sean solo en un idioma',
@@ -249,10 +209,6 @@ return [
 		],
 		'default_theme' => [
 			'description' => 'Theme por defecto. Valores posibles: v1, v2',
-			'type' => 'string'
-		],
-		'default_lang' => [
-			'description' => 'Idioma por defecto',
 			'type' => 'string'
 		],
 		'deleteBids' => [
@@ -538,10 +494,6 @@ return [
 		'deliverea_sandbox' => [
 			'description' => 'Sandbox de Deliverea',
 			'type' => 'boolean'
-		],
-		'fb_app_id' => [
-			'description' => 'API de la cuenta vinculada de facebook',
-			'type' => 'string'
 		],
 		'google_analytics' => [
 			'description' => 'ID de la cuenta de Google Analytics',

@@ -37,4 +37,9 @@ return [
 	'multi_key_pass' => false, //EL password se encripta con una key para cada usuario
 	'allotments_shopping_cart' => null, //Separar adjudicaciones por venta directa y resto
 	'multiPasarela' => null, //Multiples pasarelas
+	'all_tax_clients' => null, //Forzamos el tipo de iva
+	'client_files_erp' => false, // Ruta de archivos establecida desde ERP (fxdir)
+	'dni_in_storage' => false, //Indica ruta de almacenamiento del DNI, valores: dni-files, cli-documentation, base-dni-files. @todo, mirar si con el config superior se puede sustituir
+	'user_panel_cif' => false, // Guardar imágenes DNI desde el panel de usuario,
+	'update_fxcli_exist_client' => false, //Cuando el cliente se da de alta y el cliente ya existe updatemos la información del cliente
 ];

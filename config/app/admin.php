@@ -10,7 +10,12 @@ return [
 	'use_fxsecmap_excel' => false,
 	'useProviders' => false,
 	'increment_endlot_online' => 60,
-	'is_concursal' => false, //@todo Eliminar
 	'admin_default_auction_state' => null, //Tipo de subasta a filtrar por defecto
 	'restrictAccessIfNotAdmin' => null, //Bloquer acceso a listado y ficha de subastas administrador sin ser usuario admin
+	'admin_client_dni' => false, //Gestionar DNI desde la administración de clientes
+	'measurementCodeInStock' => false, // muestra las medidas de la obra en el listado de stock (el valor es el ID de la caracteristica)
+	'techniqueCodeInStock' => false, // muestra la técnica de la obra en el listado de stock (el valor es el ID de la caracteristica)
+	'adminShowCreateDate' => false, // mostrar campo de create date del lote
+	'stockIni' => 0, // valor inicial del stock al crear un lote
+
 ];

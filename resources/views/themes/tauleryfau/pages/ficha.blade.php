@@ -50,15 +50,9 @@
         "name" => ''
     );
 
-    $in_category=false;
     if(!empty($lote_actual)){
-
-		//$bread["url"] =  \Routing::translateSeo('subasta').$lote_actual->cod_sub."-".str_slug($lote_actual->name)."-".str_slug($lote_actual->id_auc_sessions);
 		$bread["url"] = $lote_actual->url_subasta;
         $bread["name"] = ($lote_actual->tipo_sub == 'V')?trans($theme.'-app.global.go_shop'): trans($theme.'-app.global.go_auction');
-        if(stripos(\Config::get('app.auction_in_categories'),$lote_actual->tipo_sub) !== false){
-            $in_category=true;
-        }
     }
 @endphp
 
@@ -164,11 +158,7 @@ $(document).ready(function() {
                             <p class="hidden-xs hidden-sm"><a title="Home" href="/">{{ trans($theme.'-app.subastas.breadcrumb') }}</a></p>
                             <span class="divVertical hidden-xs hidden-sm"></span>
                             <p><a href="{{$bread['url']}}">{{$bread['name']}}</a></p>
-                           <?php //oculto  ?>
-                            @if(1 != 1 && $in_category)
-								<span class="divVertical hidden-xs"></span>
-                                <p class="cat-in-ficha hidden-xs"><a href="{{$lote_actual->url_subasta}}">{{ trans($theme.'-app.global.go_to')." ".$lote_actual->title_url_subasta}}</a></p>
-                            @endif
+
                             <span class="divVertical"></span>
 							<p><a href="javascript:history.back()"> {{ trans($theme.'-app.global.go_home') }}</a></p>
 

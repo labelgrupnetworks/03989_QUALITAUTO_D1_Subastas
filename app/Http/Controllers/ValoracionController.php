@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\V5\FgEspecial1;
 use App\Providers\RoutingServiceProvider as Routing;
 use App\Providers\ToolsServiceProvider;
@@ -10,9 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as Input;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
@@ -56,45 +53,7 @@ class ValoracionController extends Controller
 			$data['especialistas'] = $especialistas;
 		}
 
-		if (!config('app.assessment_registered', false)) {
-			return view('pages.valoracion.valoracion_articulos', array('data' => $data));
-		}
-
-		$possibleKeys = ['articulos', 'no-register'];
-
-		if (!in_array($key, $possibleKeys)) {
-			return Redirect::to('/');
-		}
-
-		//valoracion inicial
-		if ($key == 'articulos') {
-			//valorar un articulo si
-			$url = '/' . $lang . '/valoracion-no-register';
-			if (!Session::has('user')) {
-				return Redirect::to($url);
-			} else {
-
-				$Usuario = new User();
-				$Usuario->cod_cli = Session::get('user.cod');
-				$inf_user = $Usuario->getUser();
-
-				$data["name"] = $inf_user->nom_cli;
-				$data["email"] = $inf_user->usrw_cliweb;
-				$data["telf"] = $inf_user->tel1_cli;
-
-				return View::make('pages.valoracion.valoracion_articulos', array('data' => $data));
-			}
-		}
-
-		//no-register
-		$url = '/' . $lang . '/valoracion-articulos';
-		if (Session::has('user')) {
-			return Redirect::to($url);
-		} else {
-			$data['seo'] = new \stdClass();
-			$data['seo']->noindex_follow = true;
-			return View::make('pages.valoracion.no_registrado', array('data' => $data));
-		}
+		return view('pages.valoracion.valoracion_articulos', array('data' => $data));
 	}
 
 	/**
@@ -167,39 +126,16 @@ class ValoracionController extends Controller
 				}
 			}
 
-			if (Config::get('app.assessment_registered')) {
-				$Usuario          = new User();
-				$Usuario->cod_cli = Session::get('user.cod');
-				$inf_user = $Usuario->getUser();
+			$emailOptions['content'] = array(
+				'texto' => trans(Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name'),
+				'name'       => $request->input('name', ''),
+				'email' => $request->input('email', ''),
+				'telf' => $request->input('telf', ''),
+				'camposHtml' => $htmlFields,
+				'camposHtmlArray' => $htmlFieldsArray,
+			);
 
-				//si el formulario viene vacios se rellena con los datos del usuario
-				$name = $request->input('name', $inf_user->nom_cli);
-				$email = $request->input('email', $inf_user->usrw_cliweb);
-				$telf = $request->input('telf', $inf_user->usrw_cliweb);
-
-				$emailOptions['content'] = array(
-					'texto' => trans(Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name'),
-					'name'       => $name,
-					'email' =>  $email,
-					'telf' => $telf,
-					'camposHtml' => $htmlFields,
-					'camposHtmlArray' => $htmlFieldsArray,
-				);
-
-				$emailOptions['user'] = $name;
-			} else {
-				$emailOptions['content'] = array(
-					'texto' => trans(Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name'),
-					'name'       => $request->input('name', ''),
-					'email' => $request->input('email', ''),
-					'telf' => $request->input('telf', ''),
-					'camposHtml' => $htmlFields,
-					'camposHtmlArray' => $htmlFieldsArray,
-
-				);
-
-				$emailOptions['user'] = $request->input('name', '');
-			}
+			$emailOptions['user'] = $request->input('name', '');
 
 			$send_email = Config::get('app.admin_email');
 

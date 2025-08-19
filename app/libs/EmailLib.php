@@ -137,7 +137,6 @@ class EmailLib
 		}
 
 		$this->replace();
-		#quitado 11/01/2023 Config::get("app.queueEmails") &&
 		if (Config::get('queue.default') != "sync" && empty($this->attachments) && empty($this->pdfs) && empty($this->attachmentsFiles)) {
 			MailJob::dispatch($this)->onQueue(Config::get('app.queue_env'));
 			return true;

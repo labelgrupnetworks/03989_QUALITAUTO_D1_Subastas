@@ -105,11 +105,7 @@ class AutoFormulariosController extends Controller
 		// Botoón de submit
 		$data['submit'] = FormLib::Submit(trans(Config::get('app.theme') . '-app.global.enviar'), "autoformulario");
 
-		if (Config::get('app.assessment_registered') && !Session::has('user')) {
-			return View::make('pages.autoformularios.register', array('data' => $data));
-		} else {
-			return View::make('pages.autoformularios.' . $view, array('data' => $data));
-		}
+		return View::make('pages.autoformularios.' . $view, array('data' => $data));
 	}
 
 

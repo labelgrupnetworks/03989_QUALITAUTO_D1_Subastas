@@ -16,7 +16,6 @@ return [
 	'deliverea_api_testpass' => null,
 	'deliverea_api_testuser' => null,
 	'deliverea_sandbox' => null,
-	'fb_app_id' => '', //@todo - Eliminar.
 	'google_analytics' => null, //@todo, modificar las vistas para utilizar el config.
 	'google_conversion_id' => '', //Código remarketing google
 	'invaluable_API_password' => '',
@@ -63,4 +62,6 @@ return [
 	'multiPasarela' => null, //Multiples pasarelas
 	'streaming_id' => null, //Id de websocket de streaming,
 	'streaming_name' => null, //Nombre de ruta del streaming.
+	'privatechanel_hash_password' => null, //hash password acceso a canal privado
+	'privatechanel_user' => null, //usuario acceso a canal privado
 ];
