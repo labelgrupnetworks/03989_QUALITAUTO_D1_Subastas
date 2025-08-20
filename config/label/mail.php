@@ -18,4 +18,7 @@ return [
 	'admin_email_administracion_cc' => '', // Copia de email invoice_pay_admin @todo - Mirar si es posible usar el campo bcc de la tabla sin modificar comportamiento
 	'cc_email_valoracion' => '', // Copia oculta. @todo - Idem que admin_email_administracion_cc
 	'admin_email_autoformulario' => '', // Cuenta destino de emails desde autoformularios. @todo - Añadir a tabla para poder borrar, al resto añadir valor de app.admin_email
+	'alternative_admin_email' => '', //Email alternativo para enviar en copia las confirmaciones de pujas @todo - Se debería poder eliminar añadiendo el correo en la tabla
+	'copyAdminEmailInfoLot' => '', //Copia oculta del email infoLot @todo - Mirar si es posible usar el campo bcc de la tabla sin modificar comportamiento
+
 ];

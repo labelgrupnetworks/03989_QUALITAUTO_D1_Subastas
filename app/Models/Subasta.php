@@ -3838,22 +3838,12 @@ class Subasta extends Model
         return $imagenes;
     }
 
-
-
-
     public function getLoteVideos($lote)
     {
-		$customPathVideos = Config::get('app.custom_path_video', '');
-		$emp = $lote->emp_asigl0 ?? Config::get('app.emp');
+		$emp = Config::get('app.emp');
 
-		if(!empty($customPathVideos)){
-			$ruta_carpeta = public_path("/$customPathVideos/$lote->num_hces1/$lote->lin_hces1/");
-			$ruta_http = config('app.url')."/$customPathVideos/$lote->num_hces1/$lote->lin_hces1/";
-		}
-		else{
-			$ruta_carpeta = public_path("/files/videos/$emp/$lote->num_hces1/$lote->lin_hces1/");
-			$ruta_http = config('app.url')."/files/videos/$emp/$lote->num_hces1/$lote->lin_hces1/";
-		}
+		$ruta_carpeta = public_path("/files/videos/$emp/$lote->num_hces1/$lote->lin_hces1/");
+		$ruta_http = config('app.url')."/files/videos/$emp/$lote->num_hces1/$lote->lin_hces1/";
 
         $videos = array();
 
@@ -3865,8 +3855,6 @@ class Subasta extends Model
             }
             closedir($gestor);
         }
-
-
 
         return $videos;
     }

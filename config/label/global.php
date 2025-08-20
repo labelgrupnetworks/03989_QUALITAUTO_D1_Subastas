@@ -23,4 +23,5 @@ return [
 	'config_cookies' => '{}', // Cookies de los clientes, @todo - Sistema antiguo, mirar de eliminar referencias a este.
 	'linkedin' => '', //URL de LinkedIn
 	'global_auction_types_var' => true, // Obtenemos para el header solamente el numero de subastas activas por tipo. Mejora la carga.
+	'redirectHtmlRaiz' => false, // redirigimos urls que estan en la raiz, no contienen idioma ni nada
 ];

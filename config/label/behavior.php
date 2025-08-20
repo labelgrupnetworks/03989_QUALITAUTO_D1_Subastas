@@ -53,8 +53,26 @@ return [
 	'scaleFromPrice' => false, // Escalado en base al precio inicial del lote @todo - No lo tiene nadie, pero vale la pena mantener la lógica.
 	'uniqueArtCategory' => '', // indica que solo hay una única categoria en articulos, por lo que los enlaces deben ir siempre a esa
 	'getDummyApiBid' => false, // La llamada getBids de la API devuelve todas las pujas, incluso las del licitador 9999
-
-
+	'ArtistInExibition' => false, //Permite poner en la exposicion un artista, para que se pueda poner por defecto en las obras de la exposicion
+	'ArtistNameSurname' => false, // Cuando el nombre está compuesto por "apellido, nombre" , le da la vuelta y escribe "nombre apellido"
+	'lang_sub_in_global' => false, // Obtener descripciones de la subasta en la busqueda global para header y footer
+	'verify_subscription_before_saving' => false, //Verificar si existe suscripcion a newsletter antes de añadirla de nuevo
+	'showCloseLotCategoryGridWithoutCompra' => false, // Mostrar lotes cerrados en categorias aunque no sean para compra
+	'substrRef' => 0, //valor en int. limitamos el numero de referencia a esos caracteres, esto se usa para poder sacar varias veces el mism olote a subasta, el contador de las veces que ha salido el lote ira a la izquierda, pro lo que no se debe mostrar
+	'AutorInTR' => null, //Id de autor. Poner el autor en el título del lote para que se vea en el tiempo real
+	'reserveLot' => 0, //minutos que se reserva el lote en la tienda para que no lo compre ningun cliente
+	'email_order_to_admin' => false, // Enviar email de confirmación de puja/orden al administrador.
+	'imageRequiredInValoraciones' => true, // Establece la obligación o no de adjuntar fotos en la valoracion de articulos, defecto 1
+	'noIVAOnlineAuction' => false, //No se cobrará el iva  de la comisión en la subasta online
+	'porcentaje_seguro_envio' => 0, //porcentaje que supone el seguro de envio
+	'envio_individual_web_gastos_envio' => null,// Si el lote pertenece a alguna de estas familias se debe enviar por separado, las familias se separan por comas
+	'suma_peso_web_gastos_envio' => null, // Array de pesos, si el peso del envio es menor o igual al inidce, se suma X cms e Y kilos, siendo [X,Y] los valores pasados
+	'max_lot_web_gastos_envio' => null, // Numero de lotes máximo que podemso juntar en un envio
+	'favorites_lotlist' => false, // Favoritos en grid
+	'showCloseLotCategoryGrid' => false, // Mostrar los lotes cerrados en el grid de categorias
+	'search_all' => false, // En el buscador de la home, buscar en subastas .H y S @todo - grid antiguo
+	'search_all_desc' => false, // Filtar por desc y descweb
+	'add_email_adjudicado' => false, // Añadir liniea en web_email_closlot para mandar el email del ganador al cerrar un lote en la subasta tipo W, necesita un cron para lanzar lso emails
 
 
 	/*

@@ -79,6 +79,17 @@ class RemoveKeysInWebConfig extends Command
 			'UserWebService',
 			'DomainWebService',
 			'almacenDevuelto',
+			'substrRefBis',
+			'codRecaptchaValoracion',
+			'NIFvalidator',
+			'custom_path_video',
+			'routes_SEO',
+			'email_comprador',
+			'email_pagado_logistica',
+			'email_double_opt_in',
+			'email_double_opt_in_recaptcha',
+			'enable_email_online_bid'
+
 		];
 	}
 

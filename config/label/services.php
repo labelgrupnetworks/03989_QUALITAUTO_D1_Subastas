@@ -64,4 +64,7 @@ return [
 	'streaming_name' => null, //Nombre de ruta del streaming.
 	'privatechanel_hash_password' => null, //hash password acceso a canal privado
 	'privatechanel_user' => null, //usuario acceso a canal privado
+	'endpointWS' => null, //endpoint del websocket
+	'nftPayNetwork' => null, //Si una obra se mintea o transfiere desde una de estas redes se deberá cobrar el minteo al propietario y la transferencia al comprador
+	'VottunComission' => 0, // Porcentaje de comisión que aplica Vottun por le minteo y la transferencia
 ];

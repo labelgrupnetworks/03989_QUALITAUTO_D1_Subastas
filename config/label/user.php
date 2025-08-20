@@ -42,4 +42,12 @@ return [
 	'dni_in_storage' => false, //Indica ruta de almacenamiento del DNI, valores: dni-files, cli-documentation, base-dni-files. @todo, mirar si con el config superior se puede sustituir
 	'user_panel_cif' => false, // Guardar imágenes DNI desde el panel de usuario,
 	'update_fxcli_exist_client' => false, //Cuando el cliente se da de alta y el cliente ya existe updatemos la información del cliente
+	'save_newsletter_in_cliweb' => false, // Guardar newsletter en nllist_1
+	'checkPayCart' => false, // Deben acceptar el check para poder pagar en al tienda
+	'PayBizum' => false, // Se permite el pago con Bizum
+	'direccion_envio' => false, // mostrar direccion envio en carrito
+	'SeguroCarrito' => false, // Aparece solo el seguro de envio aunque no se tramite el envio desde la web
+	'TaxForEuropean' => false, // Aplica el iva solo a los ciudaanos europeos
+	'viewVAuctionAward' => false, // Ver las adjudicaciones de V en el panel de vendidos
+	'user_panel_cc' => false, // editar cuenta corriente desde panel usuario
 ];

@@ -22,4 +22,16 @@ return [
 	'WebServiceClient' => false, // Llama al webservice de modificar cliente
 	'WebServiceCloseLot' => false, // Llama al webservice de cerrar lote
 	'WebServiceOrder' => false, // llamamos al webservice de realizar orden
+	'logginWS' => false, //Logs del webservice
+	'WebServiceClientNewsletter' => false,
+	'seoEvent' => false, // Registra solo la primera visita del día, no cuenta la de lotes o subastas
+	'seoUniqueVisit' => false, // Registra solo la primera visita del día, no cuenta la de lotes o subastas
+	'api_debug_put' => false, // Habilitar logs en base de datos para peticiones PUT en la API
+	'NoclobToVarchar' => false, // Evitar que se convierta clob en varchar aunque estemos en debug
+	'WebServicePaidLots' => false, // Llama al webservice de lote pagado
+	'WebServiceReservation' => false, // Se debe comunicar la reserva de un lote
+	'WebServiceDeleteOrder' => false, // Comunica el borrado de ordenes
+	'WebServiceBid' => false, // Comunica la puja de un lote
+	'multi_company' => false, // Multiples empresas para controlar las newsletters
+	'WebServicePaidtransactionNft' => false, // enviar notificacion de pago de minteo o transferencia pendiente de pagar por le usuario
 ];

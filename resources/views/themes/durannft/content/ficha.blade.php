@@ -210,23 +210,6 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 					</h1>
 
                     <div class="titleficha secondary-color-text max-line-2">
-						{{-- @php
-							$refLot = $lote_actual->ref_asigl0;
-							#si  tiene el . decimal hay que ver si se debe separar
-							if(strpos($refLot,'.')!==false){
-								if(\Config::get("app.bis") && \Config::get("app.bis")=="A"){
-									$refLot =str_replace(array(".1",".2",".3", ".4", ".5", ".6"), array("-A", "-B", "-C", "-D", "-E"),  $refLot);
-								}elseif(\Config::get("app.bis") && \Config::get("app.bis")=="B"){
-									$refLot = str_replace(array(".1",".2",".3", ".4", ".5", ".6"), array( "-B", "-C", "-D", "-E", "-F"),  $refLot);
-								}
-								#si hay que recortar
-							}elseif( \config::get("app.substrRef")){
-								#cogemos solo los últimos x numeros, ya que se usaran hasta 9, los  primeros para diferenciar un lote cuando se ha vuelto a subir a subasta
-								#le sumamos 0 para convertirlo en numero y así eliminamos los 0 a la izquierda
-								$refLot = substr($refLot,-\config::get("app.substrRef"))+0;
-							}
-						@endphp
-						{{$refLot}} --}}
 						<h2>{!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}</h2>
 
                     </div>

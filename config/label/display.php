@@ -51,4 +51,10 @@ return [
 	'tr_hidden_description' => false, // Ocultar descripción en tiempo real. @todo - No lo esta usando nadie, pero borrar con cuidado ya que afecta el tiempo real.
 	'tr_hidden_title' => false, // Ocultar título del lote en el tiempo real.
 	'PropietarioTR' => false, // Que aparezca el propietario de los lotes en el tiempo real del administrador
+	'bisOnlyIn' => null, // mostrar solo el bis en este tipo de subastas. ejemplo: 'W',
+	'bis' => null, // se usa para indicar que los lotes pueden tener bis, y hay que indicar por que valor empieza, si por A o por B
+	'noindexInfoAuction' => false, //No indexa la página de informacion de la subasta
+	'tr_fairwarning' => false, // Mostrar botón de Fair Warning en el administrador del tiempo real
+	'seo_in_search' => false, // Texto seo en busquedaController
+	'not_compress_real_image' => false, // No comprimir imagen real
 ];

@@ -791,38 +791,7 @@ class ArticleController extends Controller
 		$data["units"] = $this->articleCart;
 		$data["gastosEnvio"] = 0;
 		$data["totalSeguro"] = 0;
-		/*
 
-		$fxClid = new FxClid();
-		$data['address'] = $fxClid->getForSelectHTML($user_cod);
-
-
-
-		#IVA aplicable
-		$data["ivaAplicable"] =  $this->ivaAplicable();
-
-
-
-		#gastos envio
-		$paymentcontroller = new PaymentsController();
-		$codd_clid = !empty($data['address']) ? head(array_keys($data['address'])) : null;
-		$gastosEnvio = $paymentcontroller->calc_web_gastos_envio ($lots,$codd_clid);
-
-		$data["gastosEnvio"] = $gastosEnvio + round($gastosEnvio * $data["ivaAplicable"],2);
-		$data["lots"] = $lots;
-		#Calculos lotes seguros
-		$total_lotes = 0;
-		foreach($lots as $lot){
-			$total_lotes +=  $lot->impsalhces_asigl0;
-		}
-
-		$porcentajeSeguro =  Config::get("app.porcentaje_seguro_envio");
-		$seguro = round($total_lotes * $porcentajeSeguro / 100,2);
-		$tax_seguro =  round($seguro * $data["ivaAplicable"],2 );
-		$data["totalSeguro"] = round($seguro + $tax_seguro,2);
-		$data["totalLotes"] = $total_lotes;
-
-		*/
 		#cargamos el iva
 		$cartController = new CartController();
 		$data['iva'] =  $cartController->ivaAplicable();
