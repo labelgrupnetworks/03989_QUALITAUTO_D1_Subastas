@@ -22,7 +22,7 @@ class UpdateCategoryInWebConfig extends Command
 			->get();
 
 		foreach ($categories as $category) {
-			$categoriesFile = Config::get('app.' . $category, []);
+			$categoriesFile = Config::get('label.' . $category, []);
 			$inCategories = $dataBaseConfigs->whereIn('key', array_keys($categoriesFile));
 
 			$inCategories->each(function ($config) use ($category) {

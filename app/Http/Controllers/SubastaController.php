@@ -1227,7 +1227,7 @@ class SubastaController extends Controller
 
 		// (!empty($data['js_item']['lote_actual']->max_puja)  && !empty($data['js_item']->user) &&  $data['js_item']['lote_actual']->max_puja->cod_licit == $data['js_item']->user->cod_licit)? 'mine':'other';  >
 		$SEO_metas = new \stdClass();
-		if (strtotime(Config::get('app.behavior.fecha_noindex_follow')) > strtotime($subasta_info->lote_actual->end_session) || $subasta_info->lote_actual->subc_sub == 'A') {
+		if (strtotime(Config::get('app.fecha_noindex_follow')) > strtotime($subasta_info->lote_actual->end_session) || $subasta_info->lote_actual->subc_sub == 'A') {
 			$SEO_metas->noindex_follow = true;
 		} else {
 			$SEO_metas->noindex_follow = false;

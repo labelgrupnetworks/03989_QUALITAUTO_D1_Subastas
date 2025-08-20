@@ -178,7 +178,7 @@ class BusquedaController extends Controller
 
 	private function getCountSearchResults($replace, $texto, $whereType)
 	{
-		if(Config::get('app.features.disabled_query_blocks', false)){
+		if(Config::get('app.disabled_query_blocks', false)){
 				return FgAsigl0::query()
 					->select('count(*) as num_lots')
 					->joinFghces1Asigl0()

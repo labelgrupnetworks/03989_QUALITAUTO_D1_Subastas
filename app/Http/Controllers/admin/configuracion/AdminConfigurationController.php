@@ -27,9 +27,12 @@ class AdminConfigurationController extends Controller
 	public function show($section)
 	{
 		$configurations = Web_Config::where('category', $section)->get();
+		$defaultValues = Config::get("label.$section", []);
+
 		return view('admin::pages.configuracion.configurations.show', [
 			'section' => $section,
 			'configurations' => $configurations,
+			'defaultValues' => $defaultValues
 		]);
 	}
 

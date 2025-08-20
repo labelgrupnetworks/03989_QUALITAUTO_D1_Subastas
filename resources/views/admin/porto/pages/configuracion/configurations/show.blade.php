@@ -35,6 +35,7 @@
                             <tr>
                                 <th>Configuración</th>
                                 <th>Descripción</th>
+								<th>Valor por defecto</th>
                                 <th>Valor</th>
                             </tr>
                         </thead>
@@ -45,6 +46,9 @@
                                 <tr>
                                     <td>{{ $configuration->key }}</td>
                                     <td>{{ $configuration->meta['description'] ?? '' }}</td>
+									<td>
+										{{ var_export($defaultValues[$configuration->key] ?? null, false) }}
+									</td>
                                     <td>
                                         @if (!empty($configuration->meta))
                                             @if ($configuration->meta['type'] === 'boolean')
