@@ -11,7 +11,6 @@ return [
 	'instagram' => '',
 	'mailing_service' => null,
 	'money' => 'EUR', //@todo - Revisar su uso y necesidad.
-	'name' => 'Auctions', //@todo - Eliminar y mantener desde el .env
 	'password_MD5' => '',
 	'pinterest' => '',
 	'session_timeout' => 3600,

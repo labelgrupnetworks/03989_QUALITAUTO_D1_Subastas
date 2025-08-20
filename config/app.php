@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Facade;
 $localesKeys = array_map('trim', explode(',', env('LOCALES_KEYS', 'es')));
 $localesValues = array_map('trim', explode(',', env('LOCALES_VALUES', 'Español')));
 
-return [
+$defaultConfig = [
 
 	/*
     |--------------------------------------------------------------------------
@@ -41,6 +41,13 @@ return [
 
 	'captcha_v3_public' => env('CAPTCHA_SITE_KEY', null),
 	'captcha_v3_private' => env('CAPTCHA_SECRET_KEY', null),
+
+
+	/**
+	 * Desarrollo de depositos con representantes y notificaciones con asunto bancario
+	 */
+	// 'withRepresented' => true,
+	// 'withDepositNotification' => true,
 
 
 	/**
@@ -256,3 +263,8 @@ return [
     ])->toArray(),
 
 ];
+
+return array_merge(
+	$defaultConfig,
+	include __DIR__ . '/label/app.php',
+);
