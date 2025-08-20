@@ -11,7 +11,7 @@ return [
 	'email_tasacion_client' => false,
 	'enable_email_buy_user' => false,
 	'enable_emails' => true,
-	'from_email' => '', //@todo - Limpiar y dejar solamente el del env y mail.php principal (mail.from.address)
+	//'from_email' => '', //@todo - Limpiar y dejar solamente el del env y mail.php principal (mail.from.address)
 	'max_email_cron' => 100,
 	'utm_email' => '', //@todo - No lo tiene nadie.
 	'accounting_email_admin' => '', //Email admin que un lote se ha comprado
