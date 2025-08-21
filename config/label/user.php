@@ -50,4 +50,25 @@ return [
 	'TaxForEuropean' => false, // Aplica el iva solo a los ciudaanos europeos
 	'viewVAuctionAward' => false, // Ver las adjudicaciones de V en el panel de vendidos
 	'user_panel_cc' => false, // editar cuenta corriente desde panel usuario
+	'multipleNif' => false, // Permite el registro con un nif que ya exista
+	'fpag_reply' => false, // Copiar forma de pago (fpag_cli) en fpag2_cli
+	'number_orders_salespanel' => false, // Conteo de ordenes en panel de ventas
+	'save_address_when_empty' => true, // Crear dirección principal con los datos de facturación en registro cuando este marcado como tal. Por defecto se crea
+	'sellAuctionsStartDateOrder' => false, //En panel de ventas, añadir orden por fecha de inicio y seleccionar que dirección de orden. enum: 'false'|'asc'|'desc'
+	'show_only_active_auctions' => false, //En panel de ventas, mostrar solo subastas activas y de admin
+	'payDepositTpv' => false, // El deposito se deve pagar con tpv
+	'multiredsysRsoc' => null, //nos indica que número de digitos debemos coger del principio del Rsoc para identificar la empresa a facturar
+	'blockpuj_in_register' => false, //Usuarios se registran con bloqueo de pujas por defecto
+	'canarias_0_tax_clients' => 0, //Tax 0 clientes de canarias
+	'check_active_auctions' => false, // Revisar si hay subasta activa para permitir o no el registro
+	'delete_addres_toupdate' => true, // Borrar linea de direccion al eliminarla del panel
+	'licencia_exportacion' => false, //Licencia de exportación en lotes adjudicados
+	'lots_closed_inpanel' => false, // Mostrar lotes cerrados en pujas y favoritos del panel
+	'no_redirect_register' => false, // no redirigeen registro  si el usuario esta logeado
+	'notlogged_page_inpanel' => false, // Mostrar página de iniciar sesión cuando no esta iniciada
+	'shipping_label' => 'W1', //Etiqueta con la que se define el codigo de direccion de envío. Por defecto debería ser W1
+	'showClosedLotOrdersInPanel' => false, // Mostrar ordenes de lotes cerrados en panel
+	'sobreCargoPagoWeb' => false, // Sobrecargo por pago con tarjeta
+	'take_gastos_prefact' => false, //Cogemos los gastos extras de esa prefactura si la tiene generada
+
 ];
