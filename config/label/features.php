@@ -38,4 +38,5 @@ return [
 	'kyc_service' => false, // Habilitar servicio KYC en registro
 	'user_tests' => null, //Id's de ususario que recibirán emails con _test en el nombre. Para pruebas
 	'enable_articles_grid' => false, // Habilitar grid de artículos
+	'enable_blog' => false // Habilitar blog
 ];

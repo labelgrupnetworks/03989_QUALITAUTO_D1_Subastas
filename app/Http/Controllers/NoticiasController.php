@@ -16,6 +16,8 @@ class NoticiasController extends Controller
 
 	public function index($lang, $key_categ = null)
 	{
+		abort_if(!Config::get('app.enable_blog', false), 404);
+
 		$blogService = new BlogService();
 		$noticias = $blogService->getAllNoticiasLang($key_categ);
 		$categ = null;
@@ -61,6 +63,8 @@ class NoticiasController extends Controller
 	 */
 	public function news($lang, $key_categ, $key_news)
 	{
+		abort_if(!Config::get('app.enable_blog', false), 404);
+
 		$blogService = new BlogService();
 
 		$isAdmin = Session::has('user.admin');
