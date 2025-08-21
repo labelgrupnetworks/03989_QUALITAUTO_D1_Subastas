@@ -1284,7 +1284,7 @@ class LotListController extends Controller
 	{
 
 		#eliminamos simbolos de puntuacion para evitar que den problemas en la query, he detectado un error al llegar un . en la consulta
-		$string = str_replace(['"', ':', '.', ',', ';', '$', '%', "'", "(", ")", "+", "-", "=", "|", "*", "\\", "&", "{", "}"], '', $string);
+		$string = str_replace(['"', ':', '.', ',', ';', '$', '%', "'", "(", ")", "+", "-", "=", "|", "*", "\\", "&", "{", "}", "[", "]"], '', $string);
 
 		$all_words = explode(" ", $string);
 
