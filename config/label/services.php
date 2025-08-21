@@ -10,8 +10,8 @@ return [
 	'passwordUP2_test' => null,
 	'UP2_cancel' => '/es/pagina/pago-cancelado',
 	'UP2_return' => '/es/pagina/pago-realizado',
-	'captcha_v3_private' => '',
-	'captcha_v3_public' => '',
+	'captcha_v3_public' => env('CAPTCHA_SITE_KEY', null),
+	'captcha_v3_private' => env('CAPTCHA_SECRET_KEY', null),
 	'captcha_v3_severity' => '0.6',
 	'deliverea_api_testpass' => null,
 	'deliverea_api_testuser' => null,
@@ -31,6 +31,7 @@ return [
 	'urlIpfsVottun' => null,
 	'urlNftVottun' => null,
 	'urlPowVottun' => null,
+	'accesstokenVottun' => env('VOTTUN_TOKEN', null),
 	'urlToPackengers' => '',
 	'zoho_client_id' => null,
 	'zoho_client_secret' => null,
@@ -44,8 +45,8 @@ return [
 	'ps_sb_auth_key' => null,
 	'ps_shop_path' => null,
 	'ps_ws_auth_key' => null,
-	'KeyRedsys' => null, //Clave de firma en redsys de redsys
-	'MerchandCodeRedsys' => null, //Codigo de comercio en redsys
+	'MerchandCodeRedsys' => env('REDSYS_MERCHANDCODE', null), //Codigo de comercio en redsys
+	'KeyRedsys' => env('REDSYS_KEY', null), //Clave de firma en redsys de redsys
 	'PaymentUrlKO' => null, //Return payment en caso de error
 	'PaymentUrlOK' => null, //Return payment
 	'UrlRedsys' => null, //Url de redsys
@@ -64,7 +65,14 @@ return [
 	'streaming_name' => null, //Nombre de ruta del streaming.
 	'privatechanel_hash_password' => null, //hash password acceso a canal privado
 	'privatechanel_user' => null, //usuario acceso a canal privado
-	'endpointWS' => null, //endpoint del websocket
+	'endpointWS' => null, //endpoint servicio duran
 	'nftPayNetwork' => null, //Si una obra se mintea o transfiere desde una de estas redes se deberá cobrar el minteo al propietario y la transferencia al comprador
 	'VottunComission' => 0, // Porcentaje de comisión que aplica Vottun por le minteo y la transferencia
+	'SegreURLWebservice' => null, //URL del webservice de segre
+	'google_addwords' => null, //Código AW de google
+	'dds_api_email' => null, // usuario api dds
+	'dds_api_secret' => null, // clave api dds
+	'google_api_key' => null, // Api para acceder a la api de google maps
+	'google_place_id' => null, //Id de negocio en google maps
+	'url_certificado' => null, // Url de webcore para solicitar certificado
 ];

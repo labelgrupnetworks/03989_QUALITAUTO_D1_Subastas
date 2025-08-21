@@ -61,7 +61,7 @@ class VottunController extends Controller
 			$this->pow = \Config('app.urlPowVottun') ;
 			$this->appId = \Config('app.appIdVottun') ;
 			#está en config/app.php no en webconfig
-			$this->accesstoken = \Config('app.accesstoken') ;
+			$this->accesstoken = \Config('app.accesstokenVottun') ;
 
 		}
 

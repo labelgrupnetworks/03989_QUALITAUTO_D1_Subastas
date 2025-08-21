@@ -57,4 +57,13 @@ return [
 	'tr_fairwarning' => false, // Mostrar botón de Fair Warning en el administrador del tiempo real
 	'seo_in_search' => false, // Texto seo en busquedaController
 	'not_compress_real_image' => false, // No comprimir imagen real
+	'btnPujarHoras' => 0, //tiempo previo, en horas, de inicio de la subasta para mostrar botón de pujar en vivo.
+	'conent_to_all_blog' => false, //Obtener y mostrar contenido blob en el listado de entradas del blog,
+	'most_distant_blog_date' => null, // Fecha más lejana para mostrar entradas del blog
+	'always_alert_bid' => false, // Comunicar con un sonido siempre que haya puja
+	'extra_conservation' => false, // Mostrar conservacion en ficha
+	'generate_image_when_not_found' => false, // Se fuerza a genera la miniatura si esta no existe.
+	'higher_bid_tr' => false, // No mostrar notificación de sobrepuja en tiempo real. (En true, no se muestra!)
+	'seo_notlogged_page' => false, //Tener seo en la pagina not-logged
+	'show_rarity_in_grid' => false, // Mostrar rareza en grid de lotes
 ];

@@ -3807,18 +3807,7 @@ class SubastaTiempoRealController extends Controller
 					  $licit_envio = $pujas[1]->licit_asigl1;
 					  $pujaPerdedor = $pujas[1]->imp_asigl1;
                     }
-                    /* este caso no tiene sentido en pujas
-                    elseif ($pujas[0]->licit_asigl1 != $licit){
-                        $licit_envio  = $licit;
-                    }
-					*/
-					#Comentado y substituido por la segunda condicion del if superior
-					/**Tauler quiere que en las sobrepujas automaticas también llegue correo al usuario, aunque este en pantalla en ese momento (es por las pujas hechas como administrador)
-					elseif(config::get('app.email_sobrepuja_auto', 0) &&  $pujas[0]->imp_asigl1 >= $pujas[1]->imp_asigl1){
-						$importe = $pujas[0]->imp_asigl1;
-						$licit_envio = $pujas[1]->licit_asigl1;
-					}
-					*/
+
                     else
                     {
                       $no_enviar= true;

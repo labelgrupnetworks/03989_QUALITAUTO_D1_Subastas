@@ -1493,9 +1493,6 @@ class MailController extends Controller
 		$email = new EmailLib('BID_LOWER');
 		if (!empty($email->email)) {
 			$email->setUserByLicit($sub, $licit, true);
-			if (!empty(Config::get("app.admin_email_bid_lower"))) {
-				$email->setBcc(Config::get("app.admin_email_bid_lower"));
-			}
 			$email->setLot($sub, $ref);
 			$email->setBid($importe);
 			$email->send_email();

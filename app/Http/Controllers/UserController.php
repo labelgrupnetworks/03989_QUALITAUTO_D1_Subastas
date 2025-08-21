@@ -712,10 +712,7 @@ class UserController extends Controller
 			}
 		} else {
 
-			$shipping_label = Config::get("app.shipping_label");
-			if (empty($shipping_label)) {
-				$shipping_label = 'W1';
-			}
+			$shipping_label = Config::get("app.shipping_label", 'W1');
 
 			$user->email = FacadeRequest::input('email');
 			$user->nif = str_replace($characters_to_remove, '', trim(FacadeRequest::input('nif')));

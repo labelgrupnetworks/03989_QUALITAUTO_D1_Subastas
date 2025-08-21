@@ -73,7 +73,27 @@ return [
 	'search_all' => false, // En el buscador de la home, buscar en subastas .H y S @todo - grid antiguo
 	'search_all_desc' => false, // Filtar por desc y descweb
 	'add_email_adjudicado' => false, // Añadir liniea en web_email_closlot para mandar el email del ganador al cerrar un lote en la subasta tipo W, necesita un cron para lanzar lso emails
-
+	'WebServiceRejectOrder' => false, // El webservice puede rechazar la orden
+	'checkItp' => false, // Comprobar impuesto de transmision patrimonial en lotes
+	'disabled_ries_cli' => false, // No controlar maximo de riesgo en esa subasta
+	'ministeryCli' => null, // ID de cliente para el Cliente ministerio
+	'ministeryLicit' => null, // Nº paleta de licitador para el ministerio
+	'notice_over_bid_email' => false, //Envia email over_bid cuando se realice una orden existiendo una superior
+	'time_to_automatic_blocking_licit_cancel_bids' => 0, //Segundos necesarios desde el momento actual, para contar pujas canceladas antes de bloquear usuario
+	'use_credit' => false, // Usar credito
+	'use_credit_in_orders' => false, // Utilizar credito para validar las ordenes
+	'depositPct' => null, // porcentaje que corresponde al deposito - se relaciona con payDepositTpv
+	'edit_orders' => false, // Modificar orden en ficha w
+	'check_adjudications_for_ries_by_auction' => false, //Comporbar para el importe máximo de adjudicación la suba de adjudicaciones de la subasta entera
+	'default_category' => null, // Categoria que se cargará por defecto en listado si no existe ninguna seleccionada
+	'free_shipping_costs' => null, //No cobra los gastos de envio en los lotes de las subastas introducidas
+	'orderby_allbidsandorders' => null, //Indica el orden en el que apareceran las pujas
+	'redirect_auction_finish_to_home' => false, //Redirecciones a la home cuando una subasta no existe o a finalizado
+	'redirect_home_nolot' => false, // Redirigir a home, si no encuentra ficha lote
+	'searchField' => null, // Campos por los que realizará la busqueda de texto en el grid
+	'searchLongWord' => 2, // numero de caracteres mínimos que debe tener una palabra para que la busque, si tiene menos de ese valor será rechazada
+	'seconds_automatic_auction' => 5, // Número de segundos que tardará en ejecutarse automáticamente el contador de tiempo atras de la subasta
+	'user_bid_lotList' => false, // en grid de lotes, llega user_have_bid si este a pujado por el lote
 
 	/*
     |--------------------------------------------------------------------------
@@ -84,4 +104,6 @@ return [
 	'pujas_maximas_mostradas' => -1, //@todo - todos tienen -1
 	'force_language_redirect' => false, //@todo - Mirar alcala/duran/gutinvest y ves si se puede eliminar.
 	'email_bid_confirmed' => '', //Antiguo email de confirmacion de puja. Alcala, gutinvest y soporte.
+	'required_invoice_pay_lot' => false, // Para que un lote aparezca como pagado se requiere que esté facturado @todo - solo tau y desactivado
+	'subastas_activas' => null, // Indicar que subastas tipo de subastas se tienen que mostrar en subastas_activas @todo - Solo tau y está página no la tienen.
 ];

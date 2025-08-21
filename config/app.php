@@ -22,15 +22,11 @@ $defaultConfig = [
 	'main_emp'   => env('APP_MAIN_EMP', env('APP_EMP', '001')),
 	'filter_total_shown_options' => array_map('trim', explode(',', env('FILTER_OPTIONS', '12, 24, 36, 48'))),
 	'node_url' => env('NODE_URL'),
-	'log' => env('APP_LOG', 'daily'),
-    'config_general_admin' => array(),
 	'config_menu_admin' => array_map('trim', explode(',', env('MENU_ADMIN', 'traducciones, newbanner, content_page'))),
     'admin_session_timeout' => 3600,
     'admin_theme' => 'porto',
 	'tmp_upload_folder' => 'uploads/tmp',
-	'log_max_files' => env('APP_LOG_MAX_FILES', 30),
 	'img_lot'  => '/img',
-	'accesstoken' => env('VOTTUN_TOKEN', null),
 	'queue_env'   => env('QUEUE_ENV'),
 	'force_https' => env('FORCE_HTTPS', false),
 
@@ -39,22 +35,11 @@ $defaultConfig = [
 	 */
 	'agrsub' => env('APP_AGRSUB', null),
 
-	'captcha_v3_public' => env('CAPTCHA_SITE_KEY', null),
-	'captcha_v3_private' => env('CAPTCHA_SECRET_KEY', null),
-
-
 	/**
 	 * Desarrollo de depositos con representantes y notificaciones con asunto bancario
 	 */
 	// 'withRepresented' => true,
 	// 'withDepositNotification' => true,
-
-
-	/**
-	 * Redsys
-	 */
-	'MerchandCodeRedsys' => env('REDSYS_MERCHANDCODE', null),
-	'KeyRedsys' => env('REDSYS_KEY', null),
 
     /*
     |--------------------------------------------------------------------------

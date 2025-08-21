@@ -88,7 +88,18 @@ class RemoveKeysInWebConfig extends Command
 			'email_pagado_logistica',
 			'email_double_opt_in',
 			'email_double_opt_in_recaptcha',
-			'enable_email_online_bid'
+			'enable_email_online_bid',
+			'email_bills_pay',
+			'faqs_old',
+			'recaptchad_newsletter',
+			'admin_email_bid_lower',
+			'email_sobrepuja_auto',
+			'filter_period',
+			'from_email_original',
+			'idiomasPorDominio',
+			'sub_abierta_tipo_o',
+			'test_images',
+			'userpanel_sales_extends',
 
 		];
 	}

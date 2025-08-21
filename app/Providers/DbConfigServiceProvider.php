@@ -40,23 +40,19 @@ class DbConfigServiceProvider extends ServiceProvider
 
 	public function register()
 	{
-
 		// Configuración de logs dependiendo de si estamos en consola o no
 		$this->setConfigLoggingChannelToConsoleCommands();
 
-		$emp = $this->app->config->get('app.emp');
-		$config  = DB::select(
-			"SELECT KEY, VALUE FROM WEB_CONFIG where emp=:EMP",
-			array(
-				'EMP' => $emp,
-			)
-		);
-		$arr_config = array();
+		$configs = DB::table('web_config')
+			->select('key', 'value') //, 'category')
+			->where('emp', Config::get('app.emp'))
+			->get();
 
-		foreach ($config as $value) {
-			$arr_config[$value->key] = $value->value;
-
-			Config::set('app.' . $value->key . '', $value->value);
+		foreach ($configs as $config) {
+			// if(!empty($config->category)){
+			// 	Config::set('app.' . $config->category . '.' . $config->key, $config->value);
+			// }
+			Config::set('app.' . $config->key, $config->value);
 		}
 
 		#añadimos ahora la ruta de default así se puede definir por base de datos

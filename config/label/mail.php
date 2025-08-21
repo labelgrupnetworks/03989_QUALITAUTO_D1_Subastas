@@ -20,5 +20,6 @@ return [
 	'admin_email_autoformulario' => '', // Cuenta destino de emails desde autoformularios. @todo - Añadir a tabla para poder borrar, al resto añadir valor de app.admin_email
 	'alternative_admin_email' => '', //Email alternativo para enviar en copia las confirmaciones de pujas @todo - Se debería poder eliminar añadiendo el correo en la tabla
 	'copyAdminEmailInfoLot' => '', //Copia oculta del email infoLot @todo - Mirar si es posible usar el campo bcc de la tabla sin modificar comportamiento
-
+	'sendactivateemail' => false, // Enviar email cuando activan un usuario
+	'sendToContactEmail' => false, // Enviar copia de email lot_award a email de clid
 ];

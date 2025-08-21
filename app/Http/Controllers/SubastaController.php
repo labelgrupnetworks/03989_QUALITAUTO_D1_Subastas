@@ -1694,45 +1694,6 @@ class SubastaController extends Controller
 		$this->getWhereMyLotsClient(Request::input('my_lots_client'), $subastaObj);
 		$this->getWhereMyLotsProperty(Request::input('my_lots_property'), $subastaObj);
 		$this->getWhereOnlySalable(Request::input('only_salable'), $subastaObj);
-		if (Config::get('app.filter_period')) {
-
-			$urlPeriodo = null;
-			if (isset($_GET['subperiodo'])) {
-				$urlPeriodo = $_GET['subperiodo'];
-			}
-
-
-			$this->getWhereSubperiod($urlPeriodo, $subastaObj);
-		}
-
-		// $where_filter .= $this->getWhereMaterials();
-		// $where_filter .= $this->getWhereFamilies();
-
-	}
-
-
-	private function getWhereSubperiod($periodo, $subastaObj)
-	{
-
-		if (!empty($periodo)) {
-			$periodo = urldecode($periodo);
-			if (Config::get("app.locale") == 'es') {
-				$subastaObj->join_filter .= ' LEFT JOIN "object_types_values" ON "transfer_sheet_line" = HCES1.LIN_HCES1  AND "transfer_sheet_number" = HCES1.NUM_HCES1 AND "object_types_values"."company" = ' . Config::get("app.emp");
-			} else {
-				$subastaObj->join_filter .= ' LEFT JOIN "object_types_values_lang" ON "transfer_sheet_line_lang" = HCES1.LIN_HCES1 AND "transfer_sheet_number_lang" = HCES1.NUM_HCES1 AND "company_lang" = ' . Config::get("app.emp");
-			}
-			if ($periodo == strtolower(trans(Config::get('app.theme') . '-app.lot_list.sin_periodo'))) {
-				$subastaObj->where_filter .= ' AND "subperiod_1" IS NULL ';
-			} else {
-				if (Config::get("app.locale") == 'es') {
-					$subastaObj->where_filter .= " AND \"subperiod_1\" COLLATE LATIN_AI LIKE :subperiod || '%' ";
-					$subastaObj->params_filter["subperiod"] = $periodo;
-				} else {
-					$subastaObj->where_filter .= " AND \"subperiod_1_lang\" COLLATE LATIN_AI LIKE :subperiod || '%' ";
-					$subastaObj->params_filter["subperiod"] = $periodo;
-				}
-			}
-		}
 	}
 
 	//Elimnar orden desde el panel del usuario

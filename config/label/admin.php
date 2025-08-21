@@ -29,4 +29,14 @@ return [
 	'moveLot' => false, // Saca el modal de mover el lote @todo - Duran NFT
 	'ApiNoErrorDeleteNotExistOrder' => false, //No mostrar la exepcion de error al eliminar si no existe le indice indicado @todo - API
 	'show_operadores' => false, // Gestionar operadores
+	'external_id' => false, // Uso de cod2_cli como identificador en el admin
+	'admin_awards_params' => null, // Parametros personalizados en tabla adjudicaciones
+	'admin_notawards_params' => null, // Parametros personalizados en tabla de lotes no adjudicados
+	'featuresInAdmin' => false, // Carateristicas a mostrar en tabla de adjudicaciones
+	'ShowEditLotOptions' => null, // Mostrar diferentes opciones en admin
+	'surface_euro' => false, // Calcular importe m2 en excel adjudicaciones
+	'admin_default_deposit_state' => null, // Estado por defecto a filtrar en tabla de depositos
+	'lot_api_integrations' => false, // Integraciones de lotes con API externa
+	'use_panel_sub' => false, // schema campos extra subasta
+
 ];

@@ -27,6 +27,7 @@ return [
 	'seoEvent' => false, // Registra solo la primera visita del día, no cuenta la de lotes o subastas
 	'seoUniqueVisit' => false, // Registra solo la primera visita del día, no cuenta la de lotes o subastas
 	'api_debug_put' => false, // Habilitar logs en base de datos para peticiones PUT en la API
+	'api_debug_post' => false, // Habilitar logs en base de datos para peticiones POST en la API
 	'NoclobToVarchar' => false, // Evitar que se convierta clob en varchar aunque estemos en debug
 	'WebServicePaidLots' => false, // Llama al webservice de lote pagado
 	'WebServiceReservation' => false, // Se debe comunicar la reserva de un lote
@@ -34,4 +35,6 @@ return [
 	'WebServiceBid' => false, // Comunica la puja de un lote
 	'multi_company' => false, // Multiples empresas para controlar las newsletters
 	'WebServicePaidtransactionNft' => false, // enviar notificacion de pago de minteo o transferencia pendiente de pagar por le usuario
+	'kyc_service' => false, // Habilitar servicio KYC en registro
+	'user_tests' => null, //Id's de ususario que recibirán emails con _test en el nombre. Para pruebas
 ];
