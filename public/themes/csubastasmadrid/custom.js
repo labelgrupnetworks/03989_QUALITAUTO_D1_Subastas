@@ -187,6 +187,9 @@ $(document).ready(function () {
 	});
 
 	$("#accerder-user").click(function () {
+
+		$("#accerder-user").attr("disabled", "disabled");
+
 		$.ajax({
 			type: "POST",
 			url: '/login_post_ajax',
@@ -198,6 +201,9 @@ $(document).ready(function () {
 					$(".message-error-log").text('').append(messages.error[response.msg]);
 				}
 
+			},
+			complete: function () {
+				$("#accerder-user").removeAttr("disabled");
 			}
 		});
 	});
