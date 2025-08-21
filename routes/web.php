@@ -259,13 +259,7 @@ Route::get(Routing::slug('thanks'), function () {
 Route::get(Routing::slugSeo('pagina', true) . '/{pagina}', [PageController::class, 'getPagina'])->name('staticPage');
 Route::get(Routing::translateSeo('mapa-web'), [PageController::class, 'siteMapPage']);
 
-//Soler esta utilizando un sistema de preguntas frequentes con csv.
-//12-2024 No! ya no lo utiliza. revisar si puedo eliminar el antiguo sistema de preguntas frecuentes
-if (Config::get("app.faqs_old", 0)) {
-	Route::get(Routing::slugSeo('preguntas-frecuentes', true), [ContentController::class, 'faqs'])->name('faqs_page');
-} else {
-	Route::get(Routing::translateSeo('preguntas-frecuentes'), [FaqController::class, 'index'])->name('faqs_page');
-}
+Route::get(Routing::translateSeo('preguntas-frecuentes'), [FaqController::class, 'index'])->name('faqs_page');
 
 require __DIR__ . '/user_panel.php';
 

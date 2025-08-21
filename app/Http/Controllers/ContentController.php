@@ -228,48 +228,6 @@ class ContentController extends Controller
 		return View::make('front::includes.grid.lots', ["lots"  => $lots]);
 	}
 
-	public function faqs()
-	{
-
-		$data = array();
-		$img = array();
-		$lang = strtoupper(Config::get('app.locale'));
-		$fila = 1;
-		if (($gestor = fopen("files/faqs/faqs_" . $lang . ".csv", "r")) !== FALSE) {
-			while (($datos = fgetcsv($gestor, 1000, ";")) !== FALSE) {
-
-				$numero = count($datos);
-				for ($x = 0; $x < $numero; $x++) {
-
-					if ($x == 0 &&  !empty($datos[$x])) {
-						$a = $datos[$x];
-						$imgagen = $datos[$x + 1];
-						$data[$a] = array();
-						$img[$a] = $imgagen;
-						break;
-					} else if ($x == 1 &&  !empty($datos[$x])) {
-						$b = $datos[$x];
-						$data[$a][$b] = array();
-						break;
-					} else if ($x == 2 &&  !empty($datos[$x])) {
-						$c = $datos[$x];
-						$data[$a][$b][$c] = $datos[3];
-					}
-				}
-			}
-			fclose($gestor);
-		}
-		$data['faqs'] = $data;
-		$data['img'] = $img;
-		$data['name'] = 'FAQS';
-		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.theme_auction_faqs_title');
-		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.theme_auction_faqs_description');
-		$data['seo'] = $SEO_metas;
-
-		return View::make('pages.faqs', array('data' => $data));
-	}
-
 	public function rematesDestacados($codSub)
 	{
 		abort_if(!View::exists('pages.remates_destacados'), 404);
