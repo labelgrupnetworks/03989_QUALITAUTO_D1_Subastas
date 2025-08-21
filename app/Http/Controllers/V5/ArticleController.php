@@ -33,6 +33,8 @@ class ArticleController extends Controller
 
 	public function index(Request $request)
 	{
+		abort_if(!Config::get('app.enable_articles_grid'), 404, 'Artículos no disponibles en esta web.');
+
 		$data = [];
 
 		#priorizamos las variables get, en caso de que haya los dos datos cogemos las variables por get
