@@ -3,7 +3,6 @@
 return [
 	'add_calendar_feature' => 0,
 	'awarded' => 1,
-	'default_theme' => '',
 	'deleteBids' => 1,
 	'exchange' => 1,
 	'gridLots' => false,
