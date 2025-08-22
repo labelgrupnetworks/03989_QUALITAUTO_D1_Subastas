@@ -4,7 +4,7 @@ return [
 	'add_calendar_feature' => 0,
 	'awarded' => 1,
 	'deleteBids' => 1,
-	'exchange' => 1,
+	'exchange' => false,
 	'gridLots' => false,
 	'img_lot' => '/img', //@todo - Esta configurado en app.php
 	'new_image_folders' => true, //@todo - Todos los tienen en 1. Eliminar lógica antigua
