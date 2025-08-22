@@ -164,6 +164,7 @@ class FormLib
 					tinymce.init({
 		  				selector: '.tiny-textarea',
 						convert_urls: true,
+						entity_encoding: 'raw',
 						height: $height,
 						max_height: 600,
 						menu: {
