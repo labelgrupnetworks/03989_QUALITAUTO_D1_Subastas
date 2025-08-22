@@ -3,10 +3,13 @@
 namespace App\Providers;
 
 use App\Services\Content\ManagementService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Foundation\Vite;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +26,20 @@ class AppServiceProvider extends ServiceProvider
 	{
 		$this->app->singleton(ManagementService::class, function () {
 			return new ManagementService();
+		});
+
+		$this->app->extend(Vite::class, function ($vite, Application $app) {
+			return new class($app['config'], $app['files']) extends Vite {
+
+				// Sobrescribimos la ruta del manifest
+				// En Laravel 9, la clase nombres Illuminate\Foundation\Vite no tiene constructor.
+				// Al actualizar a versiones más recientes de Laravel tenerlo en cuenta por si esto cambia.
+				public function __construct()
+				{
+					$theme = Config::get('app.theme');
+					$this->buildDirectory = "themes/$theme/build";
+				}
+			};
 		});
 	}
 
