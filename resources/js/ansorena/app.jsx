@@ -4,7 +4,6 @@ import Grid from '../components/Articles/Grid.jsx'
 import ReactDOM from 'react-dom/client';
 
 const rootElement = document.getElementById('grid');
-const root = ReactDOM.createRoot(rootElement);
 
 const queryParams = new URLSearchParams(window.location.search);
 const startPage = queryParams.get('page') || "1";
@@ -26,8 +25,9 @@ const initialState = {
 	page: startPage,
 }
 
-root.render(
+ReactDOM.createRoot(document.getElementById('grid')).render(
 	<FormProvider initialState={initialState} >
 		<Grid />
 	</FormProvider>
 );
+
