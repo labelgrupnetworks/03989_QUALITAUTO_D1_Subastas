@@ -31,6 +31,8 @@ class RemoveDefaultKeysInWebConfig extends Command
 			->whereIn('key', array_keys($sameValues))
 			->count();
 
+		$this->table(['Clave', 'Valor'], array_map(null, array_keys($sameValues), $sameValues));
+
 		$result = $this->ask("Se eliminarán $number claves de configuración que tienen el valor por defecto. ¿Está seguro de continuar? (s/n)");
 
 		if (strtolower($result) !== 's') {

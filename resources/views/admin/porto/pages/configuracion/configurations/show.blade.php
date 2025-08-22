@@ -42,47 +42,47 @@
 
                         <tbody>
 
-                            @foreach ($configurations as $configuration)
+                            @foreach ($configurations as $key => $configuration)
                                 <tr>
-                                    <td>{{ $configuration->key }}</td>
-                                    <td>{{ $configuration->meta['description'] ?? '' }}</td>
+                                    <td>{{ $key }}</td>
+                                    <td>{{ $configuration['meta']['description'] ?? '' }}</td>
 									<td>
-										{{ var_export($defaultValues[$configuration->key] ?? null, false) }}
+										{{ var_export($configuration['default'] ?? null, false) }}
 									</td>
                                     <td>
-                                        @if (!empty($configuration->meta))
-                                            @if ($configuration->meta['type'] === 'boolean')
+                                        @if (!empty($configuration['meta']))
+                                            @if ($configuration['meta']['type'] === 'boolean')
                                                 <select class="form-control form-select"
-                                                    name="{{ $configuration->id_web_config }}">
-                                                    <option value="1" {{ $configuration->value ? 'selected' : '' }}>Sí
+                                                    name="{{ $key }}">
+                                                    <option value="1" {{ $configuration['current'] ? 'selected' : '' }}>Sí
                                                     </option>
-                                                    <option value="0" {{ !$configuration->value ? 'selected' : '' }}>No
+                                                    <option value="0" {{ !$configuration['current'] ? 'selected' : '' }}>No
                                                     </option>
                                                 </select>
-                                            @elseif($configuration->meta['type'] === 'select_multiple')
-                                                @foreach ($configuration->meta['values'] as $keyValue => $value)
+                                            @elseif($configuration['meta']['type'] === 'select_multiple')
+                                                @foreach ($configuration['meta']['values'] as $keyValue => $value)
                                                     <div class="form-check">
                                                         <input class="form-check-input"
-                                                            id="{{ $configuration->key }}_{{ $keyValue }}"
-                                                            name="{{ $configuration->id_web_config }}" type="checkbox"
-                                                            value="{{ $keyValue }}" @checked(in_array($keyValue, array_map('trim', explode(',', $configuration->value))))>
+                                                            id="{{ $key }}_{{ $keyValue }}"
+                                                            name="{{ $key }}" type="checkbox"
+                                                            value="{{ $keyValue }}" @checked(in_array($keyValue, array_map('trim', explode(',', $configuration['current']))))>
                                                         <label class="form-check-label"
-                                                            for="{{ $configuration->key }}_{{ $keyValue }}">
+                                                            for="{{ $key }}_{{ $keyValue }}">
                                                             {{ $value }}
                                                         </label>
                                                     </div>
                                                 @endforeach
-                                            @elseif($configuration->meta['type'] === 'string')
-                                                <input class="form-control" name="{{ $configuration->id_web_config }}"
-                                                    type="text" value="{{ $configuration->value }}">
-                                            @elseif($configuration->meta['type'] === 'integer')
-                                                <input class="form-control" name="{{ $configuration->id_web_config }}"
-                                                    type="number" value="{{ $configuration->value }}">
+                                            @elseif($configuration['meta']['type'] === 'string')
+                                                <input class="form-control" name="{{ $key }}"
+                                                    type="text" value="{{ $configuration['current'] }}">
+                                            @elseif($configuration['meta']['type'] === 'integer')
+                                                <input class="form-control" name="{{ $key }}"
+                                                    type="number" value="{{ $configuration['current'] }}">
                                             @else
-                                                {{ $configuration->value }}
+                                                {{ $configuration['current'] }}
                                             @endif
                                         @else
-                                            {{ $configuration->value }}
+                                            {{ $configuration['current'] }}
                                         @endif
                                     </td>
 
