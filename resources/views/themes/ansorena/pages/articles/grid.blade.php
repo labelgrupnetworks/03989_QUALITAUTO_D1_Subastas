@@ -10,6 +10,18 @@
 
 @section('framework-js')
     <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
+
+	  <script>
+        //Página indicada en la url mediante variable get, se utiliza para la carga inicial de react
+        var language = "{{ config('app.locale') }}";
+
+        //Url inicial para que cuando se carga el react no sobreescriba la url, despues ya se usa urlarticulos
+        var startUrl = location.origin + location.pathname;
+        var urlArticulos = "{{ route('articles') }}";
+    </script>
+
+	@viteReactRefresh
+	@vite(['resources/css/app.css', "resources/js/$theme/app.jsx"])
 @endsection
 
 @section('custom-css')
@@ -43,17 +55,5 @@
 
 	@include('includes.whatsapp_button')
 
-    <script>
-        //Página indicada en la url mediante variable get, se utiliza para la carga inicial de react
-        var language = "{{ config('app.locale') }}";
 
-        //Url inicial para que cuando se carga el react no sobreescriba la url, despues ya se usa urlarticulos
-        var startUrl = location.origin + location.pathname;
-        var urlArticulos = "{{ Route('articles') }}";
-    </script>
-
-    <script src="{{ Tools::urlAssetsCache("/themes/$theme/app.js") }}"></script>
-    {{-- en el servidor no esta funcionando el mis, no encuentra la ruta
-		<script src="{{ mix('/js/default/app.js') }}"></script>
-	--}}
 @stop
