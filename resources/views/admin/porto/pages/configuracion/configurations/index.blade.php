@@ -13,6 +13,11 @@
 	<div class="row well">
 
 		<div class="col-xs-12">
+			<div class="mb-2">
+				<a href="{{ route('admin.configurations.resume') }}" class="btn btn-primary">
+					Ver resumen de configuraciones modificadas
+				</a>
+			</div>
 			@csrf
 			<table id="" class="table table-striped table-bordered table-responsive" style="width:100%">
 				<thead>
