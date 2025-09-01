@@ -25,7 +25,6 @@
                         <ul class="user-navbar">
 
                             @if (!Session::has('user'))
-                                {{-- *CUANDO SE HABILITE EL REGISTRO NUEVO, SUBIR TANTO APP como ROUTES* --}}
                                 {{-- <li class="hidden-xs hidden-sm"><a class="btn-color" title="{{ trans(\Config::get('app.theme').'-app.login_register.register') }}" href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a></li> --}}
                                 <li class="hidden-xs hidden-sm"><a class="btn-color"
                                         title="{{ trans(\Config::get('app.theme') . '-app.login_register.register') }}"
@@ -210,58 +209,56 @@
                     </a>
                 </li>
 
-                @if ($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
 
-                    <li class="li-color">
-                        <a onclick="javascript:$('#menu_desp').toggle('blind',100)" style="cursor: pointer;">
-                            {{ trans(\Config::get('app.theme') . '-app.foot.auctions') }}
-                            &nbsp;
-                            <span class="caret"></span>
-                        </a>
+				<li class="li-color">
+					<a onclick="javascript:$('#menu_desp').toggle('blind',100)" style="cursor: pointer;">
+						{{ trans(\Config::get('app.theme') . '-app.foot.auctions') }}
+						&nbsp;
+						<span class="caret"></span>
+					</a>
 
-                        <div id="menu_desp">
-                            @if ($notFinishedExists)
-                                <a href="{{ \Routing::translateSeo('presenciales') }}?finished=false"
-                                    class="item">{{ trans(\Config::get('app.theme') . '-app.foot.next_auction') }}</a>
-                            @endif
-                            @if ($finishedExists)
-                                <a
-                                    href="{{ \Routing::translateSeo('presenciales') }}?finished=true">{{ trans(\Config::get('app.theme') . '-app.foot.auctions-finished') }}</a>
-                            @endif
-
+					<div id="menu_desp">
+						@if ($notFinishedExists)
+							<a href="{{ \Routing::translateSeo('presenciales') }}?finished=false"
+								class="item">{{ trans(\Config::get('app.theme') . '-app.foot.next_auction') }}</a>
+						@endif
+						@if ($finishedExists)
+							<a
+								href="{{ \Routing::translateSeo('presenciales') }}?finished=true">{{ trans(\Config::get('app.theme') . '-app.foot.auctions-finished') }}</a>
+						@endif
 
 
-                            @if ($countAuctionsV > 1)
-								<a href="{{ \Routing::translateSeo('venta-directa') }}">
-									{{ trans(\Config::get('app.theme') . '-app.foot.direct_sale') }}
-								</a>
-							@elseif($countAuctionsV == 1)
-                                @php
-                                    $auctionV = $auctionService->getActiveAuctionsToType('V')->first();
-									$session = $auctionService->getFirstSessionByAuction($auctionV->cod_sub);
 
-									$urlLotes = \Routing::translateSeo('subasta') . $auctionV->cod_sub . '-' . str_slug($auctionV->des_sub) . '-' . $session->id_auc_sessions;
+						@if ($countAuctionsV > 1)
+							<a href="{{ \Routing::translateSeo('venta-directa') }}">
+								{{ trans(\Config::get('app.theme') . '-app.foot.direct_sale') }}
+							</a>
+						@elseif($countAuctionsV == 1)
+							@php
+								$auctionV = $auctionService->getActiveAuctionsToType('V')->first();
+								$session = $auctionService->getFirstSessionByAuction($auctionV->cod_sub);
 
-									if ($auctionService->existsAuctionIndex($firstVdAuction->cod_sub, $session->id_auc_sessions)) {
-										$url_lotes = \Routing::translateSeo('indice-subasta') . $auctionV->cod_sub . '-' . $auctionV->des_sub . '-' . $session->id_auc_sessions;
-									}
-                                @endphp
+								$urlLotes = \Routing::translateSeo('subasta') . $auctionV->cod_sub . '-' . str_slug($auctionV->des_sub) . '-' . $session->id_auc_sessions;
 
-                                <a href="{{ $url_lotes }}">
-									{{ trans(\Config::get('app.theme') . '-app.foot.direct_sale') }}
-								</a>
-                            @endif
+								if ($auctionService->existsAuctionIndex($firstVdAuction->cod_sub, $session->id_auc_sessions)) {
+									$url_lotes = \Routing::translateSeo('indice-subasta') . $auctionV->cod_sub . '-' . $auctionV->des_sub . '-' . $session->id_auc_sessions;
+								}
+							@endphp
 
-                            <a
-                                href="{{ Routing::translateSeo('subastas-historicas') }}">{{ trans("$theme-app.foot.historico") }}</a>
+							<a href="{{ $url_lotes }}">
+								{{ trans(\Config::get('app.theme') . '-app.foot.direct_sale') }}
+							</a>
+						@endif
 
-                            @if ($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
-                                <a
-                                    href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme') . '-app.foot.online_auction') }}</a>
-                            @endif
-                        </div>
-                    </li>
-                @endif
+						<a
+							href="{{ Routing::translateSeo('subastas-historicas') }}">{{ trans("$theme-app.foot.historico") }}</a>
+
+						@if ($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
+							<a
+								href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme') . '-app.foot.online_auction') }}</a>
+						@endif
+					</div>
+				</li>
 
                 <li class="li-color">
                     <a

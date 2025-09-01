@@ -23,7 +23,7 @@
 @endphp
 <div class="ficha_C">
     <div class="ficha_prices">
-        <p class="price_label">{{ trans('web.subastas.price_sale') }}</p>
+        <p class="price_label">{{ trans('web.lot.lot-price') }}</p>
         <p class="price_value">
             {{ $lote_actual->formatted_impsalhces_asigl0 }} {{ trans('web.subastas.euros') }}
         </p>
@@ -33,7 +33,7 @@
         ($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->remate_asigl0 == 'S' && !empty($precio_venta)) ||
             ($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0)))
         <div class="ficha_prices">
-            <p class="price_label">{{ Str::title(trans('web.subastas.buy_to')) }}</p>
+            <p class="price_label">{{ trans('web.subastas.buy_to') }}</p>
             <p class="price_value">
                 {{ Tools::moneyFormat($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0) ? $lote_actual->impadj_asigl0 : $precio_venta) }}
                 {{ trans('web.subastas.euros') }}
