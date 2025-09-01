@@ -286,6 +286,8 @@ Route::get(Routing::slug('valoracion-articulos-success'), [ValoracionController:
 Route::get(Routing::slugSeo('especialistas'), [EnterpriseController::class, 'index'])->name('especialistas');
 Route::post('/{lang}/valoracion-articulos-adv', [ValoracionController::class, 'ValoracionArticulosAdv'])->middleware('verify.captcha');
 Route::post('/valoracion/upload', [ValoracionController::class, 'uploadFile']);
+
+Route::get(Routing::translateSeo('valoracion'), [ValoracionController::class, 'GetValoracionGratuita'])->name('valoracion-form');
 Route::get('/{lang}/valoracion-{key}', [ValoracionController::class, 'GetValoracionGratuita'])->name('valoracion');
 Route::get('/{lang}/valuation-{key}', [ValoracionController::class, 'GetValoracionGratuita']);
 
