@@ -37,7 +37,9 @@ use stdClass;
 class prueba extends BaseController
 {
 
-	public function index() {}
+	public function index() {
+		dd(route('valoracion-form'));
+	}
 
 	private function testConnection()
 	{
@@ -946,8 +948,9 @@ class prueba extends BaseController
 
 	function whatsappAction()
 	{
+		$token = Config::get('services.whatsapp.token');
 		$headers_whatsapp = [
-			'Authorization' => 'Bearer EAAGCB52O9oMBANpgu8ZBQqP5oijPZAQOyw8d9tuxZBF8wZBn3a0bwfqSRaNJ9FSULbX8JgxR5S1It176hJuJ5TX92YB7fqGnoG6KaKDo5sIflmjJXCQmYetFHryvp048TV2FzVydQxQ8ouB6SSxz2KRmSKHBw2mPFZBtQFbzcmz4MuRuKUs8S',
+			'Authorization' => 'Bearer ' . $token,
 			'Content-Type' => 'application/json',
 		];
 
@@ -965,7 +968,7 @@ class prueba extends BaseController
 
 	function sendTemplateWhatsapp($headers)
 	{
-
+		$token = Config::get('services.whatsapp.token');
 		$var1 = Request::get('var1');
 		$var2 = Request::get('var2');
 		$var3 = Request::get('var3');
@@ -975,7 +978,7 @@ class prueba extends BaseController
 
 		$response = $client->request('POST', 'https://graph.facebook.com/v16.0/113096834998329/messages', [
 			'headers' => [
-				'Authorization' => 'Bearer EAAGCB52O9oMBANpgu8ZBQqP5oijPZAQOyw8d9tuxZBF8wZBn3a0bwfqSRaNJ9FSULbX8JgxR5S1It176hJuJ5TX92YB7fqGnoG6KaKDo5sIflmjJXCQmYetFHryvp048TV2FzVydQxQ8ouB6SSxz2KRmSKHBw2mPFZBtQFbzcmz4MuRuKUs8S',
+				'Authorization' => 'Bearer ' . $token,
 				'Content-Type' => 'application/json',
 			],
 			'json' => [
