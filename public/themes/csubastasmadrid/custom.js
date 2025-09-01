@@ -1751,6 +1751,12 @@ function sendContactForm(event) {
 }
 
 function readMoreDescription($element, lineNum) {
+
+	const mobileWidth = 768;
+	if ($(document).width() >= mobileWidth) {
+		return;
+	}
+
 	const $readMore = $('.see-more');
 	const $hideMore = $('.hide-more');
 
@@ -1758,7 +1764,7 @@ function readMoreDescription($element, lineNum) {
 	const textMinHeight = "" + (parseInt($element.css("line-height"), 19) * lines) + "px";
 	const textMaxHeight = "" + $element.css("height");
 
-	if (parseInt($element.css("height")) > 52 && $(document).width() > 768) {
+	if (parseInt($element.css("height")) > 52) {
 		$element.css("height", "" + textMaxHeight);
 		$element.css("transition", "height .5s");
 		$element.css("height", "" + textMinHeight);
