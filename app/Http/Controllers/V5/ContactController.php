@@ -91,10 +91,6 @@ class ContactController extends Controller
 				}
 			}
 
-			if (isset($data['email_cc'])) {
-				$email->setCc($data['email_cc']);
-			}
-
 			if (!empty($request->file('images'))) {
 				$email->attachmentsFiles = array();
 				$email->attachmentsFiles = $request->file('images');

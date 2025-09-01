@@ -16,7 +16,6 @@ $bread[] = array("name" => trans($theme.'-app.foot.contact') );
 	<div class="row">
 		<div class="col-xs-12 col-md-4 contact-page-form">
 			<form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()">
-				<input type="hidden" value="david.duran@duran-subastas.com" name="email_cc">
 				{!! $data['formulario']['_token'] !!}
 				<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 				<div class="form-group">
