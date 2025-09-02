@@ -1,8 +1,6 @@
 <?php
 namespace App\Http\Controllers\externalws\duran;
 
-
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaymentsController;
 use SimpleXMLElement;
 use App\Models\V5\FxCli;
@@ -10,10 +8,10 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCsub0;
 use App\Models\V5\WebPayCart;
 use App\Models\V5\FxPcob;
-use App\Jobs\SoapJob;
-use Config;
+use Illuminate\Support\Facades\Config;
 use App\libs\EmailLib;
 use App\Providers\ToolsServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 class PaidController extends DuranController
 {
@@ -50,7 +48,7 @@ class PaidController extends DuranController
 			elseif($type == 'F'){
 				# de momento no tenemos como hacerlo
 				$xml =	$this->invoicesInfo($merchantID);
-				\Log::info("Pago factura ".$merchantID );
+				Log::info("Pago factura ".$merchantID );
 				return;
 			}
 
@@ -67,17 +65,18 @@ class PaidController extends DuranController
 	}
 
 
-	private function cartInfo($merchantID){
+	private function cartInfo($merchantID)
+	{
 		$transaccion = WebPayCart::where("IDTRANS_PAYCART", $merchantID)->first();
 		if(empty($transaccion)){
-			\Log::info("No hay carrito pagado con el idtrans $merchantID");
+			Log::info("No hay carrito pagado con el idtrans $merchantID");
 			return ;
 		}
 		$info_trans = json_decode($transaccion->info_paycart);
 
 		$cli = FxCli::select("cod2_cli")->where("cod_cli",$transaccion->cli_paycart )->first();
 		if(empty($cli)){
-			\Log::info("No hay cliente con el cod_cli ". $transaccion->cli_paycart);
+			Log::info("No hay cliente con el cod_cli ". $transaccion->cli_paycart);
 			return ;
 		}
 		$info["codigopersona"] =$cli->cod2_cli;
@@ -104,8 +103,9 @@ class PaidController extends DuranController
 
 
 		$info["modoVenta"] = 3;#5-subasta online; 3-venta directa online;
+
 		#falta poner campo de texto
-		$info["notasEnvio"] = $info_trans->comments?? "";
+		$info["notasEnvio"] = htmlspecialchars($info_trans->comments);
 		$info["lotes"] = array();
 		#cargamos datos de los lotes
 		$fgasigl0 = new FgAsigl0();
@@ -157,7 +157,7 @@ class PaidController extends DuranController
 		JoinCsub()->joinCli()->JoinSub()->JoinAsigl0()->JoinHces1()->joinAlm()->where("IDTRANS_CSUB0", $merchantID)->get();
 
 		if(count($pedido) ==0){
-			\Log::info("No hay pedido con el idtrans $merchantID");
+			Log::info("No hay pedido con el idtrans $merchantID");
 			return null;
 		}
 
@@ -242,9 +242,9 @@ class PaidController extends DuranController
 
 
 		$paymentsController = new PaymentsController();
-		$iva = $paymentsController->getIva(\Config::get("app.emp"),  date("Y-m-d"));
+		$iva = $paymentsController->getIva(Config::get("app.emp"),  date("Y-m-d"));
 
-		$tipo_iva =  $paymentsController->user_has_Iva(\Config::get("app.gemp"), $firstLot->cod_cli);
+		$tipo_iva =  $paymentsController->user_has_Iva(Config::get("app.gemp"), $firstLot->cod_cli);
 		#importe lotes sin IVA
 		$importeTotal = 0;
 		#importe lotes con IVA
@@ -296,8 +296,8 @@ class PaidController extends DuranController
 		$xml->addChild("enviarfactura",  1  );#siemrpe a 1
 
 		$xml->addChild("importeseguro",  $info["importeSeguro"]  );
-		$xml->addChild("formaenvio", $info["formaEnvio"] );
-		$xml->addChild("notasenvio",  $info["notasEnvio"]   );
+		$xml->addChild("formaenvio", $info["formaEnvio"]);
+		$xml->addChild("notasenvio",  $info["notasEnvio"]);
 		$xml->addChild("importeenvio", $info["importeEnvio"]  );
 		$xml->addChild("modoventa",  $info["modoVenta"]   );
 		$xml->addChild("formapago",  $info["formaPago"]   );
@@ -350,35 +350,35 @@ class PaidController extends DuranController
 		$email->setAtribute("TOTAL",ToolsServiceProvider::moneyFormat($info["importeSeguro"] + $info["importeEnvio"] + $info["importeTotal"] + $info["ivaTotal"]," €",2) );
 	#3-transferencia; 4-tarjeta; 6-bizum
 		if($info["formaPago"] == 3){
-			$infoPago =  trans(\Config::get('app.theme').'-app.user_panel.pay_transfer'). "<br><br>" . trans(\Config::get('app.theme').'-app.user_panel.text_transfer', ["pago" => ToolsServiceProvider::moneyFormat($totalPagar,null,2),"cuenta" => \Config::get('app.tranferCount')]);
+			$infoPago =  trans(Config::get('app.theme').'-app.user_panel.pay_transfer'). "<br><br>" . trans(Config::get('app.theme').'-app.user_panel.text_transfer', ["pago" => ToolsServiceProvider::moneyFormat($totalPagar,null,2),"cuenta" => Config::get('app.tranferCount')]);
 		}else if($info["formaPago"] == 4){
-			$infoPago= trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard');
+			$infoPago= trans(Config::get('app.theme').'-app.user_panel.pay_creditcard');
 		}else if($info["formaPago"] == 6){
-			$infoPago= trans(\Config::get('app.theme').'-app.user_panel.pay_bizum');
+			$infoPago= trans(Config::get('app.theme').'-app.user_panel.pay_bizum');
 		}
 		$email->setAtribute("INFO_PAGO",$infoPago);
 
 		if($info["formaEnvio"] == 1){
 			$infoEnvio = $cliente->nom_cli." <br> ". $info["direccion"] ." <br>  ".$info["poblacion"] .", ".$info["provincia"] .", ".$info["cp"] ." <br> ".$info["pais"] ." <br>  "."T: ".$info["telefono"] ;
-			$infoMetodoEnvio = trans(\Config::get('app.theme').'-app.user_panel.envio_agencia');
-			$infoMetodoEnvio .="<br><br>".trans(\Config::get('app.theme').'-app.user_panel.gastos_envio').": ".ToolsServiceProvider::moneyFormat($info["importeEnvio"]," €",2);
+			$infoMetodoEnvio = trans(Config::get('app.theme').'-app.user_panel.envio_agencia');
+			$infoMetodoEnvio .="<br><br>".trans(Config::get('app.theme').'-app.user_panel.gastos_envio').": ".ToolsServiceProvider::moneyFormat($info["importeEnvio"]," €",2);
 			if($info["seguro"] == 1){
-				$infoMetodoEnvio .="<br><br> ".trans(\Config::get('app.theme').'-app.user_panel.seguro_envio').": ".ToolsServiceProvider::moneyFormat($info["importeSeguro"]," €",2);
+				$infoMetodoEnvio .="<br><br> ".trans(Config::get('app.theme').'-app.user_panel.seguro_envio').": ".ToolsServiceProvider::moneyFormat($info["importeSeguro"]," €",2);
 			}
 		}else{
 			$infoEnvio = "";
-			$infoMetodoEnvio = trans(\Config::get('app.theme').'-app.user_panel.recogida_producto')."<br> ".trans(\Config::get('app.theme').'-app.user_panel.sala_almacen');
+			$infoMetodoEnvio = trans(Config::get('app.theme').'-app.user_panel.recogida_producto')."<br> ".trans(Config::get('app.theme').'-app.user_panel.sala_almacen');
 		}
 
 		if(!empty($info["notasEnvio"])){
-			$infoEnvio .= "<br><br>". trans(\Config::get('app.theme').'-app.global.coment').": <br> \" ".$info["notasEnvio"]."\" ";
+			$infoEnvio .= "<br><br>". trans(Config::get('app.theme').'-app.global.coment').": <br> \" ".$info["notasEnvio"]."\" ";
 		}
 
 		$email->setAtribute("INFO_ENVIO",$infoEnvio);
 		$email->setAtribute("INFO_METODO_ENVIO",$infoMetodoEnvio);
 		$infoLots = "";
 		foreach($info["lotes"] as $lote){
-			$permisoExportacion = $lote ["permisoExportacion"]==1? "<br><br>".trans(\Config::get('app.theme').'-app.lot.permiso_exportacion') : "";
+			$permisoExportacion = $lote ["permisoExportacion"]==1? "<br><br>".trans(Config::get('app.theme').'-app.lot.permiso_exportacion') : "";
 			$infoLots .= "<tr bgcolor=\"#efefef\"> ";
 			$infoLots .= "<td><p style=\"padding-left: 5px;\"><strong>".$lote["titulo"]."</strong><br>".$lote["infoAlmacen"] .$permisoExportacion ."</p></td>";
 			$infoLots .= "<td style=\"text-align: center;\">".$lote["codigoArticulo"] ."</td>";
@@ -410,7 +410,7 @@ class PaidController extends DuranController
 
 		#no hay pago
 		if(empty($pago)){
-			\Log::info("Transaccion no encontrada, $idTransaction");
+			Log::info("Transaccion no encontrada, $idTransaction");
 			return ;
 		}
 
