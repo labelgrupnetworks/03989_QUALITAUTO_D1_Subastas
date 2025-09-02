@@ -31,7 +31,7 @@ return [
 	'titulo_hces1' => false, // En la parilla de lotes se vera titulo "titulo_hces1"
 	'icon_multiple_images' => false, // Muestra un icono en la lista de lotes indicando que ese lote tiene multiples imagenes
 	'loadImage' => false, // Fuerza a hace el load de las imágenes.
-	'lotlist_img' => null, //Resolución de imagen en listado de lotes
+	'lotlist_img' => 'lote_medium', //Resolución de imagen en listado de lotes
 	'seo_in_home' => null, //Seo en home
 	'seo_in_contact' => null, //Seo en contacto
 	'seo_in_register' => null, //Seo en registro
