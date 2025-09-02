@@ -1,0 +1,49 @@
+@import url("global.css");
+
+.home-slider .column_banner {
+	padding: 0;
+}
+
+.home-slider img {
+	max-height: initial;
+}
+
+.newsletter-wrapper {
+	justify-content: center;
+	text-align: center;
+}
+
+/* body > footer {
+	background-color: var(--color-black);
+	color: var(--bs-gray-300);
+}
+
+body > footer .nav-link {
+	--lb-text-color-rgb: 255, 255, 255;
+    --lb-color-primary-contrast: #fff;
+} */
+
+.hist_content .info {
+	color: #fff;
+}
+
+.newsletter {
+	background-color: #000;
+	color: #fff;
+}
+
+.newsletter .h1 {
+	color: var(--color-yellow-500);
+}
+
+.static-main-page h1, .static-main-page .h1 {
+	color: var(--color-blue-500);
+	font-size: 36px;
+	font-weight: 600;
+}
+
+.static-main-page h2, .static-main-page .h2 {
+	color: var(--lb-color-primary-dark);
+	font-size: 1.5rem;
+	margin-top: 1rem;
+}
