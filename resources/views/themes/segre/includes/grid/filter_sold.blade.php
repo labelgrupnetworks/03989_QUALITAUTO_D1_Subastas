@@ -5,14 +5,14 @@
     </p>
 
     <ul class="list-group list-group-flush list-group-filters-category">
-        <li class="list-group-item">
+        {{-- <li class="list-group-item">
             <input class="js-check-award d-none" id="liveLots" name="liveLots" type="radio" value="1"
                 @checked(!empty(request('liveLots'))) />
 
             <label class="radio-label" for="liveLots">
                 {{ trans("$theme-app.lot_list.live_lots_filter") }}
             </label>
-        </li>
+        </li> --}}
 
         <li class="list-group-item">
             <input class="js-check-award d-none" id="no-award" name="noAward" type="radio" value="1"

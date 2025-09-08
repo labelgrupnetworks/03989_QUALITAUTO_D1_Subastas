@@ -27,11 +27,11 @@
 
     <div class="next-auction_session col-6 col-md-8 ms-auto">
 
-        <div class="px-2">
+        {{-- <div class="px-2">
             <a href="{{ $auctionUrl }}">
                 <img src="{{ Tools::auctionImage($nextAuction->cod_sub) }}" alt="{{ $nextAuction->des_sub }}">
             </a>
-        </div>
+        </div> --}}
         @foreach ($sessions as $session)
             @php
                 $sesionName = $session->name;

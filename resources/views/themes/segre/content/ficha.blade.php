@@ -193,7 +193,7 @@ $isLastHistoryAuction = $auctionService->isLastHistoryAuction($lote_actual->cod_
         ajax_newcarousel(key, replace, lang, optionsToCarrousel);
 
         //Mostramos la fecha
-        $("#cierre_lote").html(format_date_large(new Date("{{ $timeCountdown }}".replace(/-/g, "/")), ''));
+        // $("#cierre_lote").html(format_date_large(new Date("{{ $timeCountdown }}".replace(/-/g, "/")), ''));
 
         if (isContExtra) {
             image360Init();

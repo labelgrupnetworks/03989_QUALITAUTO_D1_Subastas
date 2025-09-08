@@ -10,7 +10,7 @@
 	$showClosedAndNotBuyed = ($cerrado && empty($precio_venta) && !$compra) || (!empty($isLastHistoryAuction) && $isLastHistoryAuction && $cerrado && empty($precio_venta) && $compra);
 @endphp
 
-<div class="card lot-card" {!! $codeScrollBack !!}>
+<div class="card lot-card" {!! $codeScrollBack !!} id="{{$item->cod_sub}}-{{$item->ref_asigl0}}">
     @include('includes.grid.labelLots')
 
     <a {!! $url !!}>
