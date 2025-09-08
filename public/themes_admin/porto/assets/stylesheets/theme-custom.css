@@ -609,3 +609,13 @@ i.lb-icon-circle {
     color: white;
     border-radius: 999999px;
 }
+
+.html.fixed.sidebar-left-collapsed .alert {
+	margin-left: 73px;
+}
+
+.html.fixed .alert {
+	margin-left: 300px;
+}
+
+
