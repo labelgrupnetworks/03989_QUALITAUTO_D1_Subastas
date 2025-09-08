@@ -94,6 +94,7 @@ return [
 	'searchLongWord' => 2, // numero de caracteres mínimos que debe tener una palabra para que la busque, si tiene menos de ese valor será rechazada
 	'seconds_automatic_auction' => 5, // Número de segundos que tardará en ejecutarse automáticamente el contador de tiempo atras de la subasta
 	'user_bid_lotList' => false, // en grid de lotes, llega user_have_bid si este a pujado por el lote
+	'enable_tr_auctions' => true, // Habilitar subastas en tiempo real
 
 	/*
     |--------------------------------------------------------------------------
