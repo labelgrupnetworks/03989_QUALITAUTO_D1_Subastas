@@ -60,7 +60,6 @@ class RemoveKeysInWebConfig extends Command
 			'auction_in_categories',
 			'enable_general_auctions',
 			'enable_historic_auctions',
-			'enable_tr_auctions',
 			'fecha_noindex_follow',
 			'hide_sold_lot',
 			'hide_sold_lots_V',
