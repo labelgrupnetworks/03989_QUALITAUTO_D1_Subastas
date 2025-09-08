@@ -565,6 +565,8 @@ body > footer .nav-link {
 .home-blog-articles .card.card-blog .card-img {
 	transition: transform 0.2s linear;
 	border-radius: 0;
+	aspect-ratio: 16 / 9;
+    object-fit: contain;
 }
 
 .home-blog-articles .card.card-blog:hover .card-img {
