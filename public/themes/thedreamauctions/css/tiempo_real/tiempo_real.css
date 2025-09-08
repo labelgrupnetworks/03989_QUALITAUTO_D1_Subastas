@@ -71,4 +71,10 @@ html, body {
 	color: #c30e16;
 }
 
-
+.bp-text {
+	font-size: 14px;
+	text-transform: initial;
+	color: #c30e16;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}

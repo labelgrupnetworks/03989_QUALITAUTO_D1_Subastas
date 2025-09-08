@@ -158,5 +158,12 @@
             @endif
 
         </div>
+
+		<div class="bp-text">
+			@if(config('app.buyer_premium_active', false))
+			{!! trans('web.sheet_tr.bp_info', ['bpValue' => config('app.addComisionEmailBid')]) !!}
+			@endif
+		</div>
+
     </div>
 </div>

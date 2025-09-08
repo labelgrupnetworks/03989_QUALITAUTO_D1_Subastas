@@ -1,19 +1,8 @@
 <?php
 
 use App\libs\TradLib as TradLib;
-
     $lang = Config::get('app.locale');
-
     $registration_disabled = Config::get('app.registration_disabled');
-    $fullname = Session::get('user.name');
-    if(strpos($fullname, ',')){
-        $str = explode(",", $fullname);
-        $name = $str[1];
-    }else{
-        $name = $fullname;
-	}
-
-
 ?>
 @if(count(Config::get('app.locales')) > 1)
 <div class="lang-selection">
@@ -71,7 +60,7 @@ use App\libs\TradLib as TradLib;
 					<span role="button"
 						class="close-menu-reponsive hidden-lg">{{ trans($theme.'-app.head.close') }}</span>
 
-					@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+					@if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
 					<li>
 						<a class="color-letter d-flex link-header justify-content-center align-items-center @if(Route::is('subastas.presenciales')) color-brand @endif"
 							href="{{ \Routing::translateSeo('presenciales') }}">
@@ -79,12 +68,12 @@ use App\libs\TradLib as TradLib;
 						</a>
 					</li>
 					@endif
-					@if($global['subastas']->has('H'))
+
 					<li>
 						<a class="color-letter d-flex link-header justify-content-center align-items-center @if(Route::is('subastas.historicas')) color-brand @endif"
 							href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
 					</li>
-					@endif
+
 
 					@php
 					$fgortsec0 = new App\Models\V5\FgOrtsec0();
@@ -102,7 +91,7 @@ use App\libs\TradLib as TradLib;
 
 								@foreach ($categories as $k => $category)
 								<div class="categoryOption"><a
-										href="{{ route("category",array( "category" => $category["key_ortsec0"])) }}">{{$category["des_ortsec0"]}}</a>
+										href="{{ route("category",array( "keycategory" => $category["key_ortsec0"])) }}">{{$category["des_ortsec0"]}}</a>
 								</div>
 								@endforeach
 
