@@ -26,7 +26,7 @@
             </button>
 
 
-            @foreach ($sessions as $sesion)
+            {{-- @foreach ($sessions as $sesion)
                 @php
                     $sesionName = explode('-', $sesion->name);
                     $sesionName = !empty($sesionName[1]) ? trim($sesionName[1]) : $sesionName[0];
@@ -57,7 +57,7 @@
                 <div class="filters-session px-xl-3 px-xxl-4 d-none d-lg-block">
                     <a href="{{ $urlSession }}">{{ $sesionName }}</a>
                 </div>
-            @endforeach
+            @endforeach --}}
         </div>
 
         @if (!empty($auction))
