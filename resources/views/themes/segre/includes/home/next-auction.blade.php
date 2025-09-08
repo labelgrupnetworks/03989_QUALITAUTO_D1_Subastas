@@ -48,7 +48,7 @@
 
                 $pagina += 1;
 
-                $urlSession .= "?page={$pagina}&total={$lotsPerPage}";
+                $urlSession .= "?page={$pagina}&total={$lotsPerPage}#{$nextAuction->cod_sub}-{$session->init_lot}";
             @endphp
             <div class="px-2">
                 <a href="{{ $urlSession }}">

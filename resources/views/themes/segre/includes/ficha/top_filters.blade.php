@@ -45,7 +45,7 @@
                     #le sumamos 1 por que la página no empieza em 0 si no en 1
                     $pagina += 1;
 
-                    $urlSession .= "?page={$pagina}&total={$lotsPerPage}";
+                    $urlSession .= "?page={$pagina}&total={$lotsPerPage}#{$lote_actual->cod_sub}-{$sesion->init_lot}";
                 @endphp
 
                 <div @class([
