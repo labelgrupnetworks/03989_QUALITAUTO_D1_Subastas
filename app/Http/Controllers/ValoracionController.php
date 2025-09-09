@@ -160,7 +160,7 @@ class ValoracionController extends Controller
 
 			$isSended = ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions);
 			if(!$isSended) {
-				//$this->removeFiles(Input::file('imagen', []));
+				$this->removeFiles(Input::file('imagen', []));
 				return [
 					'status'  => 'error',
 				];
@@ -176,7 +176,7 @@ class ValoracionController extends Controller
 				ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions);
 			}
 
-			//$this->removeFiles(Input::file('imagen', []));
+			$this->removeFiles(Input::file('imagen', []));
 
 			return [
 				'status'  => 'correct',
