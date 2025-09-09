@@ -91,7 +91,8 @@ class ValoracionController extends Controller
 					if (filesize($file) < $max_size) {
 						$fileName = $this->cleanNameFile($file->getClientOriginalName());
 						$file->move($destination_path, $fileName);
-						$emailOptions['img']['imagen' . $i] = Config::get('app.url') . $relative . '/' . $fileName;
+						//$emailOptions['img']['imagen' . $i] = Config::get('app.url') . $relative . '/' . $fileName;
+						$emailOptions['img']['imagen' . $i] = public_path($relative) . '/' . $fileName;
 						$i++;
 					} else {
 						return [
