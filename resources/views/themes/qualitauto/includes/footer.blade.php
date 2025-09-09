@@ -73,7 +73,7 @@
 			</div>
 
 			<div class="col-12 col-lg-2 order-last order-lg-4 mb-3">
-				<img width="200" class="logo-company img-fluid" src="/themes/{{$theme}}/assets/img/logo_footer.png"
+				<img width="200" class="logo-company img-fluid" src="/themes/{{$theme}}/assets/img/logo_footer.svg"
 					alt="{{(\Config::get( 'app.name' ))}}">
 			</div>
 
@@ -92,7 +92,6 @@
 				<p><a class="nav-link" title="{{ trans('web.foot.developedSoftware') }}"
 						href="{{ trans('web.foot.developed_url') }}" target="_blank">{{
 						trans('web.foot.developedBy') }}</a></p>
-				<p><a href="https://storyset.com/people">People illustrations by Storyset</a></p>
 			</div>
 
 
