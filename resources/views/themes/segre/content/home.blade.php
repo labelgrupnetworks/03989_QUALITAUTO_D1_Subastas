@@ -15,11 +15,11 @@
         @include('includes.home.destacados')
     </section>
 
-    <section class="section-social">
-        @include('includes.home.about')
+	<section class="section-blog">
+        @include('includes.home.blog')
     </section>
 
-    <section class="section-blog">
-        @include('includes.home.blog')
+    <section class="section-social">
+        @include('includes.home.about')
     </section>
 </main>
