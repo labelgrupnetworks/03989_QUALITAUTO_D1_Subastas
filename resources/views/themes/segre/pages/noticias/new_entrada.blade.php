@@ -83,7 +83,7 @@
                         <div class="ratio ratio-16x9">
                             <video src="{{ $content->content }}" autoplay muted controls></video>
                         </div>
-                    @elseif($content->type_content_page === Web_Content_Page::TYPE_CONTENT_PAGE_IFRAME)
+                    @elseif(in_array($content->type_content_page, [Web_Content_Page::TYPE_CONTENT_PAGE_IFRAME, Web_Content_Page::TYPE_CONTENT_PAGE_YOUTUBE]))
                         <div class="ratio ratio-16x9">
                             <iframe src="{{ $content->content }}" frameborder="0" allowfullscreen></iframe>
                         </div>

@@ -30,6 +30,7 @@ class Web_Content_Page extends Model
 	/* const TYPE_CONTENT_PAGE_FILE = 'FILE'; */
 	const TYPE_CONTENT_PAGE_BANNER = 'BANNER';
 	const TYPE_CONTENT_PAGE_IFRAME = 'IFRAME';
+	const TYPE_CONTENT_PAGE_YOUTUBE = 'YOUTUBE';
 
 	public static function getConstantsTypesContentPages()
 	{
@@ -40,7 +41,8 @@ class Web_Content_Page extends Model
 			self::TYPE_CONTENT_PAGE_VIDEO,
 			/* self::TYPE_CONTENT_PAGE_FILE, */
 			self::TYPE_CONTENT_PAGE_BANNER,
-			self::TYPE_CONTENT_PAGE_IFRAME
+			self::TYPE_CONTENT_PAGE_IFRAME,
+			self::TYPE_CONTENT_PAGE_YOUTUBE,
 		];
 	}
 
@@ -53,7 +55,9 @@ class Web_Content_Page extends Model
 			self::TYPE_CONTENT_PAGE_VIDEO => 'VIDEO',
 			/* self::TYPE_CONTENT_PAGE_FILE => 'ARCHIVO', */
 			self::TYPE_CONTENT_PAGE_BANNER => 'BANNER',
-			self::TYPE_CONTENT_PAGE_IFRAME => 'IFRAME'
+			self::TYPE_CONTENT_PAGE_IFRAME => 'IFRAME',
+			self::TYPE_CONTENT_PAGE_YOUTUBE => 'YOUTUBE',
+
 		];
 
 		return $names[$type_content_page];
@@ -140,7 +144,7 @@ class Web_Content_Page extends Model
 			return $this->contentHtml->html_content;
 		}
 
-		if(in_array($type, [self::TYPE_CONTENT_PAGE_IMAGE, self::TYPE_CONTENT_PAGE_VIDEO, self::TYPE_CONTENT_PAGE_IFRAME])) {
+		if(in_array($type, [self::TYPE_CONTENT_PAGE_IMAGE, self::TYPE_CONTENT_PAGE_VIDEO, self::TYPE_CONTENT_PAGE_IFRAME, self::TYPE_CONTENT_PAGE_YOUTUBE])) {
 			return $this->contentResource->url_content ?? null;
 		}
 

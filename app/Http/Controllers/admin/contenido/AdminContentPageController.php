@@ -49,6 +49,11 @@ class AdminContentPageController extends Controller
 				['id_content' => $webContentPage->type_id_content_page],
 				['url_content' => $request->url_iframe]
 			);
+		} elseif ($webContentPage->type_content_page == Web_Content_Page::TYPE_CONTENT_PAGE_YOUTUBE) {
+			$content = $webContentPage->contentResource()->updateOrCreate(
+				['id_content' => $webContentPage->type_id_content_page],
+				['url_content' => "https://www.youtube.com/embed/$request->url_iframe"]
+			);
 		}
 
 		$webContentPage->type_id_content_page = $content->id_content;

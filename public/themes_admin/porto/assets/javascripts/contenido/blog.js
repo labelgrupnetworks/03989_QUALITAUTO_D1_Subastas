@@ -357,9 +357,20 @@ function getOptions(subSectionsSelectig) {
 }
 
 $('.js-add-iframe').on('click', addNewIframeBlock);
+$('.js-add-youtube').on('click', addNewYoutubeBlock);
 
 function addNewIframeBlock(event) {
 	bootbox.prompt('Añadir dirección url de la página', function (result) {
+		if (!result) {
+			return;
+		}
+		event.target.dataset.url = result;
+		addNewBlock(event);
+	});
+}
+
+function addNewYoutubeBlock(event) {
+	bootbox.prompt('Añadir id del video de YouTube', function (result) {
 		if (!result) {
 			return;
 		}
@@ -397,6 +408,12 @@ async function addNewBlock(event) {
 		'IMAGE': reloadPage,
 		'VIDEO': reloadPage,
 		'IFRAME': () => {
+			const url_iframe = button.dataset.url;
+			blogService.updateIframeContentBlock({ id, id_content: response.data.id_content_page, type_rel, url_iframe })
+				.then(reloadPage)
+				.catch(error => Logger.error(error.message));
+		},
+		'YOUTUBE': () => {
 			const url_iframe = button.dataset.url;
 			blogService.updateIframeContentBlock({ id, id_content: response.data.id_content_page, type_rel, url_iframe })
 				.then(reloadPage)

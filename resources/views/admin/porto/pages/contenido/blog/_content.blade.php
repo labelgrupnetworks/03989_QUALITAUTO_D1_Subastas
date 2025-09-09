@@ -100,6 +100,10 @@
 															<button type="button" class="btn btn-xs btn-info">
 																{{ trans("admin-app.button.edit") }}
 															</button>
+														@elseif($content->type_content_page == Web_Content_Page::TYPE_CONTENT_PAGE_YOUTUBE)
+															<button type="button" class="btn btn-xs btn-info">
+																{{ trans("admin-app.button.edit") }}
+															</button>
 														@endif
 
 														{{-- @if($content->type_content_page == Web_Content_Page::TYPE_CONTENT_PAGE_BANNER)
@@ -181,7 +185,7 @@
 															@endif
 
 
-														@elseif($content->type_content_page == Web_Content_Page::TYPE_CONTENT_PAGE_IFRAME)
+														@elseif(in_array($content->type_content_page, [Web_Content_Page::TYPE_CONTENT_PAGE_IFRAME, Web_Content_Page::TYPE_CONTENT_PAGE_YOUTUBE]))
 															<iframe src="{{ $content->content }}" frameborder="0" style="width: 100%; min-height: 300px;"></iframe>
 														@endif
 
@@ -211,6 +215,12 @@
                                                         </button>
                                                     @elseif ($contentType === Web_Content_Page::TYPE_CONTENT_PAGE_IFRAME)
                                                         <button type="button" class="btn btn-block btn-link js-add-iframe"
+                                                            data-rel-id="{{ $noticia->id_web_blog_lang }}"
+                                                            data-type-content="{{ $contentType }}">
+                                                            {{ Web_Content_Page::getTypeContentPagesName($contentType) }}
+                                                        </button>
+                                                    @elseif ($contentType === Web_Content_Page::TYPE_CONTENT_PAGE_YOUTUBE)
+                                                        <button type="button" class="btn btn-block btn-link js-add-youtube"
                                                             data-rel-id="{{ $noticia->id_web_blog_lang }}"
                                                             data-type-content="{{ $contentType }}">
                                                             {{ Web_Content_Page::getTypeContentPagesName($contentType) }}
