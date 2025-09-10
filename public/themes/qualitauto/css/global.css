@@ -69,6 +69,7 @@ h1, .h1 {
 	--bs-btn-padding-y: 0.3em;
     --bs-btn-padding-x: 1em;
 	--bs-btn-border-width: 2px;
+	text-transform: uppercase;
 }
 
 .btn-lb-primary,

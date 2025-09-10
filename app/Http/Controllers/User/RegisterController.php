@@ -6,6 +6,7 @@ use App\DataTransferObjects\User\SubaliaPostUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\SubaliaController;
 use App\Http\Controllers\UserController;
+use App\libs\EmailLib;
 use App\libs\FormLib;
 use App\Models\V5\FsDiv;
 use App\Models\V5\FsIdioma;
@@ -177,5 +178,68 @@ class RegisterController extends Controller
 
 		//redirige al nuevo formulario de registro
 		return $this->index($postUser, $info);
+	}
+
+	/**
+	 * Registro en el que solamente obtenemos los datos y los enviamos por email al administrador
+	 * y mostramos un mensaje de gracias por registrarse
+	 *
+	 * * Metodo protegido por el middleware VerifyCaptcha
+	 * @see App\Http\Middleware\VerifyCaptcha
+	 */
+	public function forwardRegistrationData(Request $request)
+	{
+		//validar que el total de los archivos no supera los 2MB
+		$files = $request->file('files');
+		$totalSize = 0;
+		if (!empty($files) && is_array($files)) {
+			foreach ($files as $file) {
+				$totalSize += $file->getSize();
+			}
+		}
+
+		if ($totalSize > 2 * 1024 * 1024) {
+			return response()->json([
+				'status' => 'error',
+				'message' => 'El tamaño total de los archivos adjuntos no puede superar los 2MB.'
+			], 400);
+		}
+
+
+		$dataToEmail = $request->only([
+			'usuario', 'last_name', 'telefono', 'email', 'confirm_email', 'newsletter', 'condiciones',
+		]);
+
+		$filesToEmail = $request->file('files');
+
+		$keysLabel = [
+			'usuario' => trans('web.login_register.nombre'),
+			'last_name' => trans('web.login_register.apellidos'),
+			'telefono' => trans('web.login_register.phone'),
+			'email' => trans('web.login_register.email'),
+			'confirm_email' => trans('web.login_register.email_confirm'),
+			'newsletter' => trans('web.login_register.recibir_newsletter'),
+			'condiciones' => trans('web.login_register.conditions'),
+		];
+
+		$htmlData = '';
+		foreach ($dataToEmail as $key => $value) {
+			if ($key === 'condiciones' || $key === 'newsletter') {
+				$value = $value == 'on' ? 'Sí' : 'No';
+			}
+
+			$htmlData .= "<p><strong>{$keysLabel[$key]}:</strong> $value</p>";
+		}
+
+		$emailLib = new EmailLib('NEW_USER_ADMIN');
+		$emailLib->setFormFields($htmlData);
+		$emailLib->setAttachmentsFiles($filesToEmail);
+		$emailLib->setTo(Config::get('app.admin_email'));
+		$emailLib->send_email();
+
+		return response()->json([
+			'status' => 'success',
+			'message' => 'Datos de registro enviados correctamente.'
+		]);
 	}
 }

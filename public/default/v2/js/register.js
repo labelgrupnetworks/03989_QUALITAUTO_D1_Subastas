@@ -1,7 +1,11 @@
-document.querySelector('[name="clid_cpostal"]')?.addEventListener('blur', searchCityForSecondAddress);
-document.querySelector('[name="nif"]').addEventListener('blur', checkExistNif);
-document.getElementById('registerForm').addEventListener('submit', handleSubmitRegisterForm);
+document.querySelector('[name="clid_cpostal"]') && document.querySelector('[name="clid_cpostal"]').addEventListener('blur', searchCityForSecondAddress);
+document.querySelector('[name="nif"]') && document.querySelector('[name="nif"]').addEventListener('blur', checkExistNif);
+
 handleCheckedAddressShipping(document.querySelector('[name="shipping_address"]'));
+
+$(document).ready(function () {
+	document.getElementById('registerForm').addEventListener('submit', handleSubmitRegisterForm);
+});
 
 function searchCityForSecondAddress(event) {
 
@@ -70,6 +74,11 @@ function changeRegisterType(select) {
  * @param {HTMLInputElement} checkElement
  */
 function handleCheckedAddressShipping(checkElement) {
+
+	if(!checkElement) {
+		return;
+	}
+
 	const isChecked = checkElement.checked;
 	const shippingAddressBlock = document.getElementById('js-shipping_address');
 

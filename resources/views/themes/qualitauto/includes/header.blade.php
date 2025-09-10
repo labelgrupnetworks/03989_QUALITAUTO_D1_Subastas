@@ -86,10 +86,6 @@ $pageName = Route::currentRouteName();
 					</li>
 
 					<li class="nav-item">
-						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'valoracion']) title="" href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}"><span> {{ trans('web.home.free-valuations') }}</span></a>
-					</li>
-
-					<li class="nav-item">
 						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'contact_page']) title="{{ trans('web.foot.contact')}}" href="{{ route('contact_page') }}"><span>{{ trans('web.foot.contact')}}</span></a>
 					</li>
 				</ul>

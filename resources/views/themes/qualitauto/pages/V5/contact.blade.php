@@ -67,7 +67,20 @@
                 </div>
 
                 <div class="col-md-5">
-                    {!! $data['content'] !!}
+                    <div class="ps-4">
+                        <div class="fs-3 mb-5">Información de contacto</div>
+                        <div class="">
+                            <label class="fs-4">Dirección</label>
+                            <p class="mb-3">Calle de Carlos Sainz s/n<br>
+                                Leganés, 28914, Madrid</p>
+                            <div class="divider"></div>
+                            <label class="fs-4">Email</label>
+                            <p class="mb-3">email@qualitauto.com</p>
+                            <div class="divider"></div>
+                            <label class="fs-4">Teléfono</label>
+                            <p class="mb-3">900 123 123</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
