@@ -107,4 +107,7 @@ Route::group(['prefix' => 'apilabel', 'namespace' => 'apilabel', 'middleware' =>
 	Route::post('/newsletter', [NewsletterSubscriptionController::class, 'postNewsletterSubscription']);
 	Route::delete('/newsletter', [NewsletterSubscriptionController::class, 'deleteNewsletterSubscription']);
 
+
+	Route::post('/integrations/qualitauto/lot', [App\Http\Controllers\apilabel\Integrations\QualitautoController::class, 'store']);
+
 });
