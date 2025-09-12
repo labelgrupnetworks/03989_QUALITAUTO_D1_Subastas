@@ -115,11 +115,15 @@
                 </div>
 
                 <div class="col-md-6" style="font-size: 18px">
+					<p class="captcha-terms mb-2">
+						{!! trans("$theme-app.global.forms_terms") !!}
+					</p>
+
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" name="condiciones" value="on"
                             id="bool__1__condiciones" autocomplete="off">
                         <label class="form-check-label" for="bool__1__condiciones">
-                            {!! trans("$theme-app.emails.privacy_conditions") !!}
+                            {!! trans("$theme-app.global.data_consent") !!}
                         </label>
                     </div>
 

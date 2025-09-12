@@ -1,5 +1,3 @@
-[*MENUSUBASTAS*]
-
 <section class="how-buy-page">
     <div class="container">
         <div class="row gx-0 pb-5">
@@ -72,19 +70,19 @@
                 </div>
 
                 <section class="after-auction my-5 py-3">
-                    <h4 class="ff-highlight mb-5">Después de la subasta</h4>
+                    <h4 class="ff-highlight mb-5">POST VENTA A LA SUBASTA</h4>
                     <div class="accordion accordion-flush lb-accordion" id="accordion-after-auction">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingResultado">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-resultado" aria-expanded="false"
+                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-resultado" type="button" aria-expanded="false"
                                     aria-controls="collapse-resultado">
                                     <span>01</span>
-                                    <h3 class="ff-highlight">POST VENTA A LA SUBASTA</h3>
+                                    <h3 class="ff-highlight">RESULTADO</h3>
                                 </button>
                             </h2>
-                            <div id="collapse-resultado" class="accordion-collapse collapse"
-                                aria-labelledby="headingResultado" data-bs-parent="#accordion-after-auction">
+                            <div class="accordion-collapse collapse" id="collapse-resultado"
+                                data-bs-parent="#accordion-after-auction" aria-labelledby="headingResultado">
                                 <div class="accordion-body">
                                     <p>Para conocer el resultado de su puja, puede llamarnos al <a
                                             href="tel:+34915328515">(+34) 91 532 85 15</a>al día siguiente de la
@@ -108,18 +106,19 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingPago">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-pago" aria-expanded="false" aria-controls="collapse-pago">
+                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-pago" type="button" aria-expanded="false"
+                                    aria-controls="collapse-pago">
                                     <span>02</span>
                                     <h3 class="ff-highlight">PAGO</h3>
                                 </button>
                             </h2>
-                            <div id="collapse-pago" class="accordion-collapse collapse" aria-labelledby="headingPago"
-                                data-bs-parent="#accordion-after-auction">
+                            <div class="accordion-collapse collapse" id="collapse-pago"
+                                data-bs-parent="#accordion-after-auction" aria-labelledby="headingPago">
                                 <div class="accordion-body">
                                     <p>Debe realizar el pago en nuestro departamento de Administración en el plazo de
-                                        una semana. El precio total es el de la adjudicación más un 22% que incluye el
-                                        IVA.</p>
+                                        una semana. El precio total es el de la adjudicación más un 23% o 25% (IVA
+                                        incluido) de comisión de la sala. .</p>
                                     <p>Para cualquier tema referente al pago contacte con:</p>
                                     <p><b>Susana Martínez:</b> <a
                                             href="mailto:susanamartinez@ansorena.com">susanamartinez@ansorena.com</a>
@@ -133,15 +132,15 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingEnvio">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-envio" aria-expanded="false"
+                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-envio" type="button" aria-expanded="false"
                                     aria-controls="collapse-envio">
                                     <span>03</span>
                                     <h3 class="ff-highlight">ENVÍO</h3>
                                 </button>
                             </h2>
-                            <div id="collapse-envio" class="accordion-collapse collapse" aria-labelledby="headingEnvio"
-                                data-bs-parent="#accordion-after-auction">
+                            <div class="accordion-collapse collapse" id="collapse-envio"
+                                data-bs-parent="#accordion-after-auction" aria-labelledby="headingEnvio">
                                 <div class="accordion-body">
                                     <p>Los lotes se pueden recoger en nuestra sala de Alcalá 52 (para objetos y piezas
                                         pesadas o voluminosas consultar) a partir del día siguiente a la celebración de
@@ -151,10 +150,24 @@
                                     <p>Ansorena colabora con compañías especializadas en transporte de obras de arte a
                                         los que los clientes pueden solicitar el transporte de los lotes una vez
                                         efectuado el pago en su totalidad pudiendo contactar:</p>
-                                    <p>MAILBOXES: Avda. del Instituto 22, local A. 28500 Arganda del Rey. Tel: 0034 91
-                                        875 94 19 Email: mbe182@mbe.es</p>
-                                    <p>MAILBOXES: Avda. del Instituto 22, local A. 28500 Arganda del Rey. Tel: 0034 91
-                                        875 94 19 Email: mbe182@mbe.es</p>
+                                    <p>Mail Boxes MBE T:
+                                        <a href="tel:+34 722 594 017">(+34) 722 594 017</a>
+                                        <a href="mailto:mbe3190.administracion@mbe.es">
+                                            mbe3190.administracion@mbe.es
+                                        </a> /
+                                        <a href="https://www.mbe.es/3190" target="_blank">www.mbe.es/3190</a>
+                                    </p>
+                                    <p>World Pack Art & Service WPAS T.
+                                        <a href="tel:+34 91 192 22 38">(+34) 91 192 22 38</a>
+                                        <a href="mailto:jj@wpas.es">
+                                            jj@wpas.es
+                                        </a>
+                                        /
+                                        <a href="http://www.wpas.es" target="_blank">www.wpas.es</a>
+                                    </p>
+                                    <p>The Packengers: <a
+                                            href="mailto:hello@thepackengers.com">hello@thepackengers.com</a>.</p>
+
                                     <p>Los objetos adquiridos en subasta que permanezcan más tiempo del estipulado en
                                         nuestras condiciones generales estarán sujetos a cargo por almacenaje.</p>
                                 </div>
@@ -173,36 +186,46 @@
 
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-2 gy-4 mb-5">
                         <div class="col">
-                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-5">
+                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-3">
                                 <h3 class="ff-highlight fs-24-32 mb-3 mb-lg-4">
                                     VALORACIÓN
                                 </h3>
                                 <p>Es necesario realizar una valoración del objeto a vender, para lo cual tiene usted a
                                     su disposición a nuestro equipo de expertos que le asesorará cuál es el precio
                                     óptimo para su venta.</p>
+                                <div
+                                    class="how-to-sell-buttons d-flex flex-column flex-lg-row align-items-center gap-1 py-4">
+                                    <a class="btn btn-lb-primary w-100" href="/es/valoracion-articulos">
+										RELLENAR FORMULARIO</a>
+                                    <a class="btn btn-outline-lb-primary w-100" href="tel:+34915328515">
+										PEDIR CITA
+										<br>(+34) 915 328 515</a>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-5">
+                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-3">
                                 <h3 class="ff-highlight fs-24-32 mb-3 mb-lg-4">
                                     CONDICIONES DE VENTA
                                 </h3>
                                 <p>Una vez acordado el precio de salida, se le informa de las condiciones de la venta
                                     (Comisión, gastos de catálogo y seguro). Con esta base, se firma un contrato en el
                                     que quedan estipuladas las cláusulas acordadas.</p>
-                                <p class="mt-3"><a class="link-dark lb-link-underline" style="font-size: 13px"
-                                        href="/es/pagina/condiciones">
+                                <p class="mt-3 text-center"><a class="btn btn-outline-lb-primary"
+                                        href="/es/pagina/condiciones" style="font-size: 13px">
                                         <b>IR A CONDICIONES DE VENTA</b></a></p>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-5">
+                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-3">
                                 <h3 class="ff-highlight fs-24-32 mb-3 mb-lg-4">
                                     CATÁLOGO
                                 </h3>
-                                <p>Todas las piezas de la subasta se incluirán en un catálogo en el que figurarán el
+                                <p class="mb-3">Todas las piezas de la subasta se incluirán en un catálogo en el que figurarán el
                                     número y la fecha de la subasta. Al día siguiente de la misma, podrán consultar los
                                     remates.</p>
+								<a class="btn btn-lb-primary" href="/es/presenciales">
+										VER CATÁLOGO</a>
                             </div>
                         </div>
                     </div>
@@ -222,10 +245,10 @@
 
                     <div
                         class="how-to-sell-buttons d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3 py-4">
-                        <a href="/es/valoracion-articulos" class="btn btn-lb-primary btn-medium">RELLENAR
+                        <a class="btn btn-lb-primary btn-medium" href="/es/valoracion-articulos">RELLENAR
                             FORMULARIO</a>
                         <span>o</span>
-                        <a href="tel:+34915328515" class="btn btn-outline-lb-primary btn-medium">PEDIR CITA (+34) 915
+                        <a class="btn btn-outline-lb-primary btn-medium" href="tel:+34915328515">PEDIR CITA (+34) 915
                             328 515</a>
                     </div>
 

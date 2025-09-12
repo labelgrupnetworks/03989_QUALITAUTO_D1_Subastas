@@ -1,5 +1,3 @@
-[*MENUSUBASTAS*]
-
 <section class="how-buy-page">
     <div class="container">
         <div class="row gx-0 pb-5">
@@ -76,15 +74,15 @@
                     <div class="accordion accordion-flush lb-accordion" id="accordion-after-auction">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingResultado">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-resultado" aria-expanded="false"
+                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-resultado" type="button" aria-expanded="false"
                                     aria-controls="collapse-resultado">
                                     <span>01</span>
                                     <h3 class="ff-highlight">RESULT</h3>
                                 </button>
                             </h2>
-                            <div id="collapse-resultado" class="accordion-collapse collapse"
-                                aria-labelledby="headingResultado" data-bs-parent="#accordion-after-auction">
+                            <div class="accordion-collapse collapse" id="collapse-resultado"
+                                data-bs-parent="#accordion-after-auction" aria-labelledby="headingResultado">
                                 <div class="accordion-body">
                                     <p>To know the result of your bid, you can call us at <a
                                             href="tel:+34915328515">(+34) 91 532 85 15</a> the day after the auction is
@@ -110,17 +108,18 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingPago">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-pago" aria-expanded="false" aria-controls="collapse-pago">
+                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-pago" type="button" aria-expanded="false"
+                                    aria-controls="collapse-pago">
                                     <span>02</span>
                                     <h3 class="ff-highlight">PAYMENT</h3>
                                 </button>
                             </h2>
-                            <div id="collapse-pago" class="accordion-collapse collapse" aria-labelledby="headingPago"
-                                data-bs-parent="#accordion-after-auction">
+                            <div class="accordion-collapse collapse" id="collapse-pago"
+                                data-bs-parent="#accordion-after-auction" aria-labelledby="headingPago">
                                 <div class="accordion-body">
                                     <p>Payment must be done within one week. The total amount is the hammer price plus
-                                        buyer’s premium (22% including VAT).</p>
+                                        buyer’s premium 23% or 25% (including VAT) depending on hammer price.</p>
                                     <p>For any questions regarding payment please contact:</p>
                                     <p><b>Susana Martínez:</b> <a
                                             href="mailto:susanamartinez@ansorena.com">susanamartinez@ansorena.com</a>
@@ -134,15 +133,15 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingEnvio">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-envio" aria-expanded="false"
+                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-envio" type="button" aria-expanded="false"
                                     aria-controls="collapse-envio">
                                     <span>03</span>
                                     <h3 class="ff-highlight">SHIPPING</h3>
                                 </button>
                             </h2>
-                            <div id="collapse-envio" class="accordion-collapse collapse" aria-labelledby="headingEnvio"
-                                data-bs-parent="#accordion-after-auction">
+                            <div class="accordion-collapse collapse" id="collapse-envio"
+                                data-bs-parent="#accordion-after-auction" aria-labelledby="headingEnvio">
                                 <div class="accordion-body">
                                     <p>The lots can be picked up in our room at Alcalá 52 (for heavy or bulky objects
                                         and pieces, please consult us) from the day after the auction is held. In case
@@ -151,10 +150,24 @@
                                     <p>Ansorena collaborates with companies specialized in the transport of works of art
                                         to which clients can request the transport of the lots once payment has been
                                         made in full:</p>
-                                    <p>MAILBOXES: Avda. del Instituto 22, local A. 28500 Arganda del Rey. Tel: 0034 91
-                                        875 94 19 Email: mbe182@mbe.es</p>
-                                    <p>WORLD PACK-ART & SERVICES: c/ Joaquín Sorolla 31. 28522 Rivas Vaciamadrid. Tel:
-                                        0034 91 301 12 22 Email: jj@wpas.es</p>
+                                    <p>Mail Boxes MBE T:
+                                        <a href="tel:+34 722 594 017">(+34) 722 594 017</a>
+                                        <a href="mailto:mbe3190.administracion@mbe.es">
+                                            mbe3190.administracion@mbe.es
+                                        </a> /
+                                        <a href="https://www.mbe.es/3190" target="_blank">www.mbe.es/3190</a>
+                                    </p>
+                                    <p>World Pack Art & Service WPAS T.
+                                        <a href="tel:+34 91 192 22 38">(+34) 91 192 22 38</a>
+                                        <a href="mailto:jj@wpas.es">
+                                            jj@wpas.es
+                                        </a>
+                                        /
+                                        <a href="http://www.wpas.es" target="_blank">www.wpas.es</a>
+                                    </p>
+                                    <p>The Packengers: <a
+                                            href="mailto:hello@thepackengers.com">hello@thepackengers.com</a>.</p>
+
                                     <p>Please note, all the lots of more than 100 years old will need an export license
                                         for the Spanish customs. You can ask for them to these companies.</p>
                                     <p>Objects purchased at auction that remain longer than the time stipulated in our
@@ -175,35 +188,46 @@
 
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-2 gy-4 mb-5">
                         <div class="col">
-                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-5">
+                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-3">
                                 <h3 class="ff-highlight fs-24-32 mb-3 mb-lg-4">
                                     VALUATIONS
                                 </h3>
                                 <p>It is necessary to make an appraisal of the object to be auctioned, for which you
                                     have at your disposal our team of experts who will advise you on the optimum price
                                     for your sale.</p>
+
+                                <div
+                                    class="how-to-sell-buttons d-flex flex-column flex-lg-row align-items-center gap-1 py-4">
+                                    <a class="btn btn-lb-primary w-100" href="/en/valuation-articulos">START SELLING</a>
+                                    <a class="btn btn-outline-lb-primary w-100" href="tel:+34915328515">
+										BOOK APPOINTMENT
+										<br>
+                                        (+34) 915 328 515</a>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-5">
+                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-3">
                                 <h3 class="ff-highlight fs-24-32 mb-3 mb-lg-4">
                                     SELL CONDITIONS
                                 </h3>
                                 <p>Once the starting price has been agreed upon, you are informed of the conditions of
                                     the sale (commission, catalog costs, and insurance). Once you agree, the Seller’s
                                     Agreement is signed, which stipulates the agreed clauses.</p>
-                                <p class="mt-3"><a class="link-dark lb-link-underline" style="font-size: 13px"
-                                        href="/en/page/conditions">
+                                <p class="mt-3 text-center"><a class="btn btn-outline-lb-primary" href="/en/page/conditions"
+                                        style="font-size: 13px">
                                         <b>SELLING CONDITIONS</b></a></p>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-5">
+                            <div class="card-buy px-2 py-4 py-lg-5 ps-lg-3 pe-lg-3">
                                 <h3 class="ff-highlight fs-24-32 mb-3 mb-lg-4">
                                     CATALOG
                                 </h3>
-                                <p>All auction pieces will be included in a catalog with the number and date of the
+                                <p class="mb-3">All auction pieces will be included in a catalog with the number and date of the
                                     auction. The day after the auction, you will be able to consult the results.</p>
+								<a class="btn btn-lb-primary" href="/en/presenciales">
+										SEE CATALOG</a>
                             </div>
                         </div>
                     </div>
@@ -222,9 +246,9 @@
 
                     <div
                         class="how-to-sell-buttons d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3 py-4">
-                        <a href="/en/valuation-articulos" class="btn btn-lb-primary btn-medium">START SELLING</a>
+                        <a class="btn btn-lb-primary btn-medium" href="/en/valuation-articulos">START SELLING</a>
                         <span>o</span>
-                        <a href="tel:+34915328515" class="btn btn-outline-lb-primary btn-medium">MAKE AN APOINTMENT
+                        <a class="btn btn-outline-lb-primary btn-medium" href="tel:+34915328515">MAKE AN APPOINTMENT
                             (+34) 915
                             328 515</a>
                     </div>

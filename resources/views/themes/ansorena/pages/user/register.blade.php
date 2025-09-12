@@ -357,6 +357,7 @@ $jobs = array(
 						{!! $formulario->newsletter!!}
 						<label for="bool__0__newsletter">
 							{{ trans($theme.'-app.login_register.recibir_newsletter') }}
+							{{ trans('web.global.info_communications_consent') }}
 						</label>
 					</div>
 
@@ -371,14 +372,18 @@ $jobs = array(
 
 				<div class="datos_condiciones">
 
+					<p class="col-xs-12 captcha-terms mb-2">
+						{!! trans("$theme-app.global.forms_terms") !!}
+					</p>
+
 					<div class="checkbox-container condiciones col-xs-12">
 						{!! $formulario->condiciones!!}
-						<label for="bool__1__condiciones">{!!
-							trans($theme.'-app.login_register.read_conditions') !!} (<a
-								href="<?php echo Routing::translateSeo('pagina') . trans($theme . '-app.links.term_condition') ?>"
-								target="_blank">{{ trans($theme.'-app.login_register.more_info') }}</a>)
+						<label for="bool__1__condiciones">
+							{!! trans("$theme-app.global.data_consent") !!}
 						</label>
 					</div>
+
+
 					<br>
 					<div class="col-xs-12 mt-2">
 						<p class="captcha-terms">

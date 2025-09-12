@@ -7,7 +7,14 @@
 	float: left;
 }
 
+.checkbox-container {
+	display: flex;
+	align-items: flex-start;
+}
 
+form input[type="checkbox"] {
+	top: 0;
+}
 
 @media (max-width: 576px) {
 	#registerForm .datos_left, #registerForm .datos_right{
