@@ -109,21 +109,22 @@
 							})
                             ->first();
                         #por defecto 24 como en lotlistcontroller
-                        $lotsPerPage = request('total');
+						$total = request('total');
+						$totalOptions = Config::get('app.filter_total_shown_options');
+
+						if(!in_array(intval($total), $totalOptions) || !is_numeric($total) || intval($total) <= 0) {
+							$total = head($totalOptions);
+						}
+
+                        $lotsPerPage = $total;
+
                         if (empty($lotsPerPage)) {
                             $lotsPerPage = 24;
                         }
                         $pagina = intdiv($cuantosLotes->cuantos, $lotsPerPage);
                         #le sumamos 1 por que la página no empieza em 0 si no en 1
                         $pagina += 1;
-                        $urlSession .=
-                            "?page=$pagina" .
-                            '&total=' .
-                            request('total', 24) .
-                            '#' .
-                            $auction->cod_sub .
-                            '-' .
-                            $sesion->init_lot;
+                        $urlSession .= "?page=$pagina&total={$total}#{$auction->cod_sub}-{$sesion->init_lot}";
                     @endphp
 
                     <div class="col">
