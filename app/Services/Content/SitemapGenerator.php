@@ -10,6 +10,7 @@ use App\Providers\RoutingServiceProvider;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 class SitemapGenerator
 {
@@ -177,6 +178,7 @@ class SitemapGenerator
 		}
 
 		$completeUrl = urldecode($completeUrl);
+		$completeUrl = Str::endsWith($completeUrl, '/') ? rtrim($completeUrl, '/') : $completeUrl;
 
 		return "
            <url>
@@ -189,6 +191,8 @@ class SitemapGenerator
 
 	private function xmlWithUrl($url, $fechaactual, $priority)
 	{
+
+		$url = Str::endsWith($url, '/') ? rtrim($url, '/') : $url;
 		return "
 			<url>
 				 <loc>" . $url . "</loc>
