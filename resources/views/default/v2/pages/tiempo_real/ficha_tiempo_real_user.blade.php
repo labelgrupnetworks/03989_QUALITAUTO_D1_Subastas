@@ -37,14 +37,18 @@
 		$urlLot = config('app.url') . Routing::translateSeo('lote');
 		$auctionLots = \App\Models\V5\FgAsigl0::JoinFghces1Asigl0()
                 ->JoinSessionAsigl0()
-                ->select('num_hces1', 'lin_hces1', 'impsal_hces1', 'ref_asigl0', 'cerrado_asigl0')
-				->addSelect(DB::raw("('$urlLot' || sub_asigl0 || '-' || auc.\"id_auc_sessions\" || '-' || auc.\"id_auc_sessions\" || '/' || ref_asigl0 || '-' || num_hces1 || '-' || webfriend_hces1) as url"))
+                ->select('num_hces1', 'lin_hces1', 'impsal_hces1', 'sub_asigl0', 'ref_asigl0', 'cerrado_asigl0', 'webfriend_hces1')
                 ->where('SUB_ASIGL0', $data['subasta_info']->cod_sub)
                 ->where('auc."reference"', $data['subasta_info']->reference)
                 ->where('RETIRADO_ASIGL0', 'N')
                 ->where('OCULTO_ASIGL0', 'N')
 				->orderby("nvl(orden_hces1, ref_hces1), nvl(orden_hces1, 99999999999)")
                 ->get();
+
+		$auctionLots = $auctionLots->map(function ($item) use ($loteActual) {
+			$item->url = Tools::url_lot($item->sub_asigl0, $loteActual->id_auc_sessions, '', $item->ref_asigl0, $item->num_hces1, $item->webfriend_hces1, '');
+			return $item;
+		});
     @endphp
 
     <script>
