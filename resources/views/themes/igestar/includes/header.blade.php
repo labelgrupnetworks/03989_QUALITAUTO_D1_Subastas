@@ -4,15 +4,8 @@
 $lang = config('app.locale');
 $registration_disabled = Config::get('app.registration_disabled');
 
-$fullname = Session::get('user.name');
-$name = $fullname;
-if(strpos($fullname, ',')){
-	$str = explode(",", $fullname);
-	$name = $str[1];
-}
-
 $categories = (new App\Models\V5\FgOrtsec0())->getAllFgOrtsec0()->whereNotNull('key_ortsec0')->get()->toarray();
-$searchAction = config('app.gridLots', false) == "new" ? route('allCategories') : \Routing::slug('busqueda');
+$searchAction = route('allCategories');
 $pageName = Route::currentRouteName();
 @endphp
 
@@ -57,7 +50,7 @@ $pageName = Route::currentRouteName();
 			<div class="navbar-collapse collapse" id="navbarHeader" style="">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold gap-lg-3 ps-lg-3">
 
-					{{-- @if (!empty($categories))
+					@if (!empty($categories))
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="categoriesHeader" data-bs-toggle="dropdown" aria-expanded="false">{{ trans("web.lot.categories") }}</a>
 						<ul class="dropdown-menu" aria-labelledby="categoriesHeader">
@@ -68,12 +61,12 @@ $pageName = Route::currentRouteName();
 							@endforeach
 						</ul>
 					</li>
-					@endif --}}
+					@endif
 
-					@if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
+					@if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
 					<li class="nav-item">
-						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'subastas.presenciales'])
-							href="{{ route('subastas.presenciales') }}">
+						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'subastas.online']) title
+							href="{{ route('subastas.online') }}">
 							<span>{{ trans('web.foot.auctions')}}</span>
 						</a>
 					</li>

@@ -70,12 +70,12 @@
                     <div class="ps-4">
                         <div class="fs-3 mb-5">Información de contacto</div>
                         <div class="">
-                            <label class="fs-4">Dirección</label>
-                            <p class="mb-3">Travesia mejico, 3,
-                                45004, Toledo</p>
-                            <div class="divider"></div>
-                            <label class="fs-4">Email</label>
+							<label class="fs-4">Email</label>
                             <p class="mb-3">info@igestar.com</p>
+                            <div class="divider"></div>
+							<label class="fs-4">Teléfono</label>
+							<p class="mb-3">+34 608 63 98 59</p>
+							<div class="divider"></div>
                         </div>
                     </div>
                 </div>

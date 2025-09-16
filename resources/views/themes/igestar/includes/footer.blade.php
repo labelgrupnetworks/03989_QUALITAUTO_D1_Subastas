@@ -24,7 +24,7 @@
 							trans('web.foot.about_us') }}</a>
 					</li>
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo('pagina').trans('web.links.contact') }}"
+						<a href="{{ route('contact_page') }}"
 							title="{{ trans('web.foot.contact') }}" class="nav-link p-0">{{
 							trans('web.foot.contact') }}</a>
 					</li>
@@ -69,8 +69,6 @@
 
 			<div class="col-6 col-lg-3 mb-3 order-5 order-lg-last text-lg-end">
 				<h5>{{ $global['company']->nom_emp ?? ''}}</h5>
-				<p>{{ $global['company']->dir_emp ?? ''}}</p>
-				<p>{{ $global['company']->cp_emp ?? ''}} {{ $global['company']->pob_emp ?? ''}}, {{ $global['company']->pais_emp ?? ''}}</p>
 				<p><a class="nav-link" href="tel:{{ $global['company']->tel1_emp ?? ''}}">{{ $global['company']->tel1_emp ?? ''}}</a></p>
 				<p><a class="nav-link" href="mailto:{{ $global['company']->email_emp ?? ''}}">{{ $global['company']->email_emp ?? ''}}</a></p>
 			</div>
