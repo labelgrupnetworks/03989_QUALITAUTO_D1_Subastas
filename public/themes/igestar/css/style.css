@@ -41,3 +41,7 @@ body > footer .nav-link {
 	font-size: 1.5rem;
 	margin-top: 1rem;
 }
+
+.rsoc_table .table {
+	--bs-table-border-color: var(--bs-gray-300);
+}
