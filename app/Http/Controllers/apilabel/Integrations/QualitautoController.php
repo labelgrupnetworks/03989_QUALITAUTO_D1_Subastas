@@ -64,20 +64,13 @@ class QualitautoController
 		$lotObject = $this->createLotObject($lotId, $vehicleData);
 
 		$lotControler = new LotController();
+		if ($existingLots->contains($lotId)) {
+			$lotControler->updateLot([$lotObject]);
+			return response()->json(['message' => 'Lot updated'], 200);
+		}
+
 		$json = $lotControler->createLot([$lotObject]);
 		$result = json_decode($json);
-
-
-
-
-		// if ($existingLots->contains($lotId)) {
-		// 	//update
-		// }
-
-		//create
-
-		//action code -> LABELO
-
 		return response()->json($result);
 	}
 
