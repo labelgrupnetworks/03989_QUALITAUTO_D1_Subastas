@@ -108,7 +108,7 @@ class ToolsServiceProvider extends ServiceProvider
 				return False;
 			}
 			//si esta configurada la opcción envio de copias y existe el mailbox, envia una copia a ese mailbox
-			if (Config::get('app.copies_emails') && !empty(Config::get('app.copies_emails_mailbox')) && !env('APP_DEBUG') && $emailOptions['to'] != Config::get('app.debug_to_email')) {
+			if (Config::get('app.copies_emails') && !empty(Config::get('app.copies_emails_mailbox')) && !Config::get('app.debug') && $emailOptions['to'] != Config::get('app.debug_to_email')) {
 
 				$emailOptions['copia_to'] = Config::get('app.copies_emails_mailbox');
 				Mail::send('emails.' . $template, ['emailOptions' => $emailOptions], function ($m) use ($emailOptions) {
@@ -122,9 +122,9 @@ class ToolsServiceProvider extends ServiceProvider
 				$from = Config::get('app.email_signaturit');
 			}
 
-			if (env('APP_DEBUG')) {
-				$emailOptions['to'] = !empty(env('MAIL_TO')) ? env('MAIL_TO') : Config::get('app.debug_to_email');
-				$from = env('MAIL_FROM_ADDRESS') ?? Config::get('app.from_email');
+			if (Config::get('app.debug')) {
+				$emailOptions['to'] = !empty(Config::get('mail.mail_to')) ? Config::get('mail.mail_to') : Config::get('app.debug_to_email');
+				$from =  Config::get('mail.from.address') ?? Config::get('app.from_email');
 			} else {
 				if (strpos($emailOptions['to'], ';') > 0) {
 					$explode_email = explode(";", $emailOptions['to']);
