@@ -610,11 +610,11 @@ i.lb-icon-circle {
     border-radius: 999999px;
 }
 
-.html.fixed.sidebar-left-collapsed .alert {
+html.fixed.sidebar-left-collapsed .alert {
 	margin-left: 73px;
 }
 
-.html.fixed .alert {
+html.fixed .alert {
 	margin-left: 300px;
 }
 
