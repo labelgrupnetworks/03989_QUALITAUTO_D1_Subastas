@@ -1,9 +1,20 @@
+@php
+    use App\Support\Localization;
+@endphp
+
 @if ($banner)
 
     @foreach ($banner->activeItems as $bannerItem)
         @php
             $urlVideo = $bannerItem->texto;
             $urlMobile = $bannerItem->texto;
+
+            if (!Localization::isDefaultLocale()) {
+                $enVideo = substr($urlVideo, 0, -4) . '_en' . substr($urlVideo, -4);
+                if (file_exists(public_path($enVideo))) {
+                    $urlVideo = asset($enVideo);
+                }
+            }
 
             $mobileVideo = substr($urlVideo, 0, -4) . '_mobile' . substr($urlVideo, -4);
             if (file_exists(public_path($mobileVideo))) {
