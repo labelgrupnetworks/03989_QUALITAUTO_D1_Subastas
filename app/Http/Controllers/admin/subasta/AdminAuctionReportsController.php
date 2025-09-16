@@ -100,11 +100,12 @@ class AdminAuctionReportsController extends Controller
 
 		$pdfController = new PdfController();
 
-		$reportTitleBidsReport = trans(Config::get('app.theme') . '-app.reports.lots_report');
-		$reportTitleAwardsReport = trans(Config::get('app.theme') . '-app.reports.awards_report');
+		$reportTitleBidsReport = trans('web.reports.lots_report');
+		$reportTitleAwardsReport = trans('web.reports.awards_report');
 
 		$pdfController->generateAuctionAwardsReportPdf($info, $reportTitleAwardsReport);
 		$pdfController->generateAuctionBidsReportPdf($info, $reportTitleBidsReport);
+
 		if (config('app.certificate_in_report', false)) {
 			$pdfController->generateCertificateReportPdf($cod_sub);
 		}
@@ -136,14 +137,14 @@ class AdminAuctionReportsController extends Controller
 		}
 
 		$tableInfo = [
-			trans(Config::get('app.theme') . '-app.reports.prop_hces1') => $propietary->rsoc_cli ?? 'No indicado',
-			trans(Config::get('app.theme') . '-app.reports.lote_aparte') => $inf_lot->loteaparte_hces1 ?? '',
-			trans(Config::get('app.theme') . '-app.reports.auction_code') => $inf_subasta->cod_sub,
-			trans(Config::get('app.theme') . '-app.reports.lot_code') => $inf_lot->ref_asigl0,
-			trans(Config::get('app.theme') . '-app.reports.date_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(Config::get('app.theme') . '-app.reports.hour_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'H:i:s'),
-			trans(Config::get('app.theme') . '-app.reports.date_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(Config::get('app.theme') . '-app.reports.hour_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'H:i:s'),
+			trans('web.reports.prop_hces1') => $propietary->rsoc_cli ?? 'No indicado',
+			trans('web.reports.lote_aparte') => $inf_lot->loteaparte_hces1 ?? '',
+			trans('web.reports.auction_code') => $inf_subasta->cod_sub,
+			trans('web.reports.lot_code') => $inf_lot->ref_asigl0,
+			trans('web.reports.date_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'd/m/Y'),
+			trans('web.reports.hour_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'H:i:s'),
+			trans('web.reports.date_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'd/m/Y'),
+			trans('web.reports.hour_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'H:i:s'),
 		];
 
 		$pdfController->setTableInfo($tableInfo);

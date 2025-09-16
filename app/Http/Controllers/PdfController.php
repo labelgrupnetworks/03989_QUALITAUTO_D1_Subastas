@@ -105,6 +105,10 @@ class PdfController extends Controller
 
 	public function generateBidsPdf()
 	{
+		$view = 'front::reports.bids';
+		if (!View::exists($view)) {
+			return;
+		}
 		$theme = Config::get('app.theme');
 		$reportTitle = trans($theme . '-app.reports.bid_report');
 		$titleTable = trans($theme . '-app.reports.bid_detail');
@@ -130,11 +134,16 @@ class PdfController extends Controller
 		}
 
 
-		$this->addPdf($this->generateGenericPdf('front::reports.report1', $reportTitle, $this->tableInfo, $titleTable, $tableContent), $reportTitle);
+		$this->addPdf($this->generateGenericPdf($view, $reportTitle, $this->tableInfo, $titleTable, $tableContent), $reportTitle);
 	}
 
 	public function generateClientsPdf()
 	{
+		$view = 'front::reports.clients';
+		if (!View::exists($view)) {
+			return;
+		}
+
 		$theme = Config::get('app.theme');
 		$reportTitle = trans(Config::get('app.theme') . '-app.reports.client_report');
 		$titleTable = trans(Config::get('app.theme') . '-app.reports.lot_detail');
@@ -161,22 +170,25 @@ class PdfController extends Controller
 				];
 			}
 
-			$this->addPdf($this->generateGenericPdf('front::reports.report1', $reportTitle, $this->tableInfo, $titleTable, $tableContent), $reportTitle . "_$cod_licit");
-			$this->addPdf($this->generateGenericPdf('front::reports.report1', $reportBidderTitle, $this->tableInfo, $titleTable, $tableContent), $reportBidderTitle . "_$cod_licit");
+			$this->addPdf($this->generateGenericPdf($view, $reportTitle, $this->tableInfo, $titleTable, $tableContent), $reportTitle . "_$cod_licit");
+			$this->addPdf($this->generateGenericPdf($view, $reportBidderTitle, $this->tableInfo, $titleTable, $tableContent), $reportBidderTitle . "_$cod_licit");
 		}
 	}
 
 	public function generateAwardLotPdf($propetary, $ref_asigl0, $cod_licit, $import)
 	{
+		$view = 'front::reports.award_lot';
+		if (!View::exists($view)) {
+			return;
+		}
 		//'content_lot_award' => 'De la subasta de la Sociedad :prop <br> El lote nº :lot ha sido adjudicado provionalmente a la sociedad :award<br>Por un importe de :imp'
 		$reportTitle = trans(Config::get('app.theme') . '-app.reports.award_report');
 
 		$bidders = [];
+		$bids = is_array($this->bids) ? collect($this->bids) : $this->bids;
+		$bid = $bids->where('imp_asigl1', $import)->where('cod_licit', $cod_licit)->first();
+
 		if (config('app.withMultipleBidders', false)) {
-
-			$bids = is_array($this->bids) ? collect($this->bids) : $this->bids;
-			$bid = $bids->where('imp_asigl1', $import)->where('cod_licit', $cod_licit)->first();
-
 			$bidders = FgAsigl1Mt::query()->where([
 				['sub_asigl1mt', $bid->cod_sub],
 				['ref_asigl1mt', $bid->ref_asigl1],
@@ -195,12 +207,15 @@ class PdfController extends Controller
 		];
 
 
-		$this->addPdf(Pdf::loadView('front::reports.award_lot', $data), $reportTitle);
+		$this->addPdf(Pdf::loadView($view, $data), $reportTitle);
 	}
 
 	public function generateNotAwardLotPdf($propetary, $ref_asigl0)
 	{
-
+		$view = 'front::reports.not_award_lot';
+		if (!View::exists($view)) {
+			return;
+		}
 		//'content_lot_award' => 'De la subasta de la Sociedad :prop <br> El lote nº :lot ha sido adjudicado provionalmente a la sociedad :award<br>Por un importe de :imp'
 
 		$reportTitle = trans(Config::get('app.theme') . '-app.reports.award_report');
@@ -209,11 +224,17 @@ class PdfController extends Controller
 			'lot' => $ref_asigl0
 		]);
 
-		$this->addPdf($this->generateGenericPdf('front::reports.report1', $reportTitle, $this->tableInfo, '', [], $content), $reportTitle);
+		$this->addPdf($this->generateGenericPdf($view, $reportTitle, $this->tableInfo, '', [], $content), $reportTitle);
 	}
 
 	public function generateAuctionBidsReportPdf($inf_subasta, $reportTitle)
 	{
+		$view = 'front::reports.bids_auction';
+		if (!View::exists($view)) {
+			return;
+		}
+
+
 		//titulo de la tabla
 		$titleTable = trans(config('app.theme') . '-app.reports.lots_detail');
 
@@ -259,11 +280,16 @@ class PdfController extends Controller
 		];
 
 		//guardamos pdf en la clase
-		$this->addPdf(Pdf::loadView('front::reports.bids_auction', $data), $reportTitle);
+		$this->addPdf(Pdf::loadView($view, $data), $reportTitle);
 	}
 
 	public function generateAuctionAwardsReportPdf($inf_subasta, $reportTitle)
 	{
+		$view = 'front::reports.award';
+		if (!View::exists($view)) {
+			return;
+		}
+
 		$theme = config('app.theme');
 		//titulo de la tabla
 		$titleTable = trans("$theme-app.reports.awards_detail");
@@ -368,7 +394,7 @@ class PdfController extends Controller
 			'awards' => $awards
 		];
 
-		$this->addPdf(PDF::loadView('front::reports.award', $data), $reportTitle);
+		$this->addPdf(PDF::loadView($view, $data), $reportTitle);
 	}
 
 	public function generateWithNotAward($inf_subasta, $inf_lot)
