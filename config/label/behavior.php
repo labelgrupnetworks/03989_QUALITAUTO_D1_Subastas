@@ -77,7 +77,7 @@ return [
 	'checkItp' => false, // Comprobar impuesto de transmision patrimonial en lotes
 	'disabled_ries_cli' => false, // No controlar maximo de riesgo en esa subasta
 	'ministeryCli' => null, // ID de cliente para el Cliente ministerio
-	'ministeryLicit' => null, // Nº paleta de licitador para el ministerio
+	'ministeryLicit' => false, // Nº paleta de licitador para el ministerio
 	'notice_over_bid_email' => false, //Envia email over_bid cuando se realice una orden existiendo una superior
 	'time_to_automatic_blocking_licit_cancel_bids' => 0, //Segundos necesarios desde el momento actual, para contar pujas canceladas antes de bloquear usuario
 	'use_credit' => false, // Usar credito
