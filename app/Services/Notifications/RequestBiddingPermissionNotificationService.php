@@ -29,6 +29,7 @@ class RequestBiddingPermissionNotificationService
 		$email->setUserByCod($this->deposit->cli_deposito, true);
 		$email->setLot($this->deposit->sub_deposito, $this->deposit->ref_deposito);
 		$email->setAtribute("BANK_REFERENCE", $this->deposit->bank_reference);
+		$email->setAtribute("REPRESENTED_TO", '');
 
 		if(!empty($this->deposit->representado_deposito)) {
 			$representedToString = $this->represented->toEmailString();
