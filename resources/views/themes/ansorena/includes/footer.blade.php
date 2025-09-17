@@ -127,12 +127,15 @@
                 <img class="logo" src="/themes/{{ $theme }}/assets/img/logo_white.webp" alt="Ansorena"
                     width="380" height="125.14">
 
-                <div class="legal-links">
+				<div class="legal-links">
                     <a href="{{ $pagina . trans("$theme-app.links.conditions") }}"
                         title="{{ trans("$theme-app.foot.term_condition") }}">{{ trans("$theme-app.foot.term_condition") }}</a>
 
                     <a href="{{ $pagina . trans("$theme-app.links.privacy") }}"
                         title="{{ trans("$theme-app.foot.privacy") }}">{{ trans("$theme-app.foot.privacy") }}</a>
+
+                    <a href="{{ $pagina . trans("$theme-app.links.privacy_policy") }}"
+                        title="{{ trans("$theme-app.foot.privacy_policy") }}">{{ trans("$theme-app.foot.privacy_policy") }}</a>
 
                     <a href="{{ $pagina . trans("$theme-app.links.cookies") }}"
                         title="{{ trans("$theme-app.foot.cookies") }}">{{ trans("$theme-app.foot.cookies") }}</a>

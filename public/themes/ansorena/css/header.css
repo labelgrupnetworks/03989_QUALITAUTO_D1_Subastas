@@ -1526,7 +1526,7 @@ footer .ff-highlight {
 
 .footer-social-networks {
 	padding-top: 1rem;
-	padding-bottom: 5rem;
+	padding-bottom: 2rem;
 	display: flex;
 	flex-direction: column-reverse;
 	align-items: center;
@@ -1587,6 +1587,7 @@ footer img.logo {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	gap: .25rem;
 }
 
 .footer-company p:not(.ff-highlight) {
@@ -1624,10 +1625,15 @@ footer .ext-logos img {
 
 @media(min-width: 992px) {
 
-	.footer-block,
-	.footer-social-networks {
+	.footer-block {
 		display: grid;
 		grid-template-columns: 3fr 4fr 3fr;
+		gap: 0;
+	}
+
+	.footer-social-networks {
+		display: grid;
+		grid-template-columns: 3fr 6fr 3fr;
 		gap: 0;
 	}
 
@@ -1642,6 +1648,8 @@ footer .ext-logos img {
 	.legal-links {
 		flex-direction: row;
 		gap: 1.4rem;
+		padding-bottom: 2rem;
+		justify-content: center;
 	}
 
 	.legal-links a {
