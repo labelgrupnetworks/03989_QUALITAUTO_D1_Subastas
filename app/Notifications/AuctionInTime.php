@@ -95,6 +95,7 @@ class AuctionInTime extends Notification implements ShouldQueue
 	public function viaQueues()
 	{
 		return [
+			MicrosoftTeamsChannel::class => Config::get('app.queue_env', 'default'),
 			'mail' => Config::get('app.queue_env'),
 		];
 	}
