@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\apilabel\Integrations;
 
+use App\Http\Controllers\apilabel\ImgController;
 use App\Http\Controllers\apilabel\LotController;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCaracteristicas;
@@ -19,6 +20,7 @@ class QualitautoController
 		$array = json_decode($json, true);
 
 		$vehicle = data_get($array, 'Dossier.Vehicle', []);
+
 		if (empty($vehicle)) {
 			//docs/HttpFiles/example_data.txt
 			$file = file(base_path('docs/HttpFiles/example_data.txt'));
@@ -27,10 +29,8 @@ class QualitautoController
 			$json = json_encode($xml);
 			$array = json_decode($json, true);
 			$vehicle = data_get($array, 'Dossier.Vehicle', []);
-
 			//return response()->json(['message' => 'No vehicle data found'], 400);
 		}
-
 
 		$colores = data_get($vehicle, 'LibroVin.Colores.color', []);
 		$fotos = data_get($vehicle, 'FotosCargadas.Foto', []);
@@ -53,25 +53,55 @@ class QualitautoController
 		];
 
 		$auctionId = 'LABELO';
+		$lotId = "{$auctionId}-{$vehicleData['bastidor']}";
+
+		$lotObject = $this->createLotObject($lotId, $vehicleData);
+		$upserted = $this->upsertLot($auctionId, $lotId, $lotObject);
+		if (!$upserted) {
+			return response()->json(['message' => 'Error creating or updating lot'], 500);
+		}
+
+		$imagesAdded = $this->addImages($lotId, $vehicleData['fotos']);
+		if (!$imagesAdded) {
+			return response()->json(['message' => 'Error adding images'], 500);
+		}
+
+		return response()->json(['message' => 'Lot created or updated'], 200);
+	}
+
+	private function upsertLot($auctionId, $lotId, $lotObject)
+	{
 		$existingLots = FgAsigl0::query()
 			->joinFghces1Asigl0()
 			->where('sub_asigl0', $auctionId)
 			->pluck('idorigen_hces1', 'ref_asigl0');
 
-		$lotId = "{$auctionId}-{$vehicleData['bastidor']}";
-
-		//create lot object
-		$lotObject = $this->createLotObject($lotId, $vehicleData);
-
 		$lotControler = new LotController();
 		if ($existingLots->contains($lotId)) {
-			$lotControler->updateLot([$lotObject]);
-			return response()->json(['message' => 'Lot updated'], 200);
+
+			unset($lotObject['reflot']);
+			$json = $lotControler->updateLot([$lotObject]);
+		} else {
+			$json = $lotControler->createLot([$lotObject]);
 		}
 
-		$json = $lotControler->createLot([$lotObject]);
 		$result = json_decode($json);
-		return response()->json($result);
+		if ($result->status == 'ERROR') {
+			return false;
+		}
+		return true;
+	}
+
+	private function addImages($lotId, $photos)
+	{
+		$imageController = new ImgController();
+		$imageObject = $this->createImagesObject($lotId, $photos);
+		$json = $imageController->createImg($imageObject);
+		$result = json_decode($json);
+		if ($result->status == 'ERROR') {
+			return false;
+		}
+		return true;
 	}
 
 	private function createLotObject($id, $vehicleData)
@@ -93,6 +123,19 @@ class QualitautoController
 		];
 
 		return $lot;
+	}
+
+	private function createImagesObject($lotId, $photos)
+	{
+		$images = [];
+		foreach ($photos as $index => $photo) {
+			$images[] = [
+				'idoriginlot' => $lotId,
+				'order' => $index,
+				'img64' => $photo['Base64']
+			];
+		}
+		return $images;
 	}
 
 	private function addFeatures($vehicleData)
