@@ -98,6 +98,14 @@
                     </li>
                 @endif
 
+				@if ($global['auctionTypes']->where('tipo_sub', 'V')->value('count'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('subastas.venta_directa') }}">
+                            <span>{{ trans($theme . '-app.foot.direct_sale') }}</span>
+                        </a>
+                    </li>
+                @endif
+
 				<li class="nav-item">
 					<a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
 						<span>{{ trans($theme.'-app.foot.historico')}}</span>
