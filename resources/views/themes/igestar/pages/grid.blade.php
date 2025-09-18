@@ -14,12 +14,16 @@
                     @include('includes.breadcrumb')
                 </div>
 
+				@if(!empty($auction))
 				<div class="col-12">
                     <h1>{{ $seo_data->h1_seo }}</h1>
                 </div>
+				@endif
 
-                <div class="col-12 px-0 py-3">
+                <div class="col-12 py-3">
                     @if (is_null($auction) && !empty($infoOrtsec))
+						<h1>{{ $infoOrtsec->des_ortsec0 }}</h1>
+
                         {!! BannerLib::bannersPorKey("grid-{$infoOrtsec->key_ortsec0}", 'grid-top-banner', [
                             'dots' => false,
                             'autoplay' => true,
@@ -27,6 +31,7 @@
                             'slidesToScroll' => 1,
                             'arrows' => false,
                         ]) !!}
+
                     @endif
                 </div>
 
