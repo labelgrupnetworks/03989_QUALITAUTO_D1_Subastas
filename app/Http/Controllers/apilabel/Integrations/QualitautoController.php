@@ -7,6 +7,7 @@ use App\Http\Controllers\apilabel\LotController;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCaracteristicas;
 use App\Models\V5\FgCaracteristicas_Value;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -32,30 +33,46 @@ class QualitautoController
 			//return response()->json(['message' => 'No vehicle data found'], 400);
 		}
 
-		$colores = data_get($vehicle, 'LibroVin.Colores.color', []);
+		$colors = collect(data_get($vehicle, 'LibroVin.Colores.Color', []));
 		$fotos = data_get($vehicle, 'FotosCargadas.Foto', []);
 
+		//filter colors where attribute 'tipo' contains 'exterior'
+		$exteriorColors = $colors->filter(function ($item) {
+			return str_contains($item['tipo'], 'exterior') && !empty($item['descripcion']);
+		})
+		->implode('descripcion', '/');
+
+		$power1 = data_get($vehicle, 'Engine.EnginePowerHp', 0);
+		$power2 = data_get($vehicle, 'Engine.EnginePowerKw', 0);
+		$capacity = data_get($vehicle, 'Engine.Capacity', 0);
+		$registrationDate = data_get($vehicle, 'InitialRegistration', null);
+
 		$vehicleData = [
+			'title' => data_get($vehicle, 'SalesDescription', null),
 			'fabricante' => data_get($vehicle, 'ManufacturerName', null),
-			'modelo' => data_get($vehicle, 'SalesDescription', null),
-			'tipo' => data_get($vehicle, 'VehicleTypeNameN', null),
-			'potencia' => data_get($vehicle, 'Engine.EnginePowerKw', null),
+			'modelo' => data_get($vehicle, 'BaseModelName', null),
+			'version' => data_get($vehicle, 'SubModelName', null),
+			'variante' => data_get($vehicle, 'ContainerNameN', null),
+			'tipo' => data_get($vehicle, 'VehicleData.StructureDescription', null),
+			'puertas' => data_get($vehicle, 'TechInfo.VehicleDoors', null),
+			'potencia_cilindrada' => "{$power1}CV / {$power2}Kw / {$capacity}cm3",
 			'kilometros' => data_get($vehicle, 'MileageEstimated', null),
 			'transmision' => data_get($vehicle, 'TechInfo.GearboxType', null),
+			'num_velocidades' => data_get($vehicle, 'TechInfo.NrOfGears', null),
 			'combustible' => data_get($vehicle, 'Engine.FuelMethod', null),
 			'asientos' => data_get($vehicle, 'TechInfo.VehicleSeats', null),
-			'bastidor' => data_get($vehicle, 'VehicleIdentNumber', null), //usar como id.
+			'bastidor' => data_get($vehicle, 'VehicleIdentNumber', null),
 			'matricula' => data_get($vehicle, 'RegistrationData.LicenseNumber', null),
-			'fecha_matriculacion' => data_get($vehicle, 'InitialRegistration', null),
+			'fecha_matriculacion' => $registrationDate ? Carbon::parse($registrationDate)->format('d/m/Y') : null,
 			'tarjeta_emision' => data_get($vehicle, 'VehicleData.EmissionClass', null),
-			'colores' => is_array($colores) ? $colores : [$colores],
+			'color_exterior' => $exteriorColors,
 			'fotos' => is_array($fotos) ? $fotos : [$fotos],
 		];
 
-		$auctionId = 'LABELO';
+		$auctionId = 'ONLINE';
 		$lotId = "{$auctionId}-{$vehicleData['bastidor']}";
 
-		$lotObject = $this->createLotObject($lotId, $vehicleData);
+		$lotObject = $this->createLotObject($auctionId, $lotId, $vehicleData);
 		$upserted = $this->upsertLot($auctionId, $lotId, $lotObject);
 		if (!$upserted) {
 			return response()->json(['message' => 'Error creating or updating lot'], 500);
@@ -104,16 +121,15 @@ class QualitautoController
 		return true;
 	}
 
-	private function createLotObject($id, $vehicleData)
+	private function createLotObject($idAuction, $id, $vehicleData)
 	{
-		$idAuction = 'LABELO';
 		$maxReference = FgAsigl0::where('sub_asigl0', $idAuction)->max('ref_asigl0') + 1;
 
 		$lot = [
 			'idorigin' => $id,
-			'title' => "{$vehicleData['fabricante']} {$vehicleData['modelo']}",
-			'description' => "{$vehicleData['fabricante']} {$vehicleData['modelo']}",
-			'search' => "{$vehicleData['fabricante']} {$vehicleData['modelo']}",
+			'title' => "{$vehicleData['fabricante']} {$vehicleData['title']}",
+			'description' => "{$vehicleData['fabricante']} {$vehicleData['title']}",
+			'search' => "{$vehicleData['fabricante']} {$vehicleData['title']}",
 			'idsubcategory' => Config::get('app.default_idsubcategory', 'VM'),
 			'idauction' => $idAuction,
 			'reflot' => $maxReference,
