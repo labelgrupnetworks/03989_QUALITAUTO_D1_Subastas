@@ -99,6 +99,7 @@ Route::get(Routing::slugSeo('usuario-registrado'), [UserController::class, 'Succ
 Route::post(Routing::slug('login'), [UserController::class, 'login_post'])->name('post_login');
 Route::post('/login_post_ajax', [UserController::class, 'login_post_ajax'])->name('user.login_post_ajax');
 Route::post(Routing::slug('registro'), [UserController::class, 'registro'])->middleware('verify.captcha')->name('send_register');
+Route::post(Routing::slug('register-data'), [RegisterController::class, 'forwardRegistrationData'])->middleware('verify.captcha')->name('user.register_data');
 Route::get(Routing::slug('logout'), [UserController::class, 'logout']);
 Route::get(Routing::slug('password_recovery'), [UserController::class, 'passwordRecovery'])->name('user.password_recovery');
 Route::post('/{lang}/send_password_recovery', [UserController::class, 'sendPasswordRecovery'])->name('user.send_password_recovery');
