@@ -57,33 +57,20 @@ $pageName = Route::currentRouteName();
 			<div class="navbar-collapse collapse" id="navbarHeader" style="">
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3 ps-lg-3 text-uppercase">
 
-					{{-- @if (!empty($categories))
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="categoriesHeader" data-bs-toggle="dropdown" aria-expanded="false">{{ trans("web.lot.categories") }}</a>
-						<ul class="dropdown-menu" aria-labelledby="categoriesHeader">
-							@foreach ($categories as $category)
-								<li>
-									<a class="dropdown-item" href="{{ route("category", ["keycategory" => $category["key_ortsec0"]]) }}">{{$category["des_ortsec0"]}}</a>
-								</li>
-							@endforeach
-						</ul>
-					</li>
-					@endif --}}
-
-					@if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
+					@if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
 					<li class="nav-item">
-						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'subastas.presenciales'])
-							href="{{ route('subastas.presenciales') }}">
+						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'subasta.actual-online'])
+							href="{{ route('subasta.actual-online') }}">
 							<span>{{ trans('web.foot.auctions')}}</span>
 						</a>
 					</li>
 					@endif
 
-					<li class="nav-item">
-						<a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
+					{{-- <li class="nav-item">
+						<a class="nav-link" href="{{ route('subasta.actual-online') . '?award=1' }}">
 							<span>{{ trans('web.foot.historico')}}</span>
 						</a>
-					</li>
+					</li> --}}
 
 					<li class="nav-item">
 						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'contact_page']) title="{{ trans('web.foot.contact')}}" href="{{ route('contact_page') }}"><span>{{ trans('web.foot.contact')}}</span></a>

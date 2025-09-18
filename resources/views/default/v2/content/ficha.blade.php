@@ -88,6 +88,8 @@ if($subasta_web){
 			@include('includes.ficha.ficha_description')
 		</section>
 
+		@includeIf('includes.ficha.ficha_features')
+
 		<section class="ficha-history">
 			@if(($subasta_online || $subasta_inversa || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer ) && !$cerrado &&  !$retirado)
 				@include('includes.ficha.history')

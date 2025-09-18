@@ -5,19 +5,10 @@
 			<div class="col-6 col-lg-2 mb-3">
 				<h5>{{ trans('web.foot.auctions') }}</h5>
 				<ul class="nav flex-column">
-					@if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
-					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('presenciales') }}"
-							class="nav-link p-0 text-muted">{{ trans('web.foot.auctions')}}</a></li>
-					@endif
 
 					@if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
-					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-online') }}"
+					<li class="nav-item mb-2"><a href="{{ route('subasta.actual-online') }}"
 							class="nav-link p-0 text-muted">{{ trans('web.foot.online_auction')}}</a></li>
-					@endif
-
-					@if($global['auctionTypes']->where('tipo_sub', 'V')->value('count'))
-					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('venta-directa') }}"
-							class="nav-link p-0 text-muted">{{ trans('web.foot.direct_sale')}}</a></li>
 					@endif
 
 					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-historicas') }}"
@@ -34,14 +25,9 @@
 							trans('web.foot.about_us') }}</a>
 					</li>
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo('pagina').trans('web.links.contact') }}"
+						<a href="{{ route('contact_page') }}"
 							title="{{ trans('web.foot.contact') }}" class="nav-link p-0 text-muted">{{
 							trans('web.foot.contact') }}</a>
-					</li>
-					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo(trans('web.links.faq')) }}"
-							title="{{ trans('web.foot.faq') }}" class="nav-link p-0 text-muted">{{
-							trans('web.foot.faq') }}</a>
 					</li>
 				</ul>
 			</div>
