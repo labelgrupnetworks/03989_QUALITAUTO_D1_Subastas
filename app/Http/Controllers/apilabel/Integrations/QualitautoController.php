@@ -7,6 +7,7 @@ use App\Http\Controllers\apilabel\LotController;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCaracteristicas;
 use App\Models\V5\FgCaracteristicas_Value;
+use App\Models\V5\FgSub;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -124,18 +125,23 @@ class QualitautoController
 	private function createLotObject($idAuction, $id, $vehicleData)
 	{
 		$maxReference = FgAsigl0::where('sub_asigl0', $idAuction)->max('ref_asigl0') + 1;
+		$auctionDates = FgSub::select('dfec_sub', 'dhora_sub', 'hfec_sub', 'hhora_sub')->where('cod_sub', $idAuction)->first();
 
 		$lot = [
 			'idorigin' => $id,
 			'title' => "{$vehicleData['fabricante']} {$vehicleData['title']}",
 			'description' => "{$vehicleData['fabricante']} {$vehicleData['title']}",
 			'search' => "{$vehicleData['fabricante']} {$vehicleData['title']}",
-			'idsubcategory' => Config::get('app.default_idsubcategory', 'VM'),
+			'idsubcategory' => Config::get('app.default_idsubcategory', 'VC'),
 			'idauction' => $idAuction,
 			'reflot' => $maxReference,
 			'features' => $this->addFeatures($vehicleData),
 			'startprice' => 0,
-			'hidden' => 'S',
+			'hidden' => 'N', //al pasar a producción debe ser 'S'
+			'startdate' => date('Y-m-d', strtotime($auctionDates['dfec_sub'])),
+			'starthour' => date('H:i:s', strtotime($auctionDates['dhora_sub'])),
+			'enddate' => date('Y-m-d', strtotime($auctionDates['hfec_sub'])),
+			'endhour' => date('H:i:s', strtotime($auctionDates['hhora_sub'])),
 		];
 
 		return $lot;
