@@ -37,6 +37,8 @@
 	--color-blue-300: #4eb2e5;
 
 	--lb-color-primary: var(--color-blue);
+	--lb-color-primary-light: var(--color-blue-300);
+    --lb-color-primary-dark: var(--color-blue-700);
 
 	--lb-border-color-hsl: 0, 0%, 0%;
 	--lb-border-opacity: 0.4;

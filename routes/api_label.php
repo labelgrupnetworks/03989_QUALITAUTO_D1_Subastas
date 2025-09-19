@@ -7,6 +7,7 @@
 */
 
 use App\Http\Controllers\apilabel\NewsletterSubscriptionController;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'apilabel', 'namespace' => 'apilabel'], function () {
@@ -106,5 +107,12 @@ Route::group(['prefix' => 'apilabel', 'namespace' => 'apilabel', 'middleware' =>
 	Route::get('/newsletter', [NewsletterSubscriptionController::class, 'getNewsletterSubscription']);
 	Route::post('/newsletter', [NewsletterSubscriptionController::class, 'postNewsletterSubscription']);
 	Route::delete('/newsletter', [NewsletterSubscriptionController::class, 'deleteNewsletterSubscription']);
+
+	if(Config::get('app.env') == 'local') {
+		Route::any('/integrations/qualitauto/lot', [App\Http\Controllers\apilabel\Integrations\QualitautoController::class, 'store'])->withoutMiddleware(['apilabel']);
+	}
+	else {
+		Route::post('/integrations/qualitauto/lot', [App\Http\Controllers\apilabel\Integrations\QualitautoController::class, 'store']);
+	}
 
 });

@@ -1,5 +1,10 @@
 @import url("global.css");
 
+main {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
 .home-slider {
 	background-color: #e2f1fa;
 }
@@ -46,7 +51,8 @@
 	background-color: var(--color-gray-100);
 }
 
-.static-main-page h2, .static-main-page .h2 {
+.static-main-page h2,
+.static-main-page .h2 {
 	color: var(--lb-color-primary-dark);
 	font-size: 1.5rem;
 	margin-top: 1rem;
@@ -55,4 +61,114 @@
 footer .nav-link {
 	--bs-nav-link-color: var(--bs-link-color);
 	--bs-nav-link-hover-color: var(--bs-link-hover-color);
+}
+
+footer .btn-link {
+	text-transform: initial;
+}
+
+.ficha .breadcrumb {
+	flex-wrap: nowrap;
+	overflow: hidden;
+}
+
+.ficha .breadcrumb-item {
+	flex: 0 0 auto;
+}
+
+.gird-features {
+	grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+	row-gap: 20px;
+	column-gap: 10px;
+}
+
+section.ficha-features {
+	padding: 10px;
+	background: var(--color-gray-100);
+}
+
+section.ficha-files, section.ficha-description {
+	display: none;
+}
+
+@media (min-width: 992px) {
+
+	main.ficha {
+		margin-top: 3rem;
+		margin-bottom: 3rem;
+	}
+
+	.ficha-grid {
+		grid-template-columns: 2fr 1fr;
+		column-gap: 4rem;
+	}
+
+	section.ficha-auction-info {
+		grid-column: 2;
+		grid-row: 2;
+	}
+
+	section.ficha-title {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	section.ficha-image {
+		grid-column: 1;
+		grid-row: 2 / 4;
+	}
+
+	section.ficha-features {
+		grid-column: 1;
+		grid-row: 4 / 7;
+	}
+
+	section.ficha-pujas {
+		grid-column: 2;
+		grid-row: 1 / 3;
+	}
+
+	section.ficha-history {
+		grid-column: 2;
+		grid-row: 3;
+	}
+
+	section.ficha-share {
+		grid-column: 2;
+		grid-row: 5;
+	}
+
+	section.ficha-recomendados {
+		grid-column: 1 / 4;
+	}
+
+	section.ficha-previous-next {
+		grid-column: 2;
+		grid-row: 4;
+	}
+}
+
+.ficha-pujas.ficha-pujas-o {
+	gap: .75rem;
+}
+
+.ficha-pujas .bid-price {
+	font-weight: 500;
+	margin-bottom: 0;
+}
+
+.ficha-pujas .next-price {
+	font-size: 1.5em;
+}
+
+.ficha-pujas .price span:nth-of-type(2) {
+	float: right;
+    font-variant-numeric: tabular-nums;
+}
+
+@media((min-width: 992px)) {
+	.section-grid-filters {
+		height: auto;
+		top: initial;
+	}
 }
